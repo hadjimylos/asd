@@ -1,4 +1,4 @@
-﻿namespace itt {
+﻿namespace pmo {
     using Microsoft.EntityFrameworkCore;
 
     public class EfContext : DbContext
