@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
     public class Stage : HistoryModel {
-        //TODO: Complete Properties
+
+        public int ProjectId { get; set; }
+
+        [ForeignKey("ProjectId")]
+        public virtual Project Project { get; set; }
+
         public int StageNumber { get; set; }
         public virtual List<Schedule> ScheduleHistory { get; set; }
-        public virtual List<DesignConcept> DesignConceptHistory { get; set; }
+        public virtual List<StageDesignConcept> StageDesignConceptHistory { get; set; }
         public virtual List<Risk> RiskHistory { get; set; }
 
         public virtual List<ProjectJustification> ProjectJustificationHistory { get; set; }

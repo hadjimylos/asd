@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public  class ProjectJustification:DatabaseModel {
-        //TODO ProjectJustification
+    public  class ProjectJustification: HistoryModel
+    {
+       
         public int StageId { get; set; }
         
         [ForeignKey("StageId")]
@@ -29,13 +31,13 @@ namespace dbModels {
         [ForeignKey("ProductTagId")]
         public virtual Tag Product { get; set; }
         
-        public string Competetion { get; set; }
+        public string? Competetion { get; set; }
         
-        public string BenchmarkSamples { get; set; }
+        public string? BenchmarkSamples { get; set; }
         
-        public string AdvantagesWeOffer { get; set; }
+        public string? AdvantagesWeOffer { get; set; }
         
-        public string WhyOurOfferPreferred { get; set; }
+        public string? WhyOurOfferPreferred { get; set; }
         
         public bool? SingleUseProduct { get; set; }
     }

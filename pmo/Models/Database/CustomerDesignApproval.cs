@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class CustomerDesignApproval:DatabaseModel {
-        //TODO
-        //public int SentForApprovalById { get; set; }
-        //[ForeignKey("SentForApprovalById")]
+    public class CustomerDesignApproval: HistoryModel
+    {
+       
         public string SentForApprovalBy { get; set; }
 
         public DateTime DateSentForApprove { get; set; }
@@ -14,6 +14,11 @@ namespace dbModels {
         
         public DateTime ApprovedDate { get; set; }
         
-        public virtual List<UploadedDocumentation> ImportantDocumentation { get; set; }
+        public virtual List<CustomerDesignApprovalUploadedDocumentation> ImportantDocumentation { get; set; }
+
+        public int StageId { get; set; }
+
+        [ForeignKey("StageId")]
+        public virtual Stage Stage { get; set; }
     }
 }

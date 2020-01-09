@@ -10,6 +10,6 @@ namespace dbModels {
         
         public virtual List<Gate> GateHistory { get; set; }
 
-        public virtual List<User> TeamMember { get; set; }
+        public virtual List<Project_User> TeamMember { get; set; }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class ProjectDetail_SalesRegionTags : DatabaseModel {
-        public int SalesRegionTagId { get; set; }
+    public class ProjectDetail_EndUserCountries: DatabaseModel {
+        public int EndUserCountriesTagId { get; set; }
 
-        [ForeignKey("SalesRegionTagId")]
-        public virtual Tag SalesRegion { get; set; }
+        [ForeignKey("EndUserCountriesTagId")]
+        public virtual Tag EndUserCountries { get; set; }
 
         public int ProjectDetailId { get; set; }
 

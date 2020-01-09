@@ -38,10 +38,10 @@ namespace dbModels {
         [ForeignKey("DesignAuthorityTagId")]
         public virtual Tag DesignAuthority { get; set; }        
         
-        public virtual List<ProjectDetail_SalesRegionTags> SalesRegions { get; set; }
+        public virtual List<ProjectDetail_SalesRegions> SalesRegions { get; set; }
         
-        public virtual List<Tag> EndUseCountries { get; set; }    
+        public virtual List<ProjectDetail_EndUserCountries> EndUseCountries { get; set; }    
         
-        public virtual List<Tag> Customers { get; set; }
+        public virtual List<ProjectDetail_Customers> Customers { get; set; }
     }
 }

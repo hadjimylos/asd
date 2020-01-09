@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class BusinessCase:DatabaseModel {
+    public class BusinessCase: HistoryModel
+    {
         public int StageId { get; set; }
         
         [ForeignKey("StageId")]
@@ -47,8 +48,8 @@ namespace dbModels {
 
         public bool Changes { get; set; }
 
-        public virtual List<Tag> ManufacturingLocations { get; set; }
+        public virtual List<BusinessCase_ManufacturingLocations> ManufacturingLocations { get; set; }
 
-        public virtual List<DesignConcept> DesignConcept { get; set; }
+        public virtual List<BusinessDesignConcept> BusinessDesignConcept { get; set; }
     }
 }

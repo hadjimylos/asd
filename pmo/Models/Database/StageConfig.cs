@@ -24,8 +24,8 @@ namespace dbModels {
 
         public int? MinQualificationTesting { get; set; }
 
-        public virtual List<Tag> RequiredDesignConcepts { get; set; }
+        public virtual List<StageConfig_RequiredDesignConcepts> RequiredDesignConcepts { get; set; }
 
-        public virtual List<Tag> RequiredSchedules { get; set; }
+        public virtual List<StageConfig_RequiredSchedules> RequiredSchedules { get; set; }
     }
 }

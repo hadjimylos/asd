@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class Schedule:DatabaseModel {
-        public int ProjectId { get; set; }
+    public class Schedule:HistoryModel {
+        public int StageId { get; set; }
         
-        [ForeignKey("ProjectId")]
-        public virtual Project Project { get; set; }
+        [ForeignKey("StageId")]
+        public virtual Stage Stage { get; set; }
         
         public int TagId { get; set; }
         

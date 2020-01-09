@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class Risk:DatabaseModel {
+    public class Risk: HistoryModel
+    {
         public string Name { get; set; }
 
         public decimal RiskPropability { get; set; }
@@ -15,5 +16,10 @@ namespace dbModels {
         
         [ForeignKey("RiskImpactTagId")]
         public virtual Tag RiskImpact { get; set; }
+
+        public int StageId { get; set; }
+
+        [ForeignKey("StageId")]
+        public virtual Stage Stage { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class Mitigation:DatabaseModel  {
+    public class Mitigation:HistoryModel  {
         public int RiskId { get; set; }
         
         [ForeignKey("RiskId")]

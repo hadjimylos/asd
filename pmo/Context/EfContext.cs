@@ -29,9 +29,18 @@ namespace pmo {
         public DbSet<TagCategory> TagCategories { get; set; }
         public DbSet<UploadedDocumentation> UploadedDocumentation { get; set; }
         public DbSet<User> Users { get; set; }
-        
-        // many to many
-        public DbSet<ProjectDetail_SalesRegionTags> ProjectDetailSalesRegions { get; set; }
+        public DbSet<User_CitizenShip> UserCitizenShip { get; set; }
+        public DbSet<StageDesignConcept> StageDesignConcepts { get; set; }
+        public DbSet<BusinessDesignConcept> BusinessDesignConcepts{ get; set; }
+        public DbSet<GateUploadedDocumentation> GateUploadedDocumentations { get; set; }
+        public DbSet<ProductInfrigmentPatentabilityUploadedDocumentation> ProductInfrigmentPatentabilityUploadedDocumentations { get; set; }
+        public DbSet<CustomerDesignApprovalUploadedDocumentation> CustomerDesignApprovalUploadedDocumentations { get; set; }
+        public DbSet<ProjectDetail_SalesRegions> ProjectDetail_SalesRegions { get; set; }
+        public DbSet<ProjectDetail_EndUserCountries> ProjectDetail_EndUserCountries { get; set; }
+        public DbSet<ProjectDetail_Customers> ProjectDetail_Customers { get; set; }
+        public DbSet<StageConfig_RequiredDesignConcepts> StageConfig_RequiredDesignConcepts { get; set; }
+        public DbSet<StageConfig_RequiredSchedules> StageConfig_RequiredSchedules { get; set; }
+        public DbSet<BusinessCase_ManufacturingLocations> BusinessCase_ManufacturingLocations { get; set; }
 
 
         public EfContext(DbContextOptions<EfContext> options)

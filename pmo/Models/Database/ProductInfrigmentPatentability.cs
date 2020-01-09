@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels
 {
-    public class ProductInfrigmentPatentability:DatabaseModel {
+    public class ProductInfrigmentPatentability: HistoryModel
+    {
         public bool ContainsInfingmentIssues { get; set; }
 
         public string PatentNumber { get; set; }
@@ -18,6 +20,11 @@ namespace dbModels
 
         public DateTime ProductFirstTimeOfferedForSale { get; set; }
 
-        public virtual List<UploadedDocumentation> ImportantDocumentation { get; set; }
+        public virtual List<ProductInfrigmentPatentabilityUploadedDocumentation> ProductInfrigmentPatentabilityImportantDocumentation { get; set; }
+
+        public int StageId { get; set; }
+
+        [ForeignKey("StageId")]
+        public virtual Stage Stage { get; set; }
     }
 }

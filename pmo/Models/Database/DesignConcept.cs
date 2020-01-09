@@ -3,11 +3,8 @@
 namespace dbModels {
     public enum DesignConceptType { Url=1, FilePath = 2, Link=3 }
 
-    public class DesignConcept:DatabaseModel {
-        public int ProjectId { get; set; }
-        
-        [ForeignKey("ProjectId")]
-        public virtual Project Project { get; set; }
+    public class DesignConcept: HistoryModel
+    {       
         
         public int DeliverableRegisterId { get; set; }
         
