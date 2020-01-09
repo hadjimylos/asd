@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200108094109_TestMigration.cs" />
+    <Compile Remove="Migrations\20200108094109_TestMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200108104934_TestMigration.cs" />
+    <Compile Remove="Migrations\20200108104934_TestMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Models\ViewModel\" />
   </ItemGroup>
 
