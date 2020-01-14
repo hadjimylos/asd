@@ -14,8 +14,8 @@ namespace pmo.Controllers {
 
         [Route("")]
         public IActionResult Create() {
-            List<StageConfigViewModel> stageconfigViewModoel = new List<StageConfigViewModel>();
-            return View(stageconfigViewModoel);
+            List<StageConfigViewModel> stageconfigViewModel = new List<StageConfigViewModel>();
+            return View(stageconfigViewModel);
         }
 
         [HttpPost]
