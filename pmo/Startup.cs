@@ -5,6 +5,7 @@ namespace pmo {
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using System.IO;
+    using AutoMapper;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -48,6 +49,7 @@ namespace pmo {
             services.AddDbContext<EfContext>(options =>
                 options.UseSqlServer(connectionString)
             );
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
