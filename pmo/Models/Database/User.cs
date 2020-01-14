@@ -6,7 +6,7 @@ namespace dbModels
 {
     public class User: DatabaseModel
     {
-        public string UserSamId { get; set; }
+        public string NetworkUsername { get; set; }
 
         public int RoleId { get; set; }
 
