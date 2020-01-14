@@ -6,6 +6,8 @@ namespace pmo {
     using Microsoft.Extensions.DependencyInjection;
     using System.IO;
     using AutoMapper;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Routing;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -51,6 +53,11 @@ namespace pmo {
                 options.UseSqlServer(connectionString)
             );
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddMvc(options => {
+                options.EnableEndpointRouting = false;
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +73,7 @@ namespace pmo {
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseMvc();
 
         }
     }
