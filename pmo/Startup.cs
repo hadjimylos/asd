@@ -40,7 +40,8 @@ namespace pmo {
                 // with windows auth (app pool user)
                 connectionString = 
                     $"Data Source={datasource};Initial Catalog={dbname};Integrated Security=True";
-            } else {
+            }
+            else {
                 // with username/password
                 connectionString =
                     $"Data Source={datasource};Initial Catalog={dbname};User ID={username};Password={password}";
@@ -66,13 +67,6 @@ namespace pmo {
             app.UseRouting();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllerRoute(
-                    name: "home",
-                    pattern: "",
-                    defaults: new { controller = "Nav", action = "Home" }
-                );
-            });
         }
     }
 }
