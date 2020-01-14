@@ -55,6 +55,7 @@ namespace pmo {
             services.AddAutoMapper(typeof(Startup));
 
             services.AddMvc(options => {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 options.EnableEndpointRouting = false;
             });
             
