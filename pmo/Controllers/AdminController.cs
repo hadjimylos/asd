@@ -28,11 +28,15 @@ namespace pmo.Controllers {
             var tags = _context.Tags.Include(x=>x.TagCategory).ToList();
             var tagViewModel = _mapper.Map<List<TagViewModel>>(tags);
 
+            var users = _context.Users.Include(x => x.Citizenships).ToList();
+            var userViewModel = _mapper.Map<List<UserViewModel>>(users);
+
             AdminViewModel vm = new AdminViewModel { 
                 StageConfigViewModel = stageConfigViewModel, 
                 GateConfigViewModel = gateConfigViewModel, 
                 RolesViewModel= roleViewModel, 
-                TagViewModel= tagViewModel
+                TagViewModel= tagViewModel,
+                UserViewModel = userViewModel
             };       
 
             return View(vm);
