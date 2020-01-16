@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
@@ -44,7 +45,7 @@ namespace pmo.Controllers {
 
         [Route("{id}")]
         public IActionResult Edit(int id) {
-            var item = _context.StageConfigs.Find(id);
+            var item = _context.Users.Include(x=>x.Citizenships).Where(x=>x.Id==id).FirstOrDefault();
 
             if (item != null) {
                 return View(item);
