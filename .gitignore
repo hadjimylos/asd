@@ -38,3 +38,6 @@ msbuild.wrn
 
 # npm
 */node_modules/*
+
+# front end compiled files stored here (webpack)
+*/wwwroot/*
