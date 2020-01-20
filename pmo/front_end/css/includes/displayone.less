@@ -1,0 +1,43 @@
+﻿.displayone-component {
+    .wrapper {
+        padding: 30px;
+        box-sizing: border-box;
+
+        .option-labels {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+
+            .option-label {
+                padding: 7px;
+                box-sizing: border-box;
+                box-shadow: 0px 0px 2px 0px darken(@light_grey, 20%);
+                cursor: pointer;
+                border-radius: 3px;
+                background-color: @white;
+                color: @blue;
+                font-size: 0.85em;
+
+                &:hover {
+                    box-shadow: 0px 0px 2px 0px darken(@light_grey, 40%);
+                }
+
+                &.active {
+                    background-color: @green;
+                    color: @white;
+                }
+            }
+        }
+
+        .options {
+            .option {
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+            }
+        }
+    }
+}

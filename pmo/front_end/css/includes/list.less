@@ -1,0 +1,114 @@
+﻿.list-component {
+
+    .wrapper {
+        width: 100%;
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0px;
+            background-color: @green;
+            border-radius: 3px;
+
+            div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+            }
+
+            .search {
+                input {
+                    padding: 10px;
+                    font-size: 8px;
+                }
+
+                button {
+                    border-top-left-radius: 0px;
+                    border-bottom-left-radius: 0px;
+                }
+
+                .select2-selection {
+                    border-top-right-radius: 0px;
+                    border-bottom-right-radius: 0px;
+                }
+
+                .select2-search__field {
+                    font-size: 8px;
+                }
+            }
+        }
+
+        &.by-7 {
+            .title, .item-wrapper {
+                > * {
+                    width: 13%;
+                }
+            }
+        }
+
+        &.by-3 {
+            .title, .item-wrapper {
+                > * {
+                    width: 33%;
+                }
+            }
+        }
+
+        &.by-4 {
+            .title, .item-wrapper {
+                > * {
+                    width: 25%;
+                }
+            }
+        }
+
+        .items {
+            max-height: 200px;
+            overflow-y: auto;
+
+            &.no-scroll {
+                max-height: unset;
+                overflow-y: unset;
+                overflow-y: unset;
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+
+        .item {
+            .item-wrapper {
+                font-size: 10px;
+                border: 1px solid @light_grey;
+                border-radius: 3px;
+                text-decoration: none;
+                color: @black;
+
+                &:hover {
+                    box-shadow: 1px 1px 3px 0px @light_grey;
+                    transition-duration: 0.3s;
+                }
+            }
+
+            &:not(:first-child) {
+                margin-top: 5px;
+            }
+        }
+
+        .title, .item-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .title {
+            color: @red;
+            font-size: 8px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+        }
+    }
+}
