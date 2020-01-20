@@ -6,9 +6,9 @@ using ViewModels;
 
 namespace pmo.Controllers {
     [Route("admin/stage-config")]
-    public class AdminStageConfigController : BaseController {
+    public class StageConfigController : BaseController {
 
-        public AdminStageConfigController(EfContext context, IMapper mapper) : base(context, mapper) {
+        public StageConfigController(EfContext context, IMapper mapper) : base(context, mapper) {
 
         }
 

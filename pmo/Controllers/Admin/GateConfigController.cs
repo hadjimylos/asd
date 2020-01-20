@@ -6,9 +6,9 @@ using ViewModels;
 
 namespace pmo.Controllers {
     [Route("admin/gate-config")]
-    public class AdminGateConfigController : BaseController {
+    public class GateConfigController : BaseController {
 
-        public AdminGateConfigController(EfContext context, IMapper mapper) : base(context, mapper)
+        public GateConfigController(EfContext context, IMapper mapper) : base(context, mapper)
         {
 
         }
