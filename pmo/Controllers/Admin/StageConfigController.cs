@@ -32,17 +32,17 @@ namespace pmo.Controllers {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("create")]
-        public IActionResult Create(StageConfigViewModel stageConfigViewModel) {
-            stageConfigViewModel.isCreate = true;
+        public IActionResult Create(StageConfigViewModel model) {
+            model.isCreate = true;
             int currentStage = _context.StageConfigs.AsNoTracking().Count() + 1;
-            stageConfigViewModel.StageNumber = currentStage;
+            model.StageNumber = currentStage;
 
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
-                return View(stageConfigViewModel);
+                return View(model);
             }
 
-            var domainModel = _mapper.Map<StageConfig>(stageConfigViewModel);
+            var domainModel = _mapper.Map<StageConfig>(model);
             _context.StageConfigs.Add(domainModel);
             _context.SaveChanges();
 
