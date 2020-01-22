@@ -1,6 +1,7 @@
-﻿@{
+﻿@model StageConfigViewModel
+
+@{ 
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
+@Html.Partial("_StageConfigForm.cshtml", Model)

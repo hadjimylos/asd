@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using dbModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
@@ -12,68 +14,74 @@ namespace pmo.Controllers {
 
         }
 
-        [Route("")]
+        public IActionResult Index() {
+            var vm = _mapper.Map<List<StageConfigViewModel>>(_context.StageConfigs.ToList());
+            return View(vm);
+        }
+
+        [Route("create")]
         public IActionResult Create() {
-            List<StageConfigViewModel> stageconfigViewModel = new List<StageConfigViewModel>();
+            int currentStage = _context.StageConfigs.Count() + 1;
+            var stageconfigViewModel = new StageConfigViewModel() { 
+                StageNumber = currentStage,
+                isCreate = true,
+            };
             return View(stageconfigViewModel);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        [Route("")]
+        [Route("create")]
         public IActionResult Create(StageConfigViewModel stageConfigViewModel) {
+            stageConfigViewModel.isCreate = true;
+
             if (!ModelState.IsValid) {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                          .Where(y => y.Count > 0)
-                          .ToList();
-                var all_errors = string.Join("/n", errors);
-                ModelState.AddModelError("error_partial_view", all_errors);
+                ViewBag.Errors = ModelState;
                 return View(stageConfigViewModel);
             }
 
-            var domainModel = _mapper.Map<StageConfigViewModel>(stageConfigViewModel);
-            TryValidateModel(domainModel);
-            _context.Add(domainModel);
+            var domainModel = _mapper.Map<StageConfig>(stageConfigViewModel);
+            _context.StageConfigs.Add(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction(
-                actionName: "Index",
-                controllerName: "Admin"
-            );
+            return RedirectToAction ("Index");
         }
 
         [Route("{id}")]
         public IActionResult Edit(int id) {
-            var item = _context.StageConfigs.Find(id);
+            var config = _context.StageConfigs.Find(id);
 
-            if (item != null) {
-                return View(item);
-            }
+            if (config == null)
+                return NotFound();
 
-            return NotFound();
+            var vm = _mapper.Map<StageConfigViewModel>(config);
+            vm.isCreate = false;
+            return View(vm);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(StageConfigViewModel stageConfigViewModel) {
+        public IActionResult Edit(StageConfigViewModel model) {
+            // populate stage number as is from DB
+            model.StageNumber = _context.StageConfigs
+                .AsNoTracking()
+                .First (
+                    config => config.Id == model.Id
+                ).StageNumber;
+
+            model.isCreate = false;
+
             if (!ModelState.IsValid) {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                          .Where(y => y.Count > 0)
-                          .ToList();
-                var all_errors = string.Join("/n", errors);
-                ModelState.AddModelError("error_partial_view", all_errors);
-                return View(stageConfigViewModel);
+                ViewBag.Errors = ModelState;
+                return View(model);
             }
-            var domainModel = _mapper.Map<StageConfigViewModel>(stageConfigViewModel);
-            TryValidateModel(domainModel);
+
+            var domainModel = _mapper.Map<StageConfig>(model);
             _context.Update(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction(
-                actionName: "Index",
-                controllerName: "Admin"
-            );
+            return RedirectToAction(actionName: "Index");
         }
     }
 }
