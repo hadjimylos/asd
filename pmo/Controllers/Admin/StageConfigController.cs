@@ -44,7 +44,7 @@ namespace pmo.Controllers {
             _context.StageConfigs.Add(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction ("Index");
+            return RedirectToAction ("Edit", new { id = domainModel.Id });
         }
 
         [Route("{id}")]
