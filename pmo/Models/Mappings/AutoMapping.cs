@@ -8,11 +8,11 @@ namespace pmo.Models.Mappings
     {
         public AutoMapping() 
         {
-            CreateMap<User, UserViewModel>();
-            CreateMap<StageConfig, StageConfigViewModel>();
-            CreateMap<GateConfig, GateConfigViewModel>();
-            CreateMap<Role, RoleViewModel>();
-            CreateMap<Tag, TagViewModel>();
+            CreateMap<User, UserViewModel>().ReverseMap();
+            CreateMap<StageConfig, StageConfigViewModel>().ReverseMap();
+            CreateMap<GateConfig, GateConfigViewModel>().ReverseMap();
+            CreateMap<Role, RoleViewModel>().ReverseMap();
+            CreateMap<Tag, TagViewModel>().ReverseMap();
         }
     }
 }
