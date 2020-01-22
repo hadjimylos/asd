@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using dbModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
@@ -12,68 +14,90 @@ namespace pmo.Controllers {
 
         }
 
-        [Route("")]
-        public IActionResult Create() {
-            List<RoleViewModel> roleViewModel = new List<RoleViewModel>();
-            return View(roleViewModel);
+        public IActionResult Index()
+        {
+            var vm = _mapper.Map<List<RoleViewModel>>(_context.Roles.ToList());
+            return View(vm);
+        }
+
+
+        [Route("create")]
+        public IActionResult Create()
+        {
+            var RoleViewModel = new RoleViewModel()
+            {
+           
+                isCreate = true,
+            };
+            return View(RoleViewModel);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        [Route("")]
-        public IActionResult Create(RoleViewModel roleViewModel) {
-            if (!ModelState.IsValid) {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                          .Where(y => y.Count > 0)
-                          .ToList();
-                var all_errors = string.Join("/n", errors);
-                ModelState.AddModelError("error_partial_view", all_errors);
+        [Route("create")]
+        public IActionResult Create(RoleViewModel roleViewModel)
+        {
+            var transformFriendlyName = roleViewModel.FriendlyName.Trim().ToLower().Replace(" ", "-");
+            var exists = _context.Roles.Select(fn => fn.Key.Contains(roleViewModel.Key)).Count();
+            if (exists > 0)
+            {
+                exists++;
+                roleViewModel.Key = string.Concat(exists, transformFriendlyName);
+            }
+            roleViewModel.Key = transformFriendlyName;
+            roleViewModel.isCreate = true;
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState;
                 return View(roleViewModel);
             }
 
-            var domainModel = _mapper.Map<RoleViewModel>(roleViewModel);
-            TryValidateModel(domainModel);
-            _context.Add(domainModel);
+            var domainModel = _mapper.Map<Role>(roleViewModel);
+            _context.Roles.Add(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction(
-                actionName: "Index",
-                controllerName: "Admin"
-            );
+            return RedirectToAction("Index");
         }
 
         [Route("{id}")]
-        public IActionResult Edit(int id) {
-            var item = _context.Roles.Find(id);
+        public IActionResult Edit(int id)
+        {
+            var role = _context.Roles.Find(id);
 
-            if (item != null) {
-                return View(item);
-            }
+            if (role == null)
+                return NotFound();
 
-            return NotFound();
+            var vm = _mapper.Map<RoleViewModel>(role);
+            vm.isCreate = false;
+            return View(vm);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(RoleViewModel roleViewModel) {
-            if (!ModelState.IsValid) {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                          .Where(y => y.Count > 0)
-                          .ToList();
-                var all_errors = string.Join("/n", errors);
-                ModelState.AddModelError("error_partial_view", all_errors);
-                return View(roleViewModel);
+        public IActionResult Edit(RoleViewModel model)
+        {
+            model.Key = _context.Roles
+                .AsNoTracking()
+                .First(
+                    config => config.Id == model.Id
+                ).Key;
+
+            model.isCreate = false;
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState;
+                return View(model);
             }
-            var domainModel = _mapper.Map<RoleViewModel>(roleViewModel);
-            TryValidateModel(domainModel);
+
+            var domainModel = _mapper.Map<Role>(model);
             _context.Update(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction(
-                actionName: "Index",
-                controllerName: "Admin"
-            );
+            return RedirectToAction(actionName: "Index");
         }
+    
     }
 }

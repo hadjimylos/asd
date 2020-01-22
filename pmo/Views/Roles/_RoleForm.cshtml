@@ -1,0 +1,163 @@
+﻿@model RoleViewModel
+
+@{
+    var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
+}
+
+<form class="form-component" method="post" action="/admin/roles/@postWhere">
+    @if (!Model.isCreate)
+    {
+        <input asp-for="Key" type="hidden" />
+        <input asp-for="Id"  type="hidden"/>
+    }
+
+
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+
+            <div class="field">
+                <div class="label">FRIENDLY NAME</div>
+                <input asp-for="FriendlyName"/>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "FriendlyName")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">IS ADMIN</div>
+                <input asp-for="IsAdmin" class="data"/>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "IsAdmin")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">CAN INITIATE A PROJECT</div>
+                <input asp-for="CanInitiateProject" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "CanInitiateProject")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES PAUSE PROJECT</div>
+                <input asp-for="ManagesPauseProject" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesPauseProject")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES PROJECT DETAIL</div>
+                <input asp-for="ManagesProjectDetail" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesProjectDetail")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES PROJECT TEAM</div>
+                <input asp-for="ManagesProjectTeam" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesProjectTeam")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES SCHEDULING</div>
+                <input asp-for="ManagesScheduling" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesScheduling")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES BUSINESS CASES</div>
+                <input asp-for="ManagesBusinessCases" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesBusinessCases")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES DELIVERABLE REGISTERS</div>
+                <input asp-for="ManagesDeliverableRegisters" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesDeliverableRegisters")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES INTELLECTUAL PROPERTY</div>
+                <input asp-for="ManagesIntellectualProperty" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesIntellectualProperty")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES PROJECT REQUIREMENTS</div>
+                <input asp-for="ManagesProjectRequirements" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesProjectRequirements")
+                </ul>
+            </div>
+
+            <div class="field">
+                <div class="label">MANAGES RISK ANALYSIS</div>
+                <input asp-for="ManagesRiskAnalysis" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesRiskAnalysis")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">MANAGES PARTS</div>
+                <input asp-for="ManagesParts" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesParts")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">MANAGES CUSTOMER DESIGN APPROVAL</div>
+                <input asp-for="ManagesCustomerDesignApproval" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesCustomerDesignApproval")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">MANAGES INVESTMENT PLAN</div>
+                <input asp-for="ManagesInvestmentPlan" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesInvestmentPlan")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">MANAGES MARKETING PLAN</div>
+                <input asp-for="ManagesMarketingPlan" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesMarketingPlan")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">MANAGES RAMP AND RESOURCEPLAN</div>
+                <input asp-for="ManagesRampAndResourcePlan" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesRampAndResourcePlan")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">MANAGES QUALIFICATION TESTING</div>
+                <input asp-for="ManagesQualificationTesting" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ManagesQualificationTesting")
+                </ul>
+            </div>
+
+
+            <div class="field">
+                <input type="submit" class="data btn" value="SUBMIT" />
+            </div>
+        </div>
+    </div>
+</form>

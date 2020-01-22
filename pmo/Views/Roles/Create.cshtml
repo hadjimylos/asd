@@ -1,6 +1,8 @@
-﻿@{
+﻿@model RoleViewModel
+
+@{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+@Html.Partial("_RoleForm.cshtml", Model)
 

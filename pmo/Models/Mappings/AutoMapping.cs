@@ -13,6 +13,7 @@ namespace pmo.Models.Mappings
             CreateMap<GateConfig, GateConfigViewModel>().ReverseMap();
             CreateMap<Role, RoleViewModel>().ReverseMap();
             CreateMap<Tag, TagViewModel>().ReverseMap();
+
         }
     }
 }
