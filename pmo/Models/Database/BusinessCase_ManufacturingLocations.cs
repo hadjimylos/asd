@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels{
-    public class BusinessCase_ManufacturingLocations: DatabaseModel {
+    public class BusinessCase_ManufacturingLocation: DatabaseModel {
         public int ManufacturingLocationsTagId { get; set; }
 
         [ForeignKey("ManufacturingLocationsTagId")]

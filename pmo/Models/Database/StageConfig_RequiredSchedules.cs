@@ -2,12 +2,12 @@
 
 namespace dbModels
 {
-    public class StageConfig_RequiredSchedules: DatabaseModel {
+    public class StageConfig_RequiredSchedule : DatabaseModel {
 
-        public int RequiredSchedulesTagId { get; set; }
+        public int RequiredScheduleTagId { get; set; }
 
-        [ForeignKey("RequiredSchedulesTagId")]
-        public virtual Tag RequiredSchedules { get; set; }
+        [ForeignKey("RequiredScheduleTagId")]
+        public virtual Tag RequiredSchedule { get; set; }
 
         public int StageConfigId { get; set; }
 

@@ -26,6 +26,6 @@ namespace dbModels {
 
         public int MinDesignConcepts { get; set; }
 
-        public virtual List<StageConfig_RequiredSchedules> RequiredSchedules { get; set; }
+        public virtual List<StageConfig_RequiredSchedule> RequiredSchedules { get; set; }
     }
 }

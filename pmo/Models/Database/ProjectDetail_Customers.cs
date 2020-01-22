@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class ProjectDetail_Customers : DatabaseModel{
+    public class ProjectDetail_Customer : DatabaseModel{
         public int CustomersTagId { get; set; }
         
         [ForeignKey("CustomersTagId")]
