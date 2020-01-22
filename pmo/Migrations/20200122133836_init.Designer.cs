@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200122115134_AlterDesignConcept")]
-    partial class AlterDesignConcept
+    [Migration("20200122133836_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,7 +107,7 @@ namespace pmo.Migrations
                     b.ToTable("BusinessCases");
                 });
 
-            modelBuilder.Entity("dbModels.BusinessCase_ManufacturingLocations", b =>
+            modelBuilder.Entity("dbModels.BusinessCase_ManufacturingLocation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -593,7 +593,7 @@ namespace pmo.Migrations
                     b.ToTable("ProjectDetails");
                 });
 
-            modelBuilder.Entity("dbModels.ProjectDetail_Customers", b =>
+            modelBuilder.Entity("dbModels.ProjectDetail_Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -621,7 +621,7 @@ namespace pmo.Migrations
                     b.ToTable("ProjectDetail_Customers");
                 });
 
-            modelBuilder.Entity("dbModels.ProjectDetail_EndUserCountries", b =>
+            modelBuilder.Entity("dbModels.ProjectDetail_EndUserCountry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -649,7 +649,7 @@ namespace pmo.Migrations
                     b.ToTable("ProjectDetail_EndUserCountries");
                 });
 
-            modelBuilder.Entity("dbModels.ProjectDetail_SalesRegions", b =>
+            modelBuilder.Entity("dbModels.ProjectDetail_SalesRegion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1102,7 +1102,7 @@ namespace pmo.Migrations
                     b.ToTable("StageConfigs");
                 });
 
-            modelBuilder.Entity("dbModels.StageConfig_RequiredSchedules", b =>
+            modelBuilder.Entity("dbModels.StageConfig_RequiredSchedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1115,7 +1115,7 @@ namespace pmo.Migrations
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequiredSchedulesTagId")
+                    b.Property<int>("RequiredScheduleTagId")
                         .HasColumnType("int");
 
                     b.Property<int>("StageConfigId")
@@ -1123,7 +1123,7 @@ namespace pmo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RequiredSchedulesTagId");
+                    b.HasIndex("RequiredScheduleTagId");
 
                     b.HasIndex("StageConfigId");
 
@@ -1159,107 +1159,1500 @@ namespace pmo.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Gate 1",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Design concept(s)",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 3,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Gate 2 / Gate A",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 4,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Draft manufacturing drawings",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 5,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Design Review",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 6,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Submit PAR",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 7,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Release Product Documentation",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 8,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Create Samples / Prototypes",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 9,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "DVT testing & Test Report",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 10,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Gate 3",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 11,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "First Article Approval",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 12,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Qualification Testing & Test Report",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 13,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Customer Approval / Release",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 14,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Gate 4 / Gate B",
                             TagCategoryId = 1
                         },
                         new
                         {
                             Id = 15,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "PLR Review",
                             TagCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Afghanistan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Albania",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Algeria",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Andorra",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Angola",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Antigua and Barbuda",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Argentina",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Armenia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Australia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Austria",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Azerbaijan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bahamas",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bahrain",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bangladesh",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Barbados",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Belarus",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Belgium",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Belize",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Benin",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 35,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bhutan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 36,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bolivia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 37,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bosnia and Herzegovina",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 38,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Botswana",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 39,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Brazil",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 40,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Brunei",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 41,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bulgaria",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 42,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Burkina Faso",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 43,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Burundi",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 44,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cabo Verde",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 45,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cambodia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 46,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cameroon",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 47,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Canada",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 48,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Central African Republic (CAR)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 49,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Chad",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 50,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Chile",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 51,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "China",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 52,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Colombia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 53,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Comoros",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 54,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Congo",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 55,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Democratic Republic of the",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 56,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Congo",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 57,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Republic of the",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 58,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Costa Rica",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 59,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cote d'Ivoire",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 60,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Croatia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 61,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cuba",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 62,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cyprus",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 63,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Czechia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 64,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Denmark",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 65,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Djibouti",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 66,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Dominica",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 67,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Dominican Republic",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 68,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Ecuador",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 69,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Egypt",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 70,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "El Salvador",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 71,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Equatorial Guinea",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 72,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Eritrea",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 73,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Estonia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 74,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Eswatini (formerly Swaziland)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 75,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Ethiopia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 76,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Fiji",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 77,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Finland",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 78,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "France",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 79,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Gabon",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 80,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Gambia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 81,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Georgia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 82,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Germany",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 83,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Ghana",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 84,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Greece",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 85,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Grenada",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 86,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Guatemala",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 87,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Guinea",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 88,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Guinea-Bissau",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 89,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Guyana",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 90,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Haiti",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 91,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Honduras",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 92,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Hungary",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 93,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Iceland",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 94,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "India",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 95,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Indonesia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 96,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Iran",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 97,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Iraq",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 98,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Ireland",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 99,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Israel",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 100,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Italy",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 101,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Jamaica",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 102,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Japan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 103,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Jordan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 104,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Kazakhstan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 105,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Kenya",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 106,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Kiribati",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 107,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Kosovo",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 108,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Kuwait",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 109,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Kyrgyzstan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 110,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Laos",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 111,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Latvia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 112,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Lebanon",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 113,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Lesotho",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 114,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Liberia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 115,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Libya",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 116,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Liechtenstein",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 117,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Lithuania",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 118,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Luxembourg",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 119,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Madagascar",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 120,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Malawi",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 121,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Malaysia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 122,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Maldives",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 123,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mali",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 124,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Malta",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 125,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Marshall Islands",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 126,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mauritania",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 127,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mauritius",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 128,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mexico",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 129,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Micronesia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 130,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Moldova",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 131,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Monaco",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 132,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mongolia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 133,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Montenegro",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 134,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Morocco",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 135,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mozambique",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 136,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Myanmar (formerly Burma)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 137,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Namibia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 138,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Nauru",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 139,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Nepal",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 140,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Netherlands",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 141,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "New Zealand",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 142,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Nicaragua",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 143,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Niger",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 144,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Nigeria",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 145,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "North Korea",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 146,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "North Macedonia (formerly Macedonia)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 147,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Norway",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 148,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Oman",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 149,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Pakistan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 150,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Palau",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 151,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Palestine",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 152,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Panama",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 153,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Papua New Guinea",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 154,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Paraguay",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 155,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Peru",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 156,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Philippines",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 157,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Poland",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 158,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Portugal",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 159,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Qatar",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 160,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Romania",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 161,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Russia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 162,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Rwanda",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 163,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Saint Kitts and Nevis",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 164,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Saint Lucia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 165,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Saint Vincent and the Grenadines",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 166,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Samoa",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 167,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "San Marino",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 168,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Sao Tome and Principe",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 169,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Saudi Arabia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 170,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Senegal",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 171,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Serbia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 172,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Seychelles",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 173,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Sierra Leone",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 174,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Singapore",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 175,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Slovakia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 176,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Slovenia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 177,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Solomon Islands",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 178,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Somalia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 179,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "South Africa",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 180,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "South Korea",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 181,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "South Sudan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 182,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Spain",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 183,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Sri Lanka",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 184,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Sudan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 185,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Suriname",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 186,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Sweden",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 187,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Switzerland",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 188,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Syria",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 189,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Taiwan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 190,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tajikistan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 191,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tanzania",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 192,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Thailand",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 193,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Timor-Leste",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 194,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Togo",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 195,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tonga",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 196,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Trinidad and Tobago",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 197,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tunisia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 198,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Turkey",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 199,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Turkmenistan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 200,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tuvalu",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 201,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Uganda",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 202,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Ukraine",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 203,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "United Arab Emirates (UAE)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 204,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "United Kingdom (UK)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 205,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "United States of America (USA)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 206,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Uruguay",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 207,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Uzbekistan",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 208,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Vanuatu",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 209,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Vatican City (Holy See)",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 210,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Venezuela",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 211,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Vietnam",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 212,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Yemen",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 213,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Zambia",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 214,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Zimbabwe",
+                            TagCategoryId = 2
                         });
                 });
 
@@ -1293,10 +2686,18 @@ namespace pmo.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDate = new DateTime(2020, 1, 22, 13, 51, 33, 452, DateTimeKind.Local).AddTicks(2005),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FriendlyName = "Required Schedules",
                             IsFixed = true,
                             Key = "required-schedules"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FriendlyName = "Citizenships",
+                            IsFixed = true,
+                            Key = "citizenships"
                         });
                 });
 
@@ -1453,7 +2854,7 @@ namespace pmo.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dbModels.BusinessCase_ManufacturingLocations", b =>
+            modelBuilder.Entity("dbModels.BusinessCase_ManufacturingLocation", b =>
                 {
                     b.HasOne("dbModels.BusinessCase", "BusinessCase")
                         .WithMany("ManufacturingLocations")
@@ -1594,7 +2995,7 @@ namespace pmo.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dbModels.ProjectDetail_Customers", b =>
+            modelBuilder.Entity("dbModels.ProjectDetail_Customer", b =>
                 {
                     b.HasOne("dbModels.Tag", "Customers")
                         .WithMany()
@@ -1609,7 +3010,7 @@ namespace pmo.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dbModels.ProjectDetail_EndUserCountries", b =>
+            modelBuilder.Entity("dbModels.ProjectDetail_EndUserCountry", b =>
                 {
                     b.HasOne("dbModels.Tag", "EndUserCountries")
                         .WithMany()
@@ -1624,7 +3025,7 @@ namespace pmo.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dbModels.ProjectDetail_SalesRegions", b =>
+            modelBuilder.Entity("dbModels.ProjectDetail_SalesRegion", b =>
                 {
                     b.HasOne("dbModels.ProjectDetail", "ProjectDetail")
                         .WithMany("SalesRegions")
@@ -1739,11 +3140,11 @@ namespace pmo.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dbModels.StageConfig_RequiredSchedules", b =>
+            modelBuilder.Entity("dbModels.StageConfig_RequiredSchedule", b =>
                 {
-                    b.HasOne("dbModels.Tag", "RequiredSchedules")
+                    b.HasOne("dbModels.Tag", "RequiredSchedule")
                         .WithMany()
-                        .HasForeignKey("RequiredSchedulesTagId")
+                        .HasForeignKey("RequiredScheduleTagId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
