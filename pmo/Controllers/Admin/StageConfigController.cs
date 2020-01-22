@@ -34,6 +34,8 @@ namespace pmo.Controllers {
         [Route("create")]
         public IActionResult Create(StageConfigViewModel stageConfigViewModel) {
             stageConfigViewModel.isCreate = true;
+            int currentStage = _context.StageConfigs.AsNoTracking().Count() + 1;
+            stageConfigViewModel.StageNumber = currentStage;
 
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
