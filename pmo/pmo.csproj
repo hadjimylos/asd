@@ -14,6 +14,12 @@
     <Compile Remove="Migrations\20200121093146_DefaultBaseClass.Designer.cs" />
     <Compile Remove="Migrations\20200121093357_test.cs" />
     <Compile Remove="Migrations\20200121093357_test.Designer.cs" />
+    <Compile Remove="Migrations\20200122100254_test.cs" />
+    <Compile Remove="Migrations\20200122100254_test.Designer.cs" />
+    <Compile Remove="Migrations\20200122112631_asd.cs" />
+    <Compile Remove="Migrations\20200122112631_asd.Designer.cs" />
+    <Compile Remove="Migrations\20200122112912_SeedDataScheduleTags.cs" />
+    <Compile Remove="Migrations\20200122112912_SeedDataScheduleTags.Designer.cs" />
   </ItemGroup>
 
 

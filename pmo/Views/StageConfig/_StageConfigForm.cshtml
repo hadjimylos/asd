@@ -103,6 +103,14 @@
             </div>
 
             <div class="field">
+                <div class="label">MINIMUM REQUIRED DESIGN CONCEPTS</div>
+                <input asp-for="MinDesignConcepts" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "MinDesignConcepts")
+                </ul>
+            </div>
+
+            <div class="field">
                 <input type="submit" class="data btn" value="SUBMIT" />
             </div>
         </div>
