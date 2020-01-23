@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace pmo {
     public class EfContext : DbContext {
+        public DbSet<GateKeeperConfig> GateKeeperConfigs { get; set; }
         public DbSet<BusinessCase> BusinessCases { get; set; }
         public DbSet<CustomerDesignApproval> CustomerDesignApprovals { get; set; }
         public DbSet<DesignConcept> DesignConcepts { get; set; }
@@ -57,7 +58,7 @@ namespace pmo {
             var fks = builder.Model.GetEntityTypes().SelectMany(
                 s => s.GetForeignKeys()
             ).ToList();
-            fks.ForEach(f => f.DeleteBehavior = DeleteBehavior.Restrict);
+            fks.ForEach(f => f.DeleteBehavior = DeleteBehavior.Restrict);            
         }
 
         private void SeedData(ModelBuilder builder) {
@@ -287,7 +288,7 @@ namespace pmo {
                 new Tag { Id = 214,  Name = "Zimbabwe", TagCategoryId = 2 },
             });
 
-            
+
         }
     }
 }
