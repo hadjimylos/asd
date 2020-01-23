@@ -1,7 +1,7 @@
-﻿
+﻿@model UserViewModel
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@Html.Partial("_UsersForm.cshtml", Model)
 

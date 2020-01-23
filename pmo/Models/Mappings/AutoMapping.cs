@@ -8,7 +8,7 @@ namespace pmo.Models.Mappings
     {
         public AutoMapping() 
         {
-            CreateMap<User, UserViewModel>().ReverseMap();
+            CreateMap<User, UserViewModel>().ReverseMap().ReverseMap(); ;
             CreateMap<StageConfig, StageConfigViewModel>().ReverseMap();
             CreateMap<GateConfig, GateConfigViewModel>().ReverseMap();
             CreateMap<Role, RoleViewModel>().ReverseMap();

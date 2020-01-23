@@ -1,0 +1,60 @@
+﻿@model UserViewModel
+
+@{ 
+    var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
+}
+
+    <form class="form-component" method="post" action="/admin/users/@postWhere">
+        @if (!Model.isCreate)
+        {
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="NetworkUsername" type="hidden" />
+        }
+
+
+        @Html.AntiForgeryToken()
+        <div class="wrapper">
+            <div class="fields">
+
+                <div class="field">
+                    <div class="label">NETWORK USER NAME</div>
+                    @if (!Model.isCreate)
+                    {
+                        <div class="label">@Model.NetworkUsername</div>
+                    }
+                    else
+                    {
+                        <input asp-for="NetworkUsername" class="data"/>
+                    }
+
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "NetworkUsername")
+                    </ul>
+                </div>
+
+                <div class="field">
+                    <div class="label">ROLE</div>
+                    <select asp-for="RoleId" asp-items="Model.RoleList" class="select2">
+                        <option hidden disabled selected>-- Select Role--</option>
+                    </select>
+
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "RoleId")
+                    </ul>
+                </div>
+
+                <div class="field">
+                    <div class="label">CITIZENSHIPS</div>
+                    <select asp-for="UserCitizenships" asp-items="Model.CitizenshipsList" class="select2">
+                    </select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "UserCitizenships")
+                        </ul>
+                </div>
+
+                <div class="field">
+                    <input type="submit" class="data btn" value="SUBMIT" />
+                </div>
+            </div>
+        </div>
+    </form>

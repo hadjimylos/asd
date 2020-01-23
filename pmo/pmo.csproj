@@ -20,11 +20,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
   </ItemGroup>
 
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="cd $(SolutionDir)pmo\&#xD;&#xA;webpack" />
-  </Target>
-
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
