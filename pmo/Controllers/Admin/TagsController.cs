@@ -1,85 +1,181 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using dbModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ViewModels;
 
-namespace pmo.Controllers {
+namespace pmo.Controllers.Admin
+{
     [Route("admin/tags")]
-    public class TagController : BaseController {
-
-        public TagController(EfContext context, IMapper mapper) : base(context, mapper) {
+    public class Tags : BaseController
+    {
+        public Tags(EfContext context, IMapper mapper) : base(context, mapper) {
 
         }
+        [Route("categories")]
+        public IActionResult Index()
+        {
+            var vm = _mapper.Map<List<TagCategoryViewModel>>(_context.TagCategories.ToList());
+            return View(vm);
+        }
 
-        [Route("")]
-        public IActionResult Create() {
-            List<TagViewModel> tagViewModel = new List<TagViewModel>();
-            return View(tagViewModel);
+        [Route("categories/create")]
+        public IActionResult Create()
+        {
+            var tagcategoryViewModel = new TagCategoryViewModel()
+            {
+                isCreate = true,
+            };
+            return View(tagcategoryViewModel);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        [Route("")]
-        public IActionResult Create(TagViewModel tagViewModel) {
-            if (!ModelState.IsValid) {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                          .Where(y => y.Count > 0)
-                          .ToList();
-                var all_errors = string.Join("/n", errors);
-                ModelState.AddModelError("error_partial_view", all_errors);
-                return View(tagViewModel);
+        [Route("categories/create")]
+        public IActionResult Create(TagCategoryViewModel tagcategoryViewModel)
+        {
+            var transFormFriendlyName = tagcategoryViewModel.FriendlyName.Trim().ToLower().Replace(" ", "-");
+            var exists = _context.TagCategories.Select(fn => fn.Key.Contains(tagcategoryViewModel.Key)).Count();
+            if (exists > 0)
+            {
+                exists++;
+                tagcategoryViewModel.Key = string.Concat(exists, transFormFriendlyName);
             }
-            
-            //TODO: if TagCategory does not exist Insert or create Helper Method
+            tagcategoryViewModel.Key = transFormFriendlyName;
+            tagcategoryViewModel.isCreate = true;
 
-            var domainModel = _mapper.Map<TagViewModel>(tagViewModel);
-            TryValidateModel(domainModel);
-            _context.Add(domainModel);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState;
+                return View(tagcategoryViewModel);
+            }
+
+            var domainModel = _mapper.Map<TagCategory>(tagcategoryViewModel);
+            _context.TagCategories.Add(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction(
-                actionName: "Index",
-                controllerName: "Admin"
-            );
+            return RedirectToAction("Index");
         }
 
-        [Route("{id}")]
-        public IActionResult Edit(int id) {
-            var item = _context.StageConfigs.Find(id);
+        [Route("categories/{id}")]
+        public IActionResult Edit(int id)
+        {
+            var tagcategories = _context.TagCategories.Include(t => t.Tags).Where(i => i.Id == id).FirstOrDefault();
+            if (tagcategories == null)
+                return NotFound();
 
-            if (item != null) {
-                return View(item);
-            }
-
-            return NotFound();
+            var vm = _mapper.Map<TagCategoryViewModel>(tagcategories);
+            vm.isCreate = false;
+            return View(vm);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        [Route("{id}")]
-        public IActionResult Edit(TagViewModel tagViewModel) {
-            if (!ModelState.IsValid) {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                          .Where(y => y.Count > 0)
-                          .ToList();
-                var all_errors = string.Join("/n", errors);
-                ModelState.AddModelError("error_partial_view", all_errors);
-                return View(tagViewModel);
+        [Route("categories/{id}")]
+        public IActionResult Edit(TagCategoryViewModel model)
+        {
+            // populate key as is from DB
+            model.Key = _context.TagCategories
+                .AsNoTracking()
+                .First(
+                    tagcategory => tagcategory.Id == model.Id
+                ).Key;
+
+            model.isCreate = false;
+
+            if (!ModelState.IsValid)
+            {
+                var tagcategories = _context.TagCategories.Include(t => t.Tags).Where(i => i.Id == model.Id).FirstOrDefault();
+                model.Tags = tagcategories.Tags;
+                ViewBag.Errors = ModelState;
+                return View(model);
             }
 
-            //TODO: if TagCategory does not exist in database Insert or create Helper Method
-
-            var domainModel = _mapper.Map<TagViewModel>(tagViewModel);
-            TryValidateModel(domainModel);
+            var domainModel = _mapper.Map<TagCategory>(model);
             _context.Update(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction(
-                actionName: "Index",
-                controllerName: "Admin"
-            );
+            return RedirectToAction(actionName: "Index");
         }
+
+        [Route("")]
+        public IActionResult Index_Tags()
+        
+        {
+            var vm = _mapper.Map<List<TagViewModel>>(_context.Tags.Include(cat => cat.TagCategory).OrderBy(x => x.TagCategory.FriendlyName).ToList());
+            return View(vm);
+        }
+
+        [Route("create")]
+        public IActionResult Create_Tags()
+        {
+            var tagsViewModel = new TagViewModel()
+            {
+                isCreate = true,
+            };
+            tagsViewModel.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName");
+            return View(tagsViewModel);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [Route("create")]
+        public IActionResult Create_Tags(TagViewModel tagviewModel)
+        {
+            
+
+            if (!ModelState.IsValid)
+            {
+                tagviewModel.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName");
+
+                ViewBag.Errors = ModelState;
+                return View(tagviewModel);
+            }
+
+            var domainModel = _mapper.Map<Tag>(tagviewModel);
+            _context.Tags.Add(domainModel);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index_Tags");
+        }
+
+        [Route("{id}")]
+        public IActionResult Edit_Tags(int id)
+        {
+            var tag = _context.Tags.Include(t => t.TagCategory).Where(t => t.Id == id).FirstOrDefault();
+            if (tag == null)
+                return NotFound();
+
+            var vm = _mapper.Map<TagViewModel>(tag);
+            vm.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName", vm.TagCategoryId);
+            vm.isCreate = false;
+            return View(vm);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [Route("{id}")]
+        public IActionResult Edit_Tags(TagViewModel model)
+        {
+            model.isCreate = false;
+            if (!ModelState.IsValid)
+            {
+                model.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName", model.TagCategoryId);
+
+                ViewBag.Errors = ModelState;
+                return View(model);
+            }
+
+            var domainModel = _mapper.Map<Tag>(model);
+            _context.Tags.Update(domainModel);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index_Tags");
+        }
+
 
     }
 }

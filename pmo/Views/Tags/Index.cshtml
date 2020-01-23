@@ -1,0 +1,34 @@
+﻿@model List<TagCategoryViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="actions-component">
+    <a class="btn" href="/admin/tags/categories/create">CREATE</a>
+</div>
+
+@if (Model.Count > 0) {
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title by-13">
+                <div>FRIENDLY NAME</div>
+                
+            </div>
+            <div class="items">
+                @foreach (var tagcategory in Model) {
+                    <a class="item" href="/admin/tags/categories/@tagcategory.Id">
+                        <div class="item-wrapper by-13">
+                            <div>@tagcategory.FriendlyName</div>
+                           
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+else {
+    @Html.Partial("_NoData")
+}
+

@@ -1,0 +1,46 @@
+﻿@model TagViewModel
+
+@{ 
+    var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
+}
+
+    <form class="form-component" method="post" action="/admin/tags/@postWhere">
+        @if (!Model.isCreate)
+        {
+            <input asp-for="Id" type="hidden" />
+          
+        }
+
+
+        @Html.AntiForgeryToken()
+        <div class="wrapper">
+            <div class="fields">
+
+                <div class="field">
+                    <div class="label">NAME</div>
+                    <input asp-for="Name" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Name")
+                    </ul>
+                </div>
+
+                <div class="field">
+                    <div class="label">CATEGORY NAME</div>
+                    <select asp-for="TagCategoryId" asp-items="Model.TagCategorySelectList" class="select2">
+                        <option value="" hidden disabled selected>--Select Tag Category--</option>
+                    </select>
+
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "TagCategoryId")
+                    </ul>
+                </div>
+
+               
+
+
+                <div class="field">
+                    <input type="submit" class="data btn" value="SUBMIT" />
+                </div>
+            </div>
+        </div>
+    </form>
