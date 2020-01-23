@@ -8,12 +8,10 @@
     @if(!Model.isCreate) {
         <input asp-for="Id" type="hidden" />
     }
-    
 
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="fields">
-
             <div class="field">
                 <div class="label">CURRENT STAGE NUMBER</div>
                 <div class="data">@Model.StageNumber</div>
@@ -21,6 +19,16 @@
                     @Html.Partial("_FieldErrors", "StageNumber")
                 </ul>
             </div>
+
+            @if (!Model.isCreate) {
+                <div class="field">
+                    <div class="label">REQUIRED SCHEDULES</div>
+                    <select asp-for="ScheduleIds" asp-items="Model.SelectSchedules" class="data select2"></select>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ScheduleIds")
+                    </ul>
+                </div>
+            }
 
             <div class="field">
                 <div class="label">ALLOW CREATION OF RISK ASSESMENTS</div>

@@ -1,9 +1,16 @@
 ﻿using dbModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
 namespace ViewModels {
     public class StageConfigViewModel : StageConfig  {
+
+        public StageConfigViewModel() {
+            ScheduleIds = new List<int>();
+        }
+
         public bool isCreate { get; set; }
 
         [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
@@ -35,5 +42,11 @@ namespace ViewModels {
         
         [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
         public new int MinDesignConcepts { get; set; }
+
+        public List<SelectListItem> SelectSchedules { get; set; }
+
+        public List<int> ScheduleIds { get; set; }
+
+        public List<string> GateKeepers { get; set; }
     }
 }
