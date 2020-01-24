@@ -18,7 +18,7 @@ namespace ViewModels {
 
         private List<int> _userCitizenships = new List<int>();
 
-        [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
+        [Required, MinLength(1, ErrorMessage = Helpers.ErrorMessages.AtLeastOne)]
         public List<int> UserCitizenships
         {
             get
