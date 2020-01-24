@@ -3,6 +3,7 @@ using dbModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using pmo.Services.Lists;
 using pmo.Services.Users;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,12 @@ namespace pmo.Controllers {
     public class UsersController : BaseController {
 
         private readonly IUserService _userService;
-        public UsersController(EfContext context, IMapper mapper , IUserService userService) : base(context, mapper) {
+        private readonly IListService _listService;
+
+        public UsersController(EfContext context, IMapper mapper , IUserService userService, IListService listService) : base(context, mapper) {
             _userService = userService;
+            _listService = listService;
+
         }
         public IActionResult Index()
         {
@@ -27,8 +32,8 @@ namespace pmo.Controllers {
         [Route("create")]
         public IActionResult Create() {
             UserViewModel userViewModel = new UserViewModel() { isCreate = true};
-            userViewModel.RoleList = new SelectList(_context.Roles.ToList(), "Id", "FriendlyName");
-            userViewModel.CitizenshipsList = new SelectList(_context.Tags.Include(x=>x.TagCategory).Where(x=>x.TagCategory.Key== TagCategoryHelper.CitizenshipsKey).ToList(), "Id", "Name");
+            userViewModel.RoleList = _listService.Roles();
+            userViewModel.CitizenshipsList = _listService.Citizenships(); 
 
             return View(userViewModel);
         }
@@ -41,8 +46,8 @@ namespace pmo.Controllers {
             
             if (!ModelState.IsValid)
             {
-                userViewModel.RoleList = new SelectList(_context.Roles.ToList(), "Id", "FriendlyName");
-                userViewModel.CitizenshipsList = new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == TagCategoryHelper.CitizenshipsKey).ToList(), "Id", "Name");
+                userViewModel.RoleList = _listService.Roles();
+                userViewModel.CitizenshipsList = _listService.CitizenshipsMultiple();
 
                 ViewBag.Errors = ModelState;
                 return View(userViewModel);
@@ -62,10 +67,9 @@ namespace pmo.Controllers {
                 return NotFound();
             }
             var vm = _mapper.Map<UserViewModel>(user);
-            vm.RoleList = new SelectList(_context.Roles.ToList(), "Id", "FriendlyName", vm.RoleId);
-            var Tags = _context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == TagCategoryHelper.CitizenshipsKey).ToList();
-            var Ready= Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();            
-            vm.CitizenshipsList = new MultiSelectList(Tags, "Id", "Name", Ready);
+            vm.RoleList = _listService.Roles(vm.RoleId);
+            var Ready= _context.Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
+            vm.CitizenshipsList = _listService.CitizenshipsMultiple<Tag>(Ready);
             vm.isCreate = false;
             return View(vm);
 
@@ -81,10 +85,9 @@ namespace pmo.Controllers {
             vm.NetworkUsername = user.NetworkUsername;
             if (!ModelState.IsValid)
             {
-                vm.RoleList = new SelectList(_context.Roles.ToList(), "Id", "FriendlyName", vm.RoleId);
-                var Tags = _context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == TagCategoryHelper.CitizenshipsKey).ToList();
-                var Ready = Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
-                vm.CitizenshipsList = new MultiSelectList(Tags, "Id", "Name", Ready);
+                vm.RoleList = _listService.Roles(vm.RoleId);
+                var Ready = _context.Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
+                vm.CitizenshipsList = _listService.CitizenshipsMultiple<Tag>(Ready);
                 ViewBag.Errors = ModelState;
                 return View(vm);
             }

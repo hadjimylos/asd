@@ -9,6 +9,7 @@ namespace pmo {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Routing;
     using pmo.Services.Users;
+    using pmo.Services.Lists;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -55,6 +56,8 @@ namespace pmo {
             );
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IListService, ListService>();
+
 
             services.AddMvc(options => {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
