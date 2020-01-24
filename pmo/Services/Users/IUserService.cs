@@ -10,6 +10,7 @@ namespace pmo.Services.Users
     public interface IUserService
     {
         bool AddNewUser(UserViewModel userViewModel);
+        bool UpdateUser(UserViewModel userViewModel);
         User GetUserById(int userId);
     }
 }

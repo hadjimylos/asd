@@ -42,7 +42,7 @@ namespace pmo.Controllers {
         [AutoValidateAntiforgeryToken]
         [Route("create")]
         public IActionResult Create(UserViewModel userViewModel) {
-            userViewModel.isCreate = true;
+            
             
             if (!ModelState.IsValid)
             {
@@ -78,11 +78,8 @@ namespace pmo.Controllers {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public async Task<ActionResult> Edit(UserViewModel vm) {
+        public ActionResult Edit(UserViewModel vm) {
 
-            vm.isCreate = false;
-            var user = _context.Users.Include(x => x.Citizenships).Include(x => x.Role).AsNoTracking().Where(x => x.Id == vm.Id).FirstOrDefault();
-            vm.NetworkUsername = user.NetworkUsername;
             if (!ModelState.IsValid)
             {
                 vm.RoleList = _listService.Roles(vm.RoleId);
@@ -91,28 +88,7 @@ namespace pmo.Controllers {
                 ViewBag.Errors = ModelState;
                 return View(vm);
             }
-
-            var domainModel = _mapper.Map<User>(vm);
-            _context.Users.Update(domainModel);
-            await _context.SaveChangesAsync();
-            _context.Entry(domainModel).State = EntityState.Detached;
-
-            List<int> Existing = user.Citizenships.Select(x => x.TagId).ToList();
-            List<User_CitizenShip> ExistingModel = user.Citizenships;
-            var SameElements = Existing.All(vm.UserCitizenships.Contains) ;
-            var SameCount = Existing.Count == vm.UserCitizenships.Count;
-            if (!(SameElements && SameCount))
-            {
-                _context.UserCitizenShip.RemoveRange(ExistingModel);
-
-            var citizenships = new List<User_CitizenShip>();
-            foreach (var item in vm.UserCitizenships)
-            {
-                citizenships.Add(new User_CitizenShip() { UserId = domainModel.Id, TagId = item });
-            }
-            _context.UserCitizenShip.AddRange(citizenships);
-            }
-            _context.SaveChanges();
+            _userService.UpdateUser(vm);
             return RedirectToAction(actionName: "Index");
         }
     }
