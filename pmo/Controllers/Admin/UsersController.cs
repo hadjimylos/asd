@@ -3,6 +3,7 @@ using dbModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using pmo.Services.Users;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,8 +14,9 @@ namespace pmo.Controllers {
     [Route("admin/users")]
     public class UsersController : BaseController {
 
-        public UsersController(EfContext context, IMapper mapper) : base(context, mapper) {
-
+        private readonly IUserService _userService;
+        public UsersController(EfContext context, IMapper mapper , IUserService userService) : base(context, mapper) {
+            _userService = userService;
         }
         public IActionResult Index()
         {
@@ -46,24 +48,15 @@ namespace pmo.Controllers {
                 return View(userViewModel);
             }
 
-            var domainModel = _mapper.Map<User>(userViewModel);
-            _context.Users.Add(domainModel);
-            _context.SaveChanges();
+            _userService.AddNewUser(userViewModel);
 
-            var citizenships = new List<User_CitizenShip>();
-            foreach (var item in userViewModel.UserCitizenships)
-            {
-                citizenships.Add(new User_CitizenShip() { UserId = domainModel.Id, TagId = item });
-            }
-            _context.UserCitizenShip.AddRange(citizenships);
-            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [Route("{id}")]
         public IActionResult Edit(int id) {
-            
-            var user = _context.Users.Include(x=>x.Citizenships).Include(x=>x.Role).Where(x=>x.Id==id).FirstOrDefault();
+
+            var user = _userService.GetUserById(id);
             
             if (user == null) {
                 return NotFound();
