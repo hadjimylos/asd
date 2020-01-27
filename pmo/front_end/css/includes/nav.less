@@ -1,0 +1,43 @@
+﻿.nav-component {
+    .wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .wrapper {
+            display: block;
+        }
+
+        .side-nav-groups {
+            background-color: lighten(@black, 10%);
+            width: 10%;
+            position: fixed;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            padding-left: 10px;
+            padding-right:10px;
+
+
+            > * {
+                display: block;
+                margin-left: 10px;
+            }
+
+            a {
+                font-size: 0.8em;
+                letter-spacing: 3px;
+                color: @white;
+
+                &:hover {
+                    color: darken(@white, 10%);
+                }
+            }
+        }
+
+        .page {
+            width: 90%;
+            margin-left: calc(10% + 30px);
+            padding: 20px;
+        }
+    }
+}
