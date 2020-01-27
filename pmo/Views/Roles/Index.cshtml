@@ -12,8 +12,8 @@
 {
     <div class="list-component">
         <div class="wrapper">
-            <div class="title by-13">
-                <div>FRIENDLY NAME</div>
+            <div class="title by-18">
+                <div>ROLE NAME</div>
                 <div>IS ADMIN</div>
                 <div>CAN INITIATE PROJECT</div>
                 <div>MANAGES PAUSE PROJECT</div>
@@ -38,7 +38,7 @@
                     <a class="item" href="/admin/roles/@role.Id">
                         <div class="item-wrapper by-18">
                             <div>@role.FriendlyName</div>
-                            <div>@(role.IsAdmin ? "allow" : "disallow")</div>
+                            <div>@(role.IsAdmin ? "yes" : "no")</div>
                             <div>@(role.CanInitiateProject ? "allow" : "disallow")</div>
                             <div>@(role.ManagesPauseProject ? "allow" : "disallow")</div>
                             <div>@(role.ManagesProjectDetail ? "allow" : "disallow")</div>
