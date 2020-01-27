@@ -18,7 +18,7 @@
 
                 <div class="field">
                     <div class="label">NAME</div>
-                    <input asp-for="Name" />
+                    <input class="data" asp-for="Name" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "Name")
                     </ul>
@@ -26,7 +26,7 @@
 
                 <div class="field">
                     <div class="label">CATEGORY NAME</div>
-                    <select asp-for="TagCategoryId" asp-items="Model.TagCategorySelectList" class="select2">
+                    <select asp-for="TagCategoryId" asp-items="Model.TagCategorySelectList" class="select2 data">
                         <option value="" hidden disabled selected>--Select Tag Category--</option>
                     </select>
 

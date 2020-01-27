@@ -11,14 +11,14 @@
 @if (Model.Count > 0) {
     <div class="list-component">
         <div class="wrapper">
-            <div class="title by-13">
-                <div>FRIENDLY NAME</div>
+            <div class="title by-1">
+                <div>TAG CATEGORY NAME</div>
                 
             </div>
             <div class="items">
                 @foreach (var tagcategory in Model) {
                     <a class="item" href="/admin/tags/categories/@tagcategory.Id">
-                        <div class="item-wrapper by-13">
+                        <div class="item-wrapper by-1">
                             <div>@tagcategory.FriendlyName</div>
                            
                         </div>

@@ -11,14 +11,16 @@
 @if (Model.Count > 0) {
     <div class="list-component">
         <div class="wrapper">
-            <div class="title by-13">
+            <div class="title by-2">
                 <div>NETWORK USERNAME</div>
+                <div>ROLE ASSIGNED</div>
             </div>
             <div class="items">
                 @foreach (var user in Model) {
                     <a class="item" href="/admin/users/@user.Id">
-                        <div class="item-wrapper by-13">
+                        <div class="item-wrapper by-2">
                             <div>@user.NetworkUsername</div>
+                            <div>@user.Role.FriendlyName</div>
                         </div>
                     </a>
                 }

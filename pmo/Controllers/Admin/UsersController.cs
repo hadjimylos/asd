@@ -25,7 +25,7 @@ namespace pmo.Controllers {
         }
         public IActionResult Index()
         {
-            var vm = _mapper.Map<List<UserViewModel>>(_context.Users.ToList());
+            var vm = _mapper.Map<List<UserViewModel>>(_context.Users.Include(i => i.Role).ToList());
             return View(vm);
         }
 

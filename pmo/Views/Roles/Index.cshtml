@@ -12,50 +12,17 @@
 {
     <div class="list-component">
         <div class="wrapper">
-            <div class="title by-18">
+            <div class="title by-2">
                 <div>ROLE NAME</div>
                 <div>IS ADMIN</div>
-                <div>CAN INITIATE PROJECT</div>
-                <div>MANAGES PAUSE PROJECT</div>
-                <div>MANAGES PROJECT DETAIL</div>
-                <div>MANAGES PROJECT TEAM</div>
-                <div>MANAGES SCHEDULING</div>
-                <div>MANAGES BUSINESS CASES</div>
-                <div>MANAGES DELIVERABLE REGISTERS</div>
-                <div>MANAGES INTELLECTUAL PROPERTY</div>
-                <div>MANAGES PROJECT REQUIREMENTS</div>
-                <div>MANAGES RISK ANALYSIS</div>
-                <div>MANAGE PARTS</div>
-                <div>MANAGES CUSTOMER DESIGN APPROVAL</div>
-                <div>MANAGES INVESTMENT PLAN</div>
-                <div>MANAGES MARKETING PLAN</div>
-                <div>MANAGE RAMP AND RESOURCE PLAN</div>
-                <div>MANAGES QUALIFICATION TESTING</div>
             </div>
             <div class="items">
                 @foreach (var role in Model)
                 {
                     <a class="item" href="/admin/roles/@role.Id">
-                        <div class="item-wrapper by-18">
+                        <div class="item-wrapper by-2">
                             <div>@role.FriendlyName</div>
                             <div>@(role.IsAdmin ? "yes" : "no")</div>
-                            <div>@(role.CanInitiateProject ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesPauseProject ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesProjectDetail ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesProjectTeam ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesScheduling ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesBusinessCases ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesDeliverableRegisters ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesIntellectualProperty ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesProjectRequirements ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesRiskAnalysis ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesParts ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesCustomerDesignApproval ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesInvestmentPlan ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesMarketingPlan ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesRampAndResourcePlan ? "allow" : "disallow")</div>
-                            <div>@(role.ManagesQualificationTesting ? "allow" : "disallow")</div>
-                          
                         </div>
                     </a>
                 }
