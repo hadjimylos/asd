@@ -16,7 +16,9 @@ namespace pmo.Services.Users
         
         }
         public User GetUserById(int userId){
-          return   _context.Users.Include(x => x.Citizenships).Include(x => x.Role).Where(x => x.Id == userId).FirstOrDefault();
+            return _context.Users.Include(x => x.Citizenships).ThenInclude(z=>z.Citizenships).Include(y => y.Role).Where(x=>x.Id==userId).FirstOrDefault();
+            
+            
         }
         public bool AddNewUser(UserViewModel userViewModel)
         {
