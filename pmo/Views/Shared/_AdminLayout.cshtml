@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/screen.css" />
+</head>
+<body>
+    <div class="nav-component">
+        <div class="wrapper">
+            <div class="side-nav-groups">
+                <a href="/admin">ADMIN</a>
+                <a href="/admin/stage-config">STAGE/GATE CONFIGURATION</a>
+                <a href="/admin/roles">ROLES</a>
+                <a href="/admin/tags/categories">TAG CATEGORIES</a>
+                <a href="/admin/tags">TAGS</a>
+                <a href="/admin/users">USERS</a> 
+            </div>
+            <div class="page">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+
+    
+    <script src="~/bundle.js"></script>
+</body>
+</html>
