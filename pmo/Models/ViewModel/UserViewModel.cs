@@ -1,4 +1,5 @@
 ﻿using dbModels;
+﻿using CustomValidators;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +9,7 @@ namespace ViewModels {
     public class UserViewModel : dbModels.User {
         public bool isCreate { get; set; }
         [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
+        [UserExistsActiveDirectory(Helpers.ErrorMessages.MissingUserActiveDirectory)]
         public new string NetworkUsername { get; set; }
 
         [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
