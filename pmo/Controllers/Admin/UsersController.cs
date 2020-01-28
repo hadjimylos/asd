@@ -42,8 +42,8 @@ namespace pmo.Controllers {
         [AutoValidateAntiforgeryToken]
         [Route("create")]
         public IActionResult Create(UserViewModel userViewModel) {
-            
-            
+            userViewModel.isCreate = true;
+
             if (!ModelState.IsValid)
             {
                 userViewModel.RoleList = _listService.Roles();
