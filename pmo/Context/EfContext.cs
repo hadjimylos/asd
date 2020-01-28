@@ -1047,11 +1047,23 @@ namespace pmo {
                     new Tag { Id =  721  , Name ="Resource", TagCategoryId =  13},
                     new Tag { Id =  722  , Name ="Quality", TagCategoryId =  13},
                     new Tag { Id =  723  , Name ="Others", TagCategoryId =  13},
-                    //Risk Probability
-                    new Tag { Id =  723  , Name ="Others", TagCategoryId =  14},
 
-                    //Risk Impact
-                    new Tag { Id =  723  , Name ="Others", TagCategoryId =  15},
+                     //Risk Impact
+                    new Tag { Id =  724  , Name ="1", TagCategoryId =  15},
+                    new Tag { Id =  725  , Name ="2", TagCategoryId =  15},
+                    new Tag { Id =  726  , Name ="3", TagCategoryId =  15},
+                    new Tag { Id =  727  , Name ="4", TagCategoryId =  15},
+                    new Tag { Id =  728  , Name ="5", TagCategoryId =  15},
+
+                    //Risk Probability
+                    new Tag { Id =  729  , Name ="10%", TagCategoryId =  14},
+                    new Tag { Id =  730  , Name ="30%", TagCategoryId =  14},
+                    new Tag { Id =  731  , Name ="50%", TagCategoryId =  14},
+                    new Tag { Id =  732  , Name ="70%", TagCategoryId =  14},
+                    new Tag { Id =  733  , Name ="90%", TagCategoryId =  14},
+
+
+
 
 
             });
