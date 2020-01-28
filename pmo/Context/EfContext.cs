@@ -2,9 +2,19 @@
 using dbModels;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace pmo {
     public class EfContext : DbContext {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public EfContext(DbContextOptions<EfContext> options, IHttpContextAccessor httpContextAccessor):base(options)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public EfContext() { }
         public DbSet<GateKeeperConfig> GateKeeperConfigs { get; set; }
         public DbSet<BusinessCase> BusinessCases { get; set; }
         public DbSet<CustomerDesignApproval> CustomerDesignApprovals { get; set; }
@@ -289,6 +299,18 @@ namespace pmo {
             });
 
 
+        }
+        public override int SaveChanges()
+        {
+            var databaseModel_NewRecords = ChangeTracker.Entries<DatabaseModel>().Where(E => E.State == EntityState.Added).ToList();
+            databaseModel_NewRecords.ForEach(E =>
+            {
+                E.Property(x => x.CreateDate).CurrentValue = DateTime.Now;
+                E.Property(x => x.CreateDate).IsModified = true;
+                E.Property(x => x.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
+                E.Property(x => x.ModifiedByUser).IsModified = true;
+            });
+            return base.SaveChanges();
         }
     }
 }
