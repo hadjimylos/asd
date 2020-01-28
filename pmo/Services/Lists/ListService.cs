@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dbModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pmo.Controllers;
@@ -15,8 +16,7 @@ namespace pmo.Services.Lists
 {
     public class ListService: BaseController, IListService
     {
-        public ListService(EfContext context, IMapper mapper) : base(context, mapper)
-        { 
+        public ListService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
         
         }
 

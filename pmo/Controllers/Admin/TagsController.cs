@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using dbModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ namespace pmo.Controllers.Admin
     [Route("admin/tags")]
     public class Tags : BaseController
     {
-        public Tags(EfContext context, IMapper mapper) : base(context, mapper) {
+        public Tags(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
 
         }
         [Route("categories")]

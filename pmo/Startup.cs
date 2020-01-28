@@ -10,6 +10,8 @@ namespace pmo {
     using Microsoft.AspNetCore.Routing;
     using pmo.Services.Users;
     using pmo.Services.Lists;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Server.IISIntegration;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -57,6 +59,7 @@ namespace pmo {
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IListService, ListService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
             services.AddMvc(options => {
@@ -81,7 +84,6 @@ namespace pmo {
             app.UseRouting();
             app.UseAuthorization();
             app.UseMvc();
-
         }
     }
 }

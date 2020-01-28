@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using ViewModels;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace pmo.Controllers {
 
        [Route("admin")]
        public class AdminController : BaseController {
-        public AdminController(EfContext context, IMapper mapper) : base(context, mapper) {
+        public AdminController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             
         }
 

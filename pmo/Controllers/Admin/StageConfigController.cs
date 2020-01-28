@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dbModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace pmo.Controllers {
     [Route("admin/stage-config")]
     public class StageConfigController : BaseController {
 
-        public StageConfigController(EfContext context, IMapper mapper) : base(context, mapper) {
+        public StageConfigController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
 
         }
 

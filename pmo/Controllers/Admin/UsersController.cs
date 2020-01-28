@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dbModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace pmo.Controllers {
         private readonly IUserService _userService;
         private readonly IListService _listService;
 
-        public UsersController(EfContext context, IMapper mapper , IUserService userService, IListService listService) : base(context, mapper) {
+        public UsersController(EfContext context, IMapper mapper , IUserService userService, IListService listService, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             _userService = userService;
             _listService = listService;
 

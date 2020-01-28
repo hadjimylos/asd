@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dbModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using pmo.Controllers;
 using System.Collections.Generic;
@@ -11,8 +12,7 @@ namespace pmo.Services.Users
 {
     public class UserService: BaseController, IUserService
     {
-        public UserService(EfContext context, IMapper mapper) : base(context, mapper)
-        { 
+        public UserService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
         
         }
         public User GetUserById(int userId){
