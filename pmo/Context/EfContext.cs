@@ -75,8 +75,7 @@ namespace pmo {
         private void SeedData(ModelBuilder builder)
         {
 
-
-            #region Tag Seed Data
+            #region StageConfig Seed Data
             builder.Entity<StageConfig>().HasData(new List<StageConfig>()
             {
                 new StageConfig(){ Id=1,
@@ -1063,7 +1062,34 @@ namespace pmo {
 
             });
             #endregion
-           
+            #region User Seed Data
+            builder.Entity<User>().HasData(new List<User>()
+            {
+                new User(){ NetworkUsername="georgia.kalyva", Id=1, ModifiedByUser="system", RoleId=1 },
+                new User(){ NetworkUsername="efthimios.dellis", Id=2, ModifiedByUser="system", RoleId=1 },
+                new User(){ NetworkUsername="christoph.hadjimylo", Id=3, ModifiedByUser="system", RoleId=1 },
+                new User(){ NetworkUsername="georgia.bogri", Id=4, ModifiedByUser="system", RoleId=1 },
+                new User(){ NetworkUsername="konstantinos.marolachakis", Id=5, ModifiedByUser="system", RoleId=1 },
+                new User(){ NetworkUsername="ioannis.giannakop", Id=6, ModifiedByUser="system", RoleId=1 },
+                new User(){ NetworkUsername="christos.zaragkidis", Id=7, ModifiedByUser="system", RoleId=1 }
+
+            });
+            #endregion
+
+            #region User Citizenships Seed Data
+            builder.Entity<User_CitizenShip>().HasData(new List<User_CitizenShip>()
+            {
+                new User_CitizenShip(){ Id=1, ModifiedByUser="system", UserId=1, TagId= 84},
+                new User_CitizenShip(){ Id=2, ModifiedByUser="system", UserId=2, TagId= 84},
+                new User_CitizenShip(){ Id=3, ModifiedByUser="system", UserId=3, TagId= 62},
+                new User_CitizenShip(){ Id=4, ModifiedByUser="system", UserId=4, TagId= 84},
+                new User_CitizenShip(){ Id=5, ModifiedByUser="system", UserId=5, TagId= 84},
+                new User_CitizenShip(){ Id=6, ModifiedByUser="system", UserId=6, TagId= 84},
+                new User_CitizenShip(){ Id=7, ModifiedByUser="system", UserId=7, TagId= 84}
+
+            });
+            #endregion
+
         }
         public override int SaveChanges()
         {
