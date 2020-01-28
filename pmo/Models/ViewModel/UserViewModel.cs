@@ -6,8 +6,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ViewModels {
-    public class UserViewModel : dbModels.User {
+    public class UserViewModel : User {
         public bool isCreate { get; set; }
+        
         [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
         [UserExistsActiveDirectory(Helpers.ErrorMessages.MissingUserActiveDirectory)]
         public new string NetworkUsername { get; set; }
