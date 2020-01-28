@@ -12,6 +12,7 @@ namespace pmo {
     using pmo.Services.Lists;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Server.IISIntegration;
+    using Microsoft.Extensions.Logging;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -52,10 +53,18 @@ namespace pmo {
                 connectionString =
                     $"Data Source={datasource};Initial Catalog={dbname};User ID={username};Password={password}";
             }
-
+            services.AddLogging(loggingBuilder => {
+                loggingBuilder.AddConsole()
+                    .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information);
+                loggingBuilder.AddDebug();
+            });
             services.AddDbContext<EfContext>(options =>
-                options.UseSqlServer(connectionString)
+            {
+                options.UseSqlServer(connectionString);
+                options.EnableSensitiveDataLogging(true);
+            }
             );
+
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IListService, ListService>();

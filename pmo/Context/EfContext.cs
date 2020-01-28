@@ -57,7 +57,6 @@ namespace pmo {
         public EfContext(DbContextOptions<EfContext> options)
             : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -77,7 +76,7 @@ namespace pmo {
         {
 
 
-            #region Stage & Gate Seed Data
+            #region Tag Seed Data
             builder.Entity<StageConfig>().HasData(new List<StageConfig>()
             {
                 new StageConfig(){ Id=1,
@@ -123,25 +122,6 @@ namespace pmo {
                     MinProjectJustifications = 0,
                     MinQualificationTesting=0,
                     MinRampResourcePlans = 1,
-                    RequiredSchedules= new List<StageConfig_RequiredSchedule>()
-                                            {
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=1, Id=1, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=2, Id=2, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=3, Id=3, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=4, Id=4, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=5, Id=5, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=6, Id=6, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=7, Id=7, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=8, Id=8, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=9, Id=9, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=10, Id=10, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=11, Id=11, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=12, Id=12, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=13, Id=13, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=14, Id=14, ModifiedByUser="system"},
-                                                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=15, Id=15, ModifiedByUser="system"},
-
-                                            },
                     ModifiedByUser = "system"
                     },
                 new StageConfig(){ Id=4,
@@ -172,116 +152,8 @@ namespace pmo {
                     MinProjectJustifications = 0,
                     MinQualificationTesting=0,
                     MinRampResourcePlans = 0,
-                    RequiredSchedules= new List<StageConfig_RequiredSchedule>(){ },
                     ModifiedByUser = "system"
                     }
-            });
-
-            builder.Entity<GateConfig>().HasData(new List<GateConfig>()
-            {
-                new GateConfig()
-                {
-                    Id=1,
-                    GateNumber=1,
-                    GateKeepers =new List<GateKeeperConfig>()
-                                          {
-                                            new GateKeeperConfig(){GateConfigId=1, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
-                                            new GateKeeperConfig(){GateConfigId=1, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" }
-                                          },
-                    ModifiedByUser="system"
-                },
-                new GateConfig()
-                {
-                    Id=2,
-                    GateNumber=2,
-                    GateKeepers =new List<GateKeeperConfig>()
-                                          {
-                                            new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
-                                            new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" },
-                                            new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 3, Keeper="BU GM" },
-                                            new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 4, Keeper="BU Controller" },
-                                            new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 5, Keeper="BU Director Manufacturing Site" }
-                                          },
-                    ModifiedByUser="system"
-                },
-                  new GateConfig()
-                {
-                    Id=3,
-                    GateNumber=3,
-                    GateKeepers =new List<GateKeeperConfig>()
-                                          {
-                                            new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
-                                            new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" },
-                                            new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 3, Keeper="BU GM" },
-                                            new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 4, Keeper="BU Controller" },
-                                            new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 5, Keeper="BU Director Manufacturing Site" }
-                                          },
-                    ModifiedByUser="system"
-                },
-                   new GateConfig()
-                {
-                    Id=4,
-                    GateNumber=4,
-                    GateKeepers =new List<GateKeeperConfig>()
-                                          {
-                                            new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
-                                            new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" },
-                                            new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 3, Keeper="BU GM" },
-                                            new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 4, Keeper="BU Controller" },
-                                            new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 5, Keeper="BU Director Manufacturing Site" }
-                                          },
-                    ModifiedByUser="system"
-                }
-            });
-            #endregion
-            #region Role Seed Data
-            builder.Entity<Role>().HasData(new List<Role>()
-            {
-                new Role(){ Id=1,
-                            FriendlyName="System Admin",
-                            Key="system-admin",
-                            CanInitiateProject = true,
-                            IsAdmin= true,
-                            ManagesBusinessCases= true,
-                            ManagesCustomerDesignApproval= true,
-                            ManagesDeliverableRegister= true,
-                            ManagesIntellectualProperty= true,
-                            ManagesInvestmentPlan= true,
-                            ManagesMarketingPlan= true,
-                            ManagesParts= true,
-                            ManagesPauseProject= true,
-                            ManagesProjectDetail= true,
-                            ManagesProjectRequirements= true,
-                            ManagesProjectTeam= true,
-                            ManagesQualificationTesting= true,
-                            ManagesRampAndResourcePlan= true,
-                            ManagesRiskAnalysis= true,
-                            ManagesScheduling= true,
-                            ModifiedByUser = "system"
-                            },
-                new Role(){ Id=2,
-                            FriendlyName="User",
-                            Key="user",
-                            CanInitiateProject = true,
-                            IsAdmin= false,
-                            ManagesBusinessCases= true,
-                            ManagesCustomerDesignApproval= true,
-                            ManagesDeliverableRegister= true,
-                            ManagesIntellectualProperty= true,
-                            ManagesInvestmentPlan= true,
-                            ManagesMarketingPlan= true,
-                            ManagesParts= true,
-                            ManagesPauseProject= true,
-                            ManagesProjectDetail= true,
-                            ManagesProjectRequirements= true,
-                            ManagesProjectTeam= true,
-                            ManagesQualificationTesting= true,
-                            ManagesRampAndResourcePlan= true,
-                            ManagesRiskAnalysis= true,
-                            ManagesScheduling= true,
-                            ModifiedByUser = "system"
-                            }
-
             });
             #endregion
             #region Tag Seed Data
@@ -309,6 +181,7 @@ namespace pmo {
 
 
             });
+            
             builder.Entity<Tag>().HasData(new List<Tag>() {               
                 // Schedules
                 new Tag { Id = 1,  Name = "Gate 1", TagCategoryId = 1 },
@@ -1068,11 +941,129 @@ namespace pmo {
 
             });
             #endregion
+            #region  Gate Seed Data
 
-            builder.Entity<Gate>().HasData(new List<Gate>()
+            builder.Entity<StageConfig_RequiredSchedule>().HasData(new List<StageConfig_RequiredSchedule>()
             {
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=1, Id=1, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=2, Id=2, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=3, Id=3, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=4, Id=4, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=5, Id=5, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=6, Id=6, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=7, Id=7, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=8, Id=8, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=9, Id=9, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=10, Id=10, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=11, Id=11, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=12, Id=12, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=13, Id=13, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=14, Id=14, ModifiedByUser="system"},
+                new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=15, Id=15, ModifiedByUser="system"},
+                
 
             });
+
+            builder.Entity<GateConfig>().HasData(new List<GateConfig>()
+            {
+                new GateConfig()
+                {
+                    Id=1,
+                    GateNumber=1,
+                    ModifiedByUser="system"
+                },
+                new GateConfig()
+                {
+                    Id=2,
+                    GateNumber=2,
+                    ModifiedByUser="system"
+                },
+                  new GateConfig()
+                {
+                    Id=3,
+                    GateNumber=3,
+                    ModifiedByUser="system"
+                },
+                   new GateConfig()
+                {
+                    Id=4,
+                    GateNumber=4,
+                    ModifiedByUser="system"
+                }
+            });
+
+            builder.Entity<GateKeeperConfig>().HasData(new List<GateKeeperConfig>()
+            {
+                new GateKeeperConfig(){GateConfigId=1, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){GateConfigId=1, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 3, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 4, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 5, Keeper="BU GM" },
+                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 6, Keeper="BU Controller" },
+                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 7, Keeper="BU Director Manufacturing Site" },
+                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 8, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 9, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 10, Keeper="BU GM" },
+                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 11, Keeper="BU Controller" },
+                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 12, Keeper="BU Director Manufacturing Site" },
+                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 13, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 14, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 15, Keeper="BU GM" },
+                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 16, Keeper="BU Controller" },
+                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 17, Keeper="BU Director Manufacturing Site" }
+            });
+            #endregion
+            #region Role Seed Data
+            builder.Entity<Role>().HasData(new List<Role>()
+            {
+                new Role(){ Id=1,
+                            FriendlyName="System Admin",
+                            Key="system-admin",
+                            CanInitiateProject = true,
+                            IsAdmin= true,
+                            ManagesBusinessCases= true,
+                            ManagesCustomerDesignApproval= true,
+                            ManagesDeliverableRegister= true,
+                            ManagesIntellectualProperty= true,
+                            ManagesInvestmentPlan= true,
+                            ManagesMarketingPlan= true,
+                            ManagesParts= true,
+                            ManagesPauseProject= true,
+                            ManagesProjectDetail= true,
+                            ManagesProjectRequirements= true,
+                            ManagesProjectTeam= true,
+                            ManagesQualificationTesting= true,
+                            ManagesRampAndResourcePlan= true,
+                            ManagesRiskAnalysis= true,
+                            ManagesScheduling= true,
+                            ModifiedByUser = "system"
+                            },
+                new Role(){ Id=2,
+                            FriendlyName="User",
+                            Key="user",
+                            CanInitiateProject = true,
+                            IsAdmin= false,
+                            ManagesBusinessCases= true,
+                            ManagesCustomerDesignApproval= true,
+                            ManagesDeliverableRegister= true,
+                            ManagesIntellectualProperty= true,
+                            ManagesInvestmentPlan= true,
+                            ManagesMarketingPlan= true,
+                            ManagesParts= true,
+                            ManagesPauseProject= true,
+                            ManagesProjectDetail= true,
+                            ManagesProjectRequirements= true,
+                            ManagesProjectTeam= true,
+                            ManagesQualificationTesting= true,
+                            ManagesRampAndResourcePlan= true,
+                            ManagesRiskAnalysis= true,
+                            ManagesScheduling= true,
+                            ModifiedByUser = "system"
+                            }
+
+            });
+            #endregion
+           
         }
         public override int SaveChanges()
         {

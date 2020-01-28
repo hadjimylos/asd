@@ -5,6 +5,11 @@
     <RootNamespace>pmo</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200128111817_SeedData.cs" />
+    <Compile Remove="Migrations\20200128111817_SeedData.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
