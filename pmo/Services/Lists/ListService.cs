@@ -30,24 +30,24 @@ namespace pmo.Services.Lists
             return new SelectList(_context.Roles.ToList(), "Id", "FriendlyName", id);
         }
 
-        public SelectList Citizenships()
+        public SelectList Tags_SelectList(string CategoreyKey)
         {
-            return new SelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == TagCategoryHelper.CitizenshipsKey).ToList(), "Id", "Name");
+            return new SelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoreyKey).ToList(), "Id", "Name");
         }
 
-        public SelectList Citizenships(string id)
+        public SelectList Tags_SelectList(string id, string CategoreyKey)
         {
-            return new SelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == TagCategoryHelper.CitizenshipsKey).ToList(), "Id", "Name", id);
+            return new SelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoreyKey).ToList(), "Id", "Name", id);
         }
 
-        public MultiSelectList CitizenshipsMultiple()
+        public MultiSelectList Tags_MultiSelectList(string CategoryKey)
         {
-            return new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == TagCategoryHelper.CitizenshipsKey).ToList(), "Id", "Name");
+            return new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoryKey).ToList(), "Id", "Name");
         }
 
-        public MultiSelectList CitizenshipsMultiple<T>(IEnumerable<T> selected) 
+        public MultiSelectList Tags_MultiSelectList<T>(IEnumerable<T> selected,string CategoryKey) 
         {
-            return new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == TagCategoryHelper.CitizenshipsKey).ToList(), "Id", "Name", selected);
+            return new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoryKey).ToList(), "Id", "Name", selected);
         }
 
     }

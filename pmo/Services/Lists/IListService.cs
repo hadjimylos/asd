@@ -12,13 +12,12 @@ namespace pmo.Services.Lists
     {
         SelectList Roles();
         SelectList Roles(String id);
+        SelectList Tags_SelectList(string CategoryKey);
+        SelectList Tags_SelectList(String id , String CategoreyKey);
 
-        SelectList Citizenships();
-        SelectList Citizenships(String id);
-
-        MultiSelectList CitizenshipsMultiple();
+        MultiSelectList Tags_MultiSelectList(String CategoreyKey);
        
-        MultiSelectList CitizenshipsMultiple<T>(IEnumerable<T> ids);
+        MultiSelectList Tags_MultiSelectList<T>(IEnumerable<T> ids, String CategoreyKey);
 
     }
 }
