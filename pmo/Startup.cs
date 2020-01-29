@@ -7,13 +7,12 @@ namespace pmo {
     using System.IO;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Routing;
     using pmo.Services.Users;
     using pmo.Services.Lists;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Server.IISIntegration;
     using Microsoft.Extensions.Logging;
     using pmo.Services.Projects;
+    using pmo.Services.SharePoint;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -71,7 +70,7 @@ namespace pmo {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IListService, ListService>();
             services.AddTransient<IProjectService, ProjectService>();
-
+            services.AddScoped<ISharePointService, SharePointService>();
 
 
             services.AddMvc(options => {
