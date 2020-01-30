@@ -20,39 +20,51 @@
             <div class="field">
                 <div class="label">Project Category</div>
                 <select asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2">
-
-
+                    <option hidden disabled selected>-- Select --</option>
                 </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "ProjectCategoryTagId")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Salesforce Number</div>
+                <div class="label">Salesforce</div>
                 <input asp-for="Salesforce" class="data" />
                 <ul class="errors">
-                    @Html.Partial("_FieldErrors", "SalesforceNumber")
+                    @Html.Partial("_FieldErrors", "Salesforce")
                 </ul>
             </div>
             <div class="field">
                 <div class="label">Product Line</div>
-                <select asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="data select2"></select>
+                <select asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="data select2">
+                    <option hidden disabled selected>-- Select --</option>
+                </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "ProductLineTagId")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">ProjectClassification</div>
-                <select asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2"></select>
+                <div class="label">Classification</div>
+                <select asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2">
+                    <option hidden disabled selected>-- Select --</option>
+                </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "ProjectClassificationTagId")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Product Line</div>
-                <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2"></select>
+                <div class="label">Design Authority</div>
+                <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2">
+                    <option  hidden disabled selected>-- Select --</option>
+                </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Engineering Checklist Url</div>
+                <input asp-for="EngineeringChecklistUrl" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "EngineeringChecklistUrl")
                 </ul>
             </div>
             <div class="field">

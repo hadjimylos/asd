@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200128111817_SeedData.cs" />
     <Compile Remove="Migrations\20200128111817_SeedData.Designer.cs" />
+    <Compile Remove="Migrations\20200130142206_AddNewTags_AnnotationsOnDBModel.cs" />
+    <Compile Remove="Migrations\20200130142206_AddNewTags_AnnotationsOnDBModel.Designer.cs" />
   </ItemGroup>
 
 

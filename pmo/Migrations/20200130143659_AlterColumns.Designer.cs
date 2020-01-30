@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200130142206_AddNewTags_AnnotationsOnDBModel")]
-    partial class AddNewTags_AnnotationsOnDBModel
+    [Migration("20200130143659_AlterColumns")]
+    partial class AlterColumns
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
