@@ -24,7 +24,7 @@ namespace pmo.Controllers
         }
 
         public IActionResult Upload()
-        {
+        {            
             return View();
         }
 
@@ -33,6 +33,9 @@ namespace pmo.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(IFormFile file)
         {
+
+            string Id = await _SharePointService.GetUserPrincipalId("georgia.kalyva@itt.com");
+
             await _SharePointService.Upload(file)
                 .ContinueWith(x=> _SharePointService.BreakFileRoleInheritance(file.FileName))
                 .ContinueWith(y => _SharePointService.RemoveFilePermissions(file.FileName))

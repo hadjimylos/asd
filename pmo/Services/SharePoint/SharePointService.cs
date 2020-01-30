@@ -45,6 +45,25 @@ namespace pmo.Services.SharePoint
             }
             return content;
         }
+        public async Task<string> GetUserPrincipalId(string userEmail)
+        {
+            string Id = "0";
+            var content = "";
+            using (var handler = new HttpClientHandler { Credentials = new NetworkCredential(username, password, domain) })
+            using (var _client = new HttpClient(handler))
+            {
+                _client.DefaultRequestHeaders.Add("Accept", "application/json;odata=verbose");
+                var result = await _client.GetAsync(siteUrl + "/_api/web/SiteUsers/getByEmail('" + userEmail + "')/Id");
+                if (!result.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Error");
+                }
+                content = await result.Content.ReadAsStringAsync();
+                JObject UserData = JObject.Parse(content);
+                Id = (string)UserData["d"]["Id"];
+            }
+            return Id;
+        }
         public async Task<string> Upload(IFormFile file)
         {
 

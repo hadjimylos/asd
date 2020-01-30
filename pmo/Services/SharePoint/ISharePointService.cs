@@ -12,5 +12,6 @@ namespace pmo.Services.SharePoint
         bool RemoveFilePermissions(string file);
         bool AddFilePermissions(string file);
         bool Delete(string file);
+        Task<string> GetUserPrincipalId(string userEmail);
     }
 }
