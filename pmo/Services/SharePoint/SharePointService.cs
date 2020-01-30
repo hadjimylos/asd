@@ -28,23 +28,6 @@ namespace pmo.Services.SharePoint
         {
 
         }
-        public async Task<string> GetUserInfo()
-        {
-            var content = "";
-            var userEmail = "efthimios.dellis@itt.com";
-            using (var handler = new HttpClientHandler { Credentials = new NetworkCredential(username, password, domain) })
-            using (var _client = new HttpClient(handler))
-            {
-                _client.DefaultRequestHeaders.Add("Accept", "application/json;odata=verbose");
-                var result = await _client.GetAsync(siteUrl + "/_api/web/SiteUsers/getByEmail('" + userEmail + "')");
-                if (!result.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("Error");
-                }
-                content = await result.Content.ReadAsStringAsync();
-            }
-            return content;
-        }
         public async Task<string> GetUserPrincipalId(string userEmail)
         {
             string Id = "0";
@@ -172,12 +155,12 @@ namespace pmo.Services.SharePoint
                 throw;
             }
         }
-        public bool RemoveFilePermissions(string fileName)
+        public bool RemoveFilePermissions(string fileName,string id)
         {
             bool status = false;
             string result = string.Empty;
             //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=" + 3 + ",roledefid=" + ReadRoleDefinition + ")";
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=10)";
+            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid="+id+")";
             HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
             NetworkCredential credentials = new NetworkCredential(username, password, domain);
@@ -206,11 +189,11 @@ namespace pmo.Services.SharePoint
             }
         }
 
-        public bool AddFilePermissions(string fileName)
+        public bool AddFilePermissions(string fileName,string id)
         {
             bool status = false;
             string result = string.Empty;
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/addroleassignment(principalid=10,roledefid=" + ReadRoleDefinition + ")";
+            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/addroleassignment(principalid="+id+",roledefid=" + ReadRoleDefinition + ")";
             //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=7)";
             HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;

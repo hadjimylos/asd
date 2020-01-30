@@ -38,8 +38,8 @@ namespace pmo.Controllers
 
             await _SharePointService.Upload(file)
                 .ContinueWith(x=> _SharePointService.BreakFileRoleInheritance(file.FileName))
-                .ContinueWith(y => _SharePointService.RemoveFilePermissions(file.FileName))
-                .ContinueWith(z => _SharePointService.AddFilePermissions(file.FileName));
+                .ContinueWith(y => _SharePointService.RemoveFilePermissions(file.FileName, Id))
+                .ContinueWith(z => _SharePointService.AddFilePermissions(file.FileName, Id));
             //
             
             //.ContinueWith(z=>_SharePointService.AddFilePermissions(file.FileName));
