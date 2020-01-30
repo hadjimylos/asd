@@ -13,6 +13,7 @@ namespace pmo {
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Server.IISIntegration;
     using Microsoft.Extensions.Logging;
+    using pmo.Services.Projects;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -65,10 +66,12 @@ namespace pmo {
             }
             );
 
-            services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IListService, ListService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IListService, ListService>();
+            services.AddTransient<IProjectService, ProjectService>();
+
 
 
             services.AddMvc(options => {

@@ -173,12 +173,7 @@ namespace pmo {
                 new TagCategory { Id = 13, IsFixed = true, FriendlyName = "Risk Type", Key = "risk-type" },
                 new TagCategory { Id = 14, IsFixed = true, FriendlyName = "Risk Probability", Key = "risk-probability" },
                 new TagCategory { Id = 15, IsFixed = true, FriendlyName = "Risk Impact", Key = "risk-impact" },
-
-
-
-
-
-
+                new TagCategory { Id = 16, IsFixed = true, FriendlyName = "Design Authority", Key = "design-authority" },
             });
             
             builder.Entity<Tag>().HasData(new List<Tag>() {               
@@ -920,13 +915,6 @@ namespace pmo {
                     new Tag { Id =  722  , Name ="Quality", TagCategoryId =  13},
                     new Tag { Id =  723  , Name ="Others", TagCategoryId =  13},
 
-                     //Risk Impact
-                    new Tag { Id =  724  , Name ="1", TagCategoryId =  15},
-                    new Tag { Id =  725  , Name ="2", TagCategoryId =  15},
-                    new Tag { Id =  726  , Name ="3", TagCategoryId =  15},
-                    new Tag { Id =  727  , Name ="4", TagCategoryId =  15},
-                    new Tag { Id =  728  , Name ="5", TagCategoryId =  15},
-
                     //Risk Probability
                     new Tag { Id =  729  , Name ="10%", TagCategoryId =  14},
                     new Tag { Id =  730  , Name ="30%", TagCategoryId =  14},
@@ -934,10 +922,22 @@ namespace pmo {
                     new Tag { Id =  732  , Name ="70%", TagCategoryId =  14},
                     new Tag { Id =  733  , Name ="90%", TagCategoryId =  14},
 
+                     //Risk Impact
+                    new Tag { Id =  724  , Name ="1", TagCategoryId =  15},
+                    new Tag { Id =  725  , Name ="2", TagCategoryId =  15},
+                    new Tag { Id =  726  , Name ="3", TagCategoryId =  15},
+                    new Tag { Id =  727  , Name ="4", TagCategoryId =  15},
+                    new Tag { Id =  728  , Name ="5", TagCategoryId =  15},
 
-
-
-
+                    //Design authority
+                    new Tag { Id =  734  , Name ="Santa Rosa", TagCategoryId =  16},
+                    new Tag { Id =  735  , Name ="Watertown", TagCategoryId =  16},
+                    new Tag { Id =  736  , Name ="Basingstoke", TagCategoryId =  16},
+                    new Tag { Id =  737  , Name ="Weinstadt", TagCategoryId =  16},
+                    new Tag { Id =  738  , Name ="Zama", TagCategoryId =  16},
+                    new Tag { Id =  739  , Name ="Shenzhen", TagCategoryId =  16},
+                    new Tag { Id =  740  , Name ="Lainate", TagCategoryId =  16 },
+                    new Tag { Id =  741  , Name ="Irvine", TagCategoryId =  16},
             });
             #endregion
             #region  Gate Seed Data

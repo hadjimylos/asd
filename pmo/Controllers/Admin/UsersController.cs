@@ -34,7 +34,7 @@ namespace pmo.Controllers {
         public IActionResult Create() {
             UserViewModel userViewModel = new UserViewModel() { isCreate = true};
             userViewModel.RoleList = _listService.Roles();
-            userViewModel.CitizenshipsList = _listService.Citizenships(); 
+            userViewModel.CitizenshipsList = _listService.Tags_SelectList(TagCategoryHelper.Citizenships); 
 
             return View(userViewModel);
         }
@@ -48,7 +48,7 @@ namespace pmo.Controllers {
             if (!ModelState.IsValid)
             {
                 userViewModel.RoleList = _listService.Roles();
-                userViewModel.CitizenshipsList = _listService.CitizenshipsMultiple();
+                userViewModel.CitizenshipsList = _listService.Tags_MultiSelectList(TagCategoryHelper.Citizenships);
 
                 ViewBag.Errors = ModelState;
                 return View(userViewModel);
@@ -70,7 +70,7 @@ namespace pmo.Controllers {
             var vm = _mapper.Map<UserViewModel>(user);
             vm.RoleList = _listService.Roles(vm.RoleId);
             var Ready= _context.Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
-            vm.CitizenshipsList = _listService.CitizenshipsMultiple<Tag>(Ready);
+            vm.CitizenshipsList = _listService.Tags_MultiSelectList<Tag>(TagCategoryHelper.Citizenships, Ready);
             vm.isCreate = false;
             return View(vm);
 
@@ -85,7 +85,7 @@ namespace pmo.Controllers {
             {
                 vm.RoleList = _listService.Roles(vm.RoleId);
                 var Ready = _context.Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
-                vm.CitizenshipsList = _listService.CitizenshipsMultiple<Tag>(Ready);
+                vm.CitizenshipsList = _listService.Tags_MultiSelectList<Tag>(TagCategoryHelper.Citizenships, Ready);
                 ViewBag.Errors = ModelState;
                 return View(vm);
             }

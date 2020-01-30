@@ -14,6 +14,8 @@ namespace pmo.Models.Mappings
             CreateMap<Role, RoleViewModel>().ReverseMap();
             CreateMap<Tag, TagViewModel>().ReverseMap();
             CreateMap<TagCategory, TagCategoryViewModel>().ReverseMap();
+            CreateMap<Project, VBPDViewModel>().ReverseMap();
+            CreateMap<ProjectDetail, VBPDViewModel>().ReverseMap();
         }
     }
 }

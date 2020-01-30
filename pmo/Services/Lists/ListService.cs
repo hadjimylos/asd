@@ -35,7 +35,7 @@ namespace pmo.Services.Lists
             return new SelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoreyKey).ToList(), "Id", "Name");
         }
 
-        public SelectList Tags_SelectList(string id, string CategoreyKey)
+        public SelectList Tags_SelectList(string CategoreyKey , string id)
         {
             return new SelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoreyKey).ToList(), "Id", "Name", id);
         }
@@ -45,7 +45,7 @@ namespace pmo.Services.Lists
             return new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoryKey).ToList(), "Id", "Name");
         }
 
-        public MultiSelectList Tags_MultiSelectList<T>(IEnumerable<T> selected,string CategoryKey) 
+        public MultiSelectList Tags_MultiSelectList<T>(string CategoryKey, IEnumerable<T> selected) 
         {
             return new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoryKey).ToList(), "Id", "Name", selected);
         }

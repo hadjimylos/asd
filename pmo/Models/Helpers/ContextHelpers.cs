@@ -31,7 +31,7 @@ namespace ViewModels.Helpers
 
     public static class TagCategoryHelper
     {
-        public const string CitizenshipsKey = "citizenships";
+        public const string Citizenships = "citizenships";
         public const string RequiredSchedules = "required-schedules";
         public const string SalesRegion = "sales-region";
         public const string ProjectCategory = "project-category";
@@ -46,6 +46,7 @@ namespace ViewModels.Helpers
         public const string RiskType = "risk-type";
         public const string RiskProbability = "risk-probability";
         public const string RiskImpact = "risk-impact";
+        public const string DesignAuthority = "design-authority";
 
 
     }

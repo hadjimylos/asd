@@ -31,13 +31,13 @@ namespace dbModels {
         [ForeignKey("ProductTagId")]
         public virtual Tag Product { get; set; }
         
-        public string? Competetion { get; set; }
+        public string Competetion { get; set; }
         
-        public string? BenchmarkSamples { get; set; }
+        public string BenchmarkSamples { get; set; }
         
-        public string? AdvantagesWeOffer { get; set; }
+        public string AdvantagesWeOffer { get; set; }
         
-        public string? WhyOurOfferPreferred { get; set; }
+        public string WhyOurOfferPreferred { get; set; }
         
         public bool? SingleUseProduct { get; set; }
     }

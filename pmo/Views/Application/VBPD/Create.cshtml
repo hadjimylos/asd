@@ -1,0 +1,64 @@
+﻿@model VBPDViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<form class="form-component" method="post" action="/create">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            <div class="field">
+                <div class="label">Project Name</div>
+                <input asp-for="Name" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Name")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Project Category</div>
+                <select asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2">
+
+
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ProjectCategoryTagId")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Salesforce Number</div>
+                <input asp-for="Salesforce" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "SalesforceNumber")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Product Line</div>
+                <select asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="data select2"></select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ProductLineTagId")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">ProjectClassification</div>
+                <select asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2"></select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ProjectClassificationTagId")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Product Line</div>
+                <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2"></select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
+                </ul>
+            </div>
+            <div class="field">
+                <input type="submit" class="data btn" value="SUBMIT" />
+            </div>
+        </div>
+    </div>
+</form>
+
