@@ -157,18 +157,52 @@ namespace pmo.Services.SharePoint
         {
             bool status = false;
             string result = string.Empty;
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=" + 3 + ",roledefid=" + ReadRoleDefinition + ")";
+            //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=" + 3 + ",roledefid=" + ReadRoleDefinition + ")";
+            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=10)";
             HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
             NetworkCredential credentials = new NetworkCredential(username, password, domain);
             wreq.Credentials = credentials;
             string formDigest = GetFormDigestValue(siteUrl, credentials);
+            wreq.Method = "POST";
+            wreq.Accept = "application/json; odata=verbose";
             wreq.Headers.Add("X-RequestDigest", formDigest);
             wreq.Headers.Add("X-HTTP", "DELETE");
-            wreq.Method = "POST";
             //wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
-            wreq.Accept = "application/json; odata=verbose";
+            try
+            {
+                WebResponse wresp = wreq.GetResponse();
+                using (StreamReader sr = new StreamReader(wresp.GetResponseStream()))
+                {
+                    result = sr.ReadToEnd();
+                    status = true;
+                    return status;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return status;
+                throw;
+            }
+        }
 
+        public bool AddFilePermissions(string fileName)
+        {
+            bool status = false;
+            string result = string.Empty;
+            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/addroleassignment(principalid=10,roledefid=" + ReadRoleDefinition + ")";
+            //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=7)";
+            HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
+            wreq.UseDefaultCredentials = false;
+            NetworkCredential credentials = new NetworkCredential(username, password, domain);
+            wreq.Credentials = credentials;
+            string formDigest = GetFormDigestValue(siteUrl, credentials);
+            wreq.Method = "POST";
+            wreq.Accept = "application/json; odata=verbose";
+            wreq.Headers.Add("X-RequestDigest", formDigest);
+            //wreq.Headers.Add("X-HTTP", "DELETE");
+            //wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
             try
             {
                 WebResponse wresp = wreq.GetResponse();

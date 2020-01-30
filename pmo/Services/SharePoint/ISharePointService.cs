@@ -10,6 +10,7 @@ namespace pmo.Services.SharePoint
         Task<string> Upload(IFormFile file);
         bool BreakFileRoleInheritance(string file);
         bool RemoveFilePermissions(string file);
+        bool AddFilePermissions(string file);
         bool Delete(string file);
     }
 }

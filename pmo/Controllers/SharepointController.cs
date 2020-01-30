@@ -33,9 +33,14 @@ namespace pmo.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            await _SharePointService.Upload(file).ContinueWith(
-                x => _SharePointService.BreakFileRoleInheritance(file.FileName)).ContinueWith(y => _SharePointService.RemoveFilePermissions(file.FileName));
-           return View();
+            await _SharePointService.Upload(file)
+                .ContinueWith(x=> _SharePointService.BreakFileRoleInheritance(file.FileName))
+                .ContinueWith(y => _SharePointService.RemoveFilePermissions(file.FileName))
+                .ContinueWith(z => _SharePointService.AddFilePermissions(file.FileName));
+            //
+            
+            //.ContinueWith(z=>_SharePointService.AddFilePermissions(file.FileName));
+            return View();
         }
         
         
