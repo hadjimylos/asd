@@ -54,19 +54,49 @@
             <div class="field">
                 <div class="label">Design Authority</div>
                 <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2">
-                    <option  hidden disabled selected>-- Select --</option>
+                    <option hidden disabled selected>-- Select --</option>
                 </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Engineering Checklist Url</div>
+                <div class="label">Customers</div>
+                <select asp-for="Customers" asp-items="Model.CustomerDropDown" class="data select2">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Customers")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Attachment Engineering Checklist Url</div>
                 <input asp-for="EngineeringChecklistUrl" class="data" />
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "EngineeringChecklistUrl")
                 </ul>
             </div>
+            <div class="field">
+                <div class="label">Project Process Type</div>
+                <input asp-for="ProjectProcessType" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ProjectProcessType")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Export Control Code</div>
+                <input asp-for="ExportControlCode" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ExportControlCode")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Export Restricted Users</div>
+                <input asp-for="ExportRestrictedUsers" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ExportRestrictedUsers")
+                </ul>
+            </div>
+
             <div class="field">
                 <input type="submit" class="data btn" value="SUBMIT" />
             </div>

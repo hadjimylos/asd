@@ -31,11 +31,28 @@ namespace ViewModels
         [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.AtLeastOne)]
         public new int DesignAuthorityTagId { get; set; }
 
+
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        [StringLength(30)]
+        public new string ProjectProcessType { set; get; }
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        [StringLength(50)]
+        public new string ExportControlCode { set; get; }
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        [StringLength(50)]
+        public new  string ExportRestrictedUsers { set; get; }
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        public new string EndUseDestinationCountry { set; get; }
+
+        public new int ExportApplicationTypeTagId { get; set; }
+
+
         public new Project Project { get; set; }
         public new Tag ProjectClassification { get; set; }
         public new Tag ProjectCategory { get; set; }
         public new Tag ProductLine { get; set; }
         public new Tag DesignAuthority { get; set; }
+        public new Tag ExportApplicationType { get; set; }
         public new List<ProjectDetail_SalesRegion> SalesRegions { get; set; }
         public new List<ProjectDetail_EndUserCountry> EndUseCountries { get; set; }
         public new List<ProjectDetail_Customer> Customers { get; set; }
@@ -44,5 +61,7 @@ namespace ViewModels
         public SelectList ProjectClassificationDropDown { set; get; }
         public SelectList ProductLineDropDown { set; get; }
         public SelectList DesignAuthorityDropDown { set; get; }
+
+        public MultiSelectList CustomerDropDown { set; get; }
     }
 }

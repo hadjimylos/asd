@@ -39,9 +39,7 @@ namespace ViewModels.Helpers
         public const string RequirementSource = "requirement-source";
         public const string ManufacturingLocations = "manufacturing-locations";
         public const string ManufacturingLocationsCustomersStrategic = "strategic-customers";
-        public const string CustomersFocus = "focus-customers";
-        public const string CustomersTarget = "target-customers";
-        public const string CustomersNon_sft = "non-sft-customers";
+        public const string Customer = "customers";
         public const string ProductLine = "product-line";
         public const string RiskType = "risk-type";
         public const string RiskProbability = "risk-probability";

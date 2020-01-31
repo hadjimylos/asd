@@ -39,7 +39,7 @@ namespace pmo.Controllers.Application
             project.ProductLineDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProductLine);
             project.ProjectClassificationDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectClassification);
             project.DesignAuthorityDropDown = _listService.Tags_SelectList(TagCategoryHelper.DesignAuthority);
-
+            project.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer);
             return View("~/Views/Application/VBPD/Create.cshtml", project);
         }
 
@@ -56,6 +56,7 @@ namespace pmo.Controllers.Application
                 model.ProductLineDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProductLine, model.ProjectCategoryTagId.ToString());
                 model.ProjectClassificationDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectClassification, model.ProjectCategoryTagId.ToString());
                 model.DesignAuthorityDropDown = _listService.Tags_SelectList(TagCategoryHelper.DesignAuthority, model.ProjectCategoryTagId.ToString());
+                model.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer,model.Customers);
                 return View("~/Views/Application/VBPD/Create.cshtml", model);
             }
            var created =  _projectService.AddNewVBPDProject(model);

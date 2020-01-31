@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
     public class ProjectDetail_Customer : DatabaseModel{
@@ -11,6 +12,7 @@ namespace dbModels {
 
         [ForeignKey("ProjectDetailId")]
         public virtual ProjectDetail ProjectDetail { get; set; }
+
 
     }
 }

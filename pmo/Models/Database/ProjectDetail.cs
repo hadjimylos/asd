@@ -31,8 +31,6 @@ namespace dbModels {
         [StringLength(50)]
         public string ExportRestrictedUsers{ set; get; }
         [Required]
-        public int CustomerTagId { get; set; }
-        [Required]
         public string EndUseDestinationCountry { set; get; }
 
 
@@ -48,11 +46,10 @@ namespace dbModels {
         public virtual Tag DesignAuthority { get; set; }
         [ForeignKey("ExportApplicationTypeTagId")]
         public virtual Tag ExportApplicationType { get; set; }
-        [ForeignKey("CustomerTagId")]
-        public virtual Tag Customer { get; set; }
 
+
+        public virtual List<ProjectDetail_Customer> Customers { get; set; }
         public virtual List<ProjectDetail_SalesRegion> SalesRegions { get; set; }
         public virtual List<ProjectDetail_EndUserCountry> EndUseCountries { get; set; }
-        public virtual List<ProjectDetail_Customer> Customers { get; set; }
     }
 }
