@@ -16,8 +16,9 @@ namespace pmo.Services.Lists
         SelectList Tags_SelectList(String CategoreyKey ,String id);
 
         MultiSelectList Tags_MultiSelectList(String CategoreyKey);
-       
         MultiSelectList Tags_MultiSelectList<T>(String CategoreyKey , IEnumerable<T> ids);
 
+        List<SelectListItem> Users();
+        List<SelectListItem> Users(List<int> selected);
     }
 }

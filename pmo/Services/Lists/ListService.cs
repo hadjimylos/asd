@@ -50,5 +50,20 @@ namespace pmo.Services.Lists
             return new MultiSelectList(_context.Tags.Include(x => x.TagCategory).Where(x => x.TagCategory.Key == CategoryKey).ToList(), "Id", "Name", selected);
         }
 
+        public List<SelectListItem> Users()
+        {
+            return _context.Users.ToList().Select(s => new SelectListItem { 
+                Value = s.Id.ToString(),
+                Text = s.NetworkUsername,
+            }).ToList();
+        }
+
+        public List<SelectListItem> Users(List<int> selected) {
+            return _context.Users.ToList().Select(s => new SelectListItem { 
+                Value = s.Id.ToString(),
+                Text = s.NetworkUsername,
+                Selected = selected.Contains(s.Id)
+            }).ToList();
+        }
     }
 }
