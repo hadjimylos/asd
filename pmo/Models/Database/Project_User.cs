@@ -12,6 +12,7 @@ namespace dbModels {
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
+        public string JobDescriptionKey { get; set; }
 
     }
 }
