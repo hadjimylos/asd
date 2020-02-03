@@ -52,6 +52,7 @@ namespace pmo {
         public DbSet<ProjectDetail_Customer> ProjectDetail_Customers { get; set; }
         public DbSet<StageConfig_RequiredSchedule> StageConfig_RequiredSchedules { get; set; }
         public DbSet<BusinessCase_ManufacturingLocation> BusinessCase_ManufacturingLocations { get; set; }
+        public DbSet<Project_User> Project_User { get; set; }
 
 
         public EfContext(DbContextOptions<EfContext> options)
