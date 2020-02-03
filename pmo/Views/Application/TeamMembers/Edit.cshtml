@@ -1,0 +1,137 @@
+﻿@model TeamMembersViewModel
+@{
+    ViewData["Title"] = "Edit Team Members";
+}
+
+<form class="form-component" method="post" action="/projects/@ViewBag.ProjectId/team-members">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+
+            <div class="field">
+                <div class="label">PROGRAM MANAGER</div>
+                <select asp-for="Program_Manager" asp-items="Model.ProgramManagerList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Program_Manager")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">PRODUCT MANAGER</div>
+                <select asp-for="Product_Manager" asp-items="Model.ProductManagerList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Product_Manager")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">LEAD ENGINEER</div>
+                <select asp-for="Lead_Engineer" asp-items="Model.LeadEngineerList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Lead_Engineer")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">PROGRAM MANAGEMENT</div>
+                <select asp-for="Program_Management" asp-items="Model.ProgramManagementList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Program_Management")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">PRODUCT ENGINEER</div>
+                <select asp-for="Product_Engineering" asp-items="Model.ProductEngineeringList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Product_Engineering")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">ADVANCED TECHNOLOGY</div>
+                <select asp-for="Advanced_Technology" asp-items="Model.AdvancedTechnologyList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Advanced_Technology")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">SALES</div>
+                <select asp-for="Sales" asp-items="Model.SalesList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Sales")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">INDUSTRY SEGMENT</div>
+                <select asp-for="Industry_Segment" asp-items="Model.IndustrySegment" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Industry_Segment")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">OPERATIONS</div>
+                <select asp-for="Operations" asp-items="Model.OperationsList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Operations")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">MANUFACTURING ENGINEERING</div>
+                <select asp-for="Manufacturing_Engineering" asp-items="Model.ManufacturingEngineeringList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Manufacturing_Engineering")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">PLANNING</div>
+                <select asp-for="Planning" asp-items="Model.PlanningList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Planning")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">SOURCING</div>
+                <select asp-for="Sourcing" asp-items="Model.SourcingList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Sourcing")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">QUALITY</div>
+                <select asp-for="Quality" asp-items="Model.QualityList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Quality")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">LABORATORY TESTING</div>
+                <select asp-for="Laboratory_Testing" asp-items="Model.LaboratoryTestingList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Laboratory_Testing")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">FINANCE</div>
+                <select asp-for="Finance" asp-items="Model.FinanceList" class="select2 data">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Finance")
+                </ul>
+            </div>
+
+            <div class="field">
+                <input type="submit" class="data btn" value="SUBMIT" />
+            </div>
+        </div>
+    </div>
+</form>

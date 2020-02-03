@@ -47,4 +47,22 @@ namespace ViewModels.Helpers
         public const string DesignAuthority = "design-authority";
         public const string ExportApplicationType = "export-application-type";
     }
+
+    public static class JobDescripKeys {
+        public const string ProgramManager = "program-manager";
+        public const string ProductManager = "product-manager";
+        public const string LeadEngineer = "lead-engineer";
+        public const string ProgramManagement = "program-management";
+        public const string ProductEngineering = "product-engineering";
+        public const string AdvancedTechnology = "advanced-technology";
+        public const string Sales = "sales";
+        public const string IndustrySegment = "industry-segment";
+        public const string Operations = "operations";
+        public const string ManufacturingEngineering = "manufacturing-engineering";
+        public const string Planning = "planning";
+        public const string Sourcing = "sourcing";
+        public const string Quality = "quality";
+        public const string LaboratoryTesting = "laboratory-testing";
+        public const string Finance = "finance";
+    }
 }
