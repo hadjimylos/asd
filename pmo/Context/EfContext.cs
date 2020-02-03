@@ -936,6 +936,10 @@ namespace pmo {
                     new Tag { Id =  739  , Name ="Shenzhen", TagCategoryId =  13},
                     new Tag { Id =  740  , Name ="Lainate", TagCategoryId =  13 },
                     new Tag { Id =  741  , Name ="Irvine", TagCategoryId =  13},
+
+                    //End-Use Destination
+                    new Tag { Id =  742  , Name ="dummy Data", TagCategoryId =  14},
+                    new Tag { Id =  743  , Name ="dummy Data2", TagCategoryId =  14},
             });
             #endregion
             #region  Gate Seed Data

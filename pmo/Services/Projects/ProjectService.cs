@@ -38,11 +38,21 @@ namespace pmo.Services.Projects
                     projectDetail.ProjectId = project.Id;
                     _context.ProjectDetails.Add(projectDetail);
                     _context.SaveChanges();
-                    foreach (var item in model.Customers)
+
+                    model.CustomerIds.ForEach(customerId =>
                     {
-                        item.ProjectDetailId = projectDetail.Id;
-                    }
-                    _context.ProjectDetail_Customers.AddRange(projectDetail.Customers);
+                        _context.ProjectDetail_Customers.Add(new ProjectDetail_Customer{
+                            CustomersTagId = customerId,
+                            ProjectDetailId = projectDetail.Id,
+                        });
+                    });
+                    model.SalesRegionIds.ForEach(endUserCountryTagId =>{
+                        _context.ProjectDetail_SalesRegions.Add(new ProjectDetail_SalesRegion
+                        {
+                            SalesRegionTagId = endUserCountryTagId,
+                            ProjectDetailId = projectDetail.Id,
+                        });
+                    });
                     _context.SaveChanges();
                     transaction.Commit();
                     projecInserted = true;

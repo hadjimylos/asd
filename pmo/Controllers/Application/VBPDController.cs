@@ -40,6 +40,9 @@ namespace pmo.Controllers.Application
             project.ProjectClassificationDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectClassification);
             project.DesignAuthorityDropDown = _listService.Tags_SelectList(TagCategoryHelper.DesignAuthority);
             project.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer);
+            project.SalesRegionsDropDown= _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion);
+            project.ExportApplicationTypeDropDown = _listService.Tags_SelectList(TagCategoryHelper.ExportApplicationType);
+
             return View("~/Views/Application/VBPD/Create.cshtml", project);
         }
 
@@ -56,7 +59,10 @@ namespace pmo.Controllers.Application
                 model.ProductLineDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProductLine, model.ProjectCategoryTagId.ToString());
                 model.ProjectClassificationDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectClassification, model.ProjectCategoryTagId.ToString());
                 model.DesignAuthorityDropDown = _listService.Tags_SelectList(TagCategoryHelper.DesignAuthority, model.ProjectCategoryTagId.ToString());
-                model.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer,model.Customers);
+                model.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer, model.Customers);
+                model.SalesRegionsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion, model.SalesRegions);
+                model.ExportApplicationTypeDropDown = _listService.Tags_SelectList(TagCategoryHelper.ExportApplicationType, model.ExportApplicationTypeTagId.ToString());
+
                 return View("~/Views/Application/VBPD/Create.cshtml", model);
             }
            var created =  _projectService.AddNewVBPDProject(model);

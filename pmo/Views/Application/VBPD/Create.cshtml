@@ -61,11 +61,20 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Customers</div>
-                <select asp-for="Customers" asp-items="Model.CustomerDropDown" class="data select2">
+                <div class="label">Export Application Type</div>
+                <select asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2">
+                    <option hidden disabled selected>-- Select --</option>
                 </select>
                 <ul class="errors">
-                    @Html.Partial("_FieldErrors", "Customers")
+                    @Html.Partial("_FieldErrors", "ExportApplicationTypeTagId")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Customers</div>
+                <select asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="data select2">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "CustomersIds")
                 </ul>
             </div>
             <div class="field">
@@ -90,13 +99,20 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Export Restricted Users</div>
-                <input asp-for="ExportRestrictedUsers" class="data" />
+                <div class="label">End Use Countries</div>
+                <input class="data" asp-for="EndUseDestinationCountry" />
                 <ul class="errors">
-                    @Html.Partial("_FieldErrors", "ExportRestrictedUsers")
+                    @Html.Partial("_FieldErrors", "EndUseDestinationCountry")
                 </ul>
             </div>
-
+            <div class="field">
+                <div class="label">Sales Regions</div>
+                <select asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="data select2">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "SalesRegionIds")
+                </ul>
+            </div>
             <div class="field">
                 <input type="submit" class="data btn" value="SUBMIT" />
             </div>

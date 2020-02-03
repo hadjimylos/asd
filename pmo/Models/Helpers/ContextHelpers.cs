@@ -45,7 +45,6 @@ namespace ViewModels.Helpers
         public const string RiskProbability = "risk-probability";
         public const string RiskImpact = "risk-impact";
         public const string DesignAuthority = "design-authority";
-
-
+        public const string ExportApplicationType = "export-application-type";
     }
 }

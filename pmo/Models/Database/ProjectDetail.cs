@@ -17,7 +17,7 @@ namespace dbModels {
         public int ProductLineTagId { get; set; }
         [Required]
         public int ProjectClassificationTagId { get; set; }
-        //[Required]
+        [Required]
         public int ExportApplicationTypeTagId { get; set; }
         [Required]
         public int DesignAuthorityTagId { get; set; }
@@ -27,9 +27,6 @@ namespace dbModels {
         [Required]
         [StringLength(50)]
         public string ExportControlCode { set; get; }
-        [Required]
-        [StringLength(50)]
-        public string ExportRestrictedUsers{ set; get; }
         [Required]
         public string EndUseDestinationCountry { set; get; }
 
