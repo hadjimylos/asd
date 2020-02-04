@@ -1,9 +1,9 @@
 ﻿using System;
 
 namespace dbModels {
-    public class HistoryModel:DatabaseModel {
-        public DateTime StartUpdateDate { get; set; }
-        
-        public DateTime EndUpdateDate { get; set; }
+    public class HistoryModel : DatabaseModel {
+        public int Version { get; set; }
+
+        public DateTime LastModified { get; set; }
     }
 }
