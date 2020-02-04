@@ -1104,6 +1104,16 @@ namespace pmo {
                 E.Property(x => x.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
                 E.Property(x => x.ModifiedByUser).IsModified = true;
             });
+
+            var databaseModel_UpdateRecords = ChangeTracker.Entries<HistoryModel>()
+                .Where(E => E.State == EntityState.Modified)
+                .ToList();
+
+            databaseModel_UpdateRecords.ForEach(model => {
+                model.Property(prop => prop.LastModified).CurrentValue = DateTime.Now;
+                model.Property(prop => prop.LastModified).IsModified = true;
+            });
+
             return base.SaveChanges();
         }
     }
