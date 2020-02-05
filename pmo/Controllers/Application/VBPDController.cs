@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using pmo.Services.Projects;
 using System.Collections.Generic;
 using ViewModels;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using dbModels;
 using pmo.Services.Lists;
 using ViewModels.Helpers;
 
