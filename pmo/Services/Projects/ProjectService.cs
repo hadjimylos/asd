@@ -36,6 +36,7 @@ namespace pmo.Services.Projects
                     _context.Projects.Add(project);
                     _context.SaveChanges();
                     projectDetail.ProjectId = project.Id;
+                    projectDetail.Version=1;
                     _context.ProjectDetails.Add(projectDetail);
                     _context.SaveChanges();
 
