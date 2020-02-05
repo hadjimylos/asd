@@ -1,0 +1,6 @@
+﻿@model (int Value, List<SelectListItem> Dropdown)
+
+<div class="value">
+    <div class="title">@Model.Dropdown.First(f => f.Value == Model.Value.ToString()).Text</div>
+    <div class="id">@Model.Value</div>
+</div>

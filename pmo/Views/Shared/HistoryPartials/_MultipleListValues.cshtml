@@ -1,0 +1,11 @@
+﻿@model (List<int> Values, List<SelectListItem> Dropdown)
+
+@if (Model.Values == null)
+    return;
+
+@foreach (var id in @Model.Values) {
+    <div class="value">
+        <div class="title">@Model.Dropdown.First(f => f.Value == id.ToString()).Text</div>
+        <div class="id">@id</div>
+    </div>
+}

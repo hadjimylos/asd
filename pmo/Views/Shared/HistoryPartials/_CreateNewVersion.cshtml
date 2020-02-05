@@ -1,0 +1,20 @@
+﻿@model CreateVersionViewModel
+
+<div class="continue-component">
+    <div class="wrapper">
+        <div class="validation">
+            <div class="text">
+                By creating a new Version for @Model.ComponentName you will not be able to edit any previous versions (i.e. current active version @Model.CurrentVersion).
+            </div>
+            <div class="actions">
+                <div class="action-wrapper">
+                    <form action="@Model.PostPath" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn" value="LOCK VERSION @Model.CurrentVersion AND CONTINUE TO @(Model.CurrentVersion + 1)" />
+                    </form>
+                    <a class="btn" href="@Model.BackPath">CANCEL</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
