@@ -19,5 +19,11 @@ namespace dbModels {
                     Value = s.Id.ToString(),
                     Selected = selected.Contains(s.Id),
                 }).ToList();
+
+        public List<SelectListItem> GetListItems() =>
+            this.Tags.Select(s => new SelectListItem {
+                Text = s.Name,
+                Value = s.Id.ToString(),
+            }).ToList();
     }
 }
