@@ -11,7 +11,7 @@ namespace CustomValidators {
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
-            var vm = (UserViewModel)validationContext.ObjectInstance;
+           
             var networkUsername = (string)value;
             
             // only check for this specific error (e.g. "required" is another data annotation)

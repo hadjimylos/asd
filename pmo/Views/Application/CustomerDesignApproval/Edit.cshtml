@@ -1,0 +1,98 @@
+﻿@model CustomerDesignApprovalViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+    <form class="form-component" method="post" action="/vbpd/{projectId}/stage/@Model.StageId/customer-design-approval/edit">
+        @Html.AntiForgeryToken()
+        <div class="wrapper">
+            <div class="versioning-section">
+                <div class="choose-history">
+                    <div class="select-history-wrapper">
+                        <select class="select-history select2">
+                            <option>CLEAR</option>
+                            <option value="all">VIEW ALL</option>
+                            @foreach (var version in Model.Versions)
+                            {
+                                <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="versions">
+                    @foreach (var version in Model.Versions)
+                    {
+                        <div showversion="@version.Id" class="version">
+                            <button class="btn full-prepopulate">PREPOPULATE ALL</button>
+                            <div class="values">
+                                <div class="select-single-field">
+                                    <div class="label">Who sent for approval</div>
+                                    <div class="data">@Model.SentForApprovalBy</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Date Sent to Customer for Approval</div>
+                                    <div class="data">@Model.DateSentForApprove</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Approved By</div>
+                                    <div class="data">@Model.ApprovedBy</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Approved Date</div>
+                                    <div class="data">@Model.ApprovedDate</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Upload any pertinent documentation</div>
+                                    <div class="data">@Model.ImportantDocumentation</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="form-component">
+                <div class="fields">
+                    <div class="field">
+                        <div class="label">Who sent for Approval </div>
+                        <input asp-for="SentForApprovalBy" class="data"/>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "SentForApprovalBy")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Date Sent to Customer for Approval</div>
+                        <input asp-for="DateSentForApprove" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "DateSentForApprove")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Approved By</div>
+                        <input asp-for="ApprovedBy"  class="data"/>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ApprovedBy")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Approved Date</div>
+                        <input asp-for="ApprovedDate" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ApprovedDate")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Upload any pertinent documentation</div>
+                        <input asp-for="ImportantDocumentation" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ImportantDocumentation")
+                        </ul>
+                        <div class="field">
+                            <input type="submit" class="data btn" value="SUBMIT" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>

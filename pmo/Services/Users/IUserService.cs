@@ -1,8 +1,5 @@
 ﻿using dbModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 using ViewModels;
 
 namespace pmo.Services.Users
@@ -12,5 +9,6 @@ namespace pmo.Services.Users
         bool AddNewUser(UserViewModel userViewModel);
         bool UpdateUser(UserViewModel userViewModel);
         User GetUserById(int userId);
+        ValidationResult AD_GetUser(string networkUsername);
     }
 }
