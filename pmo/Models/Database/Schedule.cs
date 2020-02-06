@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class Schedule:HistoryModel {
+    public class Schedule:DatabaseModel {
         public int StageId { get; set; }
         
         [ForeignKey("StageId")]

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class Risk: HistoryModel
+    public class Risk: DatabaseModel
     {
         public string Name { get; set; }
 
