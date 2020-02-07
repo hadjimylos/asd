@@ -167,7 +167,6 @@ namespace pmo.Controllers.Application.History
                         try
                         {
                             customerDesignApproval.Id = latestCustomerDesignApproval.Id;
-                            //TODO Upload Documentation as well
                             _context.CustomerDesignApprovals.Update(customerDesignApproval);
                             _context.SaveChanges();
                             transaction.Commit();
