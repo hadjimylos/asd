@@ -118,7 +118,7 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(CustomerDesignApprovalViewModel vm,int stageId)
+        public IActionResult Edit(CustomerDesignApprovalViewModel vm,int stageId )
         {
             var latestCustomerDesignApproval = _context.CustomerDesignApprovals.AsNoTracking()
                 .Where(
@@ -144,6 +144,7 @@ namespace pmo.Controllers.Application.History
                         //TODO Upload Documentation as well
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
+                   
                         transaction.Commit();
                     }
                     catch (Exception e)

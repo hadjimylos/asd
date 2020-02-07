@@ -1,9 +1,11 @@
 ﻿using CustomValidators;
 using dbModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModels.Helpers;
@@ -32,8 +34,8 @@ namespace ViewModels
           
         public new virtual Stage Stage { get; set; }
 
-        //[Required]
-        //public new virtual List<CustomerDesignApprovalUploadedDocumentation> ImportantDocumentation { get; set; }
-               
+        [Required]
+        public List<IFormFile> DesignFile { get; set; }
+
     }
 }

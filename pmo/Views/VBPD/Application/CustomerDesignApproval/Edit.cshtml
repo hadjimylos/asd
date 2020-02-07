@@ -55,7 +55,7 @@
                 <div class="fields">
                     <div class="field">
                         <div class="label">Who sent for Approval </div>
-                        <input asp-for="SentForApprovalBy" class="data"/>
+                        <input asp-for="SentForApprovalBy" class="data" />
                         <ul class="errors">
                             @Html.Partial("_FieldErrors", "SentForApprovalBy")
                         </ul>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="field">
                         <div class="label">Approved By</div>
-                        <input asp-for="ApprovedBy"  class="data"/>
+                        <input asp-for="ApprovedBy" class="data" />
                         <ul class="errors">
                             @Html.Partial("_FieldErrors", "ApprovedBy")
                         </ul>
@@ -83,9 +83,9 @@
                     </div>
                     <div class="field">
                         <div class="label">Upload any pertinent documentation</div>
-                        <input asp-for="ImportantDocumentation" class="data" />
+                        <input asp-for="DesignFile"  class="data" multiple/>
                         <ul class="errors">
-                            @Html.Partial("_FieldErrors", "ImportantDocumentation")
+                            @Html.Partial("_FieldErrors", "DesignFile")
                         </ul>
                         <div class="field">
                             <input type="submit" class="data btn" value="SUBMIT" />
@@ -94,5 +94,4 @@
                 </div>
             </div>
         </div>
-
     </form>

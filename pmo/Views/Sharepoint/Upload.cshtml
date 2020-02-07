@@ -6,6 +6,6 @@
 
 <form  enctype="multipart/form-data" method="post" action="/SharePointUpload/upload">
     @Html.AntiForgeryToken()
-    <input type="file" name="file" />
+    <input type="file" name="file" multiple/>
     <button type="submit">Upload File</button>
 </form>
