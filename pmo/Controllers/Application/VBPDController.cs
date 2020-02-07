@@ -7,37 +7,32 @@ using ViewModels;
 using pmo.Services.Lists;
 using ViewModels.Helpers;
 
-namespace pmo.Controllers.Application
-{
-    [Route("")]
-    public class VBPDController : BaseController
-    {
+namespace pmo.Controllers {
+    [Route("vbpd-projects")]
+    public class VBPDController : BaseController {
         private readonly IProjectService _projectService;
         private readonly IListService _listService;
 
-        public VBPDController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProjectService projectService , IListService listService) : base(context, mapper, httpContextAccessor)
-        { 
+        public VBPDController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProjectService projectService, IListService listService) : base(context, mapper, httpContextAccessor) {
             _projectService = projectService;
             _listService = listService;
         }
 
-        public IActionResult Index()
-        {
+        public IActionResult Index() {
             var projects = _projectService.GetAllVBPDProjectDetailList();
             var vm = _mapper.Map<List<VBPDViewModel>>(projects);
             return View("~/Views/Application/VBPD/Index.cshtml", vm);
         }
 
         [Route("create")]
-        public IActionResult Create()
-        {
+        public IActionResult Create() {
             var project = new VBPDViewModel();
             project.ProjectCategoryTagDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectCategory);
             project.ProductLineDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProductLine);
             project.ProjectClassificationDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectClassification);
             project.DesignAuthorityDropDown = _listService.Tags_SelectList(TagCategoryHelper.DesignAuthority);
             project.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer);
-            project.SalesRegionsDropDown= _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion);
+            project.SalesRegionsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion);
             project.ExportApplicationTypeDropDown = _listService.Tags_SelectList(TagCategoryHelper.ExportApplicationType);
 
             return View("~/Views/Application/VBPD/Create.cshtml", project);
@@ -46,10 +41,8 @@ namespace pmo.Controllers.Application
         [HttpPost]
         [Route("create")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Create(VBPDViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
+        public IActionResult Create(VBPDViewModel model) {
+            if (!ModelState.IsValid) {
 
                 ViewBag.Errors = ModelState;
                 model.ProjectCategoryTagDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectCategory, model.ProjectCategoryTagId.ToString());
@@ -62,9 +55,9 @@ namespace pmo.Controllers.Application
 
                 return View("~/Views/Application/VBPD/Create.cshtml", model);
             }
-           var created =  _projectService.AddNewVBPDProject(model);
-           // if(created)
-                 return RedirectToAction("Index");
+            var created = _projectService.AddNewVBPDProject(model);
+            // if(created)
+            return RedirectToAction("Index");
             //IF FALSE???
         }
     }
