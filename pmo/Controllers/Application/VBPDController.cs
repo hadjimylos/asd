@@ -55,7 +55,8 @@ namespace pmo.Controllers {
 
                 return View("~/Views/Application/VBPD/Create.cshtml", model);
             }
-            var created = _projectService.AddNewVBPDProject(model);
+
+            _projectService.AddNewVBPDProject(model);
             return RedirectToAction("Index");
         }
     }

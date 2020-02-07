@@ -20,12 +20,12 @@ namespace pmo.Services.Projects {
             return projects;
         }
 
-        public bool AddNewVBPDProject(VBPDViewModel model) {
-            var projecInserted = false;
-            try {
+        public void AddNewVBPDProject(VBPDViewModel model) {
+            using (var transaction = _context.Database.BeginTransaction()) {
+                try {
                 var projectDetail = _mapper.Map<ProjectDetail>(model);
                 var project = _mapper.Map<Project>(model);
-                using (var transaction = _context.Database.BeginTransaction()) {
+                
                     _context.Projects.Add(project);
                     _context.SaveChanges();
                     projectDetail.ProjectId = project.Id;
@@ -47,12 +47,11 @@ namespace pmo.Services.Projects {
                     });
                     _context.SaveChanges();
                     transaction.Commit();
-                    projecInserted = true;
                 }
-                return projecInserted;
-            }
-            catch (System.Exception ex) {
-                return projecInserted;
+                catch (System.Exception ex) {
+                    transaction.Rollback();
+                    throw ex;
+                }
             }
 
         }
