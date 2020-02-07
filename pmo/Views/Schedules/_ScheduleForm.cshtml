@@ -1,0 +1,34 @@
+﻿@model List<SchedulesViewModel>
+
+@{
+    //var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
+}
+
+<form class="form-component" method="post" action="/vbpd/@ViewBag.ProjectId/stages/@ViewBag.StageId/component/edit">
+    @*@if (!Model.isCreate)
+    {
+        <input asp-for="Id" type="hidden" />
+    }*@
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            @for (int i = 0; i < Model.Count; i++)           
+            {
+            <div class="field">
+                <div class="label">@Model[i].ScheduleType.Name</div>
+                <input type="hidden" asp-for="@Model[i].TagId" />
+                <input type="hidden" asp-for="@Model[i].Id" />
+                <input type="hidden" asp-for="@Model[i].StageId" />
+                <input asp-for="@Model[i].ViewModelDate" class="data single-select-calendar" type="text" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", Model[i].ViewModelDate)
+                </ul>
+            </div>
+            }
+
+            <div class="field">
+                <input type="submit" class="data btn" value="SUBMIT" />
+            </div>
+        </div>
+    </div>
+</form>

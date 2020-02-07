@@ -11,7 +11,7 @@ namespace dbModels {
         public int TagId { get; set; }
         
         [ForeignKey("TagId")]
-        public virtual Tag SchduleType { get; set; }
+        public virtual Tag ScheduleType { get; set; }
         
         public DateTime Date { get; set; }
     }

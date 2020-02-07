@@ -1,0 +1,8 @@
+﻿@model List<SchedulesViewModel>
+@{
+    ViewData["Title"] = "Detail";
+}
+@Html.AntiForgeryToken()
+<h1>Detail</h1>
+
+@Html.Partial("_ScheduleForm.cshtml", Model)
