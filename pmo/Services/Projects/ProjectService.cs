@@ -2,22 +2,17 @@
 using Microsoft.AspNetCore.Http;
 using pmo.Controllers;
 using dbModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
-namespace pmo.Services.Projects
-{
-    public class ProjectService : BaseController, IProjectService
-    {
-        public ProjectService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
-        {
-           
+namespace pmo.Services.Projects {
+    public class ProjectService : BaseController, IProjectService {
+        public ProjectService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
+
         }
-        public List<ProjectDetail> GetAllVBPDProjectDetailList()
-        {
-            var projects =  _context.ProjectDetails.Include(p => p.Project)
+        public List<ProjectDetail> GetAllVBPDProjectDetailList() {
+            var projects = _context.ProjectDetails.Include(p => p.Project)
                 .Include(t => t.ProjectClassification)
                 .Include(t => t.ProductLine)
                 .Include(t => t.ProjectCategory)
@@ -27,29 +22,25 @@ namespace pmo.Services.Projects
 
         public bool AddNewVBPDProject(VBPDViewModel model) {
             var projecInserted = false;
-            try
-            {
+            try {
                 var projectDetail = _mapper.Map<ProjectDetail>(model);
                 var project = _mapper.Map<Project>(model);
-                using (var transaction = _context.Database.BeginTransaction())
-                {
+                using (var transaction = _context.Database.BeginTransaction()) {
                     _context.Projects.Add(project);
                     _context.SaveChanges();
                     projectDetail.ProjectId = project.Id;
-                    projectDetail.Version=1;
+                    projectDetail.Version = 1;
                     _context.ProjectDetails.Add(projectDetail);
                     _context.SaveChanges();
 
-                    model.CustomerIds.ForEach(customerId =>
-                    {
-                        _context.ProjectDetail_Customers.Add(new ProjectDetail_Customer{
+                    model.CustomerIds.ForEach(customerId => {
+                        _context.ProjectDetail_Customers.Add(new ProjectDetail_Customer {
                             CustomersTagId = customerId,
                             ProjectDetailId = projectDetail.Id,
                         });
                     });
-                    model.SalesRegionIds.ForEach(endUserCountryTagId =>{
-                        _context.ProjectDetail_SalesRegions.Add(new ProjectDetail_SalesRegion
-                        {
+                    model.SalesRegionIds.ForEach(endUserCountryTagId => {
+                        _context.ProjectDetail_SalesRegions.Add(new ProjectDetail_SalesRegion {
                             SalesRegionTagId = endUserCountryTagId,
                             ProjectDetailId = projectDetail.Id,
                         });
@@ -60,12 +51,10 @@ namespace pmo.Services.Projects
                 }
                 return projecInserted;
             }
-            catch (System.Exception ex)
-            {
-                //logger
+            catch (System.Exception ex) {
                 return projecInserted;
             }
-            
+
         }
     }
 }

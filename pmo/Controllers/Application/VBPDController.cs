@@ -56,9 +56,7 @@ namespace pmo.Controllers {
                 return View("~/Views/Application/VBPD/Create.cshtml", model);
             }
             var created = _projectService.AddNewVBPDProject(model);
-            // if(created)
             return RedirectToAction("Index");
-            //IF FALSE???
         }
     }
 }
