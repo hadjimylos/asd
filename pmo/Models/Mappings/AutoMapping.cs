@@ -19,6 +19,7 @@ namespace pmo.Models.Mappings
             CreateMap<ProjectDetail, VBPDProjectDetailViewModel>().ReverseMap();
             CreateMap<CustomerDesignApproval, CustomerDesignApprovalViewModel>().ReverseMap();
             CreateMap<Schedule, SchedulesViewModel>().ReverseMap();
+            CreateMap<InvestmentPlan, InvestmentPlanViewModel>().ReverseMap();
         }
     }
 }

@@ -1,0 +1,109 @@
+﻿@model InvestmentPlanViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+    <form class="form-component" method="post" action="/vbpd/{projectId}/stage/@Model.StageId/investment-plan/edit">
+        @Html.AntiForgeryToken()
+        <div class="wrapper">
+            <div class="versioning-section">
+                <div class="choose-history">
+                    <div class="select-history-wrapper">
+                        <select class="select-history select2">
+                            <option>CLEAR</option>
+                            <option value="all">VIEW ALL</option>
+                            @foreach (var version in Model.Versions)
+                            {
+                                <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="versions">
+                    @foreach (var version in Model.Versions)
+                    {
+                        <div showversion="@version.Id" class="version">
+                            <button class="btn full-prepopulate">PREPOPULATE ALL</button>
+                            <div class="values">
+                                <div class="select-single-field">
+                                    <div class="label">Item #(Item Number)</div>
+                                    <div class="data">@version.ItemNumber</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Item</div>
+                                    <div class="data">@version.Item</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Purchased From</div>
+                                    <div class="data">@version.PurchasedFrom</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Ship to Location</div>
+                                    <div class="data">@version.ShipToLocation</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Cost</div>
+                                    <div class="data">@version.Cost</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Terms</div>
+                                    <div class="data">@version.Terms</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="form-component">
+                <div class="fields">
+                    <div class="field">
+                        <div class="label">Item #(Item Number) </div>
+                        <input asp-for="ItemNumber" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ItemNumber")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Item</div>
+                        <input asp-for="Item" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Item")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Purchased From</div>
+                        <input asp-for="PurchasedFrom" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "PurchasedFrom")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Ship to Location</div>
+                        <input asp-for="ShipToLocation" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ShipToLocation")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Cost</div>
+                        <input asp-for="Cost" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Cost")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Terms</div>
+                        <input asp-for="Terms" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Terms")
+                        </ul>
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
