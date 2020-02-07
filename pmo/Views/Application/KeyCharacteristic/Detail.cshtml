@@ -1,0 +1,33 @@
+﻿@model KeyCharacteristicViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<div class="detail-component">
+    <div class="wrapper">
+        <div class="fields">
+            <div class="select-single-field">
+                <div class="label">Item Number</div>
+                <div class="data">@Model.ItemNumber</div>
+            </div>
+            <div class="select-single-field">
+                <div class="label">Date Sent to Customer for Approval</div>
+                <div class="data">@Model.Requirement</div>
+            </div>
+            <div class="select-single-field">
+                <div class="label">Approved By</div>
+                <div class="data">@Model.MeasuredValue</div>
+            </div>
+            <div class="select-single-field">
+                <div class="label">Approved Date</div>
+                <div class="data">@Model.ExpectedOutcomeRisk</div>
+            </div>
+            <div class="single-list-value">
+                <div class="label">Requirement Source</div>
+                <div class="data">@Model.RequirementSourceText</div>
+            </div>
+        </div>
+    </div>
+</div>
+

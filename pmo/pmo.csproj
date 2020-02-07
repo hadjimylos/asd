@@ -12,6 +12,10 @@
     <Compile Remove="Migrations\20200130142206_AddNewTags_AnnotationsOnDBModel.Designer.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Models\ViewModel\KeyCharacteristicsViewModel.cs~RF57327ab.TMP" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />

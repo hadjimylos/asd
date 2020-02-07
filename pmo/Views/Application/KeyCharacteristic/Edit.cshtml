@@ -1,0 +1,99 @@
+﻿@model KeyCharacteristicViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form class="form-component" method="post" action="/vbpd/{projectId}/stage/@Model.StageId/key-characteristic/edit">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="versioning-section">
+            <div class="choose-history">
+                <div class="select-history-wrapper">
+                    <select class="select-history select2">
+                        <option>CLEAR</option>
+                        <option value="all">VIEW ALL</option>
+                        @foreach (var version in Model.Versions)
+                        {
+                            <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="versions">
+                @foreach (var version in Model.Versions)
+                {
+                    <div showversion="@version.Id" class="version">
+                        <div class="values">
+                            <div class="select-single-field">
+                                <div class="label">Item Number</div>
+                                <div class="data">@version.ItemNumber</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Requirement</div>
+                                <div class="data">@version.Requirement</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">MeasuredValue</div>
+                                <div class="data">@version.MeasuredValue</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Expected Outcome Risk</div>
+                                <div class="data">@version.ExpectedOutcomeRisk</div>
+                            </div>
+                            <div class="single-list-value">
+                                <div class="label">Requirement Source</div>
+                                <div class="data">@version.RequirementSourceText</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-component">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Item Number </div>
+                    <input asp-for="ItemNumber" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ItemNumber")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Requirement</div>
+                    <input asp-for="Requirement" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Requirement")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Measured Value</div>
+                    <input asp-for="MeasuredValue" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "MeasuredValue")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Expected Outcome Risk</div>
+                    <input asp-for="ExpectedOutcomeRisk" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ApprovedDate")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Requirement Source</div>
+                    <select asp-for="RequirementSourceId" asp-items="Model.RequirementSourceDropDown" class="data select2">
+                        <option hidden disabled selected>-- Select --</option>
+                    </select>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "RequirementSourceId")
+                    </ul>
+                </div>
+                <div class="field">
+                            <input type="submit" class="data btn" value="SUBMIT" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

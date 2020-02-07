@@ -20,6 +20,7 @@ namespace pmo.Models.Mappings
             CreateMap<CustomerDesignApproval, CustomerDesignApprovalViewModel>().ReverseMap();
             CreateMap<Schedule, SchedulesViewModel>().ReverseMap();
             CreateMap<InvestmentPlan, InvestmentPlanViewModel>().ReverseMap();
+            CreateMap<KeyCharacteristic, KeyCharacteristicViewModel>().ReverseMap();
         }
     }
 }

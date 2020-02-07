@@ -1112,6 +1112,8 @@ namespace pmo {
             databaseModel_UpdateRecords.ForEach(model => {
                 model.Property(prop => prop.LastModified).CurrentValue = DateTime.Now;
                 model.Property(prop => prop.LastModified).IsModified = true;
+                model.Property(prop => prop.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
+                model.Property(prop => prop.ModifiedByUser).IsModified = true;
             });
 
             return base.SaveChanges();
