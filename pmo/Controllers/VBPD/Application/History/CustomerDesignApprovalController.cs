@@ -1,20 +1,23 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using pmo.Services.Lists;
 using ViewModels;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd/{projectid}/stage/{stageId}/investment-plan")]   
-    public class InvestmentPlanController : BaseController
-    {
-        private readonly string viewPath = "~/Views/Application/InvestmentPlan";
-        public InvestmentPlanController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
+    [Route("vbpd-projects/{projectid}/stage/{stageId}/customer-design-approval")]
+    public class CustomerDesignApprovalController : BaseController {
+        private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
+        private readonly IListService _listService;
+        
+        public CustomerDesignApprovalController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
         }
 
@@ -26,9 +29,9 @@ namespace pmo.Controllers.Application.History
         }
 
         [Route("create-version")]
-        public IActionResult CreateVersion(int stageId, int projectId)
+        public IActionResult CreateVersion(int stageId,int projectId)
         {
-            var currentVersion = _context.InvestmentPlans
+            var currentVersion = _context.CustomerDesignApprovals
                 .AsNoTracking()
                 .Where(
                     w => w.StageId == stageId
@@ -36,9 +39,9 @@ namespace pmo.Controllers.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd/{projectId}/stage/{stageId}/investment-plan/{currentVersion}",
-                PostPath = $"/vbpd/{projectId}/stage/{stageId}/investment-plan/create-version",
-                ComponentName = "Investment Plan",
+                BackPath = $"/vbpd-projects/{projectId}/stage/{stageId}/customer-design-approval/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stage/{stageId}/customer-design-approval/create-version",
+                ComponentName = "Customer Design Approval",
                 CurrentVersion = currentVersion,
             };
 
@@ -48,25 +51,24 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("create-version")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int stageId)
+        public IActionResult PostCreateVerison(int projectId, int stageId)
         {
             // get latest transaction of latest version
-            var latestRecord = _context.InvestmentPlans
+            var latestRecord = _context.CustomerDesignApprovals
                 .AsNoTracking()
                 .Where(w => w.StageId == stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
             // NOTE!!!!!!!!: here please check to see if first record. If so redirect to edit only. (not necessary for Project Detail specifically)
-            if (latestRecord == null)
-            {
+            if (latestRecord == null) {
                 RedirectToAction("Edit");
             }
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
-
+ 
                     // set variables for create
                     latestRecord.Id = 0;
                     latestRecord.Version = ++latestRecord.Version;
@@ -79,64 +81,67 @@ namespace pmo.Controllers.Application.History
                     transaction.Rollback();
                     throw e;
                 }
+
                 return RedirectToAction("Edit", new { stageId });
             }
         }
+
 
         [Route("edit")]
         public IActionResult Edit(int stageId)
         {
             // always populate latest version in edit
             //Tha skasei ama einai 0
-            var currentVersion = _context.InvestmentPlans
+            var currentVersion = _context.CustomerDesignApprovals
                  .AsNoTracking()
                  .Where(w => w.StageId == stageId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
 
-            if (currentVersion == null)
+            
+           if (currentVersion == null)
             {
-                var vm = new InvestmentPlanViewModel()
+                var vm = new CustomerDesignApprovalViewModel()
                 {
                     StageId = stageId,
-                    Versions = new List<InvestmentPlanViewModel>(),
+                    Versions = new List<CustomerDesignApprovalViewModel>(),
                     Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault()
                 };
-
+           
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var model = GetViewModel(stageId, currentVersion.Version);
-            model.Versions = GetVersionHistory(stageId);
+            model.Versions = GetVersionHistory(stageId);   
             return View($"{viewPath}/Edit.cshtml", model);
         }
+
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(InvestmentPlanViewModel vm, int stageId)
+        public IActionResult Edit(CustomerDesignApprovalViewModel vm,int stageId)
         {
-            var latestInvestmentPlan = _context.InvestmentPlans.Where(
+            var latestCustomerDesignApproval = _context.CustomerDesignApprovals.Where(
                   w => w.StageId == stageId
               ).OrderByDescending(o => o.CreateDate)
               .FirstOrDefault();
 
             if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState;
+            {   ViewBag.Errors = ModelState;
                 vm.Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault();
                 vm.Versions = GetVersionHistory(stageId);
-                vm.Version = latestInvestmentPlan == null ? 0 : latestInvestmentPlan.Version;
+                vm.Version = latestCustomerDesignApproval == null ?  0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var investmentPlan = _mapper.Map<InvestmentPlan>(vm);
-            //first version
-            if (latestInvestmentPlan == null)
+            var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
+            if (latestCustomerDesignApproval == null)
             {
                 using (var transaction = _context.Database.BeginTransaction())
                 {
                     try
                     {
-                        investmentPlan.Version = 1;
-                        _context.InvestmentPlans.Add(investmentPlan);
+                        customerDesignApproval.Version = 1;
+                        //TODO Upload Documentation as well
+                        _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
                         transaction.Commit();
                     }
@@ -151,16 +156,16 @@ namespace pmo.Controllers.Application.History
             else
             {
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
-                var isUpdate = latestInvestmentPlan.ModifiedByUser.ToLower() == currentUser.ToLower();
+                var isUpdate = latestCustomerDesignApproval.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate)
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            investmentPlan.Version = latestInvestmentPlan.Version;
+                            customerDesignApproval.Version++;
                             //TODO Upload Documentation as well
-                            _context.InvestmentPlans.Update(investmentPlan);
+                            _context.CustomerDesignApprovals.Update(customerDesignApproval);
                             _context.SaveChanges();
                             transaction.Commit();
                         }
@@ -177,11 +182,14 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
-                            investmentPlan.Version = latestInvestmentPlan.Version;
+                            customerDesignApproval.Version++;
                             // save to primary table
-                            _context.InvestmentPlans.Update(investmentPlan);
+                            _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
-                            transaction.Commit();
+
+                            InsertOneToMany(customerDesignApproval.Id);
+
+                            // set previous versions & transactions to locked
                         }
                         catch (Exception e)
                         {
@@ -190,38 +198,58 @@ namespace pmo.Controllers.Application.History
                         }
                     }
                 }
+               
+
             }
 
-            return RedirectToAction("Detail", new { stageId, version = investmentPlan.Version });
+
+            return RedirectToAction("Detail", new { stageId, version = customerDesignApproval.Version });
         }
-        private InvestmentPlanViewModel GetViewModel(int stageId, int version)
+        private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
         {
-            var model = _context.InvestmentPlans.Where(
+            var model = _context.CustomerDesignApprovals.Where(
                 s => s.StageId == stageId && s.Version == version
             ).OrderByDescending(o => o.CreateDate)
-            .Include(s => s.Stage)
+            .Include(i => i.ImportantDocumentation)
+            .Include(s=>s.Stage)
             .FirstOrDefault();
 
-            var vm = _mapper.Map<InvestmentPlanViewModel>(model);
 
+
+            var vm = _mapper.Map<CustomerDesignApprovalViewModel>(model);
+       
             return vm;
         }
-
-        private List<InvestmentPlanViewModel> GetVersionHistory(int stageId)
+        private List<CustomerDesignApprovalViewModel> GetVersionHistory(int stageId)
         {
-            var grouped = _context.InvestmentPlans
+            var grouped = _context.CustomerDesignApprovals
                 .Where(w => w.StageId == stageId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();
 
-            if (grouped.Count == 0) { return new List<InvestmentPlanViewModel>(); }
-            List<InvestmentPlan> versions = new List<InvestmentPlan>();
+            if(grouped.Count == 0)
+            {
+                return new List<CustomerDesignApprovalViewModel>();
+            }
+            
+            List<CustomerDesignApproval> versions = new List<CustomerDesignApproval>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            return _mapper.Map<List<InvestmentPlanViewModel>>(versions);
+
+            return _mapper.Map<List<CustomerDesignApprovalViewModel>>(versions);
         }
-
-
-
+        private void SetDropdowns(CustomerDesignApprovalViewModel model)
+        {
+            var teamMembers = _context.Project_User.Where(p => p.ProjectId == model.Stage.ProjectId).Include(u => u.User).Select(s => new SelectListItem() {
+               Text=s.User.NetworkUsername,
+               Value=s.User.Id.ToString(),
+            }).Distinct().ToList();
+        }
+        private void InsertOneToMany(int CustomerDesignApprovalId)
+        {
+            // TODO: insert one to many
+            
+            // dead code.
+        }
     }
 }

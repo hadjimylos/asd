@@ -12,9 +12,9 @@ using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers {
-    [Route("vbpd/{projectId}/project-detail")]
+    [Route("vbpd-projects/{projectId}/project-detail")]
     public class ProjectDetailController : BaseController {
-        private readonly string viewPath = "~/Views/Application/ProjectDetail";
+        private readonly string viewPath = "~/Views/VBPD/Application/ProjectDetail";
         private readonly IListService _listService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -53,8 +53,8 @@ namespace pmo.Controllers {
                 ).Max(m => m.Version);
 
             var model = new CreateVersionViewModel {
-                BackPath = $"/vbpd/{projectId}",
-                PostPath = $"/vbpd/{projectId}/project-detail/create-version",
+                BackPath = $"/vbpd-projects/{projectId}",
+                PostPath = $"/vbpd-projects/{projectId}/project-detail/create-version",
                 ComponentName = "Project Detail",
                 CurrentVersion = currentVersion,
             };

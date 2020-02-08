@@ -13,10 +13,11 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers
 {
-    [Route("projects/{id}/team-members")]
+    [Route("vbpd-projects/{id}/team-members")]
     public class TeamMembersController : BaseController
     {
         private readonly IListService _listService;
+        private readonly string path = "~/Views/VBPD/Application/TeamMembers";
 
         public TeamMembersController(EfContext context, IMapper mapper, IListService listService, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
@@ -51,7 +52,7 @@ namespace pmo.Controllers
 
             SetDropdowns(teamMembersViewModel);
 
-            return View("~/Views/Application/TeamMembers/Edit.cshtml", teamMembersViewModel);
+            return View($"{path}/Edit.cshtml", teamMembersViewModel);
         }
 
         [HttpPost]
@@ -68,7 +69,7 @@ namespace pmo.Controllers
 
                 // append errors
                 ViewBag.Errors = ModelState;
-                return View("~/Views/Application/TeamMembers/Edit.cshtml", teamMembersViewModel);
+                return View($"{path}/Edit.cshtml", teamMembersViewModel);
             }
 
             using (var transaction = _context.Database.BeginTransaction()) {

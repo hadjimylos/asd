@@ -12,7 +12,7 @@ namespace pmo.Controllers {
     public class VBPDController : BaseController {
         private readonly IProjectService _projectService;
         private readonly IListService _listService;
-        private readonly string path = "~/Views/Application/VBPD";
+        private readonly string path = "~/Views/VBPD/Application/VBPD";
 
         public VBPDController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProjectService projectService, IListService listService) : base(context, mapper, httpContextAccessor) {
             _projectService = projectService;
@@ -54,7 +54,7 @@ namespace pmo.Controllers {
                 model.SalesRegionsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion, model.SalesRegions);
                 model.ExportApplicationTypeDropDown = _listService.Tags_SelectList(TagCategoryHelper.ExportApplicationType, model.ExportApplicationTypeTagId.ToString());
 
-                return View("~/Views/Application/VBPD/Create.cshtml", model);
+                return View($"{path}/Create.cshtml", model);
             }
 
             _projectService.AddNewVBPDProject(model);

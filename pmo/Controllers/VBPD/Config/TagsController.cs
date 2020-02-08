@@ -10,9 +10,11 @@ using ViewModels;
 
 namespace pmo.Controllers.Admin
 {
-    [Route("admin/tags")]
+    [Route("vbpd-admin/tags")]
     public class Tags : BaseController
     {
+        private readonly string path = "~/Views/VBPD/Config/Tags";
+
         public Tags(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
 
         }
@@ -20,7 +22,7 @@ namespace pmo.Controllers.Admin
         public IActionResult Index()
         {
             var vm = _mapper.Map<List<TagCategoryViewModel>>(_context.TagCategories.ToList());
-            return View(vm);
+            return View($"{path}/Index.cshtml", vm);
         }
 
         [Route("categories/create")]
@@ -30,7 +32,7 @@ namespace pmo.Controllers.Admin
             {
                 isCreate = true,
             };
-            return View(tagcategoryViewModel);
+            return View($"{path}/Create.cshtml", tagcategoryViewModel);
         }
 
         [HttpPost]
@@ -51,7 +53,7 @@ namespace pmo.Controllers.Admin
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                return View(tagcategoryViewModel);
+                return View($"{path}/Create.cshtml", tagcategoryViewModel);
             }
 
             var domainModel = _mapper.Map<TagCategory>(tagcategoryViewModel);
@@ -70,7 +72,7 @@ namespace pmo.Controllers.Admin
 
             var vm = _mapper.Map<TagCategoryViewModel>(tagcategories);
             vm.isCreate = false;
-            return View(vm);
+            return View($"{path}/Edit.cshtml", vm);
         }
 
         [HttpPost]
@@ -92,7 +94,7 @@ namespace pmo.Controllers.Admin
                 var tagcategories = _context.TagCategories.Include(t => t.Tags).Where(i => i.Id == model.Id).FirstOrDefault();
                 model.Tags = tagcategories.Tags;
                 ViewBag.Errors = ModelState;
-                return View(model);
+                return View($"{path}/Edit.cshtml", model);
             }
 
             var domainModel = _mapper.Map<TagCategory>(model);
@@ -107,7 +109,7 @@ namespace pmo.Controllers.Admin
         
         {
             var vm = _mapper.Map<List<TagViewModel>>(_context.Tags.Include(cat => cat.TagCategory).OrderBy(x => x.TagCategory.FriendlyName).ToList());
-            return View(vm);
+            return View($"{path}/Index_Tags.cshtml", vm);
         }
 
         [Route("create")]
@@ -118,7 +120,7 @@ namespace pmo.Controllers.Admin
                 isCreate = true,
             };
             tagsViewModel.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName");
-            return View(tagsViewModel);
+            return View($"{path}/Create_Tags.cshtml", tagsViewModel);
         }
 
         [HttpPost]
@@ -126,14 +128,12 @@ namespace pmo.Controllers.Admin
         [Route("create")]
         public IActionResult Create_Tags(TagViewModel tagviewModel)
         {
-            
-
             if (!ModelState.IsValid)
             {
                 tagviewModel.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName");
 
                 ViewBag.Errors = ModelState;
-                return View(tagviewModel);
+                return View($"{path}/Create_Tags.cshtml", tagviewModel);
             }
 
             var domainModel = _mapper.Map<Tag>(tagviewModel);
@@ -153,7 +153,7 @@ namespace pmo.Controllers.Admin
             var vm = _mapper.Map<TagViewModel>(tag);
             vm.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName", vm.TagCategoryId);
             vm.isCreate = false;
-            return View(vm);
+            return View($"{path}/Edit_Tags.cshtml", vm);
         }
 
         [HttpPost]
@@ -167,7 +167,7 @@ namespace pmo.Controllers.Admin
                 model.TagCategorySelectList = new SelectList(_context.TagCategories.ToList(), "Id", "FriendlyName", model.TagCategoryId);
 
                 ViewBag.Errors = ModelState;
-                return View(model);
+                return View($"{path}/Edit_Tags.cshtml", model);
             }
 
             var domainModel = _mapper.Map<Tag>(model);
@@ -176,7 +176,5 @@ namespace pmo.Controllers.Admin
 
             return RedirectToAction("Index_Tags");
         }
-
-
     }
 }

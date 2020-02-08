@@ -8,8 +8,9 @@ using System.Linq;
 using ViewModels;
 
 namespace pmo.Controllers {
-    [Route("admin/roles")]
+    [Route("vbpd-admin/roles")]
     public class RolesController : BaseController {
+        private readonly string path = "~/Views/Admin/Roles";
 
         public RolesController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
 
@@ -18,7 +19,7 @@ namespace pmo.Controllers {
         public IActionResult Index()
         {
             var vm = _mapper.Map<List<RoleViewModel>>(_context.Roles.ToList());
-            return View(vm);
+            return View($"{path}/Index.cshtml", vm);
         }
 
 
@@ -30,7 +31,7 @@ namespace pmo.Controllers {
            
                 isCreate = true,
             };
-            return View(RoleViewModel);
+            return View($"{path}/Create.cshtml", RoleViewModel);
         }
 
         [HttpPost]
@@ -51,7 +52,7 @@ namespace pmo.Controllers {
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                return View(roleViewModel);
+                return View($"{path}/Create.cshtml", roleViewModel);
             }
 
             var domainModel = _mapper.Map<Role>(roleViewModel);
@@ -71,7 +72,7 @@ namespace pmo.Controllers {
 
             var vm = _mapper.Map<RoleViewModel>(role);
             vm.isCreate = false;
-            return View(vm);
+            return View($"{path}/Edit.cshtml", vm);
         }
 
         [HttpPost]
@@ -90,7 +91,7 @@ namespace pmo.Controllers {
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                return View(model);
+                return View($"{path}/Edit.cshtml", model);
             }
 
             var domainModel = _mapper.Map<Role>(model);
@@ -99,6 +100,5 @@ namespace pmo.Controllers {
 
             return RedirectToAction(actionName: "Index");
         }
-    
     }
 }

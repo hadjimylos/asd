@@ -2,20 +2,18 @@
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pmo.Services.Lists;
 using pmo.Services.Users;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers {
-    [Route("admin/users")]
+    [Route("vbpd-admin/users")]
     public class UsersController : BaseController {
-
+        private readonly string path = "~/Views/Admin/Users";
         private readonly IUserService _userService;
         private readonly IListService _listService;
 
@@ -27,7 +25,7 @@ namespace pmo.Controllers {
         public IActionResult Index()
         {
             var vm = _mapper.Map<List<UserViewModel>>(_context.Users.Include(i => i.Role).ToList());
-            return View(vm);
+            return View($"{path}/Index.cshtml", vm);
         }
 
         [Route("create")]
@@ -36,7 +34,7 @@ namespace pmo.Controllers {
             userViewModel.RoleList = _listService.Roles();
             userViewModel.CitizenshipsList = _listService.Tags_SelectList(TagCategoryHelper.Citizenships); 
 
-            return View(userViewModel);
+            return View($"{path}/Create.cshtml", userViewModel);
         }
 
         [HttpPost]
@@ -51,7 +49,7 @@ namespace pmo.Controllers {
                 userViewModel.CitizenshipsList = _listService.Tags_MultiSelectList(TagCategoryHelper.Citizenships);
 
                 ViewBag.Errors = ModelState;
-                return View(userViewModel);
+                return View($"{path}/Create.cshtml", userViewModel);
             }
 
             _userService.AddNewUser(userViewModel);
@@ -72,7 +70,7 @@ namespace pmo.Controllers {
             var Ready= _context.Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
             vm.CitizenshipsList = _listService.Tags_MultiSelectList<Tag>(TagCategoryHelper.Citizenships, Ready);
             vm.isCreate = false;
-            return View(vm);
+            return View($"{path}/Edit.cshtml", vm);
 
         }
 
@@ -87,7 +85,7 @@ namespace pmo.Controllers {
                 var Ready = _context.Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
                 vm.CitizenshipsList = _listService.Tags_MultiSelectList<Tag>(TagCategoryHelper.Citizenships, Ready);
                 ViewBag.Errors = ModelState;
-                return View(vm);
+                return View($"{path}/Edit.cshtml", vm);
             }
             _userService.UpdateUser(vm);
             return RedirectToAction(actionName: "Index");

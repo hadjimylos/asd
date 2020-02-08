@@ -8,8 +8,9 @@ using System.Linq;
 using ViewModels;
 
 namespace pmo.Controllers {
-    [Route("admin/stage-config")]
+    [Route("vbpd-admin/stage-config")]
     public class StageConfigController : BaseController {
+        private readonly string path = "~/Views/VBPD/Config/StageConfig";
 
         public StageConfigController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
 
@@ -17,7 +18,7 @@ namespace pmo.Controllers {
 
         public IActionResult Index() {
             var vm = _mapper.Map<List<StageConfigViewModel>>(_context.StageConfigs.ToList());
-            return View(vm);
+            return View($"{path}/Index.cshtml", vm);
         }
 
         [Route("create")]
@@ -27,7 +28,7 @@ namespace pmo.Controllers {
                 StageNumber = currentStage,
                 isCreate = true,
             };
-            return View(stageconfigViewModel);
+            return View($"{path}/Create.cshtml", stageconfigViewModel);
         }
 
         [HttpPost]
@@ -40,7 +41,7 @@ namespace pmo.Controllers {
 
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
-                return View(model);
+                return View($"{path}/Create.cshtml", model);
             }
 
             var domainModel = _mapper.Map<StageConfig>(model);
@@ -69,7 +70,7 @@ namespace pmo.Controllers {
 
             SetTagList(vm);
 
-            return View(vm);
+            return View($"{path}/Edit.cshtml", vm);
         }
 
         [HttpPost]
@@ -88,7 +89,7 @@ namespace pmo.Controllers {
             if (!ModelState.IsValid) {
                 SetTagList(model);
                 ViewBag.Errors = ModelState;
-                return View(model);
+                return View($"{path}/Edit.cshtml", model);
             }
 
             var domainModel = _mapper.Map<StageConfig>(model);
@@ -146,7 +147,5 @@ namespace pmo.Controllers {
 
             model.ScheduleIds = selected;
         }
-
-
     }
 }

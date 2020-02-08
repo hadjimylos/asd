@@ -14,10 +14,10 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd/{projectid}/stage/{stageId}/key-characteristic")]
+    [Route("vbpd-projects/{projectid}/stage/{stageId}/key-characteristic")]
     public class KeyCharacteristicController : BaseController
     {
-        private readonly string viewPath = "~/Views/Application/KeyCharacteristic";
+        private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
         private readonly IListService _listService;
 
         public KeyCharacteristicController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
@@ -50,12 +50,11 @@ namespace pmo.Controllers.Application.History
                     Versions = new List<KeyCharacteristicViewModel>(),
                     Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault(),
                     RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
-                                                                    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                                                                    .ToList().Select(s => new SelectListItem
-                                                                    {
-                                                                        Value = s.Id.ToString(),
-                                                                        Text = s.Name,
-                                                                    }).ToList()
+                        .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
+                        .ToList().Select(s => new SelectListItem {
+                            Value = s.Id.ToString(),
+                            Text = s.Name,
+                        }).ToList()
                 };
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
@@ -63,13 +62,13 @@ namespace pmo.Controllers.Application.History
             var model = GetViewModel(stageId, currentVersion.Version);
             model.Versions = GetVersionHistory(stageId);
             model.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
-                                                    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                                                    .ToList().Select(s => new SelectListItem
-                                                    {
-                                                        Value = s.Id.ToString(),
-                                                        Text = s.Name,
-                                                        Selected = s.Id == model.RequirementSourceId
-                                                    }).ToList();
+                .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
+                .ToList().Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name,
+                    Selected = s.Id == model.RequirementSourceId
+                }).ToList();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -91,13 +90,13 @@ namespace pmo.Controllers.Application.History
                 vm.Versions = GetVersionHistory(stageId);
                 vm.Version = latestKeyCharacteristics == null ? 0 : latestKeyCharacteristics.Version;
                 vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
-                                                                    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                                                                    .ToList().Select(s => new SelectListItem
-                                                                    {
-                                                                        Value = s.Id.ToString(),
-                                                                        Text = s.Name,
-                                                                        Selected = s.Id == vm.RequirementSourceId
-                                                                    }).ToList();
+                    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
+                    .ToList().Select(s => new SelectListItem
+                    {
+                        Value = s.Id.ToString(),
+                        Text = s.Name,
+                        Selected = s.Id == vm.RequirementSourceId
+                    }).ToList();
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var keyCharacteristic = _mapper.Map<KeyCharacteristic>(vm);
@@ -142,8 +141,8 @@ namespace pmo.Controllers.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd/{projectId}/stage/{stageId}/key-characteristic{currentVersion}",
-                PostPath = $"/vbpd/{projectId}/stage/{stageId}/key-characteristic/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stage/{stageId}/key-characteristic/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stage/{stageId}/key-characteristic/create-version",
                 ComponentName = "Key Characteristic",
                 CurrentVersion = currentVersion,
             };
@@ -154,7 +153,7 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("create-version")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int projectId, int stageId)
+        public IActionResult PostCreateVerison(int stageId)
         {
             // get latest transaction of latest version
             var latestRecord = _context.KeyCharacteristics
@@ -211,6 +210,5 @@ namespace pmo.Controllers.Application.History
             vm.RequirementSourceText = model.RequirementSource.Name;
             return vm;
         }
-
     }
 }
