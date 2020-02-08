@@ -35,9 +35,3 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
-
-# npm
-*/node_modules/*
-
-# front end compiled files stored here (webpack)
-*/wwwroot/*
