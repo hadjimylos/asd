@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 
 namespace ViewModels.Helpers
@@ -10,7 +13,7 @@ namespace ViewModels.Helpers
         public static IQueryable<T> IncludeAll<T>(this IQueryable<T> queryable) where T : class {
             var type = typeof(T);
             var properties = type.GetProperties();
-            
+
             // get all virtual properties of this db object
             var virtualProperties = properties.Where (
                 w => w.GetGetMethod().IsVirtual
@@ -43,7 +46,23 @@ namespace ViewModels.Helpers
             return queryable;
         }
 
-   
+        public static string GetDelimited(List<string> items) {
+            if (items.Count == 0)
+                return string.Empty;
+            if (items.Count == 1)
+                return items.First();
+
+            var withDelimiter = items.Select(s => $"{s}, ");
+            var split = string.Join(string.Empty, withDelimiter);
+            return split.Remove(split.Length - 2);
+        }
+
+        public static string GetFriendlyKeyName(string key) {
+            string keyName = key.Replace("-", " ");
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
+            return textInfo.ToTitleCase(keyName);
+        }
+    }
 
     public static class ActiveDirectoryHelper
     {
