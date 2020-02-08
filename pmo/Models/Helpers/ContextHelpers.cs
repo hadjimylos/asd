@@ -19,11 +19,29 @@ namespace ViewModels.Helpers
             // append Include to each of these properties in queryable
             virtualProperties.ForEach(f => {
                 queryable = queryable.Include(f.Name);
+
+                // get enumerable lists and run self for each of these methods
+                // specifically for reverse navigation items (e.g. List<related_object>)
+                if (f.PropertyType.FullName.Contains("List")) {
+                    string childProperty = f.PropertyType.GetGenericArguments().First().FullName;
+                    var navProperty = Type.GetType(childProperty);
+                    var navProperties = navProperty.GetProperties();
+
+                    // get all virtual properties of this db object
+                    var navVirtualProperties = navProperties.Where(
+                        w => 
+                            w.GetGetMethod().IsVirtual &&
+                            w.Name != type.Name // do not load self each time
+                    ).ToList();
+
+                    navVirtualProperties.ForEach(navProperty => {
+                        queryable = queryable.Include($"{f.Name}.{navProperty.Name}");
+                    });
+                }
             });
 
             return queryable;
         }
-    }
 
    
 
