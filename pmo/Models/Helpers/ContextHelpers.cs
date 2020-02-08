@@ -1,8 +1,32 @@
-﻿using System.DirectoryServices;
+﻿using Microsoft.EntityFrameworkCore;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
 
 namespace ViewModels.Helpers
 {
+    public static class Helpers {
+        // extend IQueryable to Include all virtual objects
+        public static IQueryable<T> IncludeAll<T>(this IQueryable<T> queryable) where T : class {
+            var type = typeof(T);
+            var properties = type.GetProperties();
+            
+            // get all virtual properties of this db object
+            var virtualProperties = properties.Where (
+                w => w.GetGetMethod().IsVirtual
+            ).ToList();
+
+            // append Include to each of these properties in queryable
+            virtualProperties.ForEach(f => {
+                queryable = queryable.Include(f.Name);
+            });
+
+            return queryable;
+        }
+    }
+
+   
+
     public static class ActiveDirectoryHelper
     {
         public static DirectoryEntry GetUsersManager(string network_username)
