@@ -12,6 +12,7 @@ namespace pmo.Controllers {
     public class VBPDController : BaseController {
         private readonly IProjectService _projectService;
         private readonly IListService _listService;
+        private readonly string path = "~/Views/Application/VBPD";
 
         public VBPDController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProjectService projectService, IListService listService) : base(context, mapper, httpContextAccessor) {
             _projectService = projectService;
@@ -21,7 +22,7 @@ namespace pmo.Controllers {
         public IActionResult Index() {
             var projects = _projectService.GetAllVBPDProjectDetailList();
             var vm = _mapper.Map<List<VBPDViewModel>>(projects);
-            return View("~/Views/Application/VBPD/Index.cshtml", vm);
+            return View($"{path}/Index.cshtml", vm);
         }
 
         [Route("create")]
@@ -35,7 +36,7 @@ namespace pmo.Controllers {
             project.SalesRegionsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion);
             project.ExportApplicationTypeDropDown = _listService.Tags_SelectList(TagCategoryHelper.ExportApplicationType);
 
-            return View("~/Views/Application/VBPD/Create.cshtml", project);
+            return View($"{path}/Create.cshtml", project);
         }
 
         [HttpPost]
