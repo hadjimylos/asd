@@ -113,7 +113,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(ProductIntroChecklistViewModel vm, int stageId)
         {
-            var latestProductIntoChecklist = _context.ProductIntroChecklists.Where(
+            var latestProductIntoChecklist = _context.ProductIntroChecklists.AsNoTracking().Where(
                   w => w.StageId == stageId
               ).OrderByDescending(o => o.CreateDate)
               .FirstOrDefault();
@@ -155,9 +155,10 @@ namespace pmo.Controllers.VBPD.Application.History
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
+                        productIntroChecklist.Version = latestProductIntoChecklist.Version;
                         try
                         {
-                            productIntroChecklist.Version = latestProductIntoChecklist.Version;
+                            productIntroChecklist.Id = latestProductIntoChecklist.Id;
                             _context.ProductIntroChecklists.Update(productIntroChecklist);
                             _context.SaveChanges();
                             transaction.Commit();
@@ -175,8 +176,8 @@ namespace pmo.Controllers.VBPD.Application.History
                     {
                         try
                         {
-                            productIntroChecklist.Version = latestProductIntoChecklist.Version;
-                            _context.ProductIntroChecklists.Update(productIntroChecklist);
+                            
+                            _context.ProductIntroChecklists.Add(productIntroChecklist);
                             _context.SaveChanges();
                             transaction.Commit();
                         }
