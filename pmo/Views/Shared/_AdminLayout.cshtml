@@ -4,26 +4,46 @@
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/screen.css" />
+    <link rel="stylesheet" href="~/roboto-fontface.css" />
 </head>
 <body>
-    <div class="nav-component">
+    <div class="layout-inline-component">
         <div class="wrapper">
-            <div class="side-nav-groups">
-                <a href="/admin">ADMIN</a>
-                <a href="/admin/stage-config">STAGE/GATE CONFIGURATION</a>
-                <a href="/admin/roles">ROLES</a>
-                <a href="/admin/tags/categories">TAG CATEGORIES</a>
-                <a href="/admin/tags">TAGS</a>
-                <a href="/admin/users">USERS</a> 
+            <div class="nav-left-component">
+                <div class="wrapper">
+                    <a href="/admin" class="title">
+                        <h1>PMO</h1>
+                        <h4>Administration</h4>
+                    </a>
+                    <div class="navs">
+                        <div class="nav">
+                            <a class="item-wrapper" href="/admin/users">
+                                <div class="descrip">Users</div>
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="item-wrapper" href="/admin/roles">
+                                <div class="descrip">Roles</div>
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="item-wrapper" href="/vbpd-admin">
+                                <div class="descrip">VBPD Configurations</div>
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="item-wrapper" href="/vbpd-lite-admin">
+                                <div class="descrip">VBPD Lite Configuration</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="page">
+            <div class="page-section">
                 @RenderBody()
             </div>
         </div>
     </div>
-
-
-    
     <script src="~/bundle.js"></script>
 </body>
 </html>
