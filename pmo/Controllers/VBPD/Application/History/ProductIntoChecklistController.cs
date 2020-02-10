@@ -176,7 +176,6 @@ namespace pmo.Controllers.VBPD.Application.History
                     {
                         try
                         {
-                            
                             _context.ProductIntroChecklists.Add(productIntroChecklist);
                             _context.SaveChanges();
                             transaction.Commit();

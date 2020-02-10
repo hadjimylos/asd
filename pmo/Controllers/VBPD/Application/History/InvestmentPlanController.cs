@@ -112,7 +112,8 @@ namespace pmo.Controllers.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(InvestmentPlanViewModel vm, int stageId)
         {
-            var latestInvestmentPlan = _context.InvestmentPlans.Where(
+            var latestInvestmentPlan = _context.InvestmentPlans.AsNoTracking()
+                .Where(
                   w => w.StageId == stageId
               ).OrderByDescending(o => o.CreateDate)
               .FirstOrDefault();
@@ -152,11 +153,12 @@ namespace pmo.Controllers.Application.History
                 var isUpdate = latestInvestmentPlan.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate)
                 {
+                    investmentPlan.Version = latestInvestmentPlan.Version;
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            investmentPlan.Version = latestInvestmentPlan.Version;
+                            investmentPlan.Id = latestInvestmentPlan.Id;
                             //TODO Upload Documentation as well
                             _context.InvestmentPlans.Update(investmentPlan);
                             _context.SaveChanges();
@@ -175,9 +177,7 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
-                            investmentPlan.Version = latestInvestmentPlan.Version;
-                            // save to primary table
-                            _context.InvestmentPlans.Update(investmentPlan);
+                            _context.InvestmentPlans.Add(investmentPlan);
                             _context.SaveChanges();
                             transaction.Commit();
                         }

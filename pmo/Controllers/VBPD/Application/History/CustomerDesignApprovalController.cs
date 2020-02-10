@@ -120,7 +120,8 @@ namespace pmo.Controllers.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(CustomerDesignApprovalViewModel vm,int stageId)
         {
-            var latestCustomerDesignApproval = _context.CustomerDesignApprovals.Where(
+            var latestCustomerDesignApproval = _context.CustomerDesignApprovals.AsNoTracking()
+                .Where(
                   w => w.StageId == stageId
               ).OrderByDescending(o => o.CreateDate)
               .FirstOrDefault();
@@ -159,11 +160,12 @@ namespace pmo.Controllers.Application.History
                 var isUpdate = latestCustomerDesignApproval.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate)
                 {
+                    customerDesignApproval.Version = latestCustomerDesignApproval.Version;
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            customerDesignApproval.Version++;
+                            customerDesignApproval.Id = latestCustomerDesignApproval.Id;
                             //TODO Upload Documentation as well
                             _context.CustomerDesignApprovals.Update(customerDesignApproval);
                             _context.SaveChanges();
@@ -182,11 +184,9 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
-                            customerDesignApproval.Version++;
-                            // save to primary table
+
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
-
                             InsertOneToMany(customerDesignApproval.Id);
 
                             // set previous versions & transactions to locked
