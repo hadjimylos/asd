@@ -81,6 +81,7 @@ namespace pmo.Services.SharePoint
                 using (StreamReader sr = new StreamReader(wresp.GetResponseStream()))
                 {
                     result = sr.ReadToEnd();
+                    JObject resultObj = JObject.Parse(result);
                     status = true;
                     return result;
                 }

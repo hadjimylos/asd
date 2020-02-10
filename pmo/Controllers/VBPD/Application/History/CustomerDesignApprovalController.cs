@@ -14,11 +14,14 @@ namespace pmo.Controllers.Application.History
 {
     [Route("vbpd-projects/{projectid}/stage/{stageId}/customer-design-approval")]
     public class CustomerDesignApprovalController : BaseController {
+
         private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
         private readonly IListService _listService;
+
         
         public CustomerDesignApprovalController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
+            
         }
 
         [Route("{version}")]
@@ -126,6 +129,7 @@ namespace pmo.Controllers.Application.History
               ).OrderByDescending(o => o.CreateDate)
               .FirstOrDefault();
 
+
             if (!ModelState.IsValid)
             {   ViewBag.Errors = ModelState;
                 vm.Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault();
@@ -133,18 +137,22 @@ namespace pmo.Controllers.Application.History
                 vm.Version = latestCustomerDesignApproval == null ?  0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
+
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
+
             if (latestCustomerDesignApproval == null)
             {
+                
                 using (var transaction = _context.Database.BeginTransaction())
                 {
                     try
                     {
                         customerDesignApproval.Version = 1;
-                        //TODO Upload Documentation as well
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
-                   
+
+
+                        
                         transaction.Commit();
                     }
                     catch (Exception e)
@@ -169,7 +177,7 @@ namespace pmo.Controllers.Application.History
                             customerDesignApproval.Id = latestCustomerDesignApproval.Id;
                             _context.CustomerDesignApprovals.Update(customerDesignApproval);
                             _context.SaveChanges();
-                            transaction.Commit();
+                            
                         }
                         catch (Exception e)
                         {
@@ -187,9 +195,7 @@ namespace pmo.Controllers.Application.History
 
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
-                            InsertOneToMany(customerDesignApproval.Id);
 
-                            // set previous versions & transactions to locked
                         }
                         catch (Exception e)
                         {
@@ -198,11 +204,7 @@ namespace pmo.Controllers.Application.History
                         }
                     }
                 }
-               
-
             }
-
-
             return RedirectToAction("Detail", new { stageId, version = customerDesignApproval.Version });
         }
         private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
@@ -238,18 +240,6 @@ namespace pmo.Controllers.Application.History
 
             return _mapper.Map<List<CustomerDesignApprovalViewModel>>(versions);
         }
-        private void SetDropdowns(CustomerDesignApprovalViewModel model)
-        {
-            var teamMembers = _context.Project_User.Where(p => p.ProjectId == model.Stage.ProjectId).Include(u => u.User).Select(s => new SelectListItem() {
-               Text=s.User.NetworkUsername,
-               Value=s.User.Id.ToString(),
-            }).Distinct().ToList();
-        }
-        private void InsertOneToMany(int CustomerDesignApprovalId)
-        {
-            // TODO: insert one to many
-            
-            // dead code.
-        }
+
     }
 }

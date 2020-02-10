@@ -35,7 +35,7 @@ namespace ViewModels
         public new virtual Stage Stage { get; set; }
 
         [Required]
-        public List<IFormFile> DesignFile { get; set; }
+        public IFormFile DesignFile { get; set; }
 
     }
 }
