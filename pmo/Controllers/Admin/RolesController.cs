@@ -8,7 +8,7 @@ using System.Linq;
 using ViewModels;
 
 namespace pmo.Controllers {
-    [Route("vbpd-admin/roles")]
+    [Route("admin/roles")]
     public class RolesController : BaseController {
         private readonly string path = "~/Views/Admin/Roles";
 

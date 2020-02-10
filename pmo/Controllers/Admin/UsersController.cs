@@ -11,7 +11,7 @@ using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers {
-    [Route("vbpd-admin/users")]
+    [Route("admin/users")]
     public class UsersController : BaseController {
         private readonly string path = "~/Views/Admin/Users";
         private readonly IUserService _userService;
