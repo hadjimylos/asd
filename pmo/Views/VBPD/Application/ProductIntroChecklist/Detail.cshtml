@@ -1,0 +1,29 @@
+﻿@model ProductIntroChecklistViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+    <div class="detail-component">
+        <div class="wrapper">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Is Marketing Required</div>
+                    <div class="data">@Model.IsMarketingRequired</div>
+                </div>
+                <div class="field">
+                    <div class="label">Filename</div>
+                    <div class="data">@Model.Filename</div>
+                </div>
+                <div class="field">
+                    <div class="label">Approved By</div>
+                    <div class="data">@Model.ApprovedBy</div>
+                </div>
+                <div class="field">
+                    <div class="label">Approved By Date</div>
+                    <div class="data">@Model.ApprovedByDate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
