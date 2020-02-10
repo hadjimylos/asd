@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<form class="form-component" method="post" action="/vbpd/{projectId}/stage/@Model.StageId/key-characteristic/edit">
+<form class="form-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stage/@Model.StageId/key-characteristic/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="versioning-section">
