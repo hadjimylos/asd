@@ -8,6 +8,7 @@ namespace pmo.Services.Users
     {
         bool AddNewUser(UserViewModel userViewModel);
         bool UpdateUser(UserViewModel userViewModel);
+        int GetCurrentUserId();
         User GetUserById(int userId);
         ValidationResult AD_GetUser(string networkUsername);
     }

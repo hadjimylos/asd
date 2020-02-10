@@ -6,26 +6,41 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
-namespace pmo.Services.Projects {
-    public class ProjectService : BaseController, IProjectService {
-        public ProjectService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
+using ViewModels.Helpers;
+using pmo.Services.Users;
 
+namespace pmo.Services.Projects
+{
+    public class ProjectService : BaseController, IProjectService
+    {
+        private readonly IUserService _userService;
+        public ProjectService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserService userService) : base(context, mapper, httpContextAccessor)
+        {
+            _userService =  userService ;
         }
-        public List<ProjectDetail> GetAllVBPDProjectDetailList() {
+        public List<ProjectDetail> GetAllVBPDProjectDetailList()
+        {
             var projects = _context.ProjectDetails.Include(p => p.Project)
                 .Include(t => t.ProjectClassification)
                 .Include(t => t.ProductLine)
                 .Include(t => t.ProjectCategory)
                 .Include(t => t.DesignAuthority).ToList();
+            //for each project get only latest records from projectDetail table based on CreatedDate. 
+            projects = projects.GroupBy(s => s.ProjectId)
+            .Select(s => s.OrderByDescending(x => x.CreateDate).FirstOrDefault()).ToList();
+
             return projects;
         }
 
-        public void AddNewVBPDProject(VBPDViewModel model) {
-            using (var transaction = _context.Database.BeginTransaction()) {
-                try {
-                var projectDetail = _mapper.Map<ProjectDetail>(model);
-                var project = _mapper.Map<Project>(model);
-                
+        public void AddNewVBPDProject(VBPDViewModel model)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var projectDetail = _mapper.Map<ProjectDetail>(model);
+                    var project = _mapper.Map<Project>(model);
+
                     _context.Projects.Add(project);
                     _context.SaveChanges();
                     projectDetail.ProjectId = project.Id;
@@ -33,27 +48,44 @@ namespace pmo.Services.Projects {
                     _context.ProjectDetails.Add(projectDetail);
                     _context.SaveChanges();
 
-                    model.CustomerIds.ForEach(customerId => {
-                        _context.ProjectDetail_Customers.Add(new ProjectDetail_Customer {
+                    model.CustomerIds.ForEach(customerId =>
+                    {
+                        _context.ProjectDetail_Customers.Add(new ProjectDetail_Customer
+                        {
                             CustomersTagId = customerId,
                             ProjectDetailId = projectDetail.Id,
                         });
                     });
-                    model.SalesRegionIds.ForEach(endUserCountryTagId => {
-                        _context.ProjectDetail_SalesRegions.Add(new ProjectDetail_SalesRegion {
+                    model.SalesRegionIds.ForEach(endUserCountryTagId =>
+                    {
+                        _context.ProjectDetail_SalesRegions.Add(new ProjectDetail_SalesRegion
+                        {
                             SalesRegionTagId = endUserCountryTagId,
                             ProjectDetailId = projectDetail.Id,
                         });
                     });
+                    var teamMember = new Project_User()
+                    {
+                        ProjectId = project.Id,
+                        JobDescriptionKey = ViewModels.Helpers.JobDescripKeys.ProgramManagement,
+                        UserId = _userService.GetCurrentUserId()
+                    };
+                    _context.Project_User.Add(teamMember);
+                    var stage = new Stage() //create new stage for new project
+                    {
+                        ProjectId = project.Id,
+                        StageNumber = 1
+                    };
+                    _context.Stages.Add(stage);
                     _context.SaveChanges();
                     transaction.Commit();
                 }
-                catch (System.Exception ex) {
+                catch (System.Exception ex)
+                {
                     transaction.Rollback();
                     throw ex;
                 }
             }
-
         }
     }
 }

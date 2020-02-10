@@ -22,8 +22,10 @@ namespace pmo.Services.Users
         public User GetUserById(int userId)
         {
             return _context.Users.Include(x => x.Citizenships).ThenInclude(z => z.Citizenships).Include(y => y.Role).Where(x => x.Id == userId).FirstOrDefault();
+        }
 
-
+        public int GetCurrentUserId() {
+            return _context.Users.Where(u => u.NetworkUsername == _httpContextAccessor.HttpContext.User.Identity.Name).Select(s => s.Id).First();
         }
         public bool AddNewUser(UserViewModel userViewModel)
         {

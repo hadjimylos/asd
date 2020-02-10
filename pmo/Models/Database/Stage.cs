@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace dbModels {
-    public class Stage : HistoryModel {
+namespace dbModels
+{
+    public class Stage : DatabaseModel
+    {
 
         public int ProjectId { get; set; }
 
@@ -20,11 +22,11 @@ namespace dbModels {
 
         public virtual List<KeyCharacteristic> KeyCharacteristicHistory { get; set; }
 
-       public virtual List<CustomerDesignApproval> CustomerDesignApprovalHistory { get; set; }
+        public virtual List<CustomerDesignApproval> CustomerDesignApprovalHistory { get; set; }
         public virtual List<InvestmentPlan> InvestmentPlanHistory { get; set; }
         public virtual List<ProductIntroChecklist> ProductIntroChecklistHistory { get; set; }
         public virtual List<RampResourcePlan> RampResourcePlanHistory { get; set; }
 
-       public virtual List<QualificationTesting> QualificationTestingHistory { get; set; }
+        public virtual List<QualificationTesting> QualificationTestingHistory { get; set; }
     }
 }
