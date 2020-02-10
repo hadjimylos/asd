@@ -22,6 +22,7 @@ namespace pmo.Models.Mappings
             CreateMap<InvestmentPlan, InvestmentPlanViewModel>().ReverseMap();
             CreateMap<KeyCharacteristic, KeyCharacteristicViewModel>().ReverseMap();
             CreateMap<ProductIntroChecklist, ProductIntroChecklistViewModel>().ReverseMap();
+            CreateMap<Risk, RiskViewModel>().ReverseMap();
         }
     }
 }

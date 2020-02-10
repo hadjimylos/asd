@@ -1,0 +1,41 @@
+﻿@model List<RiskViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+@Html.AntiForgeryToken()
+<h1>Index</h1>
+
+<div class="actions-component">
+    <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/create">CREATE</a>
+</div>
+
+@if (Model.Count > 0)
+{
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title by-2">
+                <div>NAME</div>
+                <div>RISK PROBABILITY (%)</div>
+                <div>RISK TYPE</div>
+                <div>RISK IMPACT</div>
+            </div>
+            <div class="items">
+                @foreach (var risk in Model)
+                {
+                    <a class="item" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/@risk.Id">
+                        <div class="item-wrapper by-2">
+                            <div>@risk.Name</div>
+                            <div>@risk.RiskPropability %</div>
+                            <div>@risk.RiskImpact.Name</div>
+                            <div>@risk.RiskType.Name</div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    @Html.Partial("_NoData")
+}
