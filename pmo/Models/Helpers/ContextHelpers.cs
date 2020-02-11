@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using dbModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -44,6 +45,14 @@ namespace ViewModels.Helpers
             });
 
             return queryable;
+        }
+        
+        public static IEnumerable<T> RemoveTransactions<T>(this IEnumerable<T> listItems) where T : HistoryModel {
+            var groupedByVersion = listItems.OrderBy(o => o.CreateDate)
+                .GroupBy(f => f.Version)
+                .ToList();
+            var latestTransactionsOnly = groupedByVersion.Select(s => s.Last()).ToList();
+            return latestTransactionsOnly;
         }
 
         public static string GetDelimited(List<string> items) {
