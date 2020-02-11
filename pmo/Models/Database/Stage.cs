@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels
 {
     public class Stage : DatabaseModel
     {
-
         public int ProjectId { get; set; }
+
+        [Required]
+        public bool IsComplete { get; set; }
 
         [ForeignKey("ProjectId")]
         public virtual Project Project { get; set; }

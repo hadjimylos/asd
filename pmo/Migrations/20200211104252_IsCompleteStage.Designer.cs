@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200211104252_IsCompleteStage")]
+    partial class IsCompleteStage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -953,32 +955,6 @@ namespace pmo.Migrations
                     b.HasIndex("StageId");
 
                     b.ToTable("ProjectJustifications");
-                });
-
-            modelBuilder.Entity("dbModels.ProjectStateHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedByUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectState")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectStateHistories");
                 });
 
             modelBuilder.Entity("dbModels.Project_User", b =>
@@ -7456,15 +7432,6 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.Stage", "Stage")
                         .WithMany("ProjectJustificationHistory")
                         .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("dbModels.ProjectStateHistory", b =>
-                {
-                    b.HasOne("dbModels.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

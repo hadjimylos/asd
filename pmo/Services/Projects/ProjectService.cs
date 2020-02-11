@@ -41,8 +41,17 @@ namespace pmo.Services.Projects
                     var projectDetail = _mapper.Map<ProjectDetail>(model);
                     var project = _mapper.Map<Project>(model);
 
+                    // save project
                     _context.Projects.Add(project);
                     _context.SaveChanges();
+
+                    // save project state
+                    _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                        ProjectState = ProjectState.Go,
+                        ProjectId = project.Id,
+                    });
+                    _context.SaveChanges();
+
                     projectDetail.ProjectId = project.Id;
                     projectDetail.Version = 1;
                     _context.ProjectDetails.Add(projectDetail);
