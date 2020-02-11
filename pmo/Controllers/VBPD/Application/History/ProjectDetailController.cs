@@ -148,6 +148,7 @@ namespace pmo.Controllers {
 
             var projectDetail = _mapper.Map<ProjectDetail>(model);
             projectDetail.ProjectId = projectId;
+            projectDetail.Version = latestProjectDetail.Version;
             if (isUpdate) {
                 // get latest record for this version and edit (remains latest and allows you to spam click save)   
                 using (var transaction = _context.Database.BeginTransaction()) {
