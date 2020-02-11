@@ -5,19 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels
 {
-    public enum GateDecisionType
-    {
+    public enum GateDecisionType {
         [Description("Go")]
-        go = 1,
+        Go = 1,
         [Description("On-Hold")]
-        on_hold = 2,
+        OnHold = 2,
         [Description("Close")]
-        close = 3
+        Closed = 3
     }
 
     public class Gate : DatabaseModel
     {
-
         public int ProjectId { get; set; }
 
         [ForeignKey("ProjectId")]
