@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Prjects";
+    Layout = "_VbpdProjectLayout";
 }
 
 <div class="actions-component">
@@ -27,7 +28,7 @@
             <div class="items">
                 @foreach (var modelItem in Model)
                 {
-                    <a class="item" >
+                    <a class="item" href="/vbpd-projects/@modelItem.ProjectId" >
                         <div class="item-wrapper by-13">
                             <div>@modelItem.Project.Name</div>
                             <div>@modelItem.Salesforce</div>

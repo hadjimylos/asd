@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/screen.css" />
+    <link rel="stylesheet" href="~/roboto-fontface.css" />
+</head>
+<body>
+    <div class="layout-inline-component">
+        <div class="wrapper">
+            <div class="nav-left-component">
+                <div class="wrapper">
+                    <div class="title">
+                        <h4>VBPD Projects</h4>
+                    </div>
+                    <div class="navs">
+                        <div class="nav">
+                            <a class="item-wrapper" href="/vbpd-projects">
+                                <div class="descrip">All My Projects</div>
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="item-wrapper" href="/vbpd-projects/open">
+                                <div class="descrip">My Open Projects</div>
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="item-wrapper" href="/vbpd-projects/closed">
+                                <div class="descrip">My Closed Projects</div>
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="item-wrapper" href="/vbpd-projects/on-hold">
+                                <div class="descrip">My On Hold Projects</div>
+                            </a>
+                        </div>
+                        <div class="dropdown">
+                            <div class="item-wrapper">
+                                <div class="descrip">Global VBPD Administration</div>
+                            </div>
+                            <div class="dropdown-items">
+                                <div class="dropdown-item">
+                                    <a class="item-wrapper" href="/vbpd-admin/stage-config">
+                                        <i class="icon">P</i>
+                                        <div class="descrip">Project Flow Configuration</div>
+                                    </a>
+                                </div>
+                                <div class="dropdown-item">
+                                    <a class="item-wrapper" href="/vbpd-admin/tags/categories">
+                                        <i class="icon">D</i>
+                                        <div class="descrip">DropDown Categories</div>
+                                    </a>
+                                </div>
+                                <div class="dropdown-item">
+                                    <a class="item-wrapper" href="/vbpd-admin/tags">
+                                        <i class="icon">D</i>
+                                        <div class="descrip">DropDown Values</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-section">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <script src="~/bundle.js"></script>
+</body>
+</html>
