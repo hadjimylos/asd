@@ -12,18 +12,15 @@ namespace ViewModels {
         public new string EndUseDestinationCountry { set; get; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [StringLength(10)]
         public new string Salesforce { get; set; }
         
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string EngineeringChecklistUrl { get; set; }
         
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [StringLength(30)]
         public new string ProjectProcessType { set; get; }
         
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [StringLength(50)]
         public new string ExportControlCode { set; get; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]

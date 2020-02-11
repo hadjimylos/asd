@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 namespace dbModels {
     public class Project : DatabaseModel {
         [Required]
-        [StringLength(10)]
         public string Name { get; set; }
         
         public virtual List<ProjectDetail> ProjectDetail { get; set; }

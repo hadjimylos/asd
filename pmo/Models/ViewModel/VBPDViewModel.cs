@@ -15,10 +15,8 @@ namespace ViewModels
         }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [StringLength(40, ErrorMessage = ErrorMessages.MinimumValue)]
         public string Name { set; get; }
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [StringLength(10, ErrorMessage = ErrorMessages.MinimumValue)]
         public new string Salesforce { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
@@ -37,10 +35,8 @@ namespace ViewModels
         [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int DesignAuthorityTagId { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [StringLength(30)]
         public new string ProjectProcessType { set; get; }
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [StringLength(50)]
         public new string ExportControlCode { set; get; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]

@@ -7,7 +7,6 @@ namespace dbModels {
     {
         public int ProjectId { get; set; }
         [Required]
-        [StringLength(10)]
         public string Salesforce { get; set; }
         [Required]
         public string EngineeringChecklistUrl { get; set; }
@@ -22,10 +21,8 @@ namespace dbModels {
         [Required]
         public int DesignAuthorityTagId { get; set; }
         [Required]
-        [StringLength(30)]
         public string ProjectProcessType { set; get; }
         [Required]
-        [StringLength(50)]
         public string ExportControlCode { set; get; }
         [Required]
         public string EndUseDestinationCountry { set; get; }
