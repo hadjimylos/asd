@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
+using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using pmo.Services.SharePoint;
+using ViewModels;
 
 namespace pmo.Controllers
 {
     [Route("/SharePointUpload")]
     public class SharepointController : BaseController
     {
+        private readonly string viewPath = "~/Views/Application/CustomerDesignApproval";
+        static string documentLibraryToSharepointPath = $"{Config.AppSettings["Sharepoint:documentLibraryToSharepointPath"]}";
         private readonly ISharePointService _SharePointService;
         public SharepointController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor,ISharePointService SharePointService) : base(context, mapper, httpContextAccessor)
         {
@@ -31,31 +29,39 @@ namespace pmo.Controllers
         [Route("upload")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Upload(IFormFile file)
+        public async Task<IActionResult> Upload(List<IFormFile> files, UploadDocumentsViewModel vm)
         {
-
-            string Id = await _SharePointService.GetUserPrincipalId("georgia.kalyva@itt.com");
-
-            await _SharePointService.Upload(file)
-                .ContinueWith(x=> _SharePointService.BreakFileRoleInheritance(file.FileName))
+            string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name.Replace("GLOBAL\\","");
+            string Id = await _SharePointService.GetUserPrincipalId(currentUser + "@itt.com");
+            List<IFormFile> FormFiles = files.ToList();
+            foreach(var file in FormFiles)
+            {
+                await _SharePointService.Upload(file)
+                .ContinueWith(x => _SharePointService.BreakFileRoleInheritance(file.FileName))
                 .ContinueWith(y => _SharePointService.RemoveFilePermissions(file.FileName, Id))
-                .ContinueWith(z => _SharePointService.AddFilePermissions(file.FileName, Id));
-            //
-            
-            //.ContinueWith(z=>_SharePointService.AddFilePermissions(file.FileName));
-            return View();
+                .ContinueWith(z => _SharePointService.AddFilePermissions(file.FileName, Id));                
+            }
+            var oldDodcuments = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == vm.ComponentId).ToList();
+            _context.RemoveRange(oldDodcuments);
+            foreach (var file in FormFiles) {
+
+                var fileName = file.FileName;
+                var serverRelativeUrl = documentLibraryToSharepointPath + "/" + fileName;
+                var id = vm.ComponentId;
+                _SharePointService.InsertOneToMany(vm.Type, id, fileName, serverRelativeUrl);
+            }
+            // return RedirectToAction("Edit", vm.ControllerName, new { stageid = vm.StageId });
+            return Redirect($"/vbpd/{vm.ProjectId}/stage/{vm.StageId}/customer-design-approval/edit");
         }
         
-        
-        string fileName = "ContentEditorHTML.txt";
         [Route("delete")]
         [AutoValidateAntiforgeryToken]
         [HttpGet]
         public IActionResult Delete()
         {
-            _SharePointService.Delete(fileName);
+            //Test filename
+            _SharePointService.Delete("fileName");
             return View();
         }
-
     }
 }

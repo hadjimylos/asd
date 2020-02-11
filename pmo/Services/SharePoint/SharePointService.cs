@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -156,12 +157,12 @@ namespace pmo.Services.SharePoint
                 throw;
             }
         }
-        public bool RemoveFilePermissions(string fileName,string id)
+        public bool RemoveFilePermissions(string fileName, string id)
         {
             bool status = false;
             string result = string.Empty;
             //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=" + 3 + ",roledefid=" + ReadRoleDefinition + ")";
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid="+id+")";
+            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=" + id + ")";
             HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
             NetworkCredential credentials = new NetworkCredential(username, password, domain);
@@ -190,11 +191,11 @@ namespace pmo.Services.SharePoint
             }
         }
 
-        public bool AddFilePermissions(string fileName,string id)
+        public bool AddFilePermissions(string fileName, string id)
         {
             bool status = false;
             string result = string.Empty;
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/addroleassignment(principalid="+id+",roledefid=" + ReadRoleDefinition + ")";
+            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/addroleassignment(principalid=" + id + ",roledefid=" + ReadRoleDefinition + ")";
             //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=7)";
             HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
@@ -233,19 +234,59 @@ namespace pmo.Services.SharePoint
             NetworkCredential credentials = new NetworkCredential(username, password, domain);
             wreq.Credentials = credentials;
             wreq.Method = "DELETE";
-            
+
             try
             {
                 var resp = wreq.GetResponse();
                 return true;
             }
-            catch( Exception ex)
-            { 
-            
-                    Console.WriteLine(ex.Message);
-                    return false;
-                    throw;
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                return false;
+                throw;
             }
+        }
+        public void InsertOneToMany(string type, int id, string file, string Url)
+        {
+            if (type =="CustomerDesignApprovalUploadedDocumentation")
+            {
+                _context.CustomerDesignApprovalUploadedDocumentations.Add(new CustomerDesignApprovalUploadedDocumentation()
+                {
+                    Notes = file,
+                    Url = siteUrl + Url,
+                    CustomerDesignApprovalId = id
+                }
+                );
+                _context.SaveChanges();
+            }
+
+            if (type == "GateUploadedDocumentation")
+            {
+                _context.GateUploadedDocumentations.Add(new GateUploadedDocumentation()
+                {
+                    Notes = file,
+                    Url = siteUrl + Url,
+                    GateId = id
+                }
+                );
+                _context.SaveChanges();
+            }
+
+            if (type == "ProductInfrigmentPatentabilityUploadedDocumentation")
+            {
+                _context.ProductInfrigmentPatentabilityUploadedDocumentations.Add(new ProductInfrigmentPatentabilityUploadedDocumentation()
+                {
+                    Notes = file,
+                    Url = siteUrl + Url,
+                    ProductInfrigmentPatentabilityId = id
+                }
+                );
+                _context.SaveChanges();
+            }
+
+
         }
     }
 

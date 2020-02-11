@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace pmo.Controllers {
     public class BaseController : Controller {
@@ -17,6 +18,18 @@ namespace pmo.Controllers {
         private void PopulateSession() {
             var asd = _httpContextAccessor.HttpContext.User.Identity.Name;
 
+        }
+
+
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            base.OnActionExecuted(context);
+        }
+
+        public override RedirectToActionResult RedirectToAction(string actionName, string controllerName, object routeValues)
+        {
+
+            return base.RedirectToAction(actionName, controllerName, routeValues);
         }
     }
 }

@@ -1106,15 +1106,22 @@ namespace pmo {
                 E.Property(x => x.ModifiedByUser).IsModified = true;
             });
 
-            var databaseModel_UpdateRecords = ChangeTracker.Entries<HistoryModel>()
+            var databaseModel_UpdateRecords = ChangeTracker.Entries<DatabaseModel>().Where(E => E.State == EntityState.Modified).ToList();
+            databaseModel_UpdateRecords.ForEach(model => {
+                model.Property(x => x.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
+                model.Property(x => x.ModifiedByUser).IsModified = true;
+            });
+
+            var historyModel_UpdateRecords = ChangeTracker.Entries<HistoryModel>()
                 .Where(E => E.State == EntityState.Modified)
                 .ToList();
-
-            databaseModel_UpdateRecords.ForEach(model => {
+            historyModel_UpdateRecords.ForEach(model => {
                 model.Property(prop => prop.LastModified).CurrentValue = DateTime.Now;
                 model.Property(prop => prop.LastModified).IsModified = true;
+
                 model.Property(prop => prop.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
                 model.Property(prop => prop.ModifiedByUser).IsModified = true;
+
             });
 
             return base.SaveChanges();

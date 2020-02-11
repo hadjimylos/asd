@@ -1,0 +1,52 @@
+﻿@model UploadDocumentsViewModel
+@{
+    ViewData["Title"] = "Upload files to SharePoint";
+    
+}
+    <form class="form-component" enctype="multipart/form-data" method="post" action="/SharePointUpload/upload">
+        @Html.AntiForgeryToken()
+        <input asp-for="ProjectId" type="hidden" />
+        <input asp-for="StageId" type="hidden" />
+        <input asp-for="CurrentVersion" type="hidden" />
+        <input asp-for="ComponentId" type="hidden" />
+        <input asp-for="ControllerName" type="hidden"/>
+        <input asp-for="ComponentName" type="hidden"/>
+        <input asp-for="Type" type="hidden"/>
+
+        <h1>UploadFiles</h1>
+        <h1>Upload files for @Model.ComponentName, Version : @Model.CurrentVersion</h1>
+        <div id="list"></div>
+
+        <div class="field">
+            <input asp-for="Files" class="data" multiple/>
+            <ul class="errors">
+                @Html.Partial("_FieldErrors", "Files")
+            </ul>
+            <div class="field">
+                <input type="submit" class="data btn" value="SUBMIT" />
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        
+        function removeItem(item,i) {
+            debugger;
+            var itemToRemove = document.getElementById(item);
+            itemToRemove.parentNode.removeChild(itemToRemove);
+
+        }
+        var filesList = document.getElementById("Files");
+        filesList.addEventListener('change', function (e) { populateList(e.path[0].files) });
+        function populateList(files) {
+            if (files.length) {
+                filesList.innerHTML = " ";
+                var list = document.getElementById("list");
+                for (var i = 0; i < files.length; i++){ 
+                    var _file = files[i].name.trim().toString();
+                    list.innerHTML+=
+                        '<div class="data" id=' + _file + '>' + files[i].name + '<div class="data" onclick="removeItem(\''+_file+'\',\''+i+'\',\''+files+'\')">REMOVE ITEM</div></div>'
+                };
+            }
+        }
+    </script>

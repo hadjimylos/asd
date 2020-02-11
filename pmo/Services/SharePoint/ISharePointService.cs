@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace pmo.Services.SharePoint
@@ -12,5 +13,6 @@ namespace pmo.Services.SharePoint
         bool AddFilePermissions(string file, string id);
         bool Delete(string file);
         Task<string> GetUserPrincipalId(string userEmail);
+        void InsertOneToMany(string type, int id, string file, string Url);
     }
 }

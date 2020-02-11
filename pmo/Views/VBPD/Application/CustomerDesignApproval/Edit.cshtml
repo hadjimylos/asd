@@ -43,8 +43,13 @@
                                     <div class="data">@Model.ApprovedDate</div>
                                 </div>
                                 <div class="select-single-field">
-                                    <div class="label">Upload any pertinent documentation</div>
-                                    <div class="data">@Model.ImportantDocumentation</div>
+                                    @foreach (var file in Model.ImportantDocumentation)
+                                    {
+                                        <div class="label">Upload any pertinent documentation</div>
+                                        <a class="data" href="@file.Url">  @file.Notes</a>
+                                    }
+
+
                                 </div>
                             </div>
                         </div>
@@ -82,11 +87,6 @@
                         </ul>
                     </div>
                     <div class="field">
-                        <div class="label">Upload any pertinent documentation</div>
-                        <input asp-for="DesignFile"  class="data" multiple/>
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "DesignFile")
-                        </ul>
                         <div class="field">
                             <input type="submit" class="data btn" value="SUBMIT" />
                         </div>

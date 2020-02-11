@@ -19,7 +19,6 @@ namespace ViewModels
         [UserExistsActiveDirectory(Helpers.ErrorMessages.MissingUserActiveDirectory)]
         [Required(ErrorMessage = ErrorMessages.Required)]  
         public new string SentForApprovalBy { get; set; }
-        //public List<SelectListItem> SentForApprovalByDropdown { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime DateSentForApprove { get; set; }
@@ -27,15 +26,14 @@ namespace ViewModels
         [UserExistsActiveDirectory(Helpers.ErrorMessages.MissingUserActiveDirectory)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ApprovedBy { get; set; }
-        //public  List<SelectListItem> ApprovedByDropdown { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime ApprovedDate { get; set; }
           
         public new virtual Stage Stage { get; set; }
 
-        [Required]
-        public IFormFile DesignFile { get; set; }
+        public new virtual List<CustomerDesignApprovalUploadedDocumentation> ImportantDocumentation { get; set; }
+
 
     }
 }

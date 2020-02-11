@@ -69,6 +69,7 @@ namespace pmo.Controllers.Application.History
             }
             using (var transaction = _context.Database.BeginTransaction())
             {
+                var previousId = latestRecord.Id;
                 try
                 {
  
@@ -77,7 +78,15 @@ namespace pmo.Controllers.Application.History
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
+                    var latestDocuments = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == previousId).ToList();
+                    foreach (var latestDocument in latestDocuments) {
+                        latestDocument.Id = 0;
+                        latestDocument.CustomerDesignApprovalId = latestRecord.Id;
+                        _context.CustomerDesignApprovalUploadedDocumentations.Add(latestDocument);
+                        _context.SaveChanges();
+                    }
                     transaction.Commit();
+
                 }
                 catch (Exception e)
                 {
@@ -94,7 +103,6 @@ namespace pmo.Controllers.Application.History
         public IActionResult Edit(int stageId)
         {
             // always populate latest version in edit
-            //Tha skasei ama einai 0
             var currentVersion = _context.CustomerDesignApprovals
                  .AsNoTracking()
                  .Where(w => w.StageId == stageId)
@@ -108,7 +116,8 @@ namespace pmo.Controllers.Application.History
                 {
                     StageId = stageId,
                     Versions = new List<CustomerDesignApprovalViewModel>(),
-                    Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault()
+                    Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault(),
+                    ImportantDocumentation = new List<CustomerDesignApprovalUploadedDocumentation>()
                 };
            
                 return View($"{viewPath}/Edit.cshtml", vm);
@@ -130,9 +139,10 @@ namespace pmo.Controllers.Application.History
               .FirstOrDefault();
 
 
+            var stage =_context.Stages.Include(x => x.Project).Where(s => s.Id == stageId).FirstOrDefault();
             if (!ModelState.IsValid)
             {   ViewBag.Errors = ModelState;
-                vm.Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault();
+                vm.Stage = stage;
                 vm.Versions = GetVersionHistory(stageId);
                 vm.Version = latestCustomerDesignApproval == null ?  0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
@@ -151,9 +161,19 @@ namespace pmo.Controllers.Application.History
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
 
-
-                        
                         transaction.Commit();
+                        return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                        {
+                            ComponentId = customerDesignApproval.Id,
+                            ComponentName = "Customer Design Approval",
+                            CurrentVersion = customerDesignApproval.Version,
+                            StageId = stageId,
+                            ProjectId = stage.ProjectId,
+                            Files = new List<IFormFile>(),
+                            Type = "CustomerDesignApprovalUploadedDocumentation",
+                            ControllerName = "CustomerDesignApproval"
+
+                        });
                     }
                     catch (Exception e)
                     {
@@ -177,7 +197,20 @@ namespace pmo.Controllers.Application.History
                             customerDesignApproval.Id = latestCustomerDesignApproval.Id;
                             _context.CustomerDesignApprovals.Update(customerDesignApproval);
                             _context.SaveChanges();
-                            
+
+                            transaction.Commit();
+                            return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                            {
+                                ComponentId = customerDesignApproval.Id,
+                                ComponentName = "Customer Design Approval",
+                                CurrentVersion = customerDesignApproval.Version,
+                                StageId = stageId,
+                                ProjectId = stage.ProjectId,
+                                Files = new List<IFormFile>(),
+                                Type = "CustomerDesignApprovalUploadedDocumentation",
+                                ControllerName= "CustomerDesignApproval"
+
+                            });
                         }
                         catch (Exception e)
                         {
@@ -196,6 +229,19 @@ namespace pmo.Controllers.Application.History
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
 
+                            transaction.Commit();
+                            return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                            {
+                                ComponentId = customerDesignApproval.Id,
+                                ComponentName = "Customer Design Approval",
+                                CurrentVersion = customerDesignApproval.Version,
+                                StageId = stageId,
+                                ProjectId = stage.ProjectId,
+                                Files = new List<IFormFile>(),
+                                Type = "CustomerDesignApprovalUploadedDocumentation",
+                                ControllerName = "CustomerDesignApproval"
+
+                            });
                         }
                         catch (Exception e)
                         {
@@ -205,7 +251,7 @@ namespace pmo.Controllers.Application.History
                     }
                 }
             }
-            return RedirectToAction("Detail", new { stageId, version = customerDesignApproval.Version });
+
         }
         private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
         {
@@ -216,10 +262,8 @@ namespace pmo.Controllers.Application.History
             .Include(s=>s.Stage)
             .FirstOrDefault();
 
-
-
+            model.ImportantDocumentation = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == model.Id).ToList();
             var vm = _mapper.Map<CustomerDesignApprovalViewModel>(model);
-       
             return vm;
         }
         private List<CustomerDesignApprovalViewModel> GetVersionHistory(int stageId)
@@ -240,6 +284,5 @@ namespace pmo.Controllers.Application.History
 
             return _mapper.Map<List<CustomerDesignApprovalViewModel>>(versions);
         }
-
     }
 }
