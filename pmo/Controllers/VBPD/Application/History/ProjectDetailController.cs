@@ -165,7 +165,7 @@ namespace pmo.Controllers {
                         _context.SaveChanges();
 
                         // reinsert many to many
-                        InsertManyToMany(model, latestProjectDetail.Id);
+                        InsertManyToMany(model, projectDetail.Id);
 
                         _context.SaveChanges();
                         transaction.Commit();
