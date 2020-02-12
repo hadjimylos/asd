@@ -194,7 +194,7 @@ namespace pmo.Controllers.Application.History
             {
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestCustomerDesignApproval.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)
+                if (isUpdate) //if same user update record
                 {
                     customerDesignApproval.Version = latestCustomerDesignApproval.Version;
                     using (var transaction = _context.Database.BeginTransaction())
@@ -203,7 +203,8 @@ namespace pmo.Controllers.Application.History
                         {
                             customerDesignApproval.Id = latestCustomerDesignApproval.Id;
                             customerDesignApproval.StageId = stage.Id;
-
+                            customerDesignApproval.CreateDate = latestCustomerDesignApproval.CreateDate;
+                            //TODO Upload Documentation as well
                             _context.CustomerDesignApprovals.Update(customerDesignApproval);
                             _context.SaveChanges();
 
@@ -228,7 +229,7 @@ namespace pmo.Controllers.Application.History
                         }
                     }
                 }
-                else
+                else//if not same user then add a new record to DB (transactions functionality)
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {

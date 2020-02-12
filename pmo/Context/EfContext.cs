@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace pmo {
-    public class EfContext : DbContext {
+namespace pmo
+{
+    public class EfContext : DbContext
+    {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EfContext(DbContextOptions<EfContext> options, IHttpContextAccessor httpContextAccessor):base(options)
+        public EfContext(DbContextOptions<EfContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
         }
@@ -963,7 +965,7 @@ namespace pmo {
                 new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=13, Id=13, ModifiedByUser="system"},
                 new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=14, Id=14, ModifiedByUser="system"},
                 new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=15, Id=15, ModifiedByUser="system"},
-                
+
 
             });
 
@@ -1107,7 +1109,9 @@ namespace pmo {
             });
 
             var databaseModel_UpdateRecords = ChangeTracker.Entries<DatabaseModel>().Where(E => E.State == EntityState.Modified).ToList();
-            databaseModel_UpdateRecords.ForEach(model => {
+
+            databaseModel_UpdateRecords.ForEach(model =>
+            {
                 model.Property(x => x.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
                 model.Property(x => x.ModifiedByUser).IsModified = true;
             });
@@ -1121,7 +1125,6 @@ namespace pmo {
 
                 model.Property(prop => prop.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
                 model.Property(prop => prop.ModifiedByUser).IsModified = true;
-
             });
 
             return base.SaveChanges();
