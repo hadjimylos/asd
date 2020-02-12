@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,45 +6,46 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using pmo.Services.Lists;
-using pmo.Services.SharePoint;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using ViewModels;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageId}/customer-design-approval")]
-    public class CustomerDesignApprovalController : BaseController {
-
-
+    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/customer-design-approval")]
+    public class CustomerDesignApprovalController : BaseController
+    {
         private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
-        private readonly IListService _listService;
 
+        public CustomerDesignApprovalController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
 
-        
-        public CustomerDesignApprovalController(EfContext context, IMapper mapper, ISharePointService sharepointService,IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
 
         }
 
         [Route("{version}")]
-        public IActionResult Detail(int stageId, int version)
+        public IActionResult Detail(int projectId, int stageNumber, int version)
         {
-            var model = GetViewModel(stageId, version);
+            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var model = GetViewModel(stage.Id, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
         [Route("create-version")]
-        public IActionResult CreateVersion(int stageId,int projectId)
+        public IActionResult CreateVersion(int projectId, int stageNumber)
         {
+            //get current version before create a new one
             var currentVersion = _context.CustomerDesignApprovals
                 .AsNoTracking()
-                .Where(
-                    w => w.StageId == stageId
-                ).Max(m => m.Version);
+                .Include(s => s.Stage)
+                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageId}/customer-design-approval/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageId}/customer-design-approval/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/customer-design-approval/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/customer-design-approval/create-version",
                 ComponentName = "Customer Design Approval",
                 CurrentVersion = currentVersion,
             };
@@ -58,17 +56,18 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("create-version")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int projectId, int stageId)
+        public IActionResult PostCreateVerison(int projectId, int stageNumber)
         {
             // get latest transaction of latest version
             var latestRecord = _context.CustomerDesignApprovals
                 .AsNoTracking()
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
-            // NOTE!!!!!!!!: here please check to see if first record. If so redirect to edit only. (not necessary for Project Detail specifically)
-            if (latestRecord == null) {
+            if (latestRecord == null)
+            {//check to see if first record.If so redirect to edit only.
                 RedirectToAction("Edit");
             }
             using (var transaction = _context.Database.BeginTransaction())
@@ -76,14 +75,14 @@ namespace pmo.Controllers.Application.History
                 var previousId = latestRecord.Id;
                 try
                 {
- 
                     // set variables for create
                     latestRecord.Id = 0;
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
                     var latestDocuments = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == previousId).ToList();
-                    foreach (var latestDocument in latestDocuments) {
+                    foreach (var latestDocument in latestDocuments)
+                    {
                         latestDocument.Id = 0;
                         latestDocument.CustomerDesignApprovalId = latestRecord.Id;
                         _context.CustomerDesignApprovalUploadedDocumentations.Add(latestDocument);
@@ -98,64 +97,67 @@ namespace pmo.Controllers.Application.History
                     throw e;
                 }
 
-                return RedirectToAction("Edit", new { stageId });
+                return RedirectToAction("Edit", new { stageNumber, projectId });
             }
         }
 
 
         [Route("edit")]
-        public IActionResult Edit(int stageId)
+        public IActionResult Edit(int stageNumber, int projectId)
         {
             // always populate latest version in edit
             var currentVersion = _context.CustomerDesignApprovals
                  .AsNoTracking()
-                 .Where(w => w.StageId == stageId)
+                 .Include(s => s.Stage)
+                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
 
-            
-           if (currentVersion == null)
+            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            if (currentVersion == null)
             {
                 var vm = new CustomerDesignApprovalViewModel()
                 {
-                    StageId = stageId,
+                    StageId = currentStage.Id,
                     Versions = new List<CustomerDesignApprovalViewModel>(),
-                    Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault(),
-                    ImportantDocumentation = new List<CustomerDesignApprovalUploadedDocumentation>()
+                    ImportantDocumentation = new List<CustomerDesignApprovalUploadedDocumentation>(),
+                    Stage = currentStage
                 };
-           
+
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(stageId, currentVersion.Version);
-            model.Versions = GetVersionHistory(stageId);   
+            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            model.Versions = GetVersionHistory(currentStage.Id);
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(CustomerDesignApprovalViewModel vm,int stageId )
+        public IActionResult Edit(CustomerDesignApprovalViewModel vm, int projectId, int stageNumber)
         {
-
+            //get Stage Entity
+            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            //get latest transaction of latest version
             var latestCustomerDesignApproval = _context.CustomerDesignApprovals.AsNoTracking()
-                .Where(
-                  w => w.StageId == stageId
-              ).OrderByDescending(o => o.CreateDate)
-              .FirstOrDefault();
+                  .Include(s => s.Stage)
+                  .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                  .OrderByDescending(o => o.CreateDate)
+                  .FirstOrDefault();
 
-            var stage =_context.Stages.Include(x => x.Project).Where(s => s.Id == stageId).FirstOrDefault();
             if (!ModelState.IsValid)
-            {   ViewBag.Errors = ModelState;
+            {
+                ViewBag.Errors = ModelState;
                 vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stageId);
-                vm.Version = latestCustomerDesignApproval == null ?  0 : latestCustomerDesignApproval.Version;
+                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
             if (latestCustomerDesignApproval == null)
             {
-                
+
                 using (var transaction = _context.Database.BeginTransaction())
                 {
                     try
@@ -170,7 +172,7 @@ namespace pmo.Controllers.Application.History
                             ComponentId = customerDesignApproval.Id,
                             ComponentName = "Customer Design Approval",
                             CurrentVersion = customerDesignApproval.Version,
-                            StageId = stageId,
+                            StageId = stage.Id,
                             ProjectId = stage.ProjectId,
                             Files = new List<IFormFile>(),
                             Type = "CustomerDesignApprovalUploadedDocumentation",
@@ -185,8 +187,7 @@ namespace pmo.Controllers.Application.History
                     }
                 }
             }
-            //There is already a previous version
-            else
+            else //There is already a previous version
             {
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestCustomerDesignApproval.ModifiedByUser.ToLower() == currentUser.ToLower();
@@ -207,11 +208,11 @@ namespace pmo.Controllers.Application.History
                                 ComponentId = customerDesignApproval.Id,
                                 ComponentName = "Customer Design Approval",
                                 CurrentVersion = customerDesignApproval.Version,
-                                StageId = stageId,
+                                StageId = stage.Id,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
                                 Type = "CustomerDesignApprovalUploadedDocumentation",
-                                ControllerName= "CustomerDesignApproval"
+                                ControllerName = "CustomerDesignApproval"
 
                             });
                         }
@@ -232,21 +233,19 @@ namespace pmo.Controllers.Application.History
 
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
-
                             transaction.Commit();
                             return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
                                 ComponentId = customerDesignApproval.Id,
                                 ComponentName = "Customer Design Approval",
                                 CurrentVersion = customerDesignApproval.Version,
-                                StageId = stageId,
+                                StageId = stage.Id,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
                                 Type = "CustomerDesignApprovalUploadedDocumentation",
                                 ControllerName = "CustomerDesignApproval"
 
                             });
-
                         }
                         catch (Exception e)
                         {
@@ -257,7 +256,6 @@ namespace pmo.Controllers.Application.History
                     }
                 }
             }
-
         }
         private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
         {
@@ -265,7 +263,7 @@ namespace pmo.Controllers.Application.History
                 s => s.StageId == stageId && s.Version == version
             ).OrderByDescending(o => o.CreateDate)
             .Include(i => i.ImportantDocumentation)
-            .Include(s=>s.Stage)
+            .Include(s => s.Stage)
             .FirstOrDefault();
 
             model.ImportantDocumentation = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == model.Id).ToList();
@@ -280,16 +278,24 @@ namespace pmo.Controllers.Application.History
                 .GroupBy(g => g.Version)
                 .ToList();
 
-            if(grouped.Count == 0)
+            if (grouped.Count == 0)
             {
                 return new List<CustomerDesignApprovalViewModel>();
             }
-            
+
             List<CustomerDesignApproval> versions = new List<CustomerDesignApproval>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
 
             return _mapper.Map<List<CustomerDesignApprovalViewModel>>(versions);
         }
 
+        private void SetDropdowns(CustomerDesignApprovalViewModel model)
+        {
+            var teamMembers = _context.Project_User.Where(p => p.ProjectId == model.Stage.ProjectId).Include(u => u.User).Select(s => new SelectListItem()
+            {
+                Text = s.User.NetworkUsername,
+                Value = s.User.Id.ToString(),
+            }).Distinct().ToList();
+        }
     }
 }
