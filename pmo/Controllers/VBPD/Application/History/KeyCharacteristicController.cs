@@ -14,7 +14,7 @@ using ViewModels.Helpers;
 namespace pmo.Controllers.Application.History
 {
     [Route("vbpd-projects/{projectid}/stage/{stageNumber}/key-characteristic")]
-    public class KeyCharacteristicController : BaseController
+    public class KeyCharacteristicController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
         private readonly IListService _listService;

@@ -11,7 +11,7 @@ using ViewModels;
 namespace pmo.Controllers.Application.History
 {
     [Route("vbpd-projects/{projectid}/stage/{stageNumber}/investment-plan")]   
-    public class InvestmentPlanController : BaseController
+    public class InvestmentPlanController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/InvestmentPlan";
         public InvestmentPlanController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)

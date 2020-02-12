@@ -14,7 +14,7 @@ using ViewModels.Helpers;
 namespace pmo.Controllers.Application
 {
     [Route("vbpd-projects/{projectId}/stages/{stageId}/risk")]
-    public class RiskController : BaseController
+    public class RiskController : BaseProjectDetailController
     {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Risk";

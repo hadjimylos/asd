@@ -11,7 +11,7 @@ using ViewModels;
 namespace pmo.Controllers.VBPD.Application.History
 {
     [Route("vbpd-projects/{projectid}/stage/{stageNumber}/product-intro-checklist")]
-    public class ProductIntoChecklistController : BaseController
+    public class ProductIntoChecklistController : BaseProjectDetailController
     {
 
         private readonly string viewPath = "~/Views/VBPD/Application/ProductIntroChecklist";
