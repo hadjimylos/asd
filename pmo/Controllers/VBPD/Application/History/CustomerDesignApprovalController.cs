@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using pmo.Services.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +25,8 @@ namespace pmo.Controllers.Application.History
         [Route("{version}")]
         public IActionResult Detail(int projectId, int stageNumber, int version)
         {
-            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-            var model = GetViewModel(stage.Id, version);
+            var stageId = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First().Id;
+            var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -51,6 +49,35 @@ namespace pmo.Controllers.Application.History
             };
 
             return View($"{viewPath}/CreateVersion.cshtml", model);
+        }
+
+        [Route("edit")]
+        public IActionResult Edit(int stageNumber, int projectId)
+        {
+            // always populate latest version in edit
+            //Tha skasei ama einai 0
+            var currentVersion = _context.CustomerDesignApprovals
+                 .AsNoTracking()
+                 .Include(s => s.Stage)
+                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                 .OrderByDescending(c => c.CreateDate)
+                 .FirstOrDefault();
+
+            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            if (currentVersion == null)
+            {
+                var vm = new CustomerDesignApprovalViewModel()
+                {
+                    StageId = currentStage.Id,
+                    Versions = new List<CustomerDesignApprovalViewModel>(),
+                    Stage = currentStage
+                };
+
+                return View($"{viewPath}/Edit.cshtml", vm);
+            }
+            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            model.Versions = GetVersionHistory(currentStage.Id);
+            return View($"{viewPath}/Edit.cshtml", model);
         }
 
         [HttpPost]
@@ -101,36 +128,6 @@ namespace pmo.Controllers.Application.History
 
                 return RedirectToAction("Edit", new { stageNumber, projectId });
             }
-        }
-
-
-        [Route("edit")]
-        public IActionResult Edit(int stageNumber, int projectId)
-        {
-            // always populate latest version in edit
-            var currentVersion = _context.CustomerDesignApprovals
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
-
-            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-            if (currentVersion == null)
-            {
-                var vm = new CustomerDesignApprovalViewModel()
-                {
-                    StageId = currentStage.Id,
-                    Versions = new List<CustomerDesignApprovalViewModel>(),
-                    ImportantDocumentation = new List<CustomerDesignApprovalUploadedDocumentation>(),
-                    Stage = currentStage
-                };
-
-                return View($"{viewPath}/Edit.cshtml", vm);
-            }
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
-            return View($"{viewPath}/Edit.cshtml", model);
         }
 
         [HttpPost]

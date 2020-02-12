@@ -8,13 +8,12 @@ using pmo.Services.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageId}/key-characteristic")]
+    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/key-characteristic")]
     public class KeyCharacteristicController : BaseController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
@@ -27,31 +26,59 @@ namespace pmo.Controllers.Application.History
         }
 
         [Route("{version}")]
-        public IActionResult Detail(int stageId, int version)
+        public IActionResult Detail(int projectId, int stageNumber, int version)
         {
+            var stageId = _context.Stages.Where(s => s.StageNumber == stageNumber && s.ProjectId == projectId).First().Id;
             var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
+        [HttpPost]
+        [Route("create-version")]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult CreateVersion(int projectId, int stageNumber)
+        {
+            var currentVersion = _context.KeyCharacteristics
+                .AsNoTracking()
+                .Include(s => s.Stage)
+                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Max(m => m.Version);
+
+            var model = new CreateVersionViewModel
+            {
+                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/key-characteristic/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/key-characteristic/create-version",
+                ComponentName = "Key Characteristic",
+                CurrentVersion = currentVersion,
+            };
+
+            return View($"{viewPath}/CreateVersion.cshtml", model);
+        }
+
+
         [Route("edit")]
-        public IActionResult Edit(int stageId)
+        public IActionResult Edit(int projectId, int stageNumber)
         {
             // always populate latest version in edit if not just an empty form
             var currentVersion = _context.KeyCharacteristics
                  .AsNoTracking()
-                 .Where(w => w.StageId == stageId)
+                 .Include(s => s.Stage)
+                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
+            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+
             if (currentVersion == null)
             {
                 var vm = new KeyCharacteristicViewModel()
                 {
-                    StageId = stageId,
+                    StageId = currentStage.Id,
                     Versions = new List<KeyCharacteristicViewModel>(),
-                    Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault(),
+                    Stage = currentStage,
                     RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                         .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                        .ToList().Select(s => new SelectListItem {
+                        .ToList().Select(s => new SelectListItem
+                        {
                             Value = s.Id.ToString(),
                             Text = s.Name,
                         }).ToList()
@@ -59,8 +86,8 @@ namespace pmo.Controllers.Application.History
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var model = GetViewModel(stageId, currentVersion.Version);
-            model.Versions = GetVersionHistory(stageId);
+            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            model.Versions = GetVersionHistory(currentStage.Id);
             model.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                 .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
                 .ToList().Select(s => new SelectListItem
@@ -75,19 +102,22 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(KeyCharacteristicViewModel vm, int stageId)
+        public IActionResult Edit(KeyCharacteristicViewModel vm, int projectId, int stageNumber)
         {
 
-            var latestKeyCharacteristics = _context.KeyCharacteristics.AsNoTracking().Where(
-                  w => w.StageId == stageId
-              ).OrderByDescending(o => o.CreateDate)
-              .FirstOrDefault();
+            var latestKeyCharacteristics = _context.KeyCharacteristics
+               .AsNoTracking()
+               .Include(s => s.Stage)
+               .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+               .OrderByDescending(o => o.CreateDate)
+               .FirstOrDefault();
+            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
 
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault();
-                vm.Versions = GetVersionHistory(stageId);
+                vm.Stage = stage;
+                vm.Versions = GetVersionHistory(stage.Id);
                 vm.Version = latestKeyCharacteristics == null ? 0 : latestKeyCharacteristics.Version;
                 vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                     .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
@@ -100,80 +130,38 @@ namespace pmo.Controllers.Application.History
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var keyCharacteristic = _mapper.Map<KeyCharacteristic>(vm);
-            keyCharacteristic.StageId = stageId;
-            //first version
-            if (latestKeyCharacteristics == null)
+            keyCharacteristic.StageId = stage.Id;
+            if (latestKeyCharacteristics == null)  //first version
             {
                 keyCharacteristic.Version = 1;
                 _context.KeyCharacteristics.Add(keyCharacteristic);
                 _context.SaveChanges();
             }
-            //There is already a previous version
-            else
+            else //There is already a previous version
             {
                 keyCharacteristic.Version = latestKeyCharacteristics.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestKeyCharacteristics.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate)
                 {
+
                     keyCharacteristic.Id = latestKeyCharacteristics.Id;
+                    keyCharacteristic.CreateDate = latestKeyCharacteristics.CreateDate;
+                    keyCharacteristic.Stage = null;
                     _context.KeyCharacteristics.Update(keyCharacteristic);
                     _context.SaveChanges();
                 }
                 else
                 {
+                     keyCharacteristic.Stage = null;
                     _context.KeyCharacteristics.Add(keyCharacteristic);
                     _context.SaveChanges();
                 }
 
             }
-            return RedirectToAction("Detail", new { stageId, version = keyCharacteristic.Version });
+            return RedirectToAction("Detail", new { projectId, stageNumber, version = keyCharacteristic.Version });
         }
 
-        [Route("create-version")]
-        public IActionResult CreateVersion(int stageId, int projectId)
-        {
-            var currentVersion = _context.KeyCharacteristics
-                .AsNoTracking()
-                .Where(
-                    w => w.StageId == stageId
-                ).Max(m => m.Version);
-
-            var model = new CreateVersionViewModel
-            {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageId}/key-characteristic/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageId}/key-characteristic/create-version",
-                ComponentName = "Key Characteristic",
-                CurrentVersion = currentVersion,
-            };
-
-            return View($"{viewPath}/CreateVersion.cshtml", model);
-        }
-
-        [HttpPost]
-        [Route("create-version")]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int stageId)
-        {
-            // get latest transaction of latest version
-            var latestRecord = _context.KeyCharacteristics
-                .AsNoTracking()
-                .Where(w => w.StageId == stageId)
-                .OrderByDescending(o => o.CreateDate)
-                .FirstOrDefault();
-            if (latestRecord == null)
-            {
-                RedirectToAction("edit");
-            }
-
-
-            // set variables for create
-            latestRecord.Id = 0;
-            latestRecord.Version = ++latestRecord.Version;
-            _context.Add(latestRecord);
-            _context.SaveChanges();
-            return RedirectToAction("edit", new { stageId });
-        }
         
         private List<KeyCharacteristicViewModel> GetVersionHistory(int stageId)
         {

@@ -21,8 +21,8 @@ namespace pmo.Controllers.Application.History
         [Route("{version}")]
         public IActionResult Detail(int projectId , int stageNumber, int version)
         {
-            var stage = _context.Stages.Where(s => s.StageNumber == stageNumber && s.ProjectId == projectId).First();
-            var model = GetViewModel(stage.Id, version);
+            var stageId = _context.Stages.Where(s => s.StageNumber == stageNumber && s.ProjectId == projectId).First().Id;
+            var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -112,6 +112,7 @@ namespace pmo.Controllers.Application.History
             model.Versions = GetVersionHistory(currentStage.Id);
             return View($"{viewPath}/Edit.cshtml", model);
         }
+
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
