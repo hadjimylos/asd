@@ -77,6 +77,8 @@ namespace pmo.Controllers.Application.History
                 {
                     // set variables for create
                     latestRecord.Id = 0;
+                    latestRecord.StageId = latestRecord.Stage.Id;
+                    latestRecord.Stage = null;//remove relation before saving 
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
@@ -163,6 +165,7 @@ namespace pmo.Controllers.Application.History
                     try
                     {
                         customerDesignApproval.Version = 1;
+                        customerDesignApproval.StageId = stage.Id;
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
 
@@ -199,6 +202,8 @@ namespace pmo.Controllers.Application.History
                         try
                         {
                             customerDesignApproval.Id = latestCustomerDesignApproval.Id;
+                            customerDesignApproval.StageId = stage.Id;
+
                             _context.CustomerDesignApprovals.Update(customerDesignApproval);
                             _context.SaveChanges();
 
