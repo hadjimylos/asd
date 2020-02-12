@@ -12,7 +12,7 @@ using ViewModels;
 
 namespace pmo.Controllers.Application
 {
-    [Route("vbpd-projects/{projectId}/stages/{stageId}/schedules")]
+    [Route("vbpd-projects/{projectId}/stages/{StageNumber}/schedules")]
     public class SchedulesController : BaseController
     {
         private readonly IListService _listService;
@@ -24,14 +24,17 @@ namespace pmo.Controllers.Application
 
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(int projectId, int stageId)
+        public IActionResult Edit(int projectId, int stageNumber)
         {
+            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId;
+            ViewBag.StageNumber = stageNumber;
             List<SchedulesViewModel> viewModel = new List<SchedulesViewModel>();
-            var model = _context.Schedules.Include(x => x.Stage).Include(x => x.ScheduleType).ToList();
-            var stage = _context.Stages.Find(stageId);
-            var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stage.StageNumber).ToList();
+            var model = _context.Schedules
+                .Include(x => x.Stage)
+                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Include(x => x.ScheduleType).ToList();
+            var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stageNumber).ToList();
 
             if (model.Count > 0 && settings.Count == model.Count)
             {
@@ -74,10 +77,11 @@ namespace pmo.Controllers.Application
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public IActionResult Edit(int projectId, int stageId, List<SchedulesViewModel> viewModel)
+        public IActionResult Edit(int projectId, int stageNumber, List<SchedulesViewModel> viewModel)
         {
+         
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId;
+            ViewBag.StageNumber = stageNumber;
 
             if (!ModelState.IsValid)
             {
@@ -99,7 +103,7 @@ namespace pmo.Controllers.Application
                _context.Schedules.AddRange(modelToInsert);
             }
             _context.SaveChanges();
-            return RedirectToAction("edit", new { projectId = projectId , stageId = stageId });
+            return RedirectToAction("edit", new { projectId = projectId , stageId = stageNumber });
         }
     }
 }
