@@ -52,7 +52,7 @@ namespace ViewModels.Helpers
                 .GroupBy(f => f.Version)
                 .ToList();
             var latestTransactionsOnly = groupedByVersion.Select(s => s.Last()).ToList();
-            return latestTransactionsOnly;
+            return latestTransactionsOnly.ToList();
         }
 
         public static string GetDelimited(List<string> items) {
