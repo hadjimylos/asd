@@ -33,16 +33,14 @@ namespace pmo.Controllers.Application.History
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
-        [HttpPost]
         [Route("create-version")]
-        [AutoValidateAntiforgeryToken]
         public IActionResult CreateVersion(int projectId, int stageNumber)
         {
             var currentVersion = _context.KeyCharacteristics
-                .AsNoTracking()
-                .Include(s => s.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                .Max(m => m.Version);
+                 .AsNoTracking()
+                 .Include(s => s.Stage)
+                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                 .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
             {
@@ -53,6 +51,46 @@ namespace pmo.Controllers.Application.History
             };
 
             return View($"{viewPath}/CreateVersion.cshtml", model);
+        }
+
+        [HttpPost]
+        [Route("create-version")]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult PostCreateVerison(int projectId, int stageNumber)
+        {
+            // get latest transaction of latest version
+            var latestRecord = _context.KeyCharacteristics
+                .AsNoTracking()
+                .Include(s => s.Stage)
+                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .OrderByDescending(o => o.CreateDate)
+                .FirstOrDefault();
+
+            if (latestRecord == null)
+            {//check to see if first record.If so redirect to edit only.
+                RedirectToAction("Edit");
+            }
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // set variables for create
+                    latestRecord.Id = 0;
+                    latestRecord.StageId = latestRecord.Stage.Id;
+                    latestRecord.Stage = null;//remove relation before saving 
+                    latestRecord.Version = ++latestRecord.Version;
+                    _context.Add(latestRecord);
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+
+                return RedirectToAction("Edit", new { stageNumber, projectId });
+            }
         }
 
 

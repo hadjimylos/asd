@@ -10,7 +10,7 @@ using ViewModels;
 
 namespace pmo.Controllers.VBPD.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageId}/product-intro-checklist")]
+    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/product-intro-checklist")]
     public class ProductIntoChecklistController : BaseController
     {
 
@@ -20,19 +20,27 @@ namespace pmo.Controllers.VBPD.Application.History
         {
         }
 
+        [Route("{version}")]
+        public IActionResult Detail(int projectId, int stageNumber, int version)
+        {
+            var stageId = _context.Stages.Where(s => s.StageNumber == stageNumber && s.ProjectId == projectId).First().Id;
+            var model = GetViewModel(stageId, version);
+            return View($"{viewPath}/Detail.cshtml", model);
+        }
+
         [Route("create-version")]
-        public IActionResult CreateVersion(int stageId, int projectId)
+        public IActionResult CreateVersion(int projectId, int stageNumber)
         {
             var currentVersion = _context.ProductIntroChecklists
                 .AsNoTracking()
-                .Where(
-                    w => w.StageId == stageId
-                ).Max(m => m.Version);
+                .Include(s => s.Stage)
+                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageId}/product-intro-checklist/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageId}/product-intro-checklist/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-intro-checklist/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-intro-checklist/create-version",
                 ComponentName = "Product Intro Checklist",
                 CurrentVersion = currentVersion,
             };
@@ -43,12 +51,13 @@ namespace pmo.Controllers.VBPD.Application.History
         [HttpPost]
         [Route("create-version")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int stageId)
+        public IActionResult PostCreateVerison(int projectId, int stageNumber)
         {
             // get latest transaction of latest version
             var latestRecord = _context.ProductIntroChecklists
                 .AsNoTracking()
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -62,6 +71,8 @@ namespace pmo.Controllers.VBPD.Application.History
                 {
                     latestRecord.Id = 0;
                     latestRecord.Version = ++latestRecord.Version;
+                    latestRecord.StageId = latestRecord.Stage.Id;
+                    latestRecord.Stage = null;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
                     transaction.Commit();
@@ -71,70 +82,66 @@ namespace pmo.Controllers.VBPD.Application.History
                     transaction.Rollback();
                     throw e;
                 }
-                return RedirectToAction("Edit", new { stageId });
+                return RedirectToAction("Edit", new { projectId, stageNumber });
             }
         }
 
-        [Route("{version}")]
-        public IActionResult Detail(int stageId, int version)
-        {
-            var model = GetViewModel(stageId, version);
-            return View($"{viewPath}/Detail.cshtml", model);
-        }
-
         [Route("edit")]
-        public IActionResult Edit(int stageId)
+        public IActionResult Edit(int projectId, int stageNumber)
         {
             // always populate latest version in edit
             var currentVersion = _context.ProductIntroChecklists
                  .AsNoTracking()
-                 .Where(w => w.StageId == stageId)
+                 .Include(s => s.Stage)
+                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
+            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
 
             if (currentVersion == null)
             {
                 var vm = new ProductIntroChecklistViewModel()
                 {
-                    StageId = stageId,
+                    StageId = currentStage.Id,
                     Versions = new List<ProductIntroChecklistViewModel>(),
-                    Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault()
+                    Stage = currentStage
                 };
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(stageId, currentVersion.Version);
-            model.Versions = GetVersionHistory(stageId);
+            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            model.Versions = GetVersionHistory(currentStage.Id);
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(ProductIntroChecklistViewModel vm, int stageId)
+        public IActionResult Edit(ProductIntroChecklistViewModel vm, int projectId, int stageNumber)
         {
-            var latestProductIntoChecklist = _context.ProductIntroChecklists.AsNoTracking().Where(
-                  w => w.StageId == stageId
-              ).OrderByDescending(o => o.CreateDate)
-              .FirstOrDefault();
-
+            var latestProductIntoChecklist = _context.ProductIntroChecklists.AsNoTracking()
+               .Include(s => s.Stage)
+               .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+               .OrderByDescending(o => o.CreateDate)
+               .FirstOrDefault();
+            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = _context.Stages.Where(s => s.Id == stageId).FirstOrDefault();
-                vm.Versions = GetVersionHistory(stageId);
+                vm.Stage = _context.Stages.Where(s => s.Id == stage.Id).FirstOrDefault();
+                vm.Versions = GetVersionHistory(stage.Id);
                 vm.Version = latestProductIntoChecklist == null ? 0 : latestProductIntoChecklist.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var productIntroChecklist = _mapper.Map<ProductIntroChecklist>(vm);
-            //first version
-            if (latestProductIntoChecklist == null)
+            if (latestProductIntoChecklist == null)//first version
             {
                 using (var transaction = _context.Database.BeginTransaction())
                 {
                     try
                     {
                         productIntroChecklist.Version = 1;
+                        productIntroChecklist.StageId = stage.Id;
                         _context.ProductIntroChecklists.Add(productIntroChecklist);
                         _context.SaveChanges();
                         transaction.Commit();
@@ -146,19 +153,21 @@ namespace pmo.Controllers.VBPD.Application.History
                     }
                 }
             }
-            //There is already a previous version
-            else
+            else   //There is already a previous version
             {
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestProductIntoChecklist.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)
+                if (isUpdate)//same user trying trying to edit 
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         productIntroChecklist.Version = latestProductIntoChecklist.Version;
                         try
                         {
-                            productIntroChecklist.Id = latestProductIntoChecklist.Id;
+                           productIntroChecklist.Id = latestProductIntoChecklist.Id;
+                           productIntroChecklist.CreateDate = latestProductIntoChecklist.CreateDate;//created date its the same
+                           productIntroChecklist.StageId = stage.Id;
+                           productIntroChecklist.Stage = null;
                             _context.ProductIntroChecklists.Update(productIntroChecklist);
                             _context.SaveChanges();
                             transaction.Commit();
@@ -176,6 +185,9 @@ namespace pmo.Controllers.VBPD.Application.History
                     {
                         try
                         {
+                            productIntroChecklist.Id = 0;
+                            productIntroChecklist.StageId = stage.Id;
+                            productIntroChecklist.Stage = null;
                             _context.ProductIntroChecklists.Add(productIntroChecklist);
                             _context.SaveChanges();
                             transaction.Commit();
@@ -189,7 +201,7 @@ namespace pmo.Controllers.VBPD.Application.History
                 }
             }
 
-            return RedirectToAction("Detail", new { stageId, version = productIntroChecklist.Version });
+            return RedirectToAction("Detail", new { projectId, stageNumber, version = productIntroChecklist.Version });
         }
 
         private ProductIntroChecklistViewModel GetViewModel(int stageId, int version)

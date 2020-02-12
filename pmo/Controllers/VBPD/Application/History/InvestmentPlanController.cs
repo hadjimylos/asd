@@ -27,7 +27,7 @@ namespace pmo.Controllers.Application.History
         }
 
         [Route("create-version")]
-        public IActionResult CreateVersion(int stageNumber, int projectId)
+        public IActionResult CreateVersion(int projectId, int stageNumber)
         {
             var currentVersion = _context.InvestmentPlans
                 .AsNoTracking()
@@ -124,7 +124,6 @@ namespace pmo.Controllers.Application.History
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
             var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-           
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
