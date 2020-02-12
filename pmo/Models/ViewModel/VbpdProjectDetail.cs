@@ -1,4 +1,5 @@
 ﻿using pmo;
+using dbModels;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels.Helpers;
@@ -15,9 +16,9 @@ namespace ViewModels {
         public VbpdProjectDetail() {
         }
 
-        public dbModels.ProjectDetail ProjectDetail { get; set; }
+        public ProjectDetail ProjectDetail { get; set; }
 
-        public IEnumerable<IGrouping<string, dbModels.Project_User>> TeamMembers { get; set; }
+        public IEnumerable<IGrouping<string, Project_User>> TeamMembers { get; set; }
 
         private void populate(int projectId) {
             this.ProjectDetail = _context.ProjectDetails
