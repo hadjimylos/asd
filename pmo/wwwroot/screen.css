@@ -2,23 +2,29 @@
 
 html {
   height: 100%;
+  --scrollbarBG: #dee2e6;
+  --thumbBG: #6c757d;
 }
 html body {
   height: 100%;
 }
 body {
-  /* Webkit scrollbar */
-  /* Handle */
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
   font-family: Roboto-Light;
   color: #2A363B;
   margin: 0;
 }
 body ::-webkit-scrollbar {
-  width: 6px;
+  width: 11px;
+}
+body ::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
 }
 body ::-webkit-scrollbar-thumb {
-  border-radius: 50px;
-  background: #9ca6af;
+  background-color: var(--thumbBG);
+  border-radius: 12px;
+  border: 2px solid var(--scrollbarBG);
 }
 body form {
   margin-bottom: unset;
@@ -223,6 +229,9 @@ body .panel.hide {
   display: none;
 }
 body .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   -webkit-appearance: none;
   -webkit-writing-mode: unset;
   background-color: #00859b;
@@ -300,89 +309,46 @@ body h3 {
   border-color: #f5f6f7;
 }
 .list-component .wrapper {
-  width: 100%;
-}
-.list-component .wrapper .actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0px;
-  background-color: #008264;
-  border-radius: 3px;
-}
-.list-component .wrapper .actions div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-.list-component .wrapper .actions .search input {
-  padding: 10px;
-  font-size: 8px;
-}
-.list-component .wrapper .actions .search button {
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-}
-.list-component .wrapper .actions .search .select2-selection {
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-.list-component .wrapper .actions .search .select2-search__field {
-  font-size: 8px;
-}
-.list-component .wrapper.by-7 .title > *,
-.list-component .wrapper.by-7 .item-wrapper > * {
-  width: 13%;
-}
-.list-component .wrapper.by-3 .title > *,
-.list-component .wrapper.by-3 .item-wrapper > * {
-  width: 33%;
-}
-.list-component .wrapper.by-4 .title > *,
-.list-component .wrapper.by-4 .item-wrapper > * {
-  width: 25%;
-}
-.list-component .wrapper .items {
-  max-height: 200px;
-  overflow-y: auto;
-}
-.list-component .wrapper .items.no-scroll {
-  max-height: unset;
-  overflow-y: unset;
-  max-height: none;
-  overflow-y: visible;
-}
-.list-component .wrapper .item {
-  display: block;
-}
-.list-component .wrapper .item .item-wrapper {
-  font-size: 10px;
-  border: 1px solid #f5f6f7;
-  border-radius: 3px;
-  text-decoration: none;
-  color: #2A363B;
-}
-.list-component .wrapper .item .item-wrapper:hover {
-  box-shadow: 1px 1px 3px 0px #f5f6f7;
-  transition-duration: 0.3s;
-}
-.list-component .wrapper .item:not(:first-child) {
-  margin-top: 5px;
+  border: 1px solid #dee2e6;
 }
 .list-component .wrapper .title,
 .list-component .wrapper .item-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
   text-align: center;
+  letter-spacing: 1.1;
 }
 .list-component .wrapper .title {
-  color: #c82333;
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
+  font-family: Roboto-Black;
+  font-size: 16px;
+  font-weight: 900;
+  color: #677078;
+  padding: 14px 10px;
+  border-bottom: 1px solid #dee2e6;
+  user-select: none;
+}
+.list-component .wrapper .items .item {
+  display: block;
+}
+.list-component .wrapper .items .item .item-wrapper {
+  font-size: 14px;
+  color: #6c757d;
+  text-decoration: none;
+  padding: 10px;
+}
+.list-component .wrapper .items .item .item-wrapper:hover {
+  background: #00000013;
+  transition-duration: 0.1s;
+}
+.list-component .wrapper .items .item:not(:first-child) {
+  border-top: 1px solid #dee2e6;
+}
+.list-component .wrapper .items .item:nth-of-type(even) {
+  background: #ffffff;
+}
+.list-component .wrapper .items .item:nth-of-type(odd) {
+  background: #f5f6f7;
 }
 .form-component {
   font-size: 13px;
@@ -618,8 +584,8 @@ body h3 {
   float: right;
 }
 .nav-left-component .wrapper .navs .dropdown .dropdown-items {
+  overflow: auto;
   max-height: 0px;
-  overflow: hidden;
   transition: max-height 0.25s ease-in-out;
   margin-left: 15px;
   margin-bottom: 5px;
@@ -680,6 +646,7 @@ body h3 {
   width: 220px;
 }
 .layout-inline-component > .wrapper .page-section {
+  overflow: auto;
   padding: 15px;
   box-sizing: border-box;
   width: 100%;
