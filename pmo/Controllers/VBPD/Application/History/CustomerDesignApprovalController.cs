@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using pmo.Services.Lists;
+using pmo.Services.SharePoint;
 using ViewModels;
 
 namespace pmo.Controllers.Application.History
@@ -15,13 +17,15 @@ namespace pmo.Controllers.Application.History
     [Route("vbpd-projects/{projectid}/stage/{stageId}/customer-design-approval")]
     public class CustomerDesignApprovalController : BaseController {
 
+
         private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
         private readonly IListService _listService;
 
+
         
-        public CustomerDesignApprovalController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
+        public CustomerDesignApprovalController(EfContext context, IMapper mapper, ISharePointService sharepointService,IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
-            
+
         }
 
         [Route("{version}")]
@@ -132,12 +136,12 @@ namespace pmo.Controllers.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(CustomerDesignApprovalViewModel vm,int stageId )
         {
+
             var latestCustomerDesignApproval = _context.CustomerDesignApprovals.AsNoTracking()
                 .Where(
                   w => w.StageId == stageId
               ).OrderByDescending(o => o.CreateDate)
               .FirstOrDefault();
-
 
             var stage =_context.Stages.Include(x => x.Project).Where(s => s.Id == stageId).FirstOrDefault();
             if (!ModelState.IsValid)
@@ -149,7 +153,6 @@ namespace pmo.Controllers.Application.History
             }
 
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
-
             if (latestCustomerDesignApproval == null)
             {
                 
@@ -226,6 +229,7 @@ namespace pmo.Controllers.Application.History
                         try
                         {
 
+
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
 
@@ -242,10 +246,12 @@ namespace pmo.Controllers.Application.History
                                 ControllerName = "CustomerDesignApproval"
 
                             });
+
                         }
                         catch (Exception e)
                         {
                             transaction.Rollback();
+
                             throw e;
                         }
                     }
@@ -284,5 +290,6 @@ namespace pmo.Controllers.Application.History
 
             return _mapper.Map<List<CustomerDesignApprovalViewModel>>(versions);
         }
+
     }
 }
