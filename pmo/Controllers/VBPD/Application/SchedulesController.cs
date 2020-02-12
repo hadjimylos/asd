@@ -12,7 +12,7 @@ using ViewModels;
 
 namespace pmo.Controllers.Application
 {
-    [Route("vbpd-projects/{projectId}/stages/{StageNumber}/schedules")]
+    [Route("vbpd-projects/{projectId}/stages/{stageNumber}/schedules")]
     public class SchedulesController : BaseController
     {
         private readonly IListService _listService;
