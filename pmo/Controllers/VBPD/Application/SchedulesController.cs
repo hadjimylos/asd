@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using pmo.Services.Lists;
 using ViewModels;
 
-namespace pmo.Controllers.Application
+namespace pmo.Controllers
 {
     [Route("vbpd-projects/{projectId}/stages/{stageNumber}/schedules")]
-    public class SchedulesController : BaseController
+    public class SchedulesController : BaseProjectDetailController
     {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Schedules";
