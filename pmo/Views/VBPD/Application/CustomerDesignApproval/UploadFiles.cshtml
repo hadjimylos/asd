@@ -9,16 +9,17 @@
         <input asp-for="StageId" type="hidden" />
         <input asp-for="CurrentVersion" type="hidden" />
         <input asp-for="ComponentId" type="hidden" />
-        <input asp-for="ControllerName" type="hidden"/>
-        <input asp-for="ComponentName" type="hidden"/>
-        <input asp-for="Type" type="hidden"/>
+        <input asp-for="ControllerName" type="hidden" />
+        <input asp-for="ComponentName" type="hidden" />
+        <input asp-for="Type" type="hidden" />
+        <input asp-for="Path" type="hidden" />
 
         <h1>UploadFiles</h1>
         <h1>Upload files for @Model.ComponentName, Version : @Model.CurrentVersion</h1>
         <div id="list"></div>
 
         <div class="field">
-            <input asp-for="Files" class="data" multiple/>
+            <input asp-for="Files" class="data" multiple />
             <ul class="errors">
                 @Html.Partial("_FieldErrors", "Files")
             </ul>

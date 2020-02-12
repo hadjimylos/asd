@@ -19,6 +19,7 @@ namespace ViewModels
 
         public int ProjectId { get; set; }
         public string Type { get; set; }
+        public string Path { get; set; }
         public string ControllerName { get; set; }
 
         [Required]

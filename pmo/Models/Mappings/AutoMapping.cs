@@ -25,6 +25,7 @@ namespace pmo.Models.Mappings
             CreateMap<Risk, RiskViewModel>().ReverseMap();
             CreateMap<Gate, NavigationGate>().ReverseMap();
             CreateMap<Stage, NavigationStage>().ReverseMap();
+            CreateMap<ProductInfrigmentPatentability, ProductInfrigmentPatentabilityViewModel>().ReverseMap();
 
             // stage subclasses
             CreateMap<ProjectJustificationNav, ProjectJustification>().ReverseMap();

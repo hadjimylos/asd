@@ -1,25 +1,21 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using ViewModels;
 
-namespace pmo.Controllers.Application.History
+namespace pmo.Controllers.VBPD.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/customer-design-approval")]
-    public class CustomerDesignApprovalController : BaseController
+    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/product-infrigment-patentability")]
+    public class ProductInfrigmentPatentabilityController : BaseController
     {
-        private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
-
-        public CustomerDesignApprovalController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
-
+        private readonly string viewPath = "~/Views/VBPD/Application/ProductInfrigmentPatentability";
+        public ProductInfrigmentPatentabilityController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
-
         }
 
         [Route("{version}")]
@@ -34,7 +30,7 @@ namespace pmo.Controllers.Application.History
         public IActionResult CreateVersion(int projectId, int stageNumber)
         {
             //get current version before create a new one
-            var currentVersion = _context.CustomerDesignApprovals
+            var currentVersion = _context.ProductInfrigmentPatentabilities
                 .AsNoTracking()
                 .Include(s => s.Stage)
                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
@@ -42,8 +38,8 @@ namespace pmo.Controllers.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/customer-design-approval/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/customer-design-approval/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-infrigment-patentability/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-infrigment-patentability/create-version",
                 ComponentName = "Customer Design Approval",
                 CurrentVersion = currentVersion,
             };
@@ -57,7 +53,7 @@ namespace pmo.Controllers.Application.History
         public IActionResult PostCreateVerison(int projectId, int stageNumber)
         {
             // get latest transaction of latest version
-            var latestRecord = _context.CustomerDesignApprovals
+            var latestRecord = _context.ProductInfrigmentPatentabilities
                 .AsNoTracking()
                 .Include(s => s.Stage)
                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
@@ -80,12 +76,12 @@ namespace pmo.Controllers.Application.History
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
-                    var latestDocuments = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == previousId).ToList();
+                    var latestDocuments = _context.ProductInfrigmentPatentabilityUploadedDocumentations.Where(x => x.ProductInfrigmentPatentabilityId == previousId).ToList();
                     foreach (var latestDocument in latestDocuments)
                     {
                         latestDocument.Id = 0;
-                        latestDocument.CustomerDesignApprovalId = latestRecord.Id;
-                        _context.CustomerDesignApprovalUploadedDocumentations.Add(latestDocument);
+                        latestDocument.ProductInfrigmentPatentabilityId = latestRecord.Id;
+                        _context.ProductInfrigmentPatentabilityUploadedDocumentations.Add(latestDocument);
                         _context.SaveChanges();
                     }
                     transaction.Commit();
@@ -106,7 +102,7 @@ namespace pmo.Controllers.Application.History
         {
             // always populate latest version in edit
             //Tha skasei ama einai 0
-            var currentVersion = _context.CustomerDesignApprovals
+            var currentVersion = _context.ProductInfrigmentPatentabilities
                  .AsNoTracking()
                  .Include(s => s.Stage)
                  .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
@@ -116,13 +112,12 @@ namespace pmo.Controllers.Application.History
             var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
             if (currentVersion == null)
             {
-                var vm = new CustomerDesignApprovalViewModel()
+                var vm = new ProductInfrigmentPatentabilityViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<CustomerDesignApprovalViewModel>(),
+                    Versions = new List<ProductInfrigmentPatentabilityViewModel>(),
                     Stage = currentStage
                 };
-
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
@@ -133,12 +128,12 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(CustomerDesignApprovalViewModel vm, int projectId, int stageNumber)
+        public IActionResult Edit(ProductInfrigmentPatentabilityViewModel vm, int projectId, int stageNumber)
         {
             //get Stage Entity
             var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
             //get latest transaction of latest version
-            var latestCustomerDesignApproval = _context.CustomerDesignApprovals.AsNoTracking()
+            var latestProductInfrigmentPatentability = _context.ProductInfrigmentPatentabilities.AsNoTracking()
                   .Include(s => s.Stage)
                   .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                   .OrderByDescending(o => o.CreateDate)
@@ -149,34 +144,34 @@ namespace pmo.Controllers.Application.History
                 ViewBag.Errors = ModelState;
                 vm.Stage = stage;
                 vm.Versions = GetVersionHistory(stage.Id);
-                vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
+                vm.Version = latestProductInfrigmentPatentability == null ? 0 : latestProductInfrigmentPatentability.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
-            if (latestCustomerDesignApproval == null)
+            var productInfrigmentPatentability = _mapper.Map<ProductInfrigmentPatentability>(vm);
+            if (latestProductInfrigmentPatentability == null)
             {
 
                 using (var transaction = _context.Database.BeginTransaction())
                 {
                     try
                     {
-                        customerDesignApproval.Version = 1;
-                        customerDesignApproval.StageId = stage.Id;
-                        _context.CustomerDesignApprovals.Add(customerDesignApproval);
+                        productInfrigmentPatentability.Version = 1;
+                        productInfrigmentPatentability.StageId = stage.Id;
+                        _context.ProductInfrigmentPatentabilities.Add(productInfrigmentPatentability);
                         _context.SaveChanges();
                         transaction.Commit();
                         return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                         {
-                            ComponentId = customerDesignApproval.Id,
-                            ComponentName = "Customer Design Approval",
-                            CurrentVersion = customerDesignApproval.Version,
+                            ComponentId = productInfrigmentPatentability.Id,
+                            ComponentName = "Product Infrigment Patentability",
+                            CurrentVersion = productInfrigmentPatentability.Version,
                             StageId = stage.Id,
                             ProjectId = stage.ProjectId,
                             Files = new List<IFormFile>(),
-                            Type = "CustomerDesignApprovalUploadedDocumentation",
-                            ControllerName = "CustomerDesignApproval",
-                            Path= "customer-design-approval"
+                            Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
+                            ControllerName = "ProductInfrigmentPatentability",
+                            Path = "product-infrigment-patentability"
 
                         });
                     }
@@ -190,33 +185,34 @@ namespace pmo.Controllers.Application.History
             else //There is already a previous version
             {
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
-                var isUpdate = latestCustomerDesignApproval.ModifiedByUser.ToLower() == currentUser.ToLower();
+                var isUpdate = latestProductInfrigmentPatentability.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate) //if same user update record
                 {
-                    customerDesignApproval.Version = latestCustomerDesignApproval.Version;
+                    productInfrigmentPatentability.Version = latestProductInfrigmentPatentability.Version;
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            customerDesignApproval.Id = latestCustomerDesignApproval.Id;
-                            customerDesignApproval.StageId = stage.Id;
-                            customerDesignApproval.CreateDate = latestCustomerDesignApproval.CreateDate;
+                            productInfrigmentPatentability.Id = latestProductInfrigmentPatentability.Id;
+                            productInfrigmentPatentability.StageId = stage.Id;
+                            productInfrigmentPatentability.CreateDate = latestProductInfrigmentPatentability.CreateDate;
                             //TODO Upload Documentation as well
-                            _context.CustomerDesignApprovals.Update(customerDesignApproval);
+                            _context.ProductInfrigmentPatentabilities.Update(productInfrigmentPatentability);
                             _context.SaveChanges();
 
                             transaction.Commit();
                             return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
-                                ComponentId = customerDesignApproval.Id,
-                                ComponentName = "Customer Design Approval",
-                                CurrentVersion = customerDesignApproval.Version,
+                                ComponentId = productInfrigmentPatentability.Id,
+                                ComponentName = "Product Infrigment Patentability",
+                                CurrentVersion = productInfrigmentPatentability.Version,
                                 StageId = stage.Id,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
-                                Type = "CustomerDesignApprovalUploadedDocumentation",
-                                ControllerName = "CustomerDesignApproval",
-                                 Path = "customer-design-approval"
+                                Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
+                                ControllerName = "ProductInfrigmentPatentability",
+                                Path = "product-infrigment-patentability"
+
                             });
                         }
                         catch (Exception e)
@@ -234,20 +230,20 @@ namespace pmo.Controllers.Application.History
                         {
 
 
-                            _context.CustomerDesignApprovals.Add(customerDesignApproval);
+                            _context.ProductInfrigmentPatentabilities.Add(productInfrigmentPatentability);
                             _context.SaveChanges();
                             transaction.Commit();
                             return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
-                                ComponentId = customerDesignApproval.Id,
-                                ComponentName = "Customer Design Approval",
-                                CurrentVersion = customerDesignApproval.Version,
+                                ComponentId = productInfrigmentPatentability.Id,
+                                ComponentName = "Product Infrigment Patentability",
+                                CurrentVersion = productInfrigmentPatentability.Version,
                                 StageId = stage.Id,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
-                                Type = "CustomerDesignApprovalUploadedDocumentation",
-                                ControllerName = "CustomerDesignApproval",
-                                Path = "customer-design-approval"
+                                Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
+                                ControllerName = "ProductInfrigmentPatentability",
+                                Path="product-infrigment-patentability"
 
                             });
                         }
@@ -261,22 +257,23 @@ namespace pmo.Controllers.Application.History
                 }
             }
         }
-        private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
+
+        private ProductInfrigmentPatentabilityViewModel GetViewModel(int stageId, int version)
         {
-            var model = _context.CustomerDesignApprovals.Where(
+            var model = _context.ProductInfrigmentPatentabilities.Where(
                 s => s.StageId == stageId && s.Version == version
             ).OrderByDescending(o => o.CreateDate)
-            .Include(i => i.ImportantDocumentation)
+            .Include(i => i.ProductInfrigmentPatentabilityImportantDocumentation)
             .Include(s => s.Stage)
             .FirstOrDefault();
 
-            model.ImportantDocumentation = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == model.Id).ToList();
-            var vm = _mapper.Map<CustomerDesignApprovalViewModel>(model);
+            model.ProductInfrigmentPatentabilityImportantDocumentation = _context.ProductInfrigmentPatentabilityUploadedDocumentations.Where(x => x.ProductInfrigmentPatentabilityId == model.Id).ToList();
+            var vm = _mapper.Map<ProductInfrigmentPatentabilityViewModel>(model);
             return vm;
         }
-        private List<CustomerDesignApprovalViewModel> GetVersionHistory(int stageId)
+        private List<ProductInfrigmentPatentabilityViewModel> GetVersionHistory(int stageId)
         {
-            var grouped = _context.CustomerDesignApprovals
+            var grouped = _context.ProductInfrigmentPatentabilities
                 .Where(w => w.StageId == stageId)
                 .ToList()
                 .GroupBy(g => g.Version)
@@ -284,22 +281,14 @@ namespace pmo.Controllers.Application.History
 
             if (grouped.Count == 0)
             {
-                return new List<CustomerDesignApprovalViewModel>();
+                return new List<ProductInfrigmentPatentabilityViewModel>();
             }
 
-            List<CustomerDesignApproval> versions = new List<CustomerDesignApproval>();
+            List<ProductInfrigmentPatentability> versions = new List<ProductInfrigmentPatentability>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
 
-            return _mapper.Map<List<CustomerDesignApprovalViewModel>>(versions);
+            return _mapper.Map<List<ProductInfrigmentPatentabilityViewModel>>(versions);
         }
 
-        private void SetDropdowns(CustomerDesignApprovalViewModel model)
-        {
-            var teamMembers = _context.Project_User.Where(p => p.ProjectId == model.Stage.ProjectId).Include(u => u.User).Select(s => new SelectListItem()
-            {
-                Text = s.User.NetworkUsername,
-                Value = s.User.Id.ToString(),
-            }).Distinct().ToList();
-        }
     }
 }
