@@ -47,7 +47,7 @@ namespace ViewModels.Helpers
             return queryable;
         }
         
-        public static IEnumerable<T> RemoveTransactions<T>(this IEnumerable<T> listItems) where T : HistoryModel {
+        public static List<T> RemoveTransactions<T>(this IEnumerable<T> listItems) where T : HistoryModel {
             var groupedByVersion = listItems.OrderBy(o => o.CreateDate)
                 .GroupBy(f => f.Version)
                 .ToList();
