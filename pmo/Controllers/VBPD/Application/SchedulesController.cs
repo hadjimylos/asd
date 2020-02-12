@@ -16,6 +16,7 @@ namespace pmo.Controllers.Application
     public class SchedulesController : BaseController
     {
         private readonly IListService _listService;
+        private readonly string path = "~/Views/VBPD/Application/Schedules";
 
         public SchedulesController(EfContext context, IMapper mapper, IListService listService, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
@@ -71,7 +72,7 @@ namespace pmo.Controllers.Application
                     viewModel.Add(new SchedulesViewModel() { Id = 0, Date = DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag.RequiredScheduleTagId, ScheduleType = tag.RequiredSchedule });
                 }
             }
-            return View(viewModel);
+            return View($"{path}/Edit.cshtml", viewModel);
         }
 
         [Route("edit")]
