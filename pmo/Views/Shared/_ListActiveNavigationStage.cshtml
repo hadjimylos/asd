@@ -1,0 +1,136 @@
+﻿@model (int ActiveStageNumber, int ProjectId)
+
+<div class="dropdown active">
+    <div class="item-wrapper">
+        <div class="descrip">Active Stage @Model.ActiveStageNumber</div>
+    </div>
+    <div class="dropdown-items">
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/schedules/edit">
+                <i class="icon"></i>
+                <div class="descrip">Schedules</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/design-concepts/edit">
+                <i class="icon"></i>
+                <div class="descrip">Design Concepts</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/risks/edit">
+                <i class="icon"></i>
+                <div class="descrip">Risks</div>
+            </a>
+        </div>
+
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/project-justification/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Project Justification Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/project-justification/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Project Justification Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/business-case/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Business Case Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/business-case/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Business Case Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/product-infrigment-patentability/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Product Infrigment Patentability Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/product-infrigment-patentability/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Product Infrigment Patentability Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/key-characteristic/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Key Characteristic Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/key-characteristic/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Key Characteristic Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/customer-design-approval/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Customer Design Approval Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/customer-design-approval/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Customer Design Approval Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/investment-plan/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Investment Plan Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/investment-plan/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Investment Plan Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/product-intro-checklist/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Product Intro Checklist Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/product-intro-checklist/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Product Intro Checklist Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/ramp-resource-plan/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Ramp Resource Plan Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/ramp-resource-plan/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Ramp Resource Plan Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/qualification-testing/edit">
+                <i class="icon"></i>
+                <div class="descrip">Edit Latest Qualification Testing Version</div>
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/qualification-testing/create-version">
+                <i class="icon"></i>
+                <div class="descrip">Create New Qualification Testing Version</div>
+            </a>
+        </div>
+    </div>
+</div>

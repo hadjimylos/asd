@@ -60,11 +60,5 @@ namespace pmo.Controllers {
             _projectService.AddNewVBPDProject(model);
             return RedirectToAction("Index");
         }
-
-        [Route("{projectId}")]
-        public IActionResult Detail(int projectId) {
-            VbpdProjectDetail model = new VbpdProjectDetail(_context, projectId);
-            return View($"{path}/Detail.cshtml", model);
-        }
     }
 }

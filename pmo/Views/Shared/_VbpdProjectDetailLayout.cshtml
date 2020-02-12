@@ -1,0 +1,36 @@
+﻿@{ 
+    var navmodel = (ProjectDetailNav)ViewData["ProjectNav"];
+    var projectId = navmodel.ProjectId;
+    var activeStageNumber = navmodel.Stages.Max(m => m.StageNumber);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/screen.css" />
+    <link rel="stylesheet" href="~/roboto-fontface.css" />
+</head>
+<body>
+    <div class="layout-inline-component">
+        <div class="wrapper">
+            <div class="nav-left-component">
+                <div class="wrapper">
+                    <div class="title">
+                        <h4>VBPD Project</h4>
+                    </div>
+                    <div class="navs">
+                        @Html.Partial("_ListNavigationStage", navmodel.Stages)
+                        @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))
+                    </div>
+                </div>
+            </div>
+            <div class="page-section">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <script src="~/bundle.js"></script>
+</body>
+</html>

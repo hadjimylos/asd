@@ -6,7 +6,7 @@ namespace pmo.Models.Mappings
 {
     public class AutoMapping : Profile
     {
-        public AutoMapping() 
+        public AutoMapping()
         {
             CreateMap<User, UserViewModel>().ReverseMap().ReverseMap();
             CreateMap<StageConfig, StageConfigViewModel>().ReverseMap();
@@ -23,6 +23,19 @@ namespace pmo.Models.Mappings
             CreateMap<KeyCharacteristic, KeyCharacteristicViewModel>().ReverseMap();
             CreateMap<ProductIntroChecklist, ProductIntroChecklistViewModel>().ReverseMap();
             CreateMap<Risk, RiskViewModel>().ReverseMap();
+            CreateMap<Gate, NavigationGate>().ReverseMap();
+            CreateMap<Stage, NavigationStage>().ReverseMap();
+
+            // stage subclasses
+            CreateMap<ProjectJustificationNav, ProjectJustification>().ReverseMap();
+            CreateMap<BusinessCaseNav, BusinessCase>().ReverseMap();
+            CreateMap<ProductInfrigmentPatentabilityNav, ProductInfrigmentPatentability>().ReverseMap();
+            CreateMap<KeyCharacteristicNav, KeyCharacteristic>().ReverseMap();
+            CreateMap<CustomerDesignApprovalNav, CustomerDesignApproval>().ReverseMap();
+            CreateMap<InvestmentPlanNav, InvestmentPlan>().ReverseMap();
+            CreateMap<ProductIntroChecklistNav, ProductIntroChecklist>().ReverseMap();
+            CreateMap<RampResourcePlanNav, RampResourcePlan>().ReverseMap();
+            CreateMap<QualificationTestingNav, QualificationTesting>().ReverseMap();
         }
     }
 }
