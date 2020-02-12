@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using dbModels;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +20,60 @@ namespace pmo.Controllers.Application
         public SchedulesController(EfContext context, IMapper mapper, IListService listService, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
             _listService = listService;
-        }   
+        }
+
+        [Route("detail")]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Detail(int projectId, int stageNumber)
+        {
+            int stageId = _context.Stages
+                .First(w => w.ProjectId == projectId && w.StageNumber == stageNumber)
+                .Id;
+
+            ViewBag.ProjectId = projectId;
+            ViewBag.StageId = stageId;
+            List<SchedulesViewModel> viewModel = new List<SchedulesViewModel>();
+            var model = _context.Schedules.Include(x => x.Stage).Include(x => x.ScheduleType).ToList();
+            var stage = _context.Stages.Find(stageId);
+            var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stage.StageNumber).ToList();
+
+            if (model.Count > 0 && settings.Count == model.Count)
+            {
+                viewModel = _mapper.Map<List<SchedulesViewModel>>(model);
+            }
+            else if (model.Count > 0 && settings.Count != model.Count)
+            {
+                viewModel = _mapper.Map<List<SchedulesViewModel>>(model);
+
+                List<int> SettingsList = settings.OrderBy(x => x.RequiredScheduleTagId).Select(x => x.RequiredScheduleTagId).ToList();
+                List<int> ScheduleList = viewModel.OrderBy(x => x.TagId).Select(x => x.TagId).ToList();
+                if (!SettingsList.SequenceEqual(ScheduleList))
+                {
+                    List<int> AddedTags = new List<int>();
+                    if (SettingsList.Count > ScheduleList.Count)
+                    {
+                        AddedTags = SettingsList.Except(ScheduleList).ToList();
+                    }
+                    else
+                    {
+                        AddedTags = ScheduleList.Except(SettingsList).ToList();
+                    }
+                    foreach (var tag in AddedTags)
+                    {
+                        viewModel.Add(new SchedulesViewModel() { Id = 0, Date = DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag, ScheduleType = settings.Where(x => x.RequiredScheduleTagId == tag).First().RequiredSchedule });
+                    }
+                }
+
+            }
+            else
+            {
+                foreach (var tag in settings)
+                {
+                    viewModel.Add(new SchedulesViewModel() { Id = 0, Date = DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag.RequiredScheduleTagId, ScheduleType = tag.RequiredSchedule });
+                }
+            }
+            return View($"{path}/Detail.cshtml",viewModel);
+        }
 
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
@@ -104,7 +156,7 @@ namespace pmo.Controllers.Application
                _context.Schedules.AddRange(modelToInsert);
             }
             _context.SaveChanges();
-            return RedirectToAction("edit", new { projectId = projectId , stageId = stageNumber });
+            return RedirectToAction("edit", new { projectId , stageNumber });
         }
     }
 }

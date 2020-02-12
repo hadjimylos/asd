@@ -3,6 +3,26 @@
     ViewData["Title"] = "Detail";
 }
 @Html.AntiForgeryToken()
-<h1>Detail</h1>
+<h1>Index</h1>
 
-@Html.Partial("_ScheduleForm.cshtml", Model)
+<div class="detail-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1>SCHEDULE INFORMATION</h1>
+            <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/schedules/edit">Edit</a>
+        </div>
+        <div class="details">
+            @foreach (var schedule in Model)
+            {
+                <div class="detail">
+                    <div class="label">@schedule.ScheduleType.Name:</div>
+                    <div class="value">@schedule.Date.ToString("MM/dd/yyyy")</div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
