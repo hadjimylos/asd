@@ -133,15 +133,12 @@ namespace pmo.Controllers.Application.History
         public IActionResult Edit(CustomerDesignApprovalViewModel vm, int projectId, int stageNumber)
         {
             int currentVersion = 0;
-            //get Stage Entity
             var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-            //get latest transaction of latest version
             var latestCustomerDesignApproval = _context.CustomerDesignApprovals
                   .Include(s => s.Stage)
                   .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                   .OrderByDescending(o => o.CreateDate)
                   .FirstOrDefault();
-
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
@@ -150,6 +147,7 @@ namespace pmo.Controllers.Application.History
                 vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
+
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
             customerDesignApproval.StageId = stage.Id;
             if (latestCustomerDesignApproval == null)
@@ -160,7 +158,6 @@ namespace pmo.Controllers.Application.History
                     {
                         currentVersion = 1;
                         customerDesignApproval.Version = 1;
-                        customerDesignApproval.StageId = stage.Id;
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
                         transaction.Commit();

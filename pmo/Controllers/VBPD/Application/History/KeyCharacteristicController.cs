@@ -164,7 +164,6 @@ namespace pmo.Controllers.Application.History
             keyCharacteristic.StageId = stage.Id;
             if (latestKeyCharacteristics == null)  //first version
             {
-                keyCharacteristic.StageId = stage.Id;
                 keyCharacteristic.Version = 1;
                 currentVersion = 1;
                 _context.KeyCharacteristics.Add(keyCharacteristic);

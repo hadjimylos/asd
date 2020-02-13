@@ -53,7 +53,6 @@ namespace pmo.Controllers.Application.History
         {
             // get latest transaction of latest version
             var latestRecord = _context.InvestmentPlans
-                .AsNoTracking()
                 .Include(s => s.Stage)
                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                 .OrderByDescending(o => o.CreateDate)
@@ -71,8 +70,6 @@ namespace pmo.Controllers.Application.History
                     // set variables for create
                     latestRecord.Id = 0;
                     latestRecord.Version = ++latestRecord.Version;
-                    latestRecord.StageId = latestRecord.Stage.Id;
-                    latestRecord.Stage = null;//clear relation before saving 
                     _context.Add(latestRecord);
                     _context.SaveChanges();
                     transaction.Commit();
@@ -118,12 +115,13 @@ namespace pmo.Controllers.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(InvestmentPlanViewModel vm, int projectId, int stageNumber)
         {
-            var latestInvestmentPlan = _context.InvestmentPlans.AsNoTracking()
+            int currentVersion = 0;
+            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var latestInvestmentPlan = _context.InvestmentPlans
                .Include(s => s.Stage)
                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
-            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
@@ -132,7 +130,9 @@ namespace pmo.Controllers.Application.History
                 vm.Version = latestInvestmentPlan == null ? 0 : latestInvestmentPlan.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
+
             var investmentPlan = _mapper.Map<InvestmentPlan>(vm);
+            investmentPlan.StageId = stage.Id;
             //first version
             if (latestInvestmentPlan == null)
             {
@@ -140,8 +140,8 @@ namespace pmo.Controllers.Application.History
                 {
                     try
                     {
+                        currentVersion = 1;
                         investmentPlan.Version = 1;
-                        investmentPlan.StageId = stage.Id;
                         _context.InvestmentPlans.Add(investmentPlan);
                         _context.SaveChanges();
                         transaction.Commit();
@@ -155,21 +155,23 @@ namespace pmo.Controllers.Application.History
             }
             else
             { //There is already a previous version
+                currentVersion = latestInvestmentPlan.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestInvestmentPlan.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate)//same user trying trying to edit 
                 {
-                    investmentPlan.Version = latestInvestmentPlan.Version;
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            investmentPlan.Id = latestInvestmentPlan.Id;
-                            investmentPlan.CreateDate = latestInvestmentPlan.CreateDate;//created date its the same
-                            investmentPlan.StageId = stage.Id;
-                            investmentPlan.Stage = null;
+                            latestInvestmentPlan.Item = investmentPlan.Item;
+                            latestInvestmentPlan.ItemNumber = investmentPlan.ItemNumber;
+                            latestInvestmentPlan.PurchasedFrom = investmentPlan.PurchasedFrom;
+                            latestInvestmentPlan.ShipToLocation = investmentPlan.ShipToLocation;
+                            latestInvestmentPlan.Terms = investmentPlan.Terms;
+                            latestInvestmentPlan.Cost = investmentPlan.Cost;
                             //TODO Upload Documentation as well
-                            _context.InvestmentPlans.Update(investmentPlan);
+                            _context.InvestmentPlans.Update(latestInvestmentPlan);
                             _context.SaveChanges();
                             transaction.Commit();
                         }
@@ -186,9 +188,7 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
-                            investmentPlan.Id = 0;
-                            investmentPlan.StageId = stage.Id;
-                            investmentPlan.Stage = null;
+                            investmentPlan.Version = currentVersion;
                             _context.InvestmentPlans.Add(investmentPlan);
                             _context.SaveChanges();
                             transaction.Commit();
@@ -202,7 +202,7 @@ namespace pmo.Controllers.Application.History
                 }
             }
 
-            return RedirectToAction("Detail", new { projectId,  stageNumber, version = investmentPlan.Version });
+            return RedirectToAction("Detail", new { projectId, stageNumber, version = currentVersion });
         }
         private InvestmentPlanViewModel GetViewModel(int stageId, int version)
         {
