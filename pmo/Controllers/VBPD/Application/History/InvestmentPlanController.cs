@@ -158,7 +158,7 @@ namespace pmo.Controllers.Application.History
                 currentVersion = latestInvestmentPlan.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestInvestmentPlan.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//same user trying trying to edit 
+                if (isUpdate)//same user trying to edit 
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {

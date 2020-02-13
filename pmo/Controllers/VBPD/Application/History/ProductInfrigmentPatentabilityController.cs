@@ -11,9 +11,11 @@ using ViewModels;
 namespace pmo.Controllers.VBPD.Application.History
 {
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-infrigment-patentability")]
-    public class ProductInfrigmentPatentabilityController : BaseController
+    public class ProductInfrigmentPatentabilityController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/ProductInfrigmentPatentability";
+        private readonly string UploadViewPath = "~/Views/VBPD";
+
         public ProductInfrigmentPatentabilityController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
         }
@@ -52,16 +54,14 @@ namespace pmo.Controllers.VBPD.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult PostCreateVerison(int projectId, int stageNumber)
         {
-            // get latest transaction of latest version
             var latestRecord = _context.ProductInfrigmentPatentabilities
-                .AsNoTracking()
-                .Include(s => s.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                .OrderByDescending(o => o.CreateDate)
-                .FirstOrDefault();
+                          .Include(s => s.Stage)
+                          .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                          .OrderByDescending(o => o.CreateDate)
+                          .FirstOrDefault();
 
             if (latestRecord == null)
-            {//check to see if first record.If so redirect to edit only.
+            {
                 RedirectToAction("Edit");
             }
             using (var transaction = _context.Database.BeginTransaction())
@@ -71,8 +71,6 @@ namespace pmo.Controllers.VBPD.Application.History
                 {
                     // set variables for create
                     latestRecord.Id = 0;
-                    latestRecord.StageId = latestRecord.Stage.Id;
-                    latestRecord.Stage = null;//remove relation before saving 
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
@@ -85,7 +83,6 @@ namespace pmo.Controllers.VBPD.Application.History
                         _context.SaveChanges();
                     }
                     transaction.Commit();
-
                 }
                 catch (Exception e)
                 {
@@ -130,15 +127,13 @@ namespace pmo.Controllers.VBPD.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(ProductInfrigmentPatentabilityViewModel vm, int projectId, int stageNumber)
         {
-            //get Stage Entity
+            int currentVersion = 0;
             var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-            //get latest transaction of latest version
-            var latestProductInfrigmentPatentability = _context.ProductInfrigmentPatentabilities.AsNoTracking()
-                  .Include(s => s.Stage)
-                  .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                  .OrderByDescending(o => o.CreateDate)
-                  .FirstOrDefault();
-
+            var latestProductInfrigmentPatentability = _context.ProductInfrigmentPatentabilities
+               .Include(s => s.Stage)
+               .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+               .OrderByDescending(o => o.CreateDate)
+               .FirstOrDefault();
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
@@ -147,8 +142,8 @@ namespace pmo.Controllers.VBPD.Application.History
                 vm.Version = latestProductInfrigmentPatentability == null ? 0 : latestProductInfrigmentPatentability.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-
             var productInfrigmentPatentability = _mapper.Map<ProductInfrigmentPatentability>(vm);
+            productInfrigmentPatentability.StageId = stage.Id;
             if (latestProductInfrigmentPatentability == null)
             {
 
@@ -156,12 +151,12 @@ namespace pmo.Controllers.VBPD.Application.History
                 {
                     try
                     {
+                        currentVersion = 1;
                         productInfrigmentPatentability.Version = 1;
-                        productInfrigmentPatentability.StageId = stage.Id;
                         _context.ProductInfrigmentPatentabilities.Add(productInfrigmentPatentability);
                         _context.SaveChanges();
                         transaction.Commit();
-                        return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                        return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                         {
                             ComponentId = productInfrigmentPatentability.Id,
                             ComponentName = "Product Infrigment Patentability",
@@ -184,24 +179,27 @@ namespace pmo.Controllers.VBPD.Application.History
             }
             else //There is already a previous version
             {
+                currentVersion = latestProductInfrigmentPatentability.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestProductInfrigmentPatentability.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate) //if same user update record
+                if (isUpdate)//same user  trying to edit 
                 {
-                    productInfrigmentPatentability.Version = latestProductInfrigmentPatentability.Version;
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            productInfrigmentPatentability.Id = latestProductInfrigmentPatentability.Id;
-                            productInfrigmentPatentability.StageId = stage.Id;
-                            productInfrigmentPatentability.CreateDate = latestProductInfrigmentPatentability.CreateDate;
+                           latestProductInfrigmentPatentability.ContainsFeaturesRequiringIPProtection = productInfrigmentPatentability.ContainsFeaturesRequiringIPProtection;
+                           latestProductInfrigmentPatentability.ContainsInfingmentIssues = productInfrigmentPatentability.ContainsInfingmentIssues;
+                           latestProductInfrigmentPatentability.InventionDisclosureSubmitted = productInfrigmentPatentability.InventionDisclosureSubmitted;
+                           latestProductInfrigmentPatentability.Issue = productInfrigmentPatentability.Issue;
+                           latestProductInfrigmentPatentability.MitigationStrategy = productInfrigmentPatentability.MitigationStrategy;
+                           latestProductInfrigmentPatentability.PatentNumber = productInfrigmentPatentability.PatentNumber;
+                           latestProductInfrigmentPatentability.ProductFirstTimeOfferedForSale = productInfrigmentPatentability.ProductFirstTimeOfferedForSale;
                             //TODO Upload Documentation as well
-                            _context.ProductInfrigmentPatentabilities.Update(productInfrigmentPatentability);
+                            _context.ProductInfrigmentPatentabilities.Update(latestProductInfrigmentPatentability);
                             _context.SaveChanges();
-
                             transaction.Commit();
-                            return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
                                 ComponentId = productInfrigmentPatentability.Id,
                                 ComponentName = "Product Infrigment Patentability",
@@ -222,18 +220,18 @@ namespace pmo.Controllers.VBPD.Application.History
                         }
                     }
                 }
-                else//if not same user then add a new record to DB (transactions functionality)
+                else// if not same user then add a new record to DB(transactions functionality)
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-
-
+                            productInfrigmentPatentability.Version = currentVersion;
                             _context.ProductInfrigmentPatentabilities.Add(productInfrigmentPatentability);
                             _context.SaveChanges();
                             transaction.Commit();
-                            return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                        
+                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
                                 ComponentId = productInfrigmentPatentability.Id,
                                 ComponentName = "Product Infrigment Patentability",

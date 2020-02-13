@@ -2,11 +2,12 @@
 
 @{
     ViewData["Title"] = "Detail";
-}
 
-<div class="detail-component">
-    <div class="wrapper">
-        <div class="fields">
+    Layout = "_VbpdProjectDetailLayout";
+}
+    <div class="detail-component">
+        <div class="wrapper">
+            <div class="fields">
                 <div class="field">
                     <div class="label">Are there potential infringement issues?</div>
                     <div class="data">@Model.ContainsFeaturesRequiringIPProtection</div>
@@ -47,5 +48,5 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
