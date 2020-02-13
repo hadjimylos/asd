@@ -18,12 +18,15 @@
             );
 
             var stageNum = int.Parse(
-               (string)httpContextAccessor.HttpContext
+               httpContextAccessor.HttpContext
+               .Request
+               .RouteValues["stageNumber"]==null? "0": (string)httpContextAccessor.HttpContext
                .Request
                .RouteValues["stageNumber"]
            );
-
-            stageId = _context.Stages.First(w => w.StageNumber == stageNum && w.projectId == projectId).Id;
+            if (stageNum != 0)
+                stageId = _context.Stages.First(w => w.StageNumber == stageNum && w.ProjectId == projectId).Id;
+            else stageId = 0;
             _nav = new ProjectDetailNav(_context, _mapper, projectId);
         }
 

@@ -10,7 +10,7 @@ using ViewModels;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/investment-plan")]   
+    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/investment-plan")]
     public class InvestmentPlanController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/InvestmentPlan";
@@ -19,7 +19,7 @@ namespace pmo.Controllers.Application.History
         }
 
         [Route("{version}")]
-        public IActionResult Detail( int version)
+        public IActionResult Detail(int version)
         {
             var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
@@ -78,7 +78,7 @@ namespace pmo.Controllers.Application.History
                     transaction.Rollback();
                     throw e;
                 }
-                return RedirectToAction("Edit", new { projectId  , stageNumber });
+                return RedirectToAction("Edit", new { projectId, stageNumber });
             }
         }
 
@@ -203,6 +203,7 @@ namespace pmo.Controllers.Application.History
 
             return RedirectToAction("Detail", new { projectId, stageNumber, version = currentVersion });
         }
+
         private InvestmentPlanViewModel GetViewModel(int stageId, int version)
         {
             var model = _context.InvestmentPlans.Where(

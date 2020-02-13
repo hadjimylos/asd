@@ -117,7 +117,7 @@ namespace pmo.Controllers.VBPD.Application.History
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
+            model.Versions = GetVersionHistory(stageId);
             return View($"{viewPath}/Edit.cshtml", model);
         }
 

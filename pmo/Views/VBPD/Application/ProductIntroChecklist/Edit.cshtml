@@ -5,7 +5,7 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
-    <form class="form-component" method="post" action="/vbpd-projects/{projectId}/stagess/@Model.Stage.StageNumber/product-intro-checklist/edit">
+    <form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/product-intro-checklist/edit">
         @Html.AntiForgeryToken()
         <div class="wrapper">
             <div class="versioning-section">
@@ -82,6 +82,6 @@
                         <input type="submit" class="data btn" value="SUBMIT" />
                     </div>
                 </div>
-                </div>
             </div>
+        </div>
     </form>
