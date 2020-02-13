@@ -19,9 +19,8 @@ namespace pmo.Controllers.Application.History
         }
 
         [Route("{version}")]
-        public IActionResult Detail(int projectId , int stageNumber, int version)
+        public IActionResult Detail( int version)
         {
-            var stageId = _context.Stages.Where(s => s.StageNumber == stageNumber && s.ProjectId == projectId).First().Id;
             var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
@@ -32,7 +31,7 @@ namespace pmo.Controllers.Application.History
             var currentVersion = _context.InvestmentPlans
                 .AsNoTracking()
                 .Include(s => s.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Where(n => n.StageId == stageId)
                 .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -54,7 +53,7 @@ namespace pmo.Controllers.Application.History
             // get latest transaction of latest version
             var latestRecord = _context.InvestmentPlans
                 .Include(s => s.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Where(n => n.StageId == stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -116,10 +115,10 @@ namespace pmo.Controllers.Application.History
         public IActionResult Edit(InvestmentPlanViewModel vm, int projectId, int stageNumber)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var stage = _context.Stages.Where(n => n.Id == stageId).First();
             var latestInvestmentPlan = _context.InvestmentPlans
                .Include(s => s.Stage)
-               .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+               .Where(n => n.StageId == stageId)
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
             if (!ModelState.IsValid)

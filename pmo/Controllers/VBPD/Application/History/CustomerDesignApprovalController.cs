@@ -25,9 +25,8 @@ namespace pmo.Controllers.Application.History
         }
 
         [Route("{version}")]
-        public IActionResult Detail(int projectId, int stageNumber, int version)
+        public IActionResult Detail(int version)
         {
-            var stageId = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First().Id;
             var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
@@ -39,7 +38,7 @@ namespace pmo.Controllers.Application.History
             var currentVersion = _context.CustomerDesignApprovals
                 .AsNoTracking()
                 .Include(s => s.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Where(n => n.StageId == stageId)
                 .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -61,7 +60,7 @@ namespace pmo.Controllers.Application.History
             // get latest transaction of latest version
             var latestRecord = _context.CustomerDesignApprovals
                 .Include(s => s.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Where(n => n.StageId == stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -130,13 +129,13 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(CustomerDesignApprovalViewModel vm, int projectId, int stageNumber)
+        public IActionResult Edit(CustomerDesignApprovalViewModel vm)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var stage = _context.Stages.Where(s=>s.Id==stageId).First();
             var latestCustomerDesignApproval = _context.CustomerDesignApprovals
                   .Include(s => s.Stage)
-                  .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                  .Where(n => n.StageId == stageId)
                   .OrderByDescending(o => o.CreateDate)
                   .FirstOrDefault();
             if (!ModelState.IsValid)

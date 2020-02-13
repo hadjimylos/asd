@@ -21,9 +21,8 @@ namespace pmo.Controllers.VBPD.Application.History
         }
 
         [Route("{version}")]
-        public IActionResult Detail(int projectId, int stageNumber, int version)
+        public IActionResult Detail( int version)
         {
-            var stageId = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First().Id;
             var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
@@ -35,7 +34,7 @@ namespace pmo.Controllers.VBPD.Application.History
             var currentVersion = _context.ProductInfrigmentPatentabilities
                 .AsNoTracking()
                 .Include(s => s.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Where(n => n.StageId == stageId)
                 .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -56,7 +55,7 @@ namespace pmo.Controllers.VBPD.Application.History
         {
             var latestRecord = _context.ProductInfrigmentPatentabilities
                           .Include(s => s.Stage)
-                          .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                          .Where(n => n.StageId == stageId)
                           .OrderByDescending(o => o.CreateDate)
                           .FirstOrDefault();
 
@@ -95,18 +94,18 @@ namespace pmo.Controllers.VBPD.Application.History
         }
 
         [Route("edit")]
-        public IActionResult Edit(int stageNumber, int projectId)
+        public IActionResult Edit()
         {
             // always populate latest version in edit
             //Tha skasei ama einai 0
             var currentVersion = _context.ProductInfrigmentPatentabilities
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                 .Where(n => n.StageId == stageId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
 
-            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var currentStage = _context.Stages.First(s=>s.Id==stageId);
             if (currentVersion == null)
             {
                 var vm = new ProductInfrigmentPatentabilityViewModel()
@@ -125,15 +124,15 @@ namespace pmo.Controllers.VBPD.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(ProductInfrigmentPatentabilityViewModel vm, int projectId, int stageNumber)
+        public IActionResult Edit(ProductInfrigmentPatentabilityViewModel vm)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var stage = _context.Stages.First(s=>s.Id   == stageId);
             var latestProductInfrigmentPatentability = _context.ProductInfrigmentPatentabilities
-               .Include(s => s.Stage)
-               .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-               .OrderByDescending(o => o.CreateDate)
-               .FirstOrDefault();
+                 .Include(s => s.Stage)
+                 .Where(n => n.StageId == stageId)
+                 .OrderByDescending(o => o.CreateDate)
+                 .FirstOrDefault();
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;

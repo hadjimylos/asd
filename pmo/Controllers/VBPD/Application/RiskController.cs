@@ -13,18 +13,19 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers.Application
 {
-    [Route("vbpd-projects/{projectId}/stages/{stageId}/risk")]
+    [Route("vbpd-projects/{projectId}/stages/{stageNumber}/risk")]
     public class RiskController : BaseProjectDetailController
     {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Risk";
+
         public RiskController(EfContext context, IMapper mapper, IListService listService, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
             _listService = listService;
         }
 
         [Route("")]
-        public IActionResult Index(int projectId, int stageId)
+        public IActionResult Index(int projectId)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.StageId = stageId;
@@ -39,7 +40,7 @@ namespace pmo.Controllers.Application
 
 
         [Route("create")]
-        public IActionResult Create(int projectId, int stageId)
+        public IActionResult Create(int projectId)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.StageId = stageId;
@@ -57,7 +58,7 @@ namespace pmo.Controllers.Application
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("create")]
-        public IActionResult Create(int projectId, int stageId, RiskViewModel riskViewModel)
+        public IActionResult Create(int projectId, RiskViewModel riskViewModel)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.StageId = stageId;            
@@ -78,7 +79,7 @@ namespace pmo.Controllers.Application
         }
 
         [Route("{id}")]
-        public IActionResult Edit(int projectId, int stageId, int id)
+        public IActionResult Edit(int projectId, int id)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.StageId = stageId;
@@ -100,7 +101,7 @@ namespace pmo.Controllers.Application
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(int projectId, int stageId, RiskViewModel model)
+        public IActionResult Edit(int projectId, RiskViewModel model)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.StageId = stageId; 

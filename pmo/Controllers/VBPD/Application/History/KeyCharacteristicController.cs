@@ -25,9 +25,8 @@ namespace pmo.Controllers.Application.History
         }
 
         [Route("{version}")]
-        public IActionResult Detail(int projectId, int stageNumber, int version)
+        public IActionResult Detail(int version)
         {
-            var stageId = _context.Stages.Where(s => s.StageNumber == stageNumber && s.ProjectId == projectId).First().Id;
             var model = GetViewModel(stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
@@ -38,7 +37,7 @@ namespace pmo.Controllers.Application.History
             var currentVersion = _context.KeyCharacteristics
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                 .Where(n => n.StageId == stageId)
                  .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -58,8 +57,8 @@ namespace pmo.Controllers.Application.History
         {
             // get latest transaction of latest version
             var latestRecord = _context.KeyCharacteristics
-                .Include(s => s.Stage)           
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                .Include(s => s.Stage)
+                .Where(n => n.StageId == stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -88,18 +87,18 @@ namespace pmo.Controllers.Application.History
             }
         }
 
-
         [Route("edit")]
-        public IActionResult Edit(int projectId, int stageNumber)
+        public IActionResult Edit()
         {
             // always populate latest version in edit if not just an empty form
             var currentVersion = _context.KeyCharacteristics
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+                 .Where(n => n.StageId == stageId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
-            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var currentStage = _context.Stages.First(n => n.Id == stageId);
+
 
             if (currentVersion == null)
             {
@@ -140,10 +139,10 @@ namespace pmo.Controllers.Application.History
             int currentVersion = 0;
             var latestKeyCharacteristics = _context.KeyCharacteristics
                .Include(s => s.Stage)
-               .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
+               .Where(n => n.StageId == stageId)
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
-            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var stage = _context.Stages.First(s => s.Id == stageId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
