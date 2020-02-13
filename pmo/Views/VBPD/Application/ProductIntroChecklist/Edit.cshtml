@@ -5,83 +5,84 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
-    <form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/product-intro-checklist/edit">
-        @Html.AntiForgeryToken()
-        <div class="wrapper">
-            <div class="versioning-section">
-                <div class="choose-history">
-                    <div class="select-history-wrapper">
-                        <select class="select-history select2">
-                            <option>CLEAR</option>
-                            <option value="all">VIEW ALL</option>
-                            @foreach (var version in Model.Versions)
-                            {
-                                <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="versions">
-                    @foreach (var version in Model.Versions)
-                    {
-                        <div showversion="@version.Id" class="version">
-                            <button class="btn full-prepopulate">IS MARKETING REQUIRED</button>
-                            <div class="values">
-                                <div class="select-single-field">
-                                    <div class="label">Item #(Item Number)</div>
-                                    <div class="data">@version.IsMarketingRequired</div>
-                                </div>
-                                <div class="select-single-field">
-                                    <div class="label">FILENAME</div>
-                                    <div class="data">@version.Filename</div>
-                                </div>
-                                <div class="select-single-field">
-                                    <div class="label">APPROVED BY</div>
-                                    <div class="data">@version.ApprovedBy</div>
-                                </div>
-                                <div class="select-single-field">
-                                    <div class="label">APPROVED BY DATE</div>
-                                    <div class="data">@version.ApprovedByDate</div>
-                                </div>
-                            </div>
-                        </div>
-                    }
+
+<form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/product-intro-checklist/edit">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="versioning-section">
+            <div class="choose-history">
+                <div class="select-history-wrapper">
+                    <select class="select-history select2">
+                        <option>CLEAR</option>
+                        <option value="all">VIEW ALL</option>
+                        @foreach (var version in Model.Versions)
+                        {
+                            <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                        }
+                    </select>
                 </div>
             </div>
-            <div class="form-component">
-                <div class="fields">
-                    <div class="field">
-                        <div class="label">Is Marketing Required </div>
-                        <input asp-for="IsMarketingRequired" class="data" />
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "IsMarketingRequired")
-                        </ul>
+            <div class="versions">
+                @foreach (var version in Model.Versions)
+                {
+                    <div showversion="@version.Id" class="version">
+                        <button class="btn full-prepopulate">IS MARKETING REQUIRED</button>
+                        <div class="values">
+                            <div class="select-single-field">
+                                <div class="label">Item #(Item Number)</div>
+                                <div class="data">@version.IsMarketingRequired</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">FILENAME</div>
+                                <div class="data">@version.Filename</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">APPROVED BY</div>
+                                <div class="data">@version.ApprovedBy</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">APPROVED BY DATE</div>
+                                <div class="data">@version.ApprovedByDate</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="field">
-                        <div class="label">Filename</div>
-                        <input asp-for="Filename" class="data" />
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "Filename")
-                        </ul>
-                    </div>
-                    <div class="field">
-                        <div class="label">Approved By</div>
-                        <input asp-for="ApprovedBy" class="data" />
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "ApprovedBy")
-                        </ul>
-                    </div>
-                    <div class="field">
-                        <div class="label">Approved By Date</div>
-                        <input asp-for="ApprovedByDate" class="data" />
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "ApprovedByDate")
-                        </ul>
-                    </div>
-                    <div class="field">
-                        <input type="submit" class="data btn" value="SUBMIT" />
-                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-component">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Is Marketing Required </div>
+                    <input asp-for="IsMarketingRequired" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "IsMarketingRequired")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Filename</div>
+                    <input asp-for="Filename" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Filename")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Approved By</div>
+                    <input asp-for="ApprovedBy" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ApprovedBy")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Approved By Date</div>
+                    <input asp-for="ApprovedByDate" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ApprovedByDate")
+                    </ul>
+                </div>
+                <div class="field">
+                    <input type="submit" class="data btn" value="SUBMIT" />
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
