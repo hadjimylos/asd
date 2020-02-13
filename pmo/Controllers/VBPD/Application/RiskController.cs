@@ -72,9 +72,9 @@ namespace pmo.Controllers.Application
             }
 
             var domainModel = _mapper.Map<Risk>(riskViewModel);
+            domainModel.StageId = ViewBag.StageId;
             _context.Risks.Add(domainModel);
             _context.SaveChanges();
-
             return RedirectToAction("Index");
         }
 
@@ -114,9 +114,16 @@ namespace pmo.Controllers.Application
                 ViewBag.Errors = ModelState;
                 return View($"{path}/Edit.cshtml", model);
             }
-
             var domainModel = _mapper.Map<Risk>(model);
-            _context.Update(domainModel);
+
+            var riskRecord = _context.Risks.First(r => r.Id == domainModel.Id);
+            riskRecord.Name = domainModel.Name;
+            riskRecord.RiskPropability = domainModel.RiskPropability;
+            riskRecord.RiskImpactTagId = domainModel.RiskImpactTagId;
+            riskRecord.RiskTypeTagId = domainModel.RiskTypeTagId;
+            riskRecord.StageId = stageId;
+
+            _context.Risks.Update(riskRecord);
             _context.SaveChanges();
 
             return RedirectToAction("Index");
