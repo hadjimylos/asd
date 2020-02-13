@@ -26,10 +26,6 @@ namespace pmo.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult Detail(int projectId, int stageNumber)
         {
-            int stageId = _context.Stages
-                .First(w => w.ProjectId == projectId && w.StageNumber == stageNumber)
-                .Id;
-
             ViewBag.ProjectId = projectId;
             ViewBag.StageId = stageId;
             List<SchedulesViewModel> viewModel = new List<SchedulesViewModel>();
