@@ -1,0 +1,83 @@
+﻿@model BusinessCaseViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+    <div class="detail-component">
+        <div class="wrapper">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Will Customer Fund Qual</div>
+                    <div class="data">@Model.WillCustomerFundQual</div>
+                </div>
+                <div class="field">
+                    <div class="label">Will Customer Fund Tooling</div>
+                    <div class="data">@Model.WillCustomerFundTooling</div>
+                </div>
+                <div class="field">
+                    <div class="label">Probabilty Of Win</div>
+                    <div class="data">@Model.ProbabiltyOfWin</div>
+                </div>
+                <div class="field">
+                    <div class="label">Target First Year Gross Margin</div>
+                    <div class="data">@Model.TargetFirstYearGrossMargin</div>
+                </div>
+                <div class="field">
+                    <div class="label">Data Starting Date</div>
+                    <div class="data">@Model.DataStartingDate</div>
+                </div>
+
+                <div class="field">
+                    <div class="label">Number Of Years</div>
+                    <div class="data">@Model.NumberOfYears</div>
+                </div>
+                <div class="field">
+                    <div class="label">Discount Rate</div>
+                    <div class="data">@Model.DiscountRate</div>
+                </div>
+                <div class="field">
+                    <div class="label">Tax Rate</div>
+                    <div class="data">@Model.TaxRate</div>
+                </div>
+                <div class="field">
+                    <div class="label">Project Scope</div>
+                    <div class="data">@Model.ProjectScope</div>
+                </div>
+                <div class="field">
+                    <div class="label">Work Requirement Amount</div>
+                    <div class="data">@Model.WorkRequirementAmount</div>
+                </div>
+                <div class="field">
+                    <div class="label">Strategic Alignment</div>
+                    <div class="data">@Model.StrategicAlignment</div>
+                </div>
+                <div class="field">
+                    <div class="label">Add To Tecnical Abilities</div>
+                    <div class="data">@Model.AddToTecnicalAbilities</div>
+                </div>
+                <div class="field">
+                    <div class="label">Project Completion</div>
+                    <div class="data">@Model.ProjectCompletion</div>
+                </div>
+                <div class="field">
+                    <div class="label">Time From Project Completion To RevenueGeneration</div>
+                    <div class="data">@Model.TimeFromProjectCompletionToRevenueGeneration</div>
+                </div>
+                <div class="field">
+                    <div class="label">ManufacturingLocations</div>
+                    <div class="value">-----@*@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.).ToList())*@</div>
+                </div>
+                <div class="field">
+                    <div class="label">Customer Market Analysis</div>
+                    <div class="data">@Model.CustomerMarketAnalysis</div>
+                </div>
+                <div class="field">
+                    <div class="label">Changes</div>
+                    <div class="data">@Model.Changes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
