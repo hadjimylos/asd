@@ -13,7 +13,7 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/key-characteristic")]
+    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/key-characteristic")]
     public class KeyCharacteristicController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
@@ -142,15 +142,13 @@ namespace pmo.Controllers.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(KeyCharacteristicViewModel vm, int projectId, int stageNumber)
         {
-
+            int currentVersion = 0;
             var latestKeyCharacteristics = _context.KeyCharacteristics
-               .AsNoTracking()
                .Include(s => s.Stage)
                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
             var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
@@ -168,39 +166,39 @@ namespace pmo.Controllers.Application.History
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var keyCharacteristic = _mapper.Map<KeyCharacteristic>(vm);
-            keyCharacteristic.StageId = stage.Id;
+            keyCharacteristic.StageId = _context.Stages.Where(p => p.ProjectId == projectId && p.StageNumber == stageNumber).First().Id;
             if (latestKeyCharacteristics == null)  //first version
             {
+                keyCharacteristic.StageId = stage.Id;
                 keyCharacteristic.Version = 1;
+                currentVersion = 1;
                 _context.KeyCharacteristics.Add(keyCharacteristic);
                 _context.SaveChanges();
             }
             else //There is already a previous version
             {
-                keyCharacteristic.Version = latestKeyCharacteristics.Version;
+                currentVersion = latestKeyCharacteristics.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestKeyCharacteristics.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)
+                if (isUpdate)//if same user then update
                 {
-
-                    keyCharacteristic.Id = latestKeyCharacteristics.Id;
-                    keyCharacteristic.CreateDate = latestKeyCharacteristics.CreateDate;
-                    keyCharacteristic.Stage = null;
-                    _context.KeyCharacteristics.Update(keyCharacteristic);
+                    latestKeyCharacteristics.ItemNumber = keyCharacteristic.ItemNumber;
+                    latestKeyCharacteristics.MeasuredValue = keyCharacteristic.MeasuredValue;
+                    latestKeyCharacteristics.Requirement = keyCharacteristic.Requirement;
+                    latestKeyCharacteristics.RequirementSourceId = keyCharacteristic.RequirementSourceId;
+                    latestKeyCharacteristics.ExpectedOutcomeRisk = keyCharacteristic.ExpectedOutcomeRisk;
+                    _context.KeyCharacteristics.Update(latestKeyCharacteristics);
                     _context.SaveChanges();
                 }
                 else
-                {
-                     keyCharacteristic.Stage = null;
+                {//if not then new record 
                     _context.KeyCharacteristics.Add(keyCharacteristic);
                     _context.SaveChanges();
                 }
-
             }
-            return RedirectToAction("Detail", new { projectId, stageNumber, version = keyCharacteristic.Version });
+            return RedirectToAction("Detail", new { projectId, stageNumber, version =currentVersion });
         }
 
-        
         private List<KeyCharacteristicViewModel> GetVersionHistory(int stageId)
         {
             var grouped = _context.KeyCharacteristics.Include(k=>k.RequirementSource)

@@ -11,10 +11,12 @@ using ViewModels;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/customer-design-approval")]
+    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/customer-design-approval")]
     public class CustomerDesignApprovalController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
+        private readonly string UploadViewPath = "~/Views/VBPD";
+
 
         public CustomerDesignApprovalController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
 
@@ -42,8 +44,8 @@ namespace pmo.Controllers.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/customer-design-approval/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/customer-design-approval/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/customer-design-approval/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/customer-design-approval/create-version",
                 ComponentName = "Customer Design Approval",
                 CurrentVersion = currentVersion,
             };
@@ -166,7 +168,7 @@ namespace pmo.Controllers.Application.History
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
                         transaction.Commit();
-                        return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                        return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                         {
                             ComponentId = customerDesignApproval.Id,
                             ComponentName = "Customer Design Approval",
@@ -176,8 +178,7 @@ namespace pmo.Controllers.Application.History
                             Files = new List<IFormFile>(),
                             Type = "CustomerDesignApprovalUploadedDocumentation",
                             ControllerName = "CustomerDesignApproval",
-                            Path= "customer-design-approval"
-
+                            Path = "customer-design-approval"
                         });
                     }
                     catch (Exception e)
@@ -206,7 +207,7 @@ namespace pmo.Controllers.Application.History
                             _context.SaveChanges();
 
                             transaction.Commit();
-                            return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
                                 ComponentId = customerDesignApproval.Id,
                                 ComponentName = "Customer Design Approval",
@@ -216,7 +217,7 @@ namespace pmo.Controllers.Application.History
                                 Files = new List<IFormFile>(),
                                 Type = "CustomerDesignApprovalUploadedDocumentation",
                                 ControllerName = "CustomerDesignApproval",
-                                 Path = "customer-design-approval"
+                                Path = "customer-design-approval"
                             });
                         }
                         catch (Exception e)
@@ -237,7 +238,7 @@ namespace pmo.Controllers.Application.History
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
                             transaction.Commit();
-                            return View($"{viewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
+                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
                                 ComponentId = customerDesignApproval.Id,
                                 ComponentName = "Customer Design Approval",
@@ -261,6 +262,7 @@ namespace pmo.Controllers.Application.History
                 }
             }
         }
+
         private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
         {
             var model = _context.CustomerDesignApprovals.Where(

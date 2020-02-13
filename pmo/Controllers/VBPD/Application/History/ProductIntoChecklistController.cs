@@ -10,7 +10,7 @@ using ViewModels;
 
 namespace pmo.Controllers.VBPD.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/product-intro-checklist")]
+    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-intro-checklist")]
     public class ProductIntoChecklistController : BaseProjectDetailController
     {
 

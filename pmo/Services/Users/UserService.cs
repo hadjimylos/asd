@@ -25,7 +25,8 @@ namespace pmo.Services.Users
         }
 
         public int GetCurrentUserId() {
-            return _context.Users.Where(u => u.NetworkUsername == _httpContextAccessor.HttpContext.User.Identity.Name).Select(s => s.Id).First();
+            var userid = _context.Users.Where(u => u.NetworkUsername.ToLower() == _httpContextAccessor.HttpContext.User.Identity.Name.ToLower()).Select(s => s.Id).FirstOrDefault();
+            return userid;
         }
         public bool AddNewUser(UserViewModel userViewModel)
         {

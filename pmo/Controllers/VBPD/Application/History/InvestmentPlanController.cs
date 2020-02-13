@@ -10,7 +10,7 @@ using ViewModels;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/investment-plan")]   
+    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/investment-plan")]   
     public class InvestmentPlanController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/InvestmentPlan";
