@@ -30,11 +30,45 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ModifiedByUser = table.Column<string>(nullable: true),
+                    FriendlyName = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    CanInitiateProject = table.Column<bool>(nullable: false),
+                    ManagesPauseProject = table.Column<bool>(nullable: false),
+                    ManagesProjectDetail = table.Column<bool>(nullable: false),
+                    ManagesProjectTeam = table.Column<bool>(nullable: false),
+                    ManagesScheduling = table.Column<bool>(nullable: false),
+                    ManagesBusinessCases = table.Column<bool>(nullable: false),
+                    ManagesDeliverableRegisters = table.Column<bool>(nullable: false),
+                    ManagesIntellectualProperty = table.Column<bool>(nullable: false),
+                    ManagesProjectRequirements = table.Column<bool>(nullable: false),
+                    ManagesRiskAnalysis = table.Column<bool>(nullable: false),
+                    ManagesParts = table.Column<bool>(nullable: false),
+                    ManagesCustomerDesignApproval = table.Column<bool>(nullable: false),
+                    ManagesInvestmentPlan = table.Column<bool>(nullable: false),
+                    ManagesMarketingPlan = table.Column<bool>(nullable: false),
+                    ManagesRampAndResourcePlan = table.Column<bool>(nullable: false),
+                    ManagesDeliverableRegister = table.Column<bool>(nullable: false),
+                    ManagesQualificationTesting = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,40 +115,21 @@ namespace pmo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "GateKeeperConfigs",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    FriendlyName = table.Column<string>(nullable: true),
-                    Key = table.Column<string>(nullable: true),
-                    IsAdmin = table.Column<bool>(nullable: false),
-                    CanInitiateProject = table.Column<bool>(nullable: false),
-                    ManagesPauseProject = table.Column<bool>(nullable: false),
-                    ManagesProjectDetail = table.Column<bool>(nullable: false),
-                    ManagesProjectTeam = table.Column<bool>(nullable: false),
-                    ManagesScheduling = table.Column<bool>(nullable: false),
-                    ManagesBusinessCases = table.Column<bool>(nullable: false),
-                    ManagesDeliverableRegisters = table.Column<bool>(nullable: false),
-                    ManagesIntellectualProperty = table.Column<bool>(nullable: false),
-                    ManagesProjectRequirements = table.Column<bool>(nullable: false),
-                    ManagesRiskAnalysis = table.Column<bool>(nullable: false),
-                    ManagesParts = table.Column<bool>(nullable: false),
-                    ManagesCustomerDesignApproval = table.Column<bool>(nullable: false),
-                    ManagesInvestmentPlan = table.Column<bool>(nullable: false),
-                    ManagesMarketingPlan = table.Column<bool>(nullable: false),
-                    ManagesRampAndResourcePlan = table.Column<bool>(nullable: false),
-                    ManagesDeliverableRegister = table.Column<bool>(nullable: false),
-                    ManagesQualificationTesting = table.Column<bool>(nullable: false),
-                    GateConfigId = table.Column<int>(nullable: true)
+                    Keeper = table.Column<string>(nullable: false),
+                    GateConfigId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_GateKeeperConfigs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Roles_GateConfigs_GateConfigId",
+                        name: "FK_GateKeeperConfigs_GateConfigs_GateConfigId",
                         column: x => x.GateConfigId,
                         principalTable: "GateConfigs",
                         principalColumn: "Id",
@@ -146,6 +161,28 @@ namespace pmo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProjectStateHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ModifiedByUser = table.Column<string>(nullable: true),
+                    ProjectId = table.Column<int>(nullable: false),
+                    ProjectState = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectStateHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProjectStateHistories_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stages",
                 columns: table => new
                 {
@@ -153,9 +190,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
                     ProjectId = table.Column<int>(nullable: false),
+                    IsComplete = table.Column<bool>(nullable: false),
                     StageNumber = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -165,28 +201,6 @@ namespace pmo.Migrations
                         name: "FK_Stages_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tags",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    ModifiedByUser = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    TagCategoryId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tags", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tags_TagCategories_TagCategoryId",
-                        column: x => x.TagCategoryId,
-                        principalTable: "TagCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -209,6 +223,28 @@ namespace pmo.Migrations
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ModifiedByUser = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    TagCategoryId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tags_TagCategories_TagCategoryId",
+                        column: x => x.TagCategoryId,
+                        principalTable: "TagCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -243,8 +279,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     StageId = table.Column<int>(nullable: false),
                     WillCustomerFundQual = table.Column<bool>(nullable: false),
                     WillCustomerFundTooling = table.Column<bool>(nullable: false),
@@ -285,8 +321,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     SentForApprovalBy = table.Column<string>(nullable: true),
                     DateSentForApprove = table.Column<DateTime>(nullable: false),
                     ApprovedBy = table.Column<string>(nullable: true),
@@ -312,8 +348,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     ItemNumber = table.Column<string>(nullable: true),
                     Item = table.Column<string>(nullable: true),
                     PurchasedFrom = table.Column<string>(nullable: true),
@@ -341,8 +377,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     ContainsInfingmentIssues = table.Column<bool>(nullable: false),
                     PatentNumber = table.Column<string>(nullable: true),
                     Issue = table.Column<string>(nullable: true),
@@ -371,8 +407,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     IsMarketingRequired = table.Column<bool>(nullable: false),
                     Filename = table.Column<string>(nullable: true),
                     ApprovedBy = table.Column<string>(nullable: true),
@@ -398,8 +434,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     IsQualificationRequired = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     AttachmentUrl = table.Column<string>(nullable: true),
@@ -424,8 +460,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     Value = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
                     StageId = table.Column<int>(nullable: false)
@@ -442,6 +478,93 @@ namespace pmo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Project_User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ModifiedByUser = table.Column<string>(nullable: true),
+                    ProjectId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    JobDescriptionKey = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Project_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Project_User_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Project_User_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliverableRegisterConfigs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ModifiedByUser = table.Column<string>(nullable: true),
+                    StageId = table.Column<int>(nullable: false),
+                    TagId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliverableRegisterConfigs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeliverableRegisterConfigs_Stages_StageId",
+                        column: x => x.StageId,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DeliverableRegisterConfigs_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliverableRegisters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ModifiedByUser = table.Column<string>(nullable: true),
+                    StageId = table.Column<int>(nullable: false),
+                    TagId = table.Column<int>(nullable: false),
+                    FileName = table.Column<string>(nullable: true),
+                    FileUrl = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliverableRegisters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeliverableRegisters_Stages_StageId",
+                        column: x => x.StageId,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DeliverableRegisters_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "KeyCharacteristics",
                 columns: table => new
                 {
@@ -449,8 +572,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     ItemNumber = table.Column<string>(nullable: true),
                     Requirement = table.Column<string>(nullable: true),
                     RequirementSourceId = table.Column<int>(nullable: false),
@@ -483,17 +606,19 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
-                    SalesforceNumber = table.Column<decimal>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     ProjectId = table.Column<int>(nullable: false),
-                    IsExportConrolRequired = table.Column<bool>(nullable: false),
-                    EngineeringChecklistUrl = table.Column<string>(nullable: true),
+                    Salesforce = table.Column<string>(nullable: false),
+                    EngineeringChecklistUrl = table.Column<string>(nullable: false),
                     ProjectCategoryTagId = table.Column<int>(nullable: false),
                     ProductLineTagId = table.Column<int>(nullable: false),
                     ProjectClassificationTagId = table.Column<int>(nullable: false),
                     ExportApplicationTypeTagId = table.Column<int>(nullable: false),
-                    DesignAuthorityTagId = table.Column<int>(nullable: false)
+                    DesignAuthorityTagId = table.Column<int>(nullable: false),
+                    ProjectProcessType = table.Column<string>(nullable: false),
+                    ExportControlCode = table.Column<string>(nullable: false),
+                    EndUseDestinationCountry = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -544,8 +669,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     StageId = table.Column<int>(nullable: false),
                     CustomerMotivation = table.Column<string>(nullable: true),
                     Application = table.Column<string>(nullable: true),
@@ -587,8 +712,6 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     RiskPropability = table.Column<decimal>(nullable: false),
                     RiskTypeTagId = table.Column<int>(nullable: false),
@@ -626,8 +749,6 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
                     StageId = table.Column<int>(nullable: false),
                     TagId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false)
@@ -673,34 +794,6 @@ namespace pmo.Migrations
                         name: "FK_StageConfig_RequiredSchedules_StageConfigs_StageConfigId",
                         column: x => x.StageConfigId,
                         principalTable: "StageConfigs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Project_User",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    ModifiedByUser = table.Column<string>(nullable: true),
-                    ProjectId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Project_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Project_User_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Project_User_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -757,43 +850,6 @@ namespace pmo.Migrations
                         name: "FK_BusinessCase_ManufacturingLocations_Tags_ManufacturingLocationsTagId",
                         column: x => x.ManufacturingLocationsTagId,
                         principalTable: "Tags",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DesignConcepts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    ModifiedByUser = table.Column<string>(nullable: true),
-                    StageId = table.Column<int>(nullable: false),
-                    Upload = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    BusinessCaseId = table.Column<int>(nullable: true),
-                    StageId1 = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DesignConcepts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DesignConcepts_BusinessCases_BusinessCaseId",
-                        column: x => x.BusinessCaseId,
-                        principalTable: "BusinessCases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_DesignConcepts_Stages_StageId",
-                        column: x => x.StageId,
-                        principalTable: "Stages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_DesignConcepts_Stages_StageId1",
-                        column: x => x.StageId1,
-                        principalTable: "Stages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -928,8 +984,8 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    StartUpdateDate = table.Column<DateTime>(nullable: false),
-                    EndUpdateDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: false),
                     RiskId = table.Column<int>(nullable: false),
                     MitigationPlan = table.Column<string>(nullable: true),
                     Responsibility = table.Column<string>(nullable: true),
@@ -944,237 +1000,6 @@ namespace pmo.Migrations
                         principalTable: "Risks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.InsertData(
-                table: "TagCategories",
-                columns: new[] { "Id", "CreateDate", "FriendlyName", "IsFixed", "Key", "ModifiedByUser" },
-                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Required Schedules", true, "required-schedules", null });
-
-            migrationBuilder.InsertData(
-                table: "TagCategories",
-                columns: new[] { "Id", "CreateDate", "FriendlyName", "IsFixed", "Key", "ModifiedByUser" },
-                values: new object[] { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Citizenships", true, "citizenships", null });
-
-            migrationBuilder.InsertData(
-                table: "Tags",
-                columns: new[] { "Id", "CreateDate", "ModifiedByUser", "Name", "TagCategoryId" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Gate 1", 1 },
-                    { 137, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Namibia", 2 },
-                    { 138, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Nauru", 2 },
-                    { 139, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Nepal", 2 },
-                    { 140, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Netherlands", 2 },
-                    { 141, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "New Zealand", 2 },
-                    { 142, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Nicaragua", 2 },
-                    { 143, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Niger", 2 },
-                    { 144, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Nigeria", 2 },
-                    { 145, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "North Korea", 2 },
-                    { 146, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "North Macedonia (formerly Macedonia)", 2 },
-                    { 136, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Myanmar (formerly Burma)", 2 },
-                    { 147, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Norway", 2 },
-                    { 149, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Pakistan", 2 },
-                    { 150, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Palau", 2 },
-                    { 151, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Palestine", 2 },
-                    { 152, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Panama", 2 },
-                    { 153, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Papua New Guinea", 2 },
-                    { 154, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Paraguay", 2 },
-                    { 155, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Peru", 2 },
-                    { 156, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Philippines", 2 },
-                    { 157, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Poland", 2 },
-                    { 158, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Portugal", 2 },
-                    { 148, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Oman", 2 },
-                    { 135, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Mozambique", 2 },
-                    { 134, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Morocco", 2 },
-                    { 133, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Montenegro", 2 },
-                    { 110, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Laos", 2 },
-                    { 111, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Latvia", 2 },
-                    { 112, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Lebanon", 2 },
-                    { 113, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Lesotho", 2 },
-                    { 114, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Liberia", 2 },
-                    { 115, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Libya", 2 },
-                    { 116, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Liechtenstein", 2 },
-                    { 117, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Lithuania", 2 },
-                    { 118, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Luxembourg", 2 },
-                    { 119, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Madagascar", 2 },
-                    { 120, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Malawi", 2 },
-                    { 121, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Malaysia", 2 },
-                    { 122, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Maldives", 2 },
-                    { 123, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Mali", 2 },
-                    { 124, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Malta", 2 },
-                    { 125, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Marshall Islands", 2 },
-                    { 126, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Mauritania", 2 },
-                    { 127, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Mauritius", 2 },
-                    { 128, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Mexico", 2 },
-                    { 129, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Micronesia", 2 },
-                    { 130, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Moldova", 2 },
-                    { 131, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Monaco", 2 },
-                    { 132, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Mongolia", 2 },
-                    { 159, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Qatar", 2 },
-                    { 160, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Romania", 2 },
-                    { 161, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Russia", 2 },
-                    { 162, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Rwanda", 2 },
-                    { 190, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Tajikistan", 2 },
-                    { 191, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Tanzania", 2 },
-                    { 192, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Thailand", 2 },
-                    { 193, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Timor-Leste", 2 },
-                    { 194, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Togo", 2 },
-                    { 195, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Tonga", 2 },
-                    { 196, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Trinidad and Tobago", 2 },
-                    { 197, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Tunisia", 2 },
-                    { 198, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Turkey", 2 },
-                    { 199, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Turkmenistan", 2 },
-                    { 200, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Tuvalu", 2 },
-                    { 201, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Uganda", 2 },
-                    { 202, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ukraine", 2 },
-                    { 203, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "United Arab Emirates (UAE)", 2 },
-                    { 204, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "United Kingdom (UK)", 2 },
-                    { 205, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "United States of America (USA)", 2 },
-                    { 206, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Uruguay", 2 },
-                    { 207, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Uzbekistan", 2 },
-                    { 208, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Vanuatu", 2 },
-                    { 209, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Vatican City (Holy See)", 2 },
-                    { 210, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Venezuela", 2 },
-                    { 211, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Vietnam", 2 },
-                    { 212, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Yemen", 2 },
-                    { 189, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Taiwan", 2 },
-                    { 109, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Kyrgyzstan", 2 },
-                    { 188, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Syria", 2 },
-                    { 186, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Sweden", 2 },
-                    { 163, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Saint Kitts and Nevis", 2 },
-                    { 164, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Saint Lucia", 2 },
-                    { 165, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Saint Vincent and the Grenadines", 2 },
-                    { 166, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Samoa", 2 },
-                    { 167, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "San Marino", 2 },
-                    { 168, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Sao Tome and Principe", 2 },
-                    { 169, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Saudi Arabia", 2 },
-                    { 170, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Senegal", 2 },
-                    { 171, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Serbia", 2 },
-                    { 172, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Seychelles", 2 },
-                    { 173, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Sierra Leone", 2 },
-                    { 174, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Singapore", 2 },
-                    { 175, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Slovakia", 2 },
-                    { 176, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Slovenia", 2 },
-                    { 177, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Solomon Islands", 2 },
-                    { 178, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Somalia", 2 },
-                    { 179, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "South Africa", 2 },
-                    { 180, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "South Korea", 2 },
-                    { 181, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "South Sudan", 2 },
-                    { 182, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Spain", 2 },
-                    { 183, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Sri Lanka", 2 },
-                    { 184, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Sudan", 2 },
-                    { 185, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Suriname", 2 },
-                    { 187, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Switzerland", 2 },
-                    { 108, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Kuwait", 2 },
-                    { 107, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Kosovo", 2 },
-                    { 106, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Kiribati", 2 },
-                    { 29, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bangladesh", 2 },
-                    { 30, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Barbados", 2 },
-                    { 31, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Belarus", 2 },
-                    { 32, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Belgium", 2 },
-                    { 33, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Belize", 2 },
-                    { 34, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Benin", 2 },
-                    { 35, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bhutan", 2 },
-                    { 36, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bolivia", 2 },
-                    { 37, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bosnia and Herzegovina", 2 },
-                    { 38, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Botswana", 2 },
-                    { 39, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Brazil", 2 },
-                    { 40, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Brunei", 2 },
-                    { 41, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bulgaria", 2 },
-                    { 42, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Burkina Faso", 2 },
-                    { 43, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Burundi", 2 },
-                    { 44, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cabo Verde", 2 },
-                    { 45, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cambodia", 2 },
-                    { 46, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cameroon", 2 },
-                    { 47, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Canada", 2 },
-                    { 48, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Central African Republic (CAR)", 2 },
-                    { 49, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Chad", 2 },
-                    { 50, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Chile", 2 },
-                    { 51, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "China", 2 },
-                    { 28, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bahrain", 2 },
-                    { 52, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Colombia", 2 },
-                    { 27, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bahamas", 2 },
-                    { 25, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Austria", 2 },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Design concept(s)", 1 },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Gate 2 / Gate A", 1 },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Draft manufacturing drawings", 1 },
-                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Design Review", 1 },
-                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Submit PAR", 1 },
-                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Release Product Documentation", 1 },
-                    { 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Create Samples / Prototypes", 1 },
-                    { 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "DVT testing & Test Report", 1 },
-                    { 10, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Gate 3", 1 },
-                    { 11, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "First Article Approval", 1 },
-                    { 12, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Qualification Testing & Test Report", 1 },
-                    { 13, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Customer Approval / Release", 1 },
-                    { 14, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Gate 4 / Gate B", 1 },
-                    { 15, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "PLR Review", 1 },
-                    { 16, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Afghanistan", 2 },
-                    { 17, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Albania", 2 },
-                    { 18, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Algeria", 2 },
-                    { 19, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Andorra", 2 },
-                    { 20, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Angola", 2 },
-                    { 21, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Antigua and Barbuda", 2 },
-                    { 22, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Argentina", 2 },
-                    { 23, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Armenia", 2 },
-                    { 24, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Australia", 2 },
-                    { 26, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Azerbaijan", 2 },
-                    { 213, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Zambia", 2 },
-                    { 53, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Comoros", 2 },
-                    { 55, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Democratic Republic of the", 2 },
-                    { 83, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ghana", 2 },
-                    { 84, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Greece", 2 },
-                    { 85, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Grenada", 2 },
-                    { 86, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Guatemala", 2 },
-                    { 87, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Guinea", 2 },
-                    { 88, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Guinea-Bissau", 2 },
-                    { 89, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Guyana", 2 },
-                    { 90, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Haiti", 2 },
-                    { 91, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Honduras", 2 },
-                    { 92, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Hungary", 2 },
-                    { 93, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Iceland", 2 },
-                    { 94, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "India", 2 },
-                    { 95, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Indonesia", 2 },
-                    { 96, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Iran", 2 },
-                    { 97, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Iraq", 2 },
-                    { 98, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ireland", 2 },
-                    { 99, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Israel", 2 },
-                    { 100, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Italy", 2 },
-                    { 101, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Jamaica", 2 },
-                    { 102, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Japan", 2 },
-                    { 103, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Jordan", 2 },
-                    { 104, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Kazakhstan", 2 },
-                    { 105, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Kenya", 2 },
-                    { 82, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Germany", 2 },
-                    { 54, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Congo", 2 },
-                    { 81, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Georgia", 2 },
-                    { 79, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Gabon", 2 },
-                    { 56, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Congo", 2 },
-                    { 57, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Republic of the", 2 },
-                    { 58, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Costa Rica", 2 },
-                    { 59, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cote d'Ivoire", 2 },
-                    { 60, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Croatia", 2 },
-                    { 61, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cuba", 2 },
-                    { 62, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cyprus", 2 },
-                    { 63, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Czechia", 2 },
-                    { 64, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Denmark", 2 },
-                    { 65, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Djibouti", 2 },
-                    { 66, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Dominica", 2 },
-                    { 67, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Dominican Republic", 2 },
-                    { 68, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ecuador", 2 },
-                    { 69, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Egypt", 2 },
-                    { 70, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "El Salvador", 2 },
-                    { 71, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Equatorial Guinea", 2 },
-                    { 72, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Eritrea", 2 },
-                    { 73, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Estonia", 2 },
-                    { 74, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Eswatini (formerly Swaziland)", 2 },
-                    { 75, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ethiopia", 2 },
-                    { 76, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fiji", 2 },
-                    { 77, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Finland", 2 },
-                    { 78, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "France", 2 },
-                    { 80, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Gambia", 2 },
-                    { 214, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Zimbabwe", 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1198,24 +1023,34 @@ namespace pmo.Migrations
                 column: "StageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DesignConcepts_BusinessCaseId",
-                table: "DesignConcepts",
-                column: "BusinessCaseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DesignConcepts_StageId",
-                table: "DesignConcepts",
+                name: "IX_DeliverableRegisterConfigs_StageId",
+                table: "DeliverableRegisterConfigs",
                 column: "StageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DesignConcepts_StageId1",
-                table: "DesignConcepts",
-                column: "StageId1");
+                name: "IX_DeliverableRegisterConfigs_TagId",
+                table: "DeliverableRegisterConfigs",
+                column: "TagId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliverableRegisters_StageId",
+                table: "DeliverableRegisters",
+                column: "StageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliverableRegisters_TagId",
+                table: "DeliverableRegisters",
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GateApprovers_GateId",
                 table: "GateApprovers",
                 column: "GateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GateKeeperConfigs_GateConfigId",
+                table: "GateKeeperConfigs",
+                column: "GateConfigId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Gates_ProjectId",
@@ -1333,6 +1168,11 @@ namespace pmo.Migrations
                 column: "StageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjectStateHistories_ProjectId",
+                table: "ProjectStateHistories",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QualificationTestings_StageId",
                 table: "QualificationTestings",
                 column: "StageId");
@@ -1356,11 +1196,6 @@ namespace pmo.Migrations
                 name: "IX_Risks_StageId",
                 table: "Risks",
                 column: "StageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Roles_GateConfigId",
-                table: "Roles",
-                column: "GateConfigId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedules_StageId",
@@ -1429,10 +1264,16 @@ namespace pmo.Migrations
                 name: "BusinessCase_ManufacturingLocations");
 
             migrationBuilder.DropTable(
-                name: "DesignConcepts");
+                name: "DeliverableRegisterConfigs");
+
+            migrationBuilder.DropTable(
+                name: "DeliverableRegisters");
 
             migrationBuilder.DropTable(
                 name: "GateApprovers");
+
+            migrationBuilder.DropTable(
+                name: "GateKeeperConfigs");
 
             migrationBuilder.DropTable(
                 name: "InvestmentPlans");
@@ -1462,6 +1303,9 @@ namespace pmo.Migrations
                 name: "ProjectJustifications");
 
             migrationBuilder.DropTable(
+                name: "ProjectStateHistories");
+
+            migrationBuilder.DropTable(
                 name: "QualificationTestings");
 
             migrationBuilder.DropTable(
@@ -1481,6 +1325,9 @@ namespace pmo.Migrations
 
             migrationBuilder.DropTable(
                 name: "BusinessCases");
+
+            migrationBuilder.DropTable(
+                name: "GateConfigs");
 
             migrationBuilder.DropTable(
                 name: "Risks");
@@ -1517,9 +1364,6 @@ namespace pmo.Migrations
 
             migrationBuilder.DropTable(
                 name: "Projects");
-
-            migrationBuilder.DropTable(
-                name: "GateConfigs");
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public  class ProjectJustification: HistoryModel
+    public  class ProjectJustification : HistoryModel
     {
        
         public int StageId { get; set; }
