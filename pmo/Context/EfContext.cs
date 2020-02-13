@@ -20,7 +20,6 @@ namespace pmo
         public DbSet<GateKeeperConfig> GateKeeperConfigs { get; set; }
         public DbSet<BusinessCase> BusinessCases { get; set; }
         public DbSet<CustomerDesignApproval> CustomerDesignApprovals { get; set; }
-        public DbSet<DesignConcept> DesignConcepts { get; set; }
         public DbSet<Gate> Gates { get; set; }
         public DbSet<GateApprovers> GateApprovers { get; set; }
         public DbSet<GateConfig> GateConfigs { get; set; }
@@ -44,8 +43,6 @@ namespace pmo
         public DbSet<UploadedDocumentation> UploadedDocumentation { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<User_CitizenShip> UserCitizenShip { get; set; }
-        public DbSet<StageDesignConcept> StageDesignConcepts { get; set; }
-        public DbSet<BusinessDesignConcept> BusinessDesignConcepts { get; set; }
         public DbSet<GateUploadedDocumentation> GateUploadedDocumentations { get; set; }
         public DbSet<ProductInfrigmentPatentabilityUploadedDocumentation> ProductInfrigmentPatentabilityUploadedDocumentations { get; set; }
         public DbSet<CustomerDesignApprovalUploadedDocumentation> CustomerDesignApprovalUploadedDocumentations { get; set; }
@@ -56,6 +53,8 @@ namespace pmo
         public DbSet<BusinessCase_ManufacturingLocation> BusinessCase_ManufacturingLocations { get; set; }
         public DbSet<Project_User> Project_User { get; set; }
         public DbSet<ProjectStateHistory> ProjectStateHistories { get; set; }
+        public DbSet<DeliverableRegister> DeliverableRegisters { get; set; }
+        public DbSet<DeliverableRegisterConfig> DeliverableRegisterConfigs { get; set; }
 
 
         public EfContext(DbContextOptions<EfContext> options)
