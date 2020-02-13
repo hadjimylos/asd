@@ -37,8 +37,8 @@ namespace pmo.Controllers.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/investment-plan/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/investment-plan/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/investment-plan/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/investment-plan/create-version",
                 ComponentName = "Investment Plan",
                 CurrentVersion = currentVersion,
             };

@@ -17,7 +17,6 @@ namespace pmo.Controllers.Application.History
     public class KeyCharacteristicController : BaseProjectDetailController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
-        private readonly IListService _listService;
 
         public KeyCharacteristicController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
@@ -44,12 +43,11 @@ namespace pmo.Controllers.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/key-characteristic/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/key-characteristic/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/key-characteristic/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/key-characteristic/create-version",
                 ComponentName = "Key Characteristic",
                 CurrentVersion = currentVersion,
             };
-
             return View($"{viewPath}/CreateVersion.cshtml", model);
         }
 
@@ -60,8 +58,7 @@ namespace pmo.Controllers.Application.History
         {
             // get latest transaction of latest version
             var latestRecord = _context.KeyCharacteristics
-                .AsNoTracking()
-                .Include(s => s.Stage)
+                .Include(s => s.Stage)           
                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
@@ -75,9 +72,7 @@ namespace pmo.Controllers.Application.History
                 try
                 {
                     // set variables for create
-                    latestRecord.Id = 0;
-                    latestRecord.StageId = latestRecord.Stage.Id;
-                    latestRecord.Stage = null;//remove relation before saving 
+                    latestRecord.Id = 0;        
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
@@ -166,7 +161,7 @@ namespace pmo.Controllers.Application.History
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var keyCharacteristic = _mapper.Map<KeyCharacteristic>(vm);
-            keyCharacteristic.StageId = _context.Stages.Where(p => p.ProjectId == projectId && p.StageNumber == stageNumber).First().Id;
+            keyCharacteristic.StageId = stage.Id;
             if (latestKeyCharacteristics == null)  //first version
             {
                 keyCharacteristic.StageId = stage.Id;

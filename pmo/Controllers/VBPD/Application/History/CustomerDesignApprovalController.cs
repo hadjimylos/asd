@@ -60,7 +60,6 @@ namespace pmo.Controllers.Application.History
         {
             // get latest transaction of latest version
             var latestRecord = _context.CustomerDesignApprovals
-                .AsNoTracking()
                 .Include(s => s.Stage)
                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                 .OrderByDescending(o => o.CreateDate)
@@ -74,11 +73,9 @@ namespace pmo.Controllers.Application.History
             {
                 var previousId = latestRecord.Id;
                 try
-                {
+                { 
                     // set variables for create
                     latestRecord.Id = 0;
-                    latestRecord.StageId = latestRecord.Stage.Id;
-                    latestRecord.Stage = null;//remove relation before saving 
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
@@ -91,14 +88,12 @@ namespace pmo.Controllers.Application.History
                         _context.SaveChanges();
                     }
                     transaction.Commit();
-
                 }
                 catch (Exception e)
                 {
                     transaction.Rollback();
                     throw e;
                 }
-
                 return RedirectToAction("Edit", new { stageNumber, projectId });
             }
         }
@@ -137,10 +132,11 @@ namespace pmo.Controllers.Application.History
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(CustomerDesignApprovalViewModel vm, int projectId, int stageNumber)
         {
+            int currentVersion = 0;
             //get Stage Entity
             var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
             //get latest transaction of latest version
-            var latestCustomerDesignApproval = _context.CustomerDesignApprovals.AsNoTracking()
+            var latestCustomerDesignApproval = _context.CustomerDesignApprovals
                   .Include(s => s.Stage)
                   .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
                   .OrderByDescending(o => o.CreateDate)
@@ -154,15 +150,15 @@ namespace pmo.Controllers.Application.History
                 vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
+            customerDesignApproval.StageId = stage.Id;
             if (latestCustomerDesignApproval == null)
             {
-
                 using (var transaction = _context.Database.BeginTransaction())
                 {
                     try
                     {
+                        currentVersion = 1;
                         customerDesignApproval.Version = 1;
                         customerDesignApproval.StageId = stage.Id;
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
@@ -173,7 +169,7 @@ namespace pmo.Controllers.Application.History
                             ComponentId = customerDesignApproval.Id,
                             ComponentName = "Customer Design Approval",
                             CurrentVersion = customerDesignApproval.Version,
-                            StageId = stage.Id,
+                            StageNumber = stage.StageNumber,
                             ProjectId = stage.ProjectId,
                             Files = new List<IFormFile>(),
                             Type = "CustomerDesignApprovalUploadedDocumentation",
@@ -190,29 +186,31 @@ namespace pmo.Controllers.Application.History
             }
             else //There is already a previous version
             {
+                currentVersion = latestCustomerDesignApproval.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestCustomerDesignApproval.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate) //if same user update record
                 {
-                    customerDesignApproval.Version = latestCustomerDesignApproval.Version;
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            customerDesignApproval.Id = latestCustomerDesignApproval.Id;
-                            customerDesignApproval.StageId = stage.Id;
-                            customerDesignApproval.CreateDate = latestCustomerDesignApproval.CreateDate;
+                            latestCustomerDesignApproval.ApprovedBy = customerDesignApproval.ApprovedBy;
+                            latestCustomerDesignApproval.ApprovedDate = customerDesignApproval.ApprovedDate;
+                            latestCustomerDesignApproval.DateSentForApprove = customerDesignApproval.DateSentForApprove;
+                            latestCustomerDesignApproval.SentForApprovalBy = customerDesignApproval.SentForApprovalBy;
+                            latestCustomerDesignApproval.ImportantDocumentation = customerDesignApproval.ImportantDocumentation;
                             //TODO Upload Documentation as well
-                            _context.CustomerDesignApprovals.Update(customerDesignApproval);
+                            _context.CustomerDesignApprovals.Update(latestCustomerDesignApproval);
                             _context.SaveChanges();
 
                             transaction.Commit();
                             return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
                             {
-                                ComponentId = customerDesignApproval.Id,
+                                ComponentId = latestCustomerDesignApproval.Id,
                                 ComponentName = "Customer Design Approval",
-                                CurrentVersion = customerDesignApproval.Version,
-                                StageId = stage.Id,
+                                CurrentVersion = latestCustomerDesignApproval.Version,
+                                StageNumber = stage.StageNumber,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
                                 Type = "CustomerDesignApprovalUploadedDocumentation",
@@ -233,8 +231,7 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
-
-
+                            customerDesignApproval.Version = currentVersion;
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
                             transaction.Commit();
@@ -243,7 +240,7 @@ namespace pmo.Controllers.Application.History
                                 ComponentId = customerDesignApproval.Id,
                                 ComponentName = "Customer Design Approval",
                                 CurrentVersion = customerDesignApproval.Version,
-                                StageId = stage.Id,
+                                StageNumber = stage.StageNumber,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
                                 Type = "CustomerDesignApprovalUploadedDocumentation",

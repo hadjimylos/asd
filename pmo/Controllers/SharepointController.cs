@@ -50,7 +50,7 @@ namespace pmo.Controllers
                 var id = vm.ComponentId;
                 _SharePointService.InsertOneToMany(vm.Type, id, fileName, serverRelativeUrl);
             }
-            return Redirect($"/vbpd-projects/{vm.ProjectId}/stages/{vm.StageId}/{vm.Path}/edit");
+            return Redirect($"/vbpd-projects/{vm.ProjectId}/stages/{vm.StageNumber}/{vm.Path}/edit");
         }
         
         [Route("delete")]

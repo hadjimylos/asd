@@ -6,7 +6,7 @@
     <form class="form-component" enctype="multipart/form-data" method="post" action="/SharePointUpload/upload">
         @Html.AntiForgeryToken()
         <input asp-for="ProjectId" type="hidden" />
-        <input asp-for="StageId" type="hidden" />
+        <input asp-for="StageNumber" type="hidden" />
         <input asp-for="CurrentVersion" type="hidden" />
         <input asp-for="ComponentId" type="hidden" />
         <input asp-for="ControllerName" type="hidden" />

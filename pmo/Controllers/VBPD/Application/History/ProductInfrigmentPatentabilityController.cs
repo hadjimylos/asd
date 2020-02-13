@@ -10,7 +10,7 @@ using ViewModels;
 
 namespace pmo.Controllers.VBPD.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stage/{stageNumber}/product-infrigment-patentability")]
+    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-infrigment-patentability")]
     public class ProductInfrigmentPatentabilityController : BaseController
     {
         private readonly string viewPath = "~/Views/VBPD/Application/ProductInfrigmentPatentability";
@@ -38,8 +38,8 @@ namespace pmo.Controllers.VBPD.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-infrigment-patentability/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-infrigment-patentability/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/product-infrigment-patentability/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/product-infrigment-patentability/create-version",
                 ComponentName = "Customer Design Approval",
                 CurrentVersion = currentVersion,
             };
@@ -166,7 +166,7 @@ namespace pmo.Controllers.VBPD.Application.History
                             ComponentId = productInfrigmentPatentability.Id,
                             ComponentName = "Product Infrigment Patentability",
                             CurrentVersion = productInfrigmentPatentability.Version,
-                            StageId = stage.Id,
+                            StageNumber = stage.StageNumber,
                             ProjectId = stage.ProjectId,
                             Files = new List<IFormFile>(),
                             Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
@@ -206,7 +206,7 @@ namespace pmo.Controllers.VBPD.Application.History
                                 ComponentId = productInfrigmentPatentability.Id,
                                 ComponentName = "Product Infrigment Patentability",
                                 CurrentVersion = productInfrigmentPatentability.Version,
-                                StageId = stage.Id,
+                                StageNumber = stage.StageNumber,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
                                 Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
@@ -238,7 +238,7 @@ namespace pmo.Controllers.VBPD.Application.History
                                 ComponentId = productInfrigmentPatentability.Id,
                                 ComponentName = "Product Infrigment Patentability",
                                 CurrentVersion = productInfrigmentPatentability.Version,
-                                StageId = stage.Id,
+                                StageNumber = stage.StageNumber,
                                 ProjectId = stage.ProjectId,
                                 Files = new List<IFormFile>(),
                                 Type = "ProductInfrigmentPatentabilityUploadedDocumentation",

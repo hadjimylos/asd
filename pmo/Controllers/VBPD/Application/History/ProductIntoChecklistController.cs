@@ -39,8 +39,8 @@ namespace pmo.Controllers.VBPD.Application.History
 
             var model = new CreateVersionViewModel
             {
-                BackPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-intro-checklist/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stage/{stageNumber}/product-intro-checklist/create-version",
+                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/product-intro-checklist/{currentVersion}",
+                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/product-intro-checklist/create-version",
                 ComponentName = "Product Intro Checklist",
                 CurrentVersion = currentVersion,
             };

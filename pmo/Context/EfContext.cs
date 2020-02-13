@@ -1098,6 +1098,7 @@ namespace pmo
         }
         public override int SaveChanges()
         {
+            //----------------Database Model Add new records----------------//
             var databaseModel_NewRecords = ChangeTracker.Entries<DatabaseModel>().Where(E => E.State == EntityState.Added).ToList();
             databaseModel_NewRecords.ForEach(E =>
             {
@@ -1106,26 +1107,29 @@ namespace pmo
                 E.Property(x => x.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
                 E.Property(x => x.ModifiedByUser).IsModified = true;
             });
-
+            //----------------Database Model Update records----------------//
             var databaseModel_UpdateRecords = ChangeTracker.Entries<DatabaseModel>().Where(E => E.State == EntityState.Modified).ToList();
-
             databaseModel_UpdateRecords.ForEach(model =>
             {
                 model.Property(x => x.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
                 model.Property(x => x.ModifiedByUser).IsModified = true;
             });
-
-            var historyModel_UpdateRecords = ChangeTracker.Entries<HistoryModel>()
-                .Where(E => E.State == EntityState.Modified)
-                .ToList();
-            historyModel_UpdateRecords.ForEach(model => {
+            //----------------History Model Add new records----------------//
+            var historyModel_NewRecords = ChangeTracker.Entries<HistoryModel>().Where(E => E.State == EntityState.Added).ToList();
+            historyModel_NewRecords.ForEach(model =>
+            {
                 model.Property(prop => prop.LastModified).CurrentValue = DateTime.Now;
                 model.Property(prop => prop.LastModified).IsModified = true;
-
+            });
+            //----------------History Model Update records----------------//
+            var historyModel_UpdateRecords = ChangeTracker.Entries<HistoryModel>().Where(E => E.State == EntityState.Modified).ToList();
+            historyModel_UpdateRecords.ForEach(model =>
+            {
+                model.Property(prop => prop.LastModified).CurrentValue = DateTime.Now;
+                model.Property(prop => prop.LastModified).IsModified = true;
                 model.Property(prop => prop.ModifiedByUser).CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
                 model.Property(prop => prop.ModifiedByUser).IsModified = true;
             });
-
             return base.SaveChanges();
         }
     }
