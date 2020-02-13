@@ -141,6 +141,17 @@ eval("var $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jqu
 
 /***/ }),
 
+/***/ "./front_end/js/components/list.js":
+/*!*****************************************!*\
+  !*** ./front_end/js/components/list.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("var components = document.querySelectorAll('.list-component');\nvar hasComponents = components.length > 0;\n\nif (hasComponents) {\n  components.forEach(function (component) {\n    var titleClass = '.wrapper .title';\n    var itemWrapperClass = '.wrapper .items .item .item-wrapper'; // get title column count\n\n    var titleColumnCount = component.querySelectorAll(\"\".concat(titleClass, \" div\")).length; // get item column count\n\n    var itemWrapperCount = component.querySelector(itemWrapperClass).length; // get actual column count\n\n    var columnCount = itemWrapperCount > titleColumnCount || itemWrapperCount == titleColumnCount ? itemWrapperCount : titleColumnCount;\n    var appendClass = \"by-\".concat(columnCount); // apply column count to title\n\n    component.querySelector(titleClass).classList.add(appendClass); // appl column count to items\n\n    var itemWrappers = component.querySelectorAll(itemWrapperClass);\n    itemWrappers.forEach(function (item) {\n      item.classList.add(appendClass);\n    });\n  });\n}\n\n//# sourceURL=webpack:///./front_end/js/components/list.js?");
+
+/***/ }),
+
 /***/ "./front_end/js/components/nav-left.js":
 /*!*********************************************!*\
   !*** ./front_end/js/components/nav-left.js ***!
@@ -214,7 +225,7 @@ eval("// support Array.prototype.includes\nif (!Array.prototype.includes) {\n  O
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// import all used css here:\n// e.g. require('./toggle.js');\n__webpack_require__(/*! ./global/pollyfills */ \"./front_end/js/global/pollyfills.js\");\n\n__webpack_require__(/*! ./global/generic */ \"./front_end/js/global/generic.js\");\n\n__webpack_require__(/*! ./global/maintain-browser-position */ \"./front_end/js/global/maintain-browser-position.js\");\n\n__webpack_require__(/*! ./components/dropdown */ \"./front_end/js/components/dropdown.js\");\n\n__webpack_require__(/*! ./components/toggle-default-leave */ \"./front_end/js/components/toggle-default-leave.js\");\n\n__webpack_require__(/*! ./components/displayone */ \"./front_end/js/components/displayone.js\");\n\n__webpack_require__(/*! ./components/select-calendar */ \"./front_end/js/components/select-calendar.js\");\n\n__webpack_require__(/*! ./components/checkbox-toggle */ \"./front_end/js/components/checkbox-toggle.js\");\n\n__webpack_require__(/*! ./components/historyform */ \"./front_end/js/components/historyform.js\");\n\n__webpack_require__(/*! ./components/nav-left */ \"./front_end/js/components/nav-left.js\");\n\n//# sourceURL=webpack:///./front_end/js/main.js?");
+eval("// import all used css here:\n// e.g. require('./toggle.js');\n__webpack_require__(/*! ./global/pollyfills */ \"./front_end/js/global/pollyfills.js\");\n\n__webpack_require__(/*! ./global/generic */ \"./front_end/js/global/generic.js\");\n\n__webpack_require__(/*! ./global/maintain-browser-position */ \"./front_end/js/global/maintain-browser-position.js\");\n\n__webpack_require__(/*! ./components/dropdown */ \"./front_end/js/components/dropdown.js\");\n\n__webpack_require__(/*! ./components/toggle-default-leave */ \"./front_end/js/components/toggle-default-leave.js\");\n\n__webpack_require__(/*! ./components/displayone */ \"./front_end/js/components/displayone.js\");\n\n__webpack_require__(/*! ./components/select-calendar */ \"./front_end/js/components/select-calendar.js\");\n\n__webpack_require__(/*! ./components/checkbox-toggle */ \"./front_end/js/components/checkbox-toggle.js\");\n\n__webpack_require__(/*! ./components/historyform */ \"./front_end/js/components/historyform.js\");\n\n__webpack_require__(/*! ./components/nav-left */ \"./front_end/js/components/nav-left.js\");\n\n__webpack_require__(/*! ./components/list */ \"./front_end/js/components/list.js\");\n\n//# sourceURL=webpack:///./front_end/js/main.js?");
 
 /***/ }),
 
