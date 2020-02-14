@@ -1,0 +1,19 @@
+﻿@model  (int projectId, int stageNumber)
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+    <form enctype="multipart/form-data" method="post" action="/vbpd-projects/@Model.projectId/stages/@Model.stageNumber/files/edit">
+        @Html.AntiForgeryToken()
+        <input type="file" multiple name="files" />
+        <textarea name="descrip"></textarea>
+        <input type="text" name="newTag" />
+        <input type="number" name="tagId" />
+        <input type="submit" />
+    </form>
+
+    <div class="list-component">
+
+    </div>
