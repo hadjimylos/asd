@@ -21,10 +21,6 @@ namespace pmo.Controllers
             _SharePointService = SharePointService;
         }
 
-        public IActionResult Upload()
-        {            
-            return View();
-        }
 
         [Route("upload")]
         [AutoValidateAntiforgeryToken]
@@ -36,10 +32,7 @@ namespace pmo.Controllers
             List<IFormFile> FormFiles = files.ToList();
             foreach(var file in FormFiles)
             {
-                await _SharePointService.Upload(file)
-                .ContinueWith(x => _SharePointService.BreakFileRoleInheritance(file.FileName))
-                .ContinueWith(y => _SharePointService.RemoveFilePermissions(file.FileName, Id))
-                .ContinueWith(z => _SharePointService.AddFilePermissions(file.FileName, Id));                
+                await _SharePointService.Upload(file);
             }
             var oldDodcuments = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == vm.ComponentId).ToList();
             _context.RemoveRange(oldDodcuments);
@@ -51,16 +44,6 @@ namespace pmo.Controllers
                 _SharePointService.InsertOneToMany(vm.Type, id, fileName, serverRelativeUrl);
             }
             return Redirect($"/vbpd-projects/{vm.ProjectId}/stages/{vm.StageNumber}/{vm.Path}/edit");
-        }
-        
-        [Route("delete")]
-        [AutoValidateAntiforgeryToken]
-        [HttpGet]
-        public IActionResult Delete()
-        {
-            //Test filename
-            _SharePointService.Delete("fileName");
-            return View();
         }
     }
 }
