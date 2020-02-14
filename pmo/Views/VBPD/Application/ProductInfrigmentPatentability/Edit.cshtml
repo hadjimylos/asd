@@ -6,7 +6,6 @@
 
 }
 
-
 <form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/product-infrigment-patentability/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">
@@ -112,14 +111,6 @@
                             <div class="select-single-field">
                                 <div class="label">When was the 1st time the product was offered for sale?</div>
                                 <div class="data">@Model.ProductFirstTimeOfferedForSale</div>
-                            </div>
-                            <div class="select-single-field">
-                                @foreach (var file in Model.ProductInfrigmentPatentabilityImportantDocumentation) {
-                                    <div class="label">Upload any pertinent documentation</div>
-                                    <a class="data" href="@file.Url">  @file.Notes</a>
-                                }
-
-
                             </div>
                         </div>
                     </div>

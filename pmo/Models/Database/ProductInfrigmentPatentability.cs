@@ -20,8 +20,6 @@ namespace dbModels
 
         public DateTime ProductFirstTimeOfferedForSale { get; set; }
 
-        public virtual List<ProductInfrigmentPatentabilityUploadedDocumentation> ProductInfrigmentPatentabilityImportantDocumentation { get; set; }
-
         public int StageId { get; set; }
 
         [ForeignKey("StageId")]

@@ -78,14 +78,6 @@ namespace pmo.Controllers.Application.History
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
-                    var latestDocuments = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == previousId).ToList();
-                    foreach (var latestDocument in latestDocuments)
-                    {
-                        latestDocument.Id = 0;
-                        latestDocument.CustomerDesignApprovalId = latestRecord.Id;
-                        _context.CustomerDesignApprovalUploadedDocumentations.Add(latestDocument);
-                        _context.SaveChanges();
-                    }
                     transaction.Commit();
                 }
                 catch (Exception e)
@@ -160,18 +152,6 @@ namespace pmo.Controllers.Application.History
                         _context.CustomerDesignApprovals.Add(customerDesignApproval);
                         _context.SaveChanges();
                         transaction.Commit();
-                        return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
-                        {
-                            ComponentId = customerDesignApproval.Id,
-                            ComponentName = "Customer Design Approval",
-                            CurrentVersion = customerDesignApproval.Version,
-                            StageNumber = stage.StageNumber,
-                            ProjectId = stage.ProjectId,
-                            Files = new List<IFormFile>(),
-                            Type = "CustomerDesignApprovalUploadedDocumentation",
-                            ControllerName = "CustomerDesignApproval",
-                            Path = "customer-design-approval"
-                        });
                     }
                     catch (Exception e)
                     {
@@ -195,24 +175,11 @@ namespace pmo.Controllers.Application.History
                             latestCustomerDesignApproval.ApprovedDate = customerDesignApproval.ApprovedDate;
                             latestCustomerDesignApproval.DateSentForApprove = customerDesignApproval.DateSentForApprove;
                             latestCustomerDesignApproval.SentForApprovalBy = customerDesignApproval.SentForApprovalBy;
-                            latestCustomerDesignApproval.ImportantDocumentation = customerDesignApproval.ImportantDocumentation;
                             //TODO Upload Documentation as well
                             _context.CustomerDesignApprovals.Update(latestCustomerDesignApproval);
                             _context.SaveChanges();
 
                             transaction.Commit();
-                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
-                            {
-                                ComponentId = latestCustomerDesignApproval.Id,
-                                ComponentName = "Customer Design Approval",
-                                CurrentVersion = latestCustomerDesignApproval.Version,
-                                StageNumber = stage.StageNumber,
-                                ProjectId = stage.ProjectId,
-                                Files = new List<IFormFile>(),
-                                Type = "CustomerDesignApprovalUploadedDocumentation",
-                                ControllerName = "CustomerDesignApproval",
-                                Path = "customer-design-approval"
-                            });
                         }
                         catch (Exception e)
                         {
@@ -231,19 +198,6 @@ namespace pmo.Controllers.Application.History
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
                             transaction.Commit();
-                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
-                            {
-                                ComponentId = customerDesignApproval.Id,
-                                ComponentName = "Customer Design Approval",
-                                CurrentVersion = customerDesignApproval.Version,
-                                StageNumber = stage.StageNumber,
-                                ProjectId = stage.ProjectId,
-                                Files = new List<IFormFile>(),
-                                Type = "CustomerDesignApprovalUploadedDocumentation",
-                                ControllerName = "CustomerDesignApproval",
-                                Path = "customer-design-approval"
-
-                            });
                         }
                         catch (Exception e)
                         {
@@ -254,6 +208,8 @@ namespace pmo.Controllers.Application.History
                     }
                 }
             }
+
+            return RedirectToAction("Edit", new { stageNumber = vm.Stage.StageNumber, projectId = vm.Stage.ProjectId });
         }
 
         private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
@@ -261,11 +217,9 @@ namespace pmo.Controllers.Application.History
             var model = _context.CustomerDesignApprovals.Where(
                 s => s.StageId == stageId && s.Version == version
             ).OrderByDescending(o => o.CreateDate)
-            .Include(i => i.ImportantDocumentation)
             .Include(s => s.Stage)
             .FirstOrDefault();
 
-            model.ImportantDocumentation = _context.CustomerDesignApprovalUploadedDocumentations.Where(x => x.CustomerDesignApprovalId == model.Id).ToList();
             var vm = _mapper.Map<CustomerDesignApprovalViewModel>(model);
             return vm;
         }

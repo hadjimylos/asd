@@ -13,8 +13,6 @@ namespace dbModels {
         public string ApprovedBy { get; set; }
         
         public DateTime ApprovedDate { get; set; }
-        
-        public virtual List<CustomerDesignApprovalUploadedDocumentation> ImportantDocumentation { get; set; }
 
         public int StageId { get; set; }
 

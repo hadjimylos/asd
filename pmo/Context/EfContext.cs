@@ -40,12 +40,8 @@ namespace pmo
         public DbSet<StageConfig> StageConfigs { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TagCategory> TagCategories { get; set; }
-        public DbSet<UploadedDocumentation> UploadedDocumentation { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<User_CitizenShip> UserCitizenShip { get; set; }
-        public DbSet<GateUploadedDocumentation> GateUploadedDocumentations { get; set; }
-        public DbSet<ProductInfrigmentPatentabilityUploadedDocumentation> ProductInfrigmentPatentabilityUploadedDocumentations { get; set; }
-        public DbSet<CustomerDesignApprovalUploadedDocumentation> CustomerDesignApprovalUploadedDocumentations { get; set; }
         public DbSet<ProjectDetail_SalesRegion> ProjectDetail_SalesRegions { get; set; }
         public DbSet<ProjectDetail_EndUserCountry> ProjectDetail_EndUserCountries { get; set; }
         public DbSet<ProjectDetail_Customer> ProjectDetail_Customers { get; set; }

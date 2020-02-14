@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ViewModels;
 
-namespace pmo.Controllers.VBPD.Application.History
-{
+namespace pmo.Controllers {
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-infrigment-patentability")]
     public class ProductInfrigmentPatentabilityController : BaseProjectDetailController
     {
@@ -73,14 +72,6 @@ namespace pmo.Controllers.VBPD.Application.History
                     latestRecord.Version = ++latestRecord.Version;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
-                    var latestDocuments = _context.ProductInfrigmentPatentabilityUploadedDocumentations.Where(x => x.ProductInfrigmentPatentabilityId == previousId).ToList();
-                    foreach (var latestDocument in latestDocuments)
-                    {
-                        latestDocument.Id = 0;
-                        latestDocument.ProductInfrigmentPatentabilityId = latestRecord.Id;
-                        _context.ProductInfrigmentPatentabilityUploadedDocumentations.Add(latestDocument);
-                        _context.SaveChanges();
-                    }
                     transaction.Commit();
                 }
                 catch (Exception e)
@@ -155,19 +146,6 @@ namespace pmo.Controllers.VBPD.Application.History
                         _context.ProductInfrigmentPatentabilities.Add(productInfrigmentPatentability);
                         _context.SaveChanges();
                         transaction.Commit();
-                        return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
-                        {
-                            ComponentId = productInfrigmentPatentability.Id,
-                            ComponentName = "Product Infrigment Patentability",
-                            CurrentVersion = productInfrigmentPatentability.Version,
-                            StageNumber = stage.StageNumber,
-                            ProjectId = stage.ProjectId,
-                            Files = new List<IFormFile>(),
-                            Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
-                            ControllerName = "ProductInfrigmentPatentability",
-                            Path = "product-infrigment-patentability"
-
-                        });
                     }
                     catch (Exception e)
                     {
@@ -194,23 +172,9 @@ namespace pmo.Controllers.VBPD.Application.History
                            latestProductInfrigmentPatentability.MitigationStrategy = productInfrigmentPatentability.MitigationStrategy;
                            latestProductInfrigmentPatentability.PatentNumber = productInfrigmentPatentability.PatentNumber;
                            latestProductInfrigmentPatentability.ProductFirstTimeOfferedForSale = productInfrigmentPatentability.ProductFirstTimeOfferedForSale;
-                            //TODO Upload Documentation as well
                             _context.ProductInfrigmentPatentabilities.Update(latestProductInfrigmentPatentability);
                             _context.SaveChanges();
                             transaction.Commit();
-                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
-                            {
-                                ComponentId = productInfrigmentPatentability.Id,
-                                ComponentName = "Product Infrigment Patentability",
-                                CurrentVersion = productInfrigmentPatentability.Version,
-                                StageNumber = stage.StageNumber,
-                                ProjectId = stage.ProjectId,
-                                Files = new List<IFormFile>(),
-                                Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
-                                ControllerName = "ProductInfrigmentPatentability",
-                                Path = "product-infrigment-patentability"
-
-                            });
                         }
                         catch (Exception e)
                         {
@@ -229,20 +193,6 @@ namespace pmo.Controllers.VBPD.Application.History
                             _context.ProductInfrigmentPatentabilities.Add(productInfrigmentPatentability);
                             _context.SaveChanges();
                             transaction.Commit();
-                        
-                            return View($"{UploadViewPath}/UploadFiles.cshtml", new UploadDocumentsViewModel
-                            {
-                                ComponentId = productInfrigmentPatentability.Id,
-                                ComponentName = "Product Infrigment Patentability",
-                                CurrentVersion = productInfrigmentPatentability.Version,
-                                StageNumber = stage.StageNumber,
-                                ProjectId = stage.ProjectId,
-                                Files = new List<IFormFile>(),
-                                Type = "ProductInfrigmentPatentabilityUploadedDocumentation",
-                                ControllerName = "ProductInfrigmentPatentability",
-                                Path="product-infrigment-patentability"
-
-                            });
                         }
                         catch (Exception e)
                         {
@@ -253,6 +203,8 @@ namespace pmo.Controllers.VBPD.Application.History
                     }
                 }
             }
+
+            return RedirectToAction("Edit");
         }
 
         private ProductInfrigmentPatentabilityViewModel GetViewModel(int stageId, int version)
@@ -260,11 +212,9 @@ namespace pmo.Controllers.VBPD.Application.History
             var model = _context.ProductInfrigmentPatentabilities.Where(
                 s => s.StageId == stageId && s.Version == version
             ).OrderByDescending(o => o.CreateDate)
-            .Include(i => i.ProductInfrigmentPatentabilityImportantDocumentation)
             .Include(s => s.Stage)
             .FirstOrDefault();
 
-            model.ProductInfrigmentPatentabilityImportantDocumentation = _context.ProductInfrigmentPatentabilityUploadedDocumentations.Where(x => x.ProductInfrigmentPatentabilityId == model.Id).ToList();
             var vm = _mapper.Map<ProductInfrigmentPatentabilityViewModel>(model);
             return vm;
         }

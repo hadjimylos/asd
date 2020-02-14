@@ -31,9 +31,5 @@ namespace ViewModels
         public new DateTime ApprovedDate { get; set; }
           
         public new virtual Stage Stage { get; set; }
-
-        public new virtual List<CustomerDesignApprovalUploadedDocumentation> ImportantDocumentation { get; set; }
-
-
     }
 }

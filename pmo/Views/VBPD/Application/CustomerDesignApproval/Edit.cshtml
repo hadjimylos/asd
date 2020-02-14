@@ -44,15 +44,6 @@
                                 <div class="label">Approved Date</div>
                                 <div class="data">@Model.ApprovedDate</div>
                             </div>
-                            <div class="select-single-field">
-                                @foreach (var file in Model.ImportantDocumentation)
-                                {
-                                    <div class="label">Upload any pertinent documentation</div>
-                                    <a class="data" href="@file.Url">  @file.Notes</a>
-                                }
-
-
-                            </div>
                         </div>
                     </div>
                 }

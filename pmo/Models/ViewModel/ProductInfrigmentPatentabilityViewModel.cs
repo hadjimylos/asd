@@ -27,8 +27,6 @@ namespace ViewModels
 
         public new DateTime ProductFirstTimeOfferedForSale { get; set; }
 
-        public new virtual List<ProductInfrigmentPatentabilityUploadedDocumentation> ProductInfrigmentPatentabilityImportantDocumentation { get; set; }
-
         public new virtual Stage Stage { get; set; }
     }
 }

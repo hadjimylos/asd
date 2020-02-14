@@ -248,46 +248,6 @@ namespace pmo.Services.SharePoint
                 throw;
             }
         }
-        public void InsertOneToMany(string type, int id, string file, string Url)
-        {
-            if (type =="CustomerDesignApprovalUploadedDocumentation")
-            {
-                _context.CustomerDesignApprovalUploadedDocumentations.Add(new CustomerDesignApprovalUploadedDocumentation()
-                {
-                    Notes = file,
-                    Url = siteUrl + Url,
-                    CustomerDesignApprovalId = id
-                }
-                );
-                _context.SaveChanges();
-            }
-
-            if (type == "GateUploadedDocumentation")
-            {
-                _context.GateUploadedDocumentations.Add(new GateUploadedDocumentation()
-                {
-                    Notes = file,
-                    Url = siteUrl + Url,
-                    GateId = id
-                }
-                );
-                _context.SaveChanges();
-            }
-
-            if (type == "ProductInfrigmentPatentabilityUploadedDocumentation")
-            {
-                _context.ProductInfrigmentPatentabilityUploadedDocumentations.Add(new ProductInfrigmentPatentabilityUploadedDocumentation()
-                {
-                    Notes = file,
-                    Url = siteUrl + Url,
-                    ProductInfrigmentPatentabilityId = id
-                }
-                );
-                _context.SaveChanges();
-            }
-
-
-        }
     }
 
 }

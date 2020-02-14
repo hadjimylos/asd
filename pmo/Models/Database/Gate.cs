@@ -27,8 +27,6 @@ namespace dbModels
 
         public GateDecisionType Decision { get; set; }
 
-        public virtual List<GateUploadedDocumentation> GateUploadedDocumentation { get; set; }
-
         public string Comments { get; set; }
     }
 }
