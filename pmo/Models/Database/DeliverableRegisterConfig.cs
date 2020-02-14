@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
     public class DeliverableRegisterConfig : DatabaseModel {
-        public int StageId { get; set; }
+        public int StageConfigId { get; set; }
 
-        [ForeignKey("StageId")]
-        public virtual Stage Stage { get; set; }
+        [ForeignKey("StageConfigId")]
+        public virtual StageConfig StageConfig { get; set; }
 
         public int TagId { get; set; }
 
