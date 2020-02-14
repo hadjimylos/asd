@@ -1,0 +1,75 @@
+﻿@model QualificationTestingViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+<form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/qualification-testing/edit">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="versioning-section">
+            <div class="choose-history">
+                <div class="select-history-wrapper">
+                    <select class="select-history select2">
+                        <option>CLEAR</option>
+                        <option value="all">VIEW ALL</option>
+                        @foreach (var version in Model.Versions)
+                        {
+                            <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="versions">
+                @foreach (var version in Model.Versions)
+                {
+                    <div showversion="@version.Id" class="version">
+                        <div class="values">
+                            <div class="select-single-field">
+                                <div class="label">Is Qualification Required</div>
+                                <div class="data">@version.IsQualificationRequired</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Description</div>
+                                <div class="data">@version.Description</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Attachment Url</div>
+                                <div class="data">@version.AttachmentUrl</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-component">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Is Qualification Required</div>
+                    <input asp-for="IsQualificationRequired" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "IsQualificationRequired")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Description</div>
+                    <input asp-for="Description" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Description")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Attachment Url</div>
+                    <input asp-for="AttachmentUrl" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "AttachmentUrl")
+                    </ul>
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

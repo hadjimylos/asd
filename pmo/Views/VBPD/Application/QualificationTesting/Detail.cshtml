@@ -1,0 +1,26 @@
+﻿@model QualificationTestingViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+<div class="detail-component">
+    <div class="wrapper">
+        <div class="fields">
+            <div class="select-single-field">
+                <div class="label">Is Qualification Required</div>
+                <div class="data">@Model.IsQualificationRequired</div>
+            </div>
+            <div class="select-single-field">
+                <div class="label">Description</div>
+                <div class="data">@Model.Description</div>
+            </div>
+            <div class="select-single-field">
+                <div class="label">Attachment Url</div>
+                <div class="data">@Model.AttachmentUrl</div>
+            </div>
+        </div>
+    </div>
+</div>
+
