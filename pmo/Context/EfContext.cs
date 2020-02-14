@@ -51,7 +51,8 @@ namespace pmo
         public DbSet<ProjectStateHistory> ProjectStateHistories { get; set; }
         public DbSet<DeliverableRegister> DeliverableRegisters { get; set; }
         public DbSet<DeliverableRegisterConfig> DeliverableRegisterConfigs { get; set; }
-
+        public DbSet<StageFile> StageFiles { get; set; }
+        public DbSet<StageFileConfig> StageFileConfigs { get; set; }
 
 
         public EfContext(DbContextOptions<EfContext> options)
