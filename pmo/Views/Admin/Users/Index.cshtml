@@ -6,7 +6,14 @@
 }
 
 <div class="actions-component">
-    <a class="btn" href="/admin/users/create">CREATE</a>
+    <div class="wrapper">
+        <div class="header">
+            <h1>USERS</h1>
+        </div>
+        <div class="actions">
+            <div class="action"><a type="button" class="btn green" href="/admin/users/create">CREATE</a></div>
+        </div>
+    </div>
 </div>
 
 @if (Model.Count > 0) {

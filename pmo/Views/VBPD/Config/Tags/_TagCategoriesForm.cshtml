@@ -3,53 +3,54 @@
 @{ 
     var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
 }
+    <div class="form-component">
+        <form class="form-component" method="post" action="/vbpd-admin/tags/categories/@postWhere">
+            @if (!Model.isCreate)
+            {
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="Key" type="hidden" />
+            }
 
-    <form class="form-component" method="post" action="/admin/tags/categories/@postWhere">
-        @if (!Model.isCreate)
-        {
-            <input asp-for="Id" type="hidden" />
-            <input asp-for="Key" type="hidden" />
-        }
 
+            @Html.AntiForgeryToken()
+            <div class="wrapper">
+                <div class="fields">
 
-        @Html.AntiForgeryToken()
-        <div class="wrapper">
-            <div class="fields">
+                    <div class="field">
+                        <div class="label">FRIENDLY NAME</div>
+                        <input class="data" asp-for="FriendlyName" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "FriendlyName")
+                        </ul>
+                    </div>
 
-                <div class="field">
-                    <div class="label">FRIENDLY NAME</div>
-                    <input class="data" asp-for="FriendlyName" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "FriendlyName")
-                    </ul>
-                </div>
+                    <div class="field">
+                        <div class="label">IS FIXED</div>
+                        <input asp-for="IsFixed" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "IsFixed")
+                        </ul>
+                    </div>
 
-                <div class="field">
-                    <div class="label">IS FIXED</div>
-                    <input asp-for="IsFixed" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "IsFixed")
-                    </ul>
-                </div>
-
-                @if (!Model.isCreate)
-                {
-                    <ul>
-                    @foreach (var tag in Model.Tags)
+                    @if (!Model.isCreate)
                     {
-                        <li>
-                            <a asp-controller="Tags"
-                               asp-action="Edit_Tags"
-                               asp-route-id="@tag.Id">@tag.Name</a>
-                        </li>
+                        <ul>
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <li>
+                                    <a asp-controller="Tags"
+                                       asp-action="Edit_Tags"
+                                       asp-route-id="@tag.Id">@tag.Name</a>
+                                </li>
+                            }
+                        </ul>
                     }
-                    </ul>
-                }
 
 
-                <div class="field">
-                    <input type="submit" class="data btn" value="SUBMIT" />
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>

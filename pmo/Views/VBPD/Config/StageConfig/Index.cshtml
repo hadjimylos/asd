@@ -11,7 +11,7 @@
                 <h1>STAGE CONFIGURATION</h1>
             </div>
             <div class="actions">
-                <div class="action"><button type="button" class="btn green" href="/admin/stage-config/create">CREATE</button></div>
+                <div class="action"><a type="button" class="btn green" href="/vbpd-admin/stage-config/create">CREATE</a></div>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
             </div>
             <div class="items">
                 @foreach (var config in Model) {
-                    <a class="item" href="/admin/stage-config/@config.Id">
+                    <a class="item" href="/vbpd-admin/stage-config/@config.Id">
                         <div class="item-wrapper by-13">
                             <div>@config.StageNumber</div>
                             <div>@(config.AllowInsertRiskAssesments ? "allow" : "disallow")</div>

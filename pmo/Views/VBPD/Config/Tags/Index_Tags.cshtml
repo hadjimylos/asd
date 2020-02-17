@@ -6,19 +6,28 @@
 }
 
 <div class="actions-component">
-    <a class="btn" href="/admin/tags/create">CREATE</a>
+    <div class="wrapper">
+        <div class="header">
+            <h1>TAG CATEGORIES</h1>
+        </div>
+        <div class="actions">
+            <div class="action"><a type="button" class="btn green" href="/vbpd-admin/tags/create">CREATE</a></div>
+        </div>
+    </div>
 </div>
 
-@if (Model.Count > 0) {
+@if (Model.Count > 0)
+{
     <div class="list-component">
         <div class="wrapper">
             <div class="title by-2">
                 <div>NAME</div>
                 <div>TAG CATEGORY</div>
-               
+
             </div>
             <div class="items">
-                @foreach (var tag in Model) {
+                @foreach (var tag in Model)
+                {
                     <a class="item" href="/admin/tags/@tag.Id">
                         <div class="item-wrapper by-2">
                             <div>@tag.Name</div>
@@ -31,7 +40,8 @@
         </div>
     </div>
 }
-else {
+else
+{
     @Html.Partial("_NoData")
 }
 

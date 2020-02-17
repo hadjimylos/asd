@@ -6,13 +6,20 @@
 }
 
 <div class="detail-component">
-    <div class="wrapper">
-        <div class="header">
-            <h1>USER PERMISSIONS</h1>
-            <a type="button" class="btn green large" href="/admin/roles/create">CREATE</a>
+    <div class="wrapper">       
+        <div class="actions-component">
+            <div class="wrapper">
+                <div class="header">
+                    <h1>USER PERMISSIONS</h1>
+                </div>
+                <div class="actions">
+                    <div class="action"><a type="button" class="btn green" href="/admin/roles/create">CREATE</a></div>
+                </div>
+            </div>
         </div>
         <div class="selfs">
-            @foreach (var role in Model) {
+            @foreach (var role in Model)
+            {
                 <div class="detail-component">
                     <div class="wrapper">
                         <div class="header">
