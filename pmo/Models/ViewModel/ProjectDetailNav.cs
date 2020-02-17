@@ -41,7 +41,6 @@
                 stage.InvestmentPlanHistory = stage.InvestmentPlanHistory.RemoveTransactions();
                 stage.ProductIntroChecklistHistory = stage.ProductIntroChecklistHistory.RemoveTransactions();
                 stage.RampResourcePlanHistory = stage.RampResourcePlanHistory.RemoveTransactions();
-                stage.QualificationTestingHistory = stage.QualificationTestingHistory.RemoveTransactions();
             }
 
             // convert to nav objects
@@ -56,7 +55,6 @@
                 stage.InvestmentPlanNavs = _mapper.Map<List<InvestmentPlanNav>>(stage.InvestmentPlanHistory);
                 stage.ProductIntroChecklistNavs = _mapper.Map<List<ProductIntroChecklistNav>>(stage.ProductIntroChecklistHistory);
                 stage.RampResourcePlanNavs = _mapper.Map<List<RampResourcePlanNav>>(stage.RampResourcePlanHistory);
-                stage.QualificationTestingNavs = _mapper.Map<List<QualificationTestingNav>>(stage.QualificationTestingHistory);
 
                 // set URLs for each nav component list
                 stage.ProjectJustificationNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/project-justification/{item.Version}");
@@ -67,7 +65,6 @@
                 stage.InvestmentPlanNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/investment-plan/{item.Version}");
                 stage.ProductIntroChecklistNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/product-intro-checklist/{item.Version}");
                 stage.RampResourcePlanNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/ramp-resource-plan/{item.Version}");
-                stage.QualificationTestingNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/qualification-testing/{item.Version}");
 
                 // add flat navigations
                 stage.DesignConceptsUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/design-concepts";
@@ -96,7 +93,6 @@
         public List<InvestmentPlanNav> InvestmentPlanNavs { get; set; }
         public List<ProductIntroChecklistNav> ProductIntroChecklistNavs { get; set; }
         public List<RampResourcePlanNav> RampResourcePlanNavs { get; set; }
-        public List<QualificationTestingNav> QualificationTestingNavs { get; set; }
         public string SchedulesUrl { get; set; }
         public string DesignConceptsUrl { get; set; }
         public string RisksUrl { get; set; }

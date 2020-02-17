@@ -27,6 +27,5 @@ namespace dbModels
         public virtual List<InvestmentPlan> InvestmentPlanHistory { get; set; }
         public virtual List<ProductIntroChecklist> ProductIntroChecklistHistory { get; set; }
         public virtual List<RampResourcePlan> RampResourcePlanHistory { get; set; }
-        public virtual List<QualificationTesting> QualificationTestingHistory { get; set; }
     }
 }
