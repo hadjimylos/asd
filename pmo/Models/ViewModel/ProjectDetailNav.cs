@@ -40,7 +40,6 @@
                 stage.CustomerDesignApprovalHistory = stage.CustomerDesignApprovalHistory.RemoveTransactions();
                 stage.InvestmentPlanHistory = stage.InvestmentPlanHistory.RemoveTransactions();
                 stage.ProductIntroChecklistHistory = stage.ProductIntroChecklistHistory.RemoveTransactions();
-                stage.RampResourcePlanHistory = stage.RampResourcePlanHistory.RemoveTransactions();
             }
 
             // convert to nav objects
@@ -54,7 +53,6 @@
                 stage.CustomerDesignApprovalNavs = _mapper.Map<List<CustomerDesignApprovalNav>>(stage.CustomerDesignApprovalHistory);
                 stage.InvestmentPlanNavs = _mapper.Map<List<InvestmentPlanNav>>(stage.InvestmentPlanHistory);
                 stage.ProductIntroChecklistNavs = _mapper.Map<List<ProductIntroChecklistNav>>(stage.ProductIntroChecklistHistory);
-                stage.RampResourcePlanNavs = _mapper.Map<List<RampResourcePlanNav>>(stage.RampResourcePlanHistory);
 
                 // set URLs for each nav component list
                 stage.ProjectJustificationNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/project-justification/{item.Version}");
@@ -64,10 +62,8 @@
                 stage.CustomerDesignApprovalNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/customer-design-approval/{item.Version}");
                 stage.InvestmentPlanNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/investment-plan/{item.Version}");
                 stage.ProductIntroChecklistNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/product-intro-checklist/{item.Version}");
-                stage.RampResourcePlanNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/ramp-resource-plan/{item.Version}");
 
                 // add flat navigations
-                stage.DesignConceptsUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/design-concepts";
                 stage.SchedulesUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/schedules/detail";
                 stage.RisksUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/risks";
             });
@@ -92,9 +88,7 @@
         public List<CustomerDesignApprovalNav> CustomerDesignApprovalNavs { get; set; }
         public List<InvestmentPlanNav> InvestmentPlanNavs { get; set; }
         public List<ProductIntroChecklistNav> ProductIntroChecklistNavs { get; set; }
-        public List<RampResourcePlanNav> RampResourcePlanNavs { get; set; }
         public string SchedulesUrl { get; set; }
-        public string DesignConceptsUrl { get; set; }
         public string RisksUrl { get; set; }
     }
 

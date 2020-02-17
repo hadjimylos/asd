@@ -31,7 +31,6 @@ namespace pmo
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectDetail> ProjectDetails { get; set; }
         public DbSet<ProjectJustification> ProjectJustifications { get; set; }
-        public DbSet<RampResourcePlan> RampResourcePlans { get; set; }
         public DbSet<Risk> Risks { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
