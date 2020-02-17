@@ -6,22 +6,28 @@
             <div class="descrip">Stage @item.StageNumber</div>
         </div>
         <div class="dropdown-items">
-            <div class="nav">
-                <a class="item-wrapper" href="@item.SchedulesUrl">
-                    <div class="icon-descrip">
-                        <i class="icon fas fa-square"></i>
-                        <div class="descrip">Schedules</div>
-                    </div>
-                </a>
-            </div>
-            <div class="nav">
-                <a class="item-wrapper" href="@item.RisksUrl">
-                    <div class="icon-descrip">
-                        <i class="icon fas fa-square"></i>
-                        <div class="descrip">Risks</div>
-                    </div>
-                </a>
-            </div>
+            @if (item.DisplaySchedules) {
+                <div class="nav">
+                    <a class="item-wrapper" href="@item.SchedulesUrl">
+                        <div class="icon-descrip">
+                            <i class="icon fas fa-square"></i>
+                            <div class="descrip">Schedules</div>
+                        </div>
+                    </a>
+                </div>
+            }
+
+            @if (item.DisplayRisks) {
+                <div class="nav">
+                    <a class="item-wrapper" href="@item.RisksUrl">
+                        <div class="icon-descrip">
+                            <i class="icon fas fa-square"></i>
+                            <div class="descrip">Risks</div>
+                        </div>
+                    </a>
+                </div>
+            }
+
             @foreach (var child in item.ProjectJustificationNavs) {
                 <div class="nav">
                     <a class="item-wrapper" href="@child.Url">

@@ -65,7 +65,9 @@
 
                 // add flat navigations
                 stage.SchedulesUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/schedules/detail";
+                stage.DisplaySchedules = stage.Schedules.Count > 0;
                 stage.RisksUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/risks";
+                stage.DisplayRisks = stage.Risks.Count > 0;
             });
 
             var gates = _context.Gates
@@ -89,8 +91,10 @@
         public List<InvestmentPlanNav> InvestmentPlanNavs { get; set; }
         public List<ProductIntroChecklistNav> ProductIntroChecklistNavs { get; set; }
         public string SchedulesUrl { get; set; }
+        public bool DisplaySchedules { get; set; }
         public string RisksUrl { get; set; }
-    }
+        public bool DisplayRisks { get; set; }
+}
 
     public class NavigationGate : Gate {
         public string Url { get; set; }
