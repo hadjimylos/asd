@@ -248,7 +248,7 @@ namespace pmo.Controllers.VBPD.Application.History
                     }
                 }
             }
-            return RedirectToAction("edit", new { stageId = stage.Id, projectId = stage.ProjectId });
+            return RedirectToAction("Detail", new { version = currentVersion });
         }
 
         private QualificationTestingViewModel GetViewModel(int stageId, int version)

@@ -195,8 +195,7 @@ namespace pmo.Controllers.VBPD.Application.History
                     }
                 }
             }
-
-            return RedirectToAction("Detail", new { projectId, stageNumber, version = currentVersion });
+            return RedirectToAction("Detail", new { version = currentVersion });
         }
 
         private ProductIntroChecklistViewModel GetViewModel(int stageId, int version)

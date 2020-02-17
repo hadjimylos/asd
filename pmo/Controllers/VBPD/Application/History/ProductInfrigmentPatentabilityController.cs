@@ -202,8 +202,7 @@ namespace pmo.Controllers {
                     }
                 }
             }
-
-            return RedirectToAction("Edit");
+            return RedirectToAction("Detail", new { version = currentVersion });
         }
 
         private ProductInfrigmentPatentabilityViewModel GetViewModel(int stageId, int version)

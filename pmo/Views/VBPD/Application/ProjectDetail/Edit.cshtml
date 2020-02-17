@@ -5,184 +5,185 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
-<form class="historyform-component" method="post" action="/vbpd-projects/@Model.ProjectId/project-detail/edit">
-    @Html.AntiForgeryToken()
+    <form class="historyform-component" method="post" action="/vbpd-projects/@Model.ProjectId/project-detail/edit">
+        @Html.AntiForgeryToken()
 
-    <div class="wrapper">
-        <div class="form-section">
-            <div class="fields">
-                <div class="field">
-                    <div class="label">End Use Countries</div>
-                    <input asp-for="EndUseDestinationCountry" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "EndUseDestinationCountry")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Salesforce</div>
-                    <input asp-for="Salesforce" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "Salesforce")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">EngineeringChecklistUrl</div>
-                    <input asp-for="EngineeringChecklistUrl" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "EngineeringChecklistUrl")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">ProjectProcessType</div>
-                    <input asp-for="ProjectProcessType" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProjectProcessType")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">ExportControlCode</div>
-                    <input asp-for="ExportControlCode" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ExportControlCode")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">ProjectCategoryTagId</div>
-                    <select asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProjectCategoryTagId")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">ProjectClassificationTagId</div>
-                    <select asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProjectClassificationTagId")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">ProductLineTagId</div>
-                    <select asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProductLineTagId")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">DesignAuthorityTagId</div>
-                    <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">ExportApplicationTypeTagId</div>
-                    <select asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ExportApplicationTypeTagId")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">SalesRegionIds</div>
-                    <select asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "SalesRegionIds")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">CustomerIds</div>
-                    <select asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "CustomerIds")
-                    </ul>
-                </div>
-                <div class="field">
-                    <input type="submit" class="data btn" value="SUBMIT" />
-                </div>
-            </div>
-        </div>
-        <div class="versioning-section">
-            <div class="choose-history">
-                <div class="select-history-wrapper">
-                    <select class="select-history select2">
-                        <option>CLEAR</option>
-                        <option value="all">VIEW ALL</option>
-                        @foreach (var version in Model.Versions) {
-                            <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
-                        }
-                    </select>
+        <div class="wrapper">
+            <div class="form-section">
+                <div class="fields">
+                    <div class="field">
+                        <div class="label">End Use Countries</div>
+                        <input asp-for="EndUseDestinationCountry" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "EndUseDestinationCountry")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Salesforce</div>
+                        <input asp-for="Salesforce" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Salesforce")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">EngineeringChecklistUrl</div>
+                        <input asp-for="EngineeringChecklistUrl" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "EngineeringChecklistUrl")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">ProjectProcessType</div>
+                        <input asp-for="ProjectProcessType" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ProjectProcessType")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">ExportControlCode</div>
+                        <input asp-for="ExportControlCode" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ExportControlCode")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">ProjectCategoryTagId</div>
+                        <select asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ProjectCategoryTagId")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">ProjectClassificationTagId</div>
+                        <select asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ProjectClassificationTagId")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">ProductLineTagId</div>
+                        <select asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ProductLineTagId")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">DesignAuthorityTagId</div>
+                        <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">ExportApplicationTypeTagId</div>
+                        <select asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ExportApplicationTypeTagId")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">SalesRegionIds</div>
+                        <select asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "SalesRegionIds")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">CustomerIds</div>
+                        <select asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "CustomerIds")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
                 </div>
             </div>
-            <div class="versions">
-                @foreach (var version in Model.Versions) {
-                    <div showversion="@version.Id" class="version">
-                        <button class="btn full-prepopulate">PREPOPULATE ALL</button>
-                        <div class="values">
-                            <div class="select-single-field">
-                                <div class="label">End Use Countries</div>
-                                <div class="data">@Model.EndUseDestinationCountry</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Salesforce</div>
-                                <div class="data">@Model.Salesforce</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">EngineeringChecklistUrl</div>
-                                <div class="data">@Model.EngineeringChecklistUrl</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">ProjectProcessType</div>
-                                <div class="data">@Model.ProjectProcessType</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">ExportControlCode</div>
-                                <div class="data">@Model.ExportControlCode</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">ProjectCategoryTagId</div>
-                                <div class="single-list-value">
-                                    @Html.Partial("HistoryPartials/_SingleListValue", (Model.ProjectCategoryTagId, Model.ProjectCategoryTagDropDown))
+            <div class="versioning-section">
+                <div class="choose-history">
+                    <div class="select-history-wrapper">
+                        <select class="select-history select2">
+                            <option value="clear">CLEAR</option>
+                            <option value="all">VIEW ALL</option>
+                            @foreach (var version in Model.Versions)
+                            {
+                                <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="versions">
+                    @foreach (var version in Model.Versions)
+                    {
+                        <div showversion="@version.Id" class="version">
+                            <div class="values">
+                                <div class="select-single-field">
+                                    <div class="label">End Use Countries</div>
+                                    <div class="data">@Model.EndUseDestinationCountry</div>
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">ProjectClassificationTagId</div>
-                                <div class="single-list-value">
-                                    @Html.Partial("HistoryPartials/_SingleListValue", (Model.ProjectClassificationTagId, Model.ProjectClassificationDropDown))
+                                <div class="select-single-field">
+                                    <div class="label">Salesforce</div>
+                                    <div class="data">@Model.Salesforce</div>
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">ProductLineTagId</div>
-                                <div class="single-list-value">
-                                    @Html.Partial("HistoryPartials/_SingleListValue", (Model.ProductLineTagId, Model.ProductLineDropDown))
+                                <div class="select-single-field">
+                                    <div class="label">EngineeringChecklistUrl</div>
+                                    <div class="data">@Model.EngineeringChecklistUrl</div>
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">DesignAuthorityTagId</div>
-                                <div class="single-list-value">
-                                    @Html.Partial("HistoryPartials/_SingleListValue", (Model.DesignAuthorityTagId, Model.DesignAuthorityDropDown))
+                                <div class="select-single-field">
+                                    <div class="label">ProjectProcessType</div>
+                                    <div class="data">@Model.ProjectProcessType</div>
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">ExportApplicationTypeTagId</div>
-                                <div class="single-list-value">
-                                    @Html.Partial("HistoryPartials/_SingleListValue", (Model.ExportApplicationTypeTagId, Model.ExportApplicationTypeDropDown))
+                                <div class="select-single-field">
+                                    <div class="label">ExportControlCode</div>
+                                    <div class="data">@Model.ExportControlCode</div>
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">SalesRegionIds</div>
-                                <div class="list-values">
-                                    @Html.Partial("HistoryPartials/_MultipleListValues", (Model.SalesRegionIds, Model.SalesRegionsDropDown))
+                                <div class="select-single-field">
+                                    <div class="label">ProjectCategoryTagId</div>
+                                    <div class="single-list-value">
+                                        @Html.Partial("HistoryPartials/_SingleListValue", (Model.ProjectCategoryTagId, Model.ProjectCategoryTagDropDown))
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">CustomerIds</div>
-                                <div class="list-values">
-                                    @Html.Partial("HistoryPartials/_MultipleListValues", (Model.CustomerIds, Model.CustomerDropDown))
+                                <div class="select-single-field">
+                                    <div class="label">ProjectClassificationTagId</div>
+                                    <div class="single-list-value">
+                                        @Html.Partial("HistoryPartials/_SingleListValue", (Model.ProjectClassificationTagId, Model.ProjectClassificationDropDown))
+                                    </div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">ProductLineTagId</div>
+                                    <div class="single-list-value">
+                                        @Html.Partial("HistoryPartials/_SingleListValue", (Model.ProductLineTagId, Model.ProductLineDropDown))
+                                    </div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">DesignAuthorityTagId</div>
+                                    <div class="single-list-value">
+                                        @Html.Partial("HistoryPartials/_SingleListValue", (Model.DesignAuthorityTagId, Model.DesignAuthorityDropDown))
+                                    </div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">ExportApplicationTypeTagId</div>
+                                    <div class="single-list-value">
+                                        @Html.Partial("HistoryPartials/_SingleListValue", (Model.ExportApplicationTypeTagId, Model.ExportApplicationTypeDropDown))
+                                    </div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">SalesRegionIds</div>
+                                    <div class="list-values">
+                                        @Html.Partial("HistoryPartials/_MultipleListValues", (Model.SalesRegionIds, Model.SalesRegionsDropDown))
+                                    </div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">CustomerIds</div>
+                                    <div class="list-values">
+                                        @Html.Partial("HistoryPartials/_MultipleListValues", (Model.CustomerIds, Model.CustomerDropDown))
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>

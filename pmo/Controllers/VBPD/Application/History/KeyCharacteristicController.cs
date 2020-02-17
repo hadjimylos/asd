@@ -188,7 +188,7 @@ namespace pmo.Controllers
                     _context.SaveChanges();
                 }
             }
-            return RedirectToAction("Detail", new { projectId, stageNumber, version =currentVersion });
+            return RedirectToAction("Detail", new {version =currentVersion });
         }
 
         private List<KeyCharacteristicViewModel> GetVersionHistory(int stageId)

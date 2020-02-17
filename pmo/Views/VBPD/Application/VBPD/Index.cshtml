@@ -6,9 +6,15 @@
 }
 
 <div class="actions-component">
-    <div></div>
-    <div><a class="btn large" href="/vbpd-projects/create">CREATE NEW VBPD PROJECT</a></div>
-    <div><a class="btn large" href="/admin">ADMIN</a></div>
+    <div class="wrapper">
+        <div class="header">
+            <h1>Projects</h1>
+        </div>
+        <div class="actions">
+            <div><a class="btn large" href="/vbpd-projects/create">CREATE NEW VBPD PROJECT</a></div>
+            <div><a class="btn large" href="/admin">ADMIN</a></div>
+        </div>
+    </div>
 </div>
 
 <h1>Projects</h1>
@@ -17,7 +23,7 @@
 {
     <div class="list-component">
         <div class="wrapper">
-            <div class="title by-13">
+            <div class="title">
                 <div>Name</div>
                 <div>Sales Force</div>
                 <div>Category</div>
@@ -28,7 +34,7 @@
             <div class="items">
                 @foreach (var modelItem in Model)
                 {
-                    <a class="item" href="/vbpd-projects/@modelItem.ProjectId" >
+                    <a class="item" href="/vbpd-projects/@modelItem.ProjectId">
                         <div class="item-wrapper by-13">
                             <div>@modelItem.Project.Name</div>
                             <div>@modelItem.Salesforce</div>

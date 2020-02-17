@@ -5,12 +5,11 @@
 }
 @Html.AntiForgeryToken()
 <h1>Index</h1>
-
 <div class="detail-component">
     <div class="wrapper">
         <div class="header">
-            <h1>SCHEDULE INFORMATION</h1>
-            <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/schedules/edit">Edit</a>
+            <h1>Details</h1>
+            <button type="button" class="btn green" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/schedules/edit">Edit</button>
         </div>
         <div class="details">
             @foreach (var schedule in Model)

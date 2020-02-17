@@ -14,15 +14,145 @@
 <form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/business-case/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">
+        <div class="form-section">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Will Customer Fund Qual</div>
+                    <input asp-for="WillCustomerFundQual" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "WillCustomerFundQual")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Will Customer Fund Tooling</div>
+                    <input asp-for="WillCustomerFundTooling" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "WillCustomerFundTooling")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Probabilty Of Win</div>
+                    <input asp-for="ProbabiltyOfWin" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ProbabiltyOfWin")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Target First Year Gross Margin</div>
+                    <input asp-for="TargetFirstYearGrossMargin" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "TargetFirstYearGrossMargin")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Data Starting Date</div>
+                    <input asp-for="DataStartingDate" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "DataStartingDate")
+                    </ul>
+                </div>
+
+
+                <div class="field">
+                    <div class="label">Number Of Years</div>
+                    <input asp-for="NumberOfYears" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "NumberOfYears")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Discount Rate</div>
+                    <input asp-for="DiscountRate" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "DiscountRate")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Tax Rate</div>
+                    <input asp-for="TaxRate" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "TaxRate")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Project Scope</div>
+                    <input asp-for="ProjectScope" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ProjectScope")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Work Requirement Amount</div>
+                    <input asp-for="WorkRequirementAmount" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "WorkRequirementAmount")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Strategic Alignment</div>
+                    <input asp-for="StrategicAlignment" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "StrategicAlignment")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Add To Tecnical Abilities</div>
+                    <input asp-for="AddToTecnicalAbilities" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "AddToTecnicalAbilities")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Project Completion</div>
+                    <input asp-for="ProjectCompletion" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ProjectCompletion")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Time From Project Completion To RevenueGeneration</div>
+                    <input asp-for="TimeFromProjectCompletionToRevenueGeneration" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "TimeFromProjectCompletionToRevenueGeneration")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Manufactoring Locations</div>
+                    <select asp-for="ManufacturingLocationsIds" asp-items="Model.ManufacturingLocationsDropDown" class="data select2">
+                    </select>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ManufacturingLocationsIds")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Customer Market Analysis</div>
+                    <input asp-for="CustomerMarketAnalysis" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "CustomerMarketAnalysis")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Changes</div>
+                    <input asp-for="Changes" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Changes")
+                    </ul>
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="versioning-section">
             <div class="choose-history">
                 <div class="select-history-wrapper">
                     <select class="select-history select2">
-                        <option>CLEAR</option>
+                        <option value="clear">CLEAR</option>
                         <option value="all">VIEW ALL</option>
                         @foreach (var version in Model.Versions)
                         {
-                            <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                            <option value="@version.Id">Stage: @version.Stage.StageNumber => Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
                         }
                     </select>
                 </div>
@@ -31,7 +161,6 @@
                 @foreach (var version in Model.Versions)
                 {
                     <div showversion="@version.Id" class="version">
-                        <button class="btn full-prepopulate">PREPOPULATE ALL</button>
                         <div class="values">
                             <div class="select-single-field">
                                 <div class="label">Will Customer Fund Qual</div>
@@ -106,134 +235,6 @@
                     </div>
                 }
             </div>
-            <div class="form-component">
-                <div class="fields">
-                    <div class="label">Will Customer Fund Qual</div>
-                    <input asp-for="WillCustomerFundQual" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "WillCustomerFundQual")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Will Customer Fund Tooling</div>
-                    <input asp-for="WillCustomerFundTooling" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "WillCustomerFundTooling")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Probabilty Of Win</div>
-                    <input asp-for="ProbabiltyOfWin" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProbabiltyOfWin")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Target First Year Gross Margin</div>
-                    <input asp-for="TargetFirstYearGrossMargin" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "TargetFirstYearGrossMargin")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Data Starting Date</div>
-                    <input asp-for="DataStartingDate" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "DataStartingDate")
-                    </ul>
-                </div>
-
-
-                <div class="fields">
-                    <div class="label">Number Of Years</div>
-                    <input asp-for="NumberOfYears" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "NumberOfYears")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Discount Rate</div>
-                    <input asp-for="DiscountRate" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "DiscountRate")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Tax Rate</div>
-                    <input asp-for="TaxRate" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "TaxRate")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Project Scope</div>
-                    <input asp-for="ProjectScope" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProjectScope")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Work Requirement Amount</div>
-                    <input asp-for="WorkRequirementAmount" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "WorkRequirementAmount")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Strategic Alignment</div>
-                    <input asp-for="StrategicAlignment" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "StrategicAlignment")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Add To Tecnical Abilities</div>
-                    <input asp-for="AddToTecnicalAbilities" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "AddToTecnicalAbilities")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Project Completion</div>
-                    <input asp-for="ProjectCompletion" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProjectCompletion")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Time From Project Completion To RevenueGeneration</div>
-                    <input asp-for="TimeFromProjectCompletionToRevenueGeneration" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "TimeFromProjectCompletionToRevenueGeneration")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Manufactoring Locations</div>
-                    <select asp-for="ManufacturingLocationsIds" asp-items="Model.ManufacturingLocationsDropDown" class="data select2">
-                    </select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ManufacturingLocationsIds")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Customer Market Analysis</div>
-                    <input asp-for="CustomerMarketAnalysis" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "CustomerMarketAnalysis")
-                    </ul>
-                </div>
-                <div class="fields">
-                    <div class="label">Changes</div>
-                    <input asp-for="Changes" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "Changes")
-                    </ul>
-                    <div class="field">
-                        <input type="submit" class="data btn" value="SUBMIT" />
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-
 </form>

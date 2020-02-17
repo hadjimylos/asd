@@ -5,11 +5,13 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
+
+
 <div class="detail-component">
     <div class="wrapper">
         <div class="header">
             <h1>PROJECT INFORMATION</h1>
-            <a class="btn" href="/vbpd-projects/@Model.ProjectDetail.ProjectId/project-detail/edit">Edit</a>
+            <button type="button" class="btn green" href="/vbpd-projects/@Model.ProjectDetail.ProjectId/project-detail/edit">Edit</button>
         </div>
         <div class="details">
             <div class="detail">
@@ -74,13 +76,13 @@
 
 <div class="detail-component">
     <div class="wrapper">
+        <div class="header">
+            <h1>TEAM MEMBERS</h1>
+            <button type="button" class="btn green">Edit</button>
+        </div>
         <div class="details">
-            <div class="header">
-                <h1>TEAM MEMBERS</h1>
-                <button type="button" class="btn green">Edit</button>
-            </div>
-
-            @foreach (var members in Model.TeamMembers) {
+            @foreach (var members in Model.TeamMembers)
+            {
                 var users = members.Select(s => s.User.NetworkUsername).ToList();
                 var mergedUsers = Helpers.GetDelimited(users);
                 var title = Helpers.GetFriendlyKeyName(members.Key);

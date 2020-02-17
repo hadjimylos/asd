@@ -4,31 +4,34 @@
     ViewData["Title"] = "Detail";
     Layout = "_VbpdProjectDetailLayout";
 }
-
     <div class="detail-component">
         <div class="wrapper">
-            <div class="fields">
-                <div class="field">
+            <div class="header">
+                <h1>Investment Plan</h1>
+                <a type="button" class="btn green" href="Edit">Edit</a>
+            </div>
+            <div class="details">
+                <div class="detail">
                     <div class="label">Item #(Item Number)</div>
                     <div class="data">@Model.ItemNumber</div>
                 </div>
-                <div class="field">
+                <div class="detail">
                     <div class="label">Item</div>
                     <div class="data">@Model.Item</div>
                 </div>
-                <div class="field">
+                <div class="detail">
                     <div class="label">Purchased From</div>
                     <div class="data">@Model.PurchasedFrom</div>
                 </div>
-                <div class="field">
+                <div class="detail">
                     <div class="label">Ship to Location</div>
                     <div class="data">@Model.ShipToLocation</div>
                 </div>
-                <div class="field">
+                <div class="detail">
                     <div class="label">Cost</div>
                     <div class="data">@Model.Cost</div>
                 </div>
-                <div class="field">
+                <div class="detail">
                     <div class="label">Terms</div>
                     <div class="data">@Model.Terms</div>
                 </div>

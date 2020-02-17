@@ -4,27 +4,30 @@
     ViewData["Title"] = "Detail";
     Layout = "_VbpdProjectDetailLayout";
 }
-
-    <div class="detail-component">
-        <div class="wrapper">
-            <div class="fields">
-                <div class="field">
-                    <div class="label">Is Marketing Required</div>
-                    <div class="data">@Model.IsMarketingRequired</div>
-                </div>
-                <div class="field">
-                    <div class="label">Filename</div>
-                    <div class="data">@Model.Filename</div>
-                </div>
-                <div class="field">
-                    <div class="label">Approved By</div>
-                    <div class="data">@Model.ApprovedBy</div>
-                </div>
-                <div class="field">
-                    <div class="label">Approved By Date</div>
-                    <div class="data">@Model.ApprovedByDate</div>
-                </div>
+<div class="detail-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1>Details</h1>
+            <a type="button" class="btn green" href="Edit">Edit</a>
+        </div>
+        <div class="details">
+            <div class="detail">
+                <div class="label">Is Marketing Required</div>
+                <div class="data">@Model.IsMarketingRequired</div>
+            </div>
+            <div class="detail">
+                <div class="label">Filename</div>
+                <div class="data">@Model.Filename</div>
+            </div>
+            <div class="detail">
+                <div class="label">Approved By</div>
+                <div class="data">@Model.ApprovedBy</div>
+            </div>
+            <div class="detail">
+                <div class="label">Approved By Date</div>
+                <div class="data">@Model.ApprovedByDate</div>
             </div>
         </div>
     </div>
+</div>
 

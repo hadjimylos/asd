@@ -207,8 +207,7 @@ namespace pmo.Controllers.Application.History
                     }
                 }
             }
-
-            return RedirectToAction("Edit", new { stageNumber = vm.Stage.StageNumber, projectId = vm.Stage.ProjectId });
+            return RedirectToAction("Detail", new { version = currentVersion });
         }
 
         private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)

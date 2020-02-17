@@ -67,22 +67,24 @@
                 </div>
             </div>
         </div>
+
         <div class="versioning-section">
             <div class="choose-history">
                 <div class="select-history-wrapper">
                     <select class="select-history select2">
-                        <option>CLEAR</option>
+                        <option value="clear">CLEAR</option>
                         <option value="all">VIEW ALL</option>
-                        @foreach (var version in Model.Versions) {
-                            <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                        @foreach (var version in Model.Versions)
+                        {
+                            <option value="@version.Id">Stage: @version.Stage.StageNumber => Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
                         }
                     </select>
                 </div>
             </div>
             <div class="versions">
-                @foreach (var version in Model.Versions) {
+                @foreach (var version in Model.Versions)
+                {
                     <div showversion="@version.Id" class="version">
-                        <button class="btn full-prepopulate">PREPOPULATE ALL</button>
                         <div class="values">
                             <div class="select-single-field">
                                 <div class="label">Are there potential infringement issues?</div>
@@ -118,4 +120,4 @@
             </div>
         </div>
     </div>
-</form>
+    </form>

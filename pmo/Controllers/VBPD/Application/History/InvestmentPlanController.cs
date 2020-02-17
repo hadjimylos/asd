@@ -200,7 +200,7 @@ namespace pmo.Controllers.Application.History
                 }
             }
 
-            return RedirectToAction("Detail", new { projectId, stageNumber, version = currentVersion });
+            return RedirectToAction("Detail", new { version = currentVersion });
         }
 
         private InvestmentPlanViewModel GetViewModel(int stageId, int version)

@@ -9,55 +9,7 @@
 <form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/investment-plan/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">
-        <div class="versioning-section">
-            <div class="choose-history">
-                <div class="select-history-wrapper">
-                    <select class="select-history select2">
-                        <option>CLEAR</option>
-                        <option value="all">VIEW ALL</option>
-                        @foreach (var version in Model.Versions)
-                        {
-                            <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="versions">
-                @foreach (var version in Model.Versions)
-                {
-                    <div showversion="@version.Id" class="version">
-                        <button class="btn full-prepopulate">PREPOPULATE ALL</button>
-                        <div class="values">
-                            <div class="select-single-field">
-                                <div class="label">Item #(Item Number)</div>
-                                <div class="data">@version.ItemNumber</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Item</div>
-                                <div class="data">@version.Item</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Purchased From</div>
-                                <div class="data">@version.PurchasedFrom</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Ship to Location</div>
-                                <div class="data">@version.ShipToLocation</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Cost</div>
-                                <div class="data">@version.Cost</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Terms</div>
-                                <div class="data">@version.Terms</div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-        <div class="form-component">
+        <div class="form-section">
             <div class="fields">
                 <div class="field">
                     <div class="label">Item #(Item Number) </div>
@@ -100,10 +52,57 @@
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "Terms")
                     </ul>
-                <div class="field">
-                    <input type="submit" class="data btn" value="SUBMIT" />
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="versioning-section">
+            <div class="choose-history">
+                <div class="select-history-wrapper">
+                    <select class="select-history select2">
+                        <option value="clear">CLEAR</option>
+                        <option value="all">VIEW ALL</option>
+                        @foreach (var version in Model.Versions)
+                        {
+                            <option value="@version.Id">Stage: @version.Stage.StageNumber => Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="versions">
+                @foreach (var version in Model.Versions)
+                {
+                    <div showversion="@version.Id" class="version">
+                        <div class="values">
+                            <div class="select-single-field">
+                                <div class="label">Item #(Item Number)</div>
+                                <div class="data">@version.ItemNumber</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Item</div>
+                                <div class="data">@version.Item</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Purchased From</div>
+                                <div class="data">@version.PurchasedFrom</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Ship to Location</div>
+                                <div class="data">@version.ShipToLocation</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Cost</div>
+                                <div class="data">@version.Cost</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Terms</div>
+                                <div class="data">@version.Terms</div>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>

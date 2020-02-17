@@ -7,52 +7,58 @@
 
 <div class="detail-component">
     <div class="wrapper">
-        <div class="fields">
-            <div class="field">
-                <div class="label">SALESFORCE</div>
-                <div class="data">@Model.Salesforce</div>
-            </div>
-            <div class="field">
-                <div class="label">ENGINEERING CHECKLIST URL</div>
-                <div class="data">@Model.EngineeringChecklistUrl</div>
-            </div>
-            <div class="field">
-                <div class="label">PROJECT PROCESSTYPE</div>
-                <div class="data">@Model.ProjectProcessType</div>
-            </div>
-            <div class="field">
-                <div class="label">EXPORT CONTROLCODE</div>
-                <div class="data">@Model.ExportControlCode</div>
-            </div>
-            <div class="field">
-                <div class="label">PROJECT CATEGORIES</div>
-                <select disabled="disabled" asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2"></select>
-            </div>
-            <div class="field">
-                <div class="label">PROJECT CLASSIFICATIONS</div>
-                <select disabled="disabled" asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2"></select>
-            </div>
-            <div class="field">
-                <div class="label">PRODUCT LINES</div>
-                <select disabled="disabled" asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="data select2"></select>
-            </div>
-            <div class="field">
-                <div class="label">DESIGN AUTHORITIES</div>
-                <select disabled="disabled" asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2"></select>
-            </div>
-            <div class="field">
-                <div class="label">EXPORT APPLICATION TYPES</div>
-                <select disabled="disabled" asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2"></select>
-            </div>
-            <div class="field">
-                <div class="label">SALES REGIONS</div>
-                <select disabled="disabled" asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="data select2"></select>
-            </div>
-            <div class="field">
-                <div class="label">CUSTOMERS</div>
-                <select disabled="disabled" asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="data select2"></select>
+        <div class="header">
+            <h1>Details</h1>
+            <a type="button" class="btn green" href="Edit">Edit</a>
+        </div>
+        <div class="details">
+            <div class="detail">
+                <div class="detail">
+                    <div class="label">SALESFORCE</div>
+                    <div class="data">@Model.Salesforce</div>
+                </div>
+                <div class="detail">
+                    <div class="label">ENGINEERING CHECKLIST URL</div>
+                    <div class="data">@Model.EngineeringChecklistUrl</div>
+                </div>
+                <div class="detail">
+                    <div class="label">PROJECT PROCESSTYPE</div>
+                    <div class="data">@Model.ProjectProcessType</div>
+                </div>
+                <div class="detail">
+                    <div class="label">EXPORT CONTROLCODE</div>
+                    <div class="data">@Model.ExportControlCode</div>
+                </div>
+                <div class="detail">
+                    <div class="label">PROJECT CATEGORIES</div>
+                    <select disabled="disabled" asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2"></select>
+                </div>
+                <div class="detail">
+                    <div class="label">PROJECT CLASSIFICATIONS</div>
+                    <select disabled="disabled" asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2"></select>
+                </div>
+                <div class="detail">
+                    <div class="label">PRODUCT LINES</div>
+                    <select disabled="disabled" asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="data select2"></select>
+                </div>
+                <div class="detail">
+                    <div class="label">DESIGN AUTHORITIES</div>
+                    <select disabled="disabled" asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2"></select>
+                </div>
+                <div class="detail">
+                    <div class="label">EXPORT APPLICATION TYPES</div>
+                    <select disabled="disabled" asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2"></select>
+                </div>
+                <div class="detail">
+                    <div class="label">SALES REGIONS</div>
+                    <select disabled="disabled" asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="data select2"></select>
+                </div>
+                <div class="detail">
+                    <div class="label">CUSTOMERS</div>
+                    <select disabled="disabled" asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="data select2"></select>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
+</div>

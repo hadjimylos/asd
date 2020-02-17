@@ -7,24 +7,28 @@
 
 <div class="detail-component">
     <div class="wrapper">
-        <div class="fields">
-            <div class="select-single-field">
+        <div class="header">
+            <h1>Details</h1>
+            <a type="button" class="btn green" href="Edit">Edit</a>
+        </div>
+        <div class="details">
+            <div class="detail">
                 <div class="label">Item Number</div>
                 <div class="data">@Model.ItemNumber</div>
             </div>
-            <div class="select-single-field">
+            <div class="detail">
                 <div class="label">Date Sent to Customer for Approval</div>
                 <div class="data">@Model.Requirement</div>
             </div>
-            <div class="select-single-field">
+            <div class="detail">
                 <div class="label">Approved By</div>
                 <div class="data">@Model.MeasuredValue</div>
             </div>
-            <div class="select-single-field">
+            <div class="detail">
                 <div class="label">Approved Date</div>
                 <div class="data">@Model.ExpectedOutcomeRisk</div>
             </div>
-            <div class="single-list-value">
+            <div class="detail">
                 <div class="label">Requirement Source</div>
                 <div class="data">@Model.RequirementSourceText</div>
             </div>
