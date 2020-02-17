@@ -20,32 +20,12 @@ namespace pmo.Services.SharePoint
         static string username = $"{Config.AppSettings["NetworkCredentials:username"]}";
         static string password = $"{Config.AppSettings["NetworkCredentials:password"]}";
         static string documentLibrary = $"{Config.AppSettings["Sharepoint:DocumentLibrary"]}";
-        static string ReadRoleDefinition = $"{Config.AppSettings["Sharepoint:ReadRoleDefinition"]}";
-        static string documentLibraryToSharepointPath = $"{Config.AppSettings["Sharepoint:documentLibraryToSharepointPath"]}";
 
         public SharePointService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
 
         }
-        public async Task<string> GetUserPrincipalId(string userEmail)
-        {
-            string Id = "0";
-            var content = "";
-            using (var handler = new HttpClientHandler { Credentials = new NetworkCredential(username, password, domain) })
-            using (var _client = new HttpClient(handler))
-            {
-                _client.DefaultRequestHeaders.Add("Accept", "application/json;odata=verbose");
-                var result = await _client.GetAsync(siteUrl + "/_api/web/SiteUsers/getByEmail('" + userEmail + "')/Id");
-                if (!result.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("Error");
-                }
-                content = await result.Content.ReadAsStringAsync();
-                JObject UserData = JObject.Parse(content);
-                Id = (string)UserData["d"]["Id"];
-            }
-            return Id;
-        }
+
         public async Task<string> Upload(IFormFile file)
         {
             if (file == null || file.Length == 0) return "file not selected";
@@ -87,16 +67,29 @@ namespace pmo.Services.SharePoint
                 throw ex;
             }
         }
-        private static string GetFormDigestValue(string siteurl, NetworkCredential credentials)
-        {
+
+        public JObject Delete(string url) {
+            HttpWebRequest wreq = HttpWebRequest.Create(url) as HttpWebRequest;
+            wreq.UseDefaultCredentials = false;
+            NetworkCredential credentials = new NetworkCredential(username, password, domain);
+            wreq.Credentials = credentials;
+            wreq.Method = "DELETE";
+            WebResponse wresp = wreq.GetResponse();
+            string result = string.Empty;
+            using (StreamReader sr = new StreamReader(wresp.GetResponseStream())) {
+                result = sr.ReadToEnd();
+            }
+            return JObject.Parse(result);
+        }
+
+        private static string GetFormDigestValue(string siteurl, NetworkCredential credentials) {
             string newFormDigest = "";
             HttpWebRequest endpointRequest = (HttpWebRequest)HttpWebRequest.Create(siteurl + "/_api/contextinfo");
             endpointRequest.Method = "POST";
             endpointRequest.ContentLength = 0;
             endpointRequest.Credentials = credentials;
             endpointRequest.Accept = "application/json;odata=verbose";
-            try
-            {
+            try {
                 //HttpWebResponse endpointResponse = (HttpWebResponse)endpointRequest.GetResponse();
 
                 WebResponse webResp = endpointRequest.GetResponse();
@@ -105,141 +98,15 @@ namespace pmo.Services.SharePoint
                 string response = responseReader.ReadToEnd();
                 var j = JObject.Parse(response);
                 var jObj = (JObject)JsonConvert.DeserializeObject(response);
-                foreach (var item in jObj["d"].Children())
-                {
+                foreach (var item in jObj["d"].Children()) {
                     newFormDigest = item.First()["FormDigestValue"].ToString();
                 }
                 responseReader.Close();
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine(ex.Message);
             }
             return newFormDigest;
-        }
-
-
-        public bool BreakFileRoleInheritance(string fileName)
-        {
-            bool status = false;
-            string result = string.Empty;
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('/" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/breakroleinheritance(true)";
-            HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
-            wreq.UseDefaultCredentials = false;
-            NetworkCredential credentials = new NetworkCredential(username, password, domain);
-            wreq.Credentials = credentials;
-            string formDigest = GetFormDigestValue(siteUrl, credentials);
-            wreq.Headers.Add("X-RequestDigest", formDigest);
-            wreq.Method = "POST";
-            //wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
-            wreq.Accept = "application/json; odata=verbose";            try
-            {
-                WebResponse wresp = wreq.GetResponse();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(wresp.GetResponseStream()))
-                {
-
-                    result = sr.ReadToEnd();
-                    status = true;
-                    return status;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return status;
-                throw;
-            }
-        }
-        public bool RemoveFilePermissions(string fileName, string id)
-        {
-            bool status = false;
-            string result = string.Empty;
-            //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=" + 3 + ",roledefid=" + ReadRoleDefinition + ")";
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=" + id + ")";
-            HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
-            wreq.UseDefaultCredentials = false;
-            NetworkCredential credentials = new NetworkCredential(username, password, domain);
-            wreq.Credentials = credentials;
-            string formDigest = GetFormDigestValue(siteUrl, credentials);
-            wreq.Method = "POST";
-            wreq.Accept = "application/json; odata=verbose";
-            wreq.Headers.Add("X-RequestDigest", formDigest);
-            wreq.Headers.Add("X-HTTP", "DELETE");
-            //wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
-            try
-            {
-                WebResponse wresp = wreq.GetResponse();
-                using (StreamReader sr = new StreamReader(wresp.GetResponseStream()))
-                {
-                    result = sr.ReadToEnd();
-                    status = true;
-                    return status;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return status;
-                throw;
-            }
-        }
-
-        public bool AddFilePermissions(string fileName, string id)
-        {
-            bool status = false;
-            string result = string.Empty;
-            string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/addroleassignment(principalid=" + id + ",roledefid=" + ReadRoleDefinition + ")";
-            //string resourceUrl = siteUrl + "/_api/Web/GetFileByServerRelativeUrl('" + documentLibraryToSharepointPath + "/" + fileName + "')/ListItemAllFields/roleassignments/removeroleassignment(principalid=7)";
-            HttpWebRequest wreq = HttpWebRequest.Create(resourceUrl) as HttpWebRequest;
-            wreq.UseDefaultCredentials = false;
-            NetworkCredential credentials = new NetworkCredential(username, password, domain);
-            wreq.Credentials = credentials;
-            string formDigest = GetFormDigestValue(siteUrl, credentials);
-            wreq.Method = "POST";
-            wreq.Accept = "application/json; odata=verbose";
-            wreq.Headers.Add("X-RequestDigest", formDigest);
-            //wreq.Headers.Add("X-HTTP", "DELETE");
-            //wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
-            try
-            {
-                WebResponse wresp = wreq.GetResponse();
-                using (StreamReader sr = new StreamReader(wresp.GetResponseStream()))
-                {
-                    result = sr.ReadToEnd();
-                    status = true;
-                    return status;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return status;
-                throw;
-            }
-        }
-
-        public bool Delete(string file)
-        {
-
-            string pathToDelete = siteUrl + documentLibraryToSharepointPath + "/" + file;
-            HttpWebRequest wreq = HttpWebRequest.Create(pathToDelete) as HttpWebRequest;
-            wreq.UseDefaultCredentials = false;
-            NetworkCredential credentials = new NetworkCredential(username, password, domain);
-            wreq.Credentials = credentials;
-            wreq.Method = "DELETE";
-
-            try
-            {
-                var resp = wreq.GetResponse();
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-                return false;
-                throw;
-            }
         }
     }
 
