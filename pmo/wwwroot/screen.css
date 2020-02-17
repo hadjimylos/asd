@@ -118,6 +118,20 @@ body .wrapper > h4 {
   padding-bottom: 0px;
   margin-bottom: 0px;
 }
+body .mh-100,
+body .mh-200,
+body .mh-300 {
+  overflow: auto;
+}
+body .mh-100 {
+  max-height: 100px;
+}
+body .mh-200 {
+  max-height: 200px;
+}
+body .mh-300 {
+  max-height: 300px;
+}
 body .by-1 > * {
   width: 100%;
 }
@@ -362,11 +376,6 @@ body h3 {
 .form-component {
   font-size: 13px;
   color: #2A363B;
-}
-.form-component .wrapper {
-  padding: 40px;
-  padding-bottom: unset;
-  box-sizing: border-box;
 }
 .error-component .wrapper .error {
   display: flex;
@@ -655,6 +664,9 @@ body h3 {
   padding: 15px;
   box-sizing: border-box;
   width: 100%;
+}
+.layout-inline-component > .wrapper .page-section > *:not(:first-child) {
+  margin-top: 25px;
 }
 .sidenav-checklist-component {
   background: #333f48;
