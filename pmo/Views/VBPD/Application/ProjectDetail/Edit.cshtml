@@ -4,7 +4,16 @@
     ViewData["Title"] = "Edit";
     Layout = "_VbpdProjectDetailLayout";
 }
-
+    <div class="actions-component">
+        <div class="wrapper">
+            <div class="header">
+                <h1>Project Detail</h1>
+            </div>
+            <div class="actions">
+                <div class="action"><a class="btn green" href="create-version">Add new Version</a></div>
+            </div>
+        </div>
+    </div>
     <form class="historyform-component" method="post" action="/vbpd-projects/@Model.ProjectId/project-detail/edit">
         @Html.AntiForgeryToken()
 

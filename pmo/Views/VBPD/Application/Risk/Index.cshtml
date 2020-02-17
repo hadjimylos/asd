@@ -4,17 +4,26 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 @Html.AntiForgeryToken()
-<h1>Index</h1>
+
 
 <div class="actions-component">
-    <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/create">CREATE</a>
+    <div class="wrapper">
+        <div class="header">
+            <h1>Risks</h1>
+        </div>
+        <div class="actions">
+            <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/create">CREATE</a>
+
+        </div>
+    </div>
 </div>
+
 
 @if (Model.Count > 0)
 {
     <div class="list-component">
         <div class="wrapper">
-            <div class="title by-2">
+            <div class="title">
                 <div>NAME</div>
                 <div>RISK PROBABILITY (%)</div>
                 <div>RISK TYPE</div>
@@ -24,7 +33,7 @@
                 @foreach (var risk in Model)
                 {
                     <a class="item" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/@risk.Id">
-                        <div class="item-wrapper by-2">
+                        <div class="item-wrapper">
                             <div>@risk.Name</div>
                             <div>@risk.RiskPropability %</div>
                             <div>@risk.RiskImpact.Name</div>
