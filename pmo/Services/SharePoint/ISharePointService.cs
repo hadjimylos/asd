@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace pmo.Services.SharePoint {
    public interface ISharePointService {
-        Task<string> Upload(IFormFile file);
-        JObject Delete(string file);
+        Task<string> Upload(IFormFile file, string projectName);
+        void Delete(string file);
     }
 }

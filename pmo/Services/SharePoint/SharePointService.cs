@@ -26,11 +26,19 @@ namespace pmo.Services.SharePoint
 
         }
 
-        public async Task<string> Upload(IFormFile file)
+        public async Task<string> Upload(IFormFile file, string projectName)
         {
             if (file == null || file.Length == 0) return "file not selected";
+
+            string projectNameStripped = projectName
+                .Replace(" ", "-")
+                .ToLower();
+
+            string timeStamp = DateTime.Now.ToString("ddMMyyy-hhmmss");
+            string fileName = $"{projectNameStripped}_{timeStamp}_{file.FileName}";
+
             string result = string.Empty;
-            string pathToUpload = $"{siteUrl}/_api/Web/GetFolderByServerRelativeUrl('{documentLibrary}')/Files/add(url='{file.FileName}',overwrite=true)";
+            string pathToUpload = $"{siteUrl}/_api/Web/GetFolderByServerRelativeUrl('{documentLibrary}')/Files/add(url='{fileName}',overwrite=true)";
             HttpWebRequest wreq = HttpWebRequest.Create(pathToUpload) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
             //credential who has edit access on document library
@@ -68,18 +76,13 @@ namespace pmo.Services.SharePoint
             }
         }
 
-        public JObject Delete(string url) {
+        public void Delete(string url) {
             HttpWebRequest wreq = HttpWebRequest.Create(url) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
             NetworkCredential credentials = new NetworkCredential(username, password, domain);
             wreq.Credentials = credentials;
             wreq.Method = "DELETE";
             WebResponse wresp = wreq.GetResponse();
-            string result = string.Empty;
-            using (StreamReader sr = new StreamReader(wresp.GetResponseStream())) {
-                result = sr.ReadToEnd();
-            }
-            return JObject.Parse(result);
         }
 
         private static string GetFormDigestValue(string siteurl, NetworkCredential credentials) {
