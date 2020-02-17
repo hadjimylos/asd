@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using dbModels;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using pmo.Controllers;
@@ -17,7 +15,7 @@ namespace pmo.Services.SharePoint
 {
     public class SharePointService : BaseController, ISharePointService
     {
-        static string siteUrl = $"{Config.AppSettings["Sharepoint:SPSite"]}";
+        static string siteUrl = $"{Config.AppSettings["Sharepoint:SPFarm"]}/{Config.AppSettings["Sharepoint:SPSite"]}";
         static string domain = $"{Config.AppSettings["NetworkCredentials:domain"]}";
         static string username = $"{Config.AppSettings["NetworkCredentials:username"]}";
         static string password = $"{Config.AppSettings["NetworkCredentials:password"]}";
@@ -50,12 +48,9 @@ namespace pmo.Services.SharePoint
         }
         public async Task<string> Upload(IFormFile file)
         {
-
-
             if (file == null || file.Length == 0) return "file not selected";
-            bool status = false;
             string result = string.Empty;
-            string pathToUpload = siteUrl + "/_api/Web/GetFolderByServerRelativeUrl('" + documentLibrary + "')/Files/add(url='" + file.FileName + "',overwrite=true)";
+            string pathToUpload = $"{siteUrl}/_api/Web/GetFolderByServerRelativeUrl('{documentLibrary}')/Files/add(url='{file.FileName}',overwrite=true)";
             HttpWebRequest wreq = HttpWebRequest.Create(pathToUpload) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
             //credential who has edit access on document library
@@ -83,15 +78,13 @@ namespace pmo.Services.SharePoint
                 {
                     result = sr.ReadToEnd();
                     JObject resultObj = JObject.Parse(result);
-                    status = true;
                     return result;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return result;
-                throw;
+                throw ex;
             }
         }
         private static string GetFormDigestValue(string siteurl, NetworkCredential credentials)
@@ -139,12 +132,12 @@ namespace pmo.Services.SharePoint
             wreq.Headers.Add("X-RequestDigest", formDigest);
             wreq.Method = "POST";
             //wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
-            wreq.Accept = "application/json; odata=verbose";
-            try
+            wreq.Accept = "application/json; odata=verbose";            try
             {
                 WebResponse wresp = wreq.GetResponse();
                 using (System.IO.StreamReader sr = new System.IO.StreamReader(wresp.GetResponseStream()))
                 {
+
                     result = sr.ReadToEnd();
                     status = true;
                     return status;

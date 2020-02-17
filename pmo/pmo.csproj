@@ -14,6 +14,10 @@
     <Compile Remove="Migrations\20200213083634_AddDeliverableRegister.Designer.cs" />
     <Compile Remove="Migrations\20200213083835_AddDeliverableRegister.cs" />
     <Compile Remove="Migrations\20200213083835_AddDeliverableRegister.Designer.cs" />
+    <Compile Remove="Migrations\20200214131613_SeedData.cs" />
+    <Compile Remove="Migrations\20200214131613_SeedData.Designer.cs" />
+    <Compile Remove="Migrations\20200214131806_SeedDataManyToMany.cs" />
+    <Compile Remove="Migrations\20200214131806_SeedDataManyToMany.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

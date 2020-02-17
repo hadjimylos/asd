@@ -5,15 +5,15 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
-    <form enctype="multipart/form-data" method="post" action="/vbpd-projects/@Model.projectId/stages/@Model.stageNumber/files/edit">
-        @Html.AntiForgeryToken()
-        <input type="file" multiple name="files" />
-        <textarea name="descrip"></textarea>
-        <input type="text" name="newTag" />
-        <input type="number" name="tagId" />
-        <input type="submit" />
-    </form>
+<form enctype="multipart/form-data" method="post" action="/vbpd-projects/@Model.projectId/stages/@Model.stageNumber/files/edit">
+    @Html.AntiForgeryToken()
 
-    <div class="list-component">
+    <input type="file" multiple name="files" />
+    <textarea name="descrip"></textarea>
+    <select class="select2" name="tagId" asp-items="ViewBag.Dropdown"></select>
+    <input type="submit" />
+</form>
 
-    </div>
+<div class="list-component">
+
+</div>

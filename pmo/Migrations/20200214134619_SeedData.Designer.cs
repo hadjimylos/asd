@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200214134619_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1525,128 +1527,6 @@ namespace pmo.Migrations
                     b.HasIndex("StageConfigId");
 
                     b.ToTable("StageConfig_RequiredSchedules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 1,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 2,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 3,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 4,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 5,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 6,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 7,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 8,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 9,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 10,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 11,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 12,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 13,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 14,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 15,
-                            StageConfigId = 3
-                        });
                 });
 
             modelBuilder.Entity("dbModels.StageFile", b =>

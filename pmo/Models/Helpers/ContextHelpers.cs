@@ -116,6 +116,8 @@ namespace ViewModels.Helpers
         public const string RiskImpact = "risk-impact";
         public const string DesignAuthority = "design-authority";
         public const string ExportApplicationType = "export-application-type";
+        public const string StageFiles = "stage-files";
+        
     }
 
     public static class JobDescripKeys {
