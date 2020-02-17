@@ -26,6 +26,9 @@ namespace dbModels {
 
         public decimal TaxRate { get; set; }
 
+        //TODO: Create Migration
+        //public decimal LaborRate { get; set; }
+
         public string GpaRequirements { get; set; }
 
         public decimal MultipleFieldsGeneratedTable { get; set; }

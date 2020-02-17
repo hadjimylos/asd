@@ -46,6 +46,11 @@ namespace ViewModels
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new bool Changes { get; set; }
 
+        public decimal NPV { get; set; }
+        public decimal ROI { get; set; }
+        public decimal PaybackPeriodYears { get; set; }
+
+
         public new virtual List<BusinessCase_ManufacturingLocation> ManufacturingLocations { get; set; }
 
         public MultiSelectList ManufacturingLocationsDropDown { set; get; }
