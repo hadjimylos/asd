@@ -4,7 +4,7 @@
     public class StageFileConfig : DatabaseModel {
         public int RequiredFileTagId { get; set; }
 
-        [ForeignKey("RequiredScheduleTagId")]
+        [ForeignKey("RequiredFileTagId")]
         public virtual Tag RequiredFile { get; set; }
 
         public int StageConfigId { get; set; }
