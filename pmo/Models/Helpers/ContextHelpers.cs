@@ -1,4 +1,5 @@
 ﻿using dbModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,10 @@ namespace ViewModels.Helpers
             return queryable;
         }
         
+        public static string GetRouteValue (HttpRequest request, string key) {
+            return (string)request.RouteValues[key];
+        }
+
         public static List<T> RemoveTransactions<T>(this IEnumerable<T> listItems) where T : HistoryModel {
             var groupedByVersion = listItems.OrderBy(o => o.CreateDate)
                 .GroupBy(f => f.Version)

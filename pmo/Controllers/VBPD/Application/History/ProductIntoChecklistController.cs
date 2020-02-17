@@ -11,8 +11,7 @@ using ViewModels;
 namespace pmo.Controllers.VBPD.Application.History
 {
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-intro-checklist")]
-    public class ProductIntoChecklistController : BaseProjectDetailController
-    {
+    public class ProductIntoChecklistController : BaseStageComponentController {
 
         private readonly string viewPath = "~/Views/VBPD/Application/ProductIntroChecklist";
 
@@ -23,7 +22,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(stageId, version);
+            var model = GetViewModel(_stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -33,7 +32,7 @@ namespace pmo.Controllers.VBPD.Application.History
             var currentVersion = _context.ProductIntroChecklists
                 .AsNoTracking()
                 .Include(s => s.Stage)
-                .Where(n => n.StageId == stageId)
+                .Where(n => n.StageId == _stageId)
                 .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -55,7 +54,7 @@ namespace pmo.Controllers.VBPD.Application.History
             // get latest transaction of latest version
             var latestRecord = _context.ProductIntroChecklists
                 .Include(s => s.Stage)
-                .Where(n => n.StageId == stageId)
+                .Where(n => n.StageId == _stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -89,10 +88,10 @@ namespace pmo.Controllers.VBPD.Application.History
             var currentVersion = _context.ProductIntroChecklists
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.StageId == stageId)
+                 .Where(n => n.StageId == _stageId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
-            var currentStage = _context.Stages.First(s=>s.Id == stageId);
+            var currentStage = _context.Stages.First(s=>s.Id == _stageId);
 
             if (currentVersion == null)
             {
@@ -105,7 +104,7 @@ namespace pmo.Controllers.VBPD.Application.History
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(stageId, currentVersion.Version);
+            var model = GetViewModel(_stageId, currentVersion.Version);
             model.Versions = GetVersionHistory(currentStage.Id);
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -118,10 +117,10 @@ namespace pmo.Controllers.VBPD.Application.History
             int currentVersion = 0;
             var latestProductIntoChecklist = _context.ProductIntroChecklists
                .Include(s => s.Stage)
-               .Where(n => n.StageId == stageId)
+               .Where(n => n.StageId == _stageId)
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
-            var stage = _context.Stages.First(s=>s.Id == stageId);
+            var stage = _context.Stages.First(s=>s.Id == _stageId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
@@ -131,7 +130,7 @@ namespace pmo.Controllers.VBPD.Application.History
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var productIntroChecklist = _mapper.Map<ProductIntroChecklist>(vm);
-            productIntroChecklist.StageId = stageId;
+            productIntroChecklist.StageId = _stageId;
             if (latestProductIntoChecklist == null)//first version
             {
                 using (var transaction = _context.Database.BeginTransaction())

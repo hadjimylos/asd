@@ -15,8 +15,7 @@ namespace pmo.Controllers.VBPD.Application.History
 {
 
   [Route("vbpd-projects/{projectid}/stages/{stageNumber}/business-case")]
-    public class BusinessCaseController : BaseProjectDetailController
-    {
+    public class BusinessCaseController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/BusinessCase";
         private readonly IListService _listService;
         public BusinessCaseController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor , IListService listService) : base(context, mapper, httpContextAccessor)
@@ -28,7 +27,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(stageId, version);
+            var model = GetViewModel(_stageId, version);
             model.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations ,  model.ManufacturingLocationsIds);
             return View($"{viewPath}/Detail.cshtml", model);
         }
@@ -39,7 +38,7 @@ namespace pmo.Controllers.VBPD.Application.History
             var currentVersion = _context.BusinessCases
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.StageId == stageId)
+                 .Where(n => n.StageId == _stageId)
                  .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -59,7 +58,7 @@ namespace pmo.Controllers.VBPD.Application.History
         {
             // get latest transaction of latest version
             var latestRecord = _context.BusinessCases.AsNoTracking()
-                .Where(n => n.StageId == stageId)
+                .Where(n => n.StageId == _stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -110,10 +109,10 @@ namespace pmo.Controllers.VBPD.Application.History
             var currentVersion = _context.BusinessCases
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.StageId == stageId)
+                 .Where(n => n.StageId == _stageId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
-            var currentStage = _context.Stages.First(n => n.Id == stageId);
+            var currentStage = _context.Stages.First(n => n.Id == _stageId);
 
 
             if (currentVersion == null)
@@ -141,10 +140,10 @@ namespace pmo.Controllers.VBPD.Application.History
             int currentVersion = 0;
             var latestBusinessCase = _context.BusinessCases
                .Include(s => s.Stage)
-               .Where(n => n.StageId == stageId)
+               .Where(n => n.StageId == _stageId)
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
-            var stage = _context.Stages.First(s => s.Id == stageId);
+            var stage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;

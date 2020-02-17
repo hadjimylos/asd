@@ -14,8 +14,7 @@ using ViewModels.Helpers;
 namespace pmo.Controllers
 {
     [Route("vbpd-projects/{id}/team-members")]
-    public class TeamMembersController : BaseProjectDetailController
-    {
+    public class TeamMembersController : BaseStageComponentController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/TeamMembers";
 

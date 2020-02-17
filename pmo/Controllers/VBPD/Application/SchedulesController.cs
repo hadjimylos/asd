@@ -12,8 +12,7 @@ using ViewModels;
 namespace pmo.Controllers
 {
     [Route("vbpd-projects/{projectId}/stages/{stageNumber}/schedules")]
-    public class SchedulesController : BaseProjectDetailController
-    {
+    public class SchedulesController : BaseStageComponentController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Schedules";
 
@@ -27,10 +26,10 @@ namespace pmo.Controllers
         public IActionResult Detail(int projectId, int stageNumber)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId;
+            ViewBag.StageId = _stageId;
             List<SchedulesViewModel> viewModel = new List<SchedulesViewModel>();
             var model = _context.Schedules.Include(x => x.Stage).Include(x => x.ScheduleType).ToList();
-            var stage = _context.Stages.Find(stageId);
+            var stage = _context.Stages.Find(_stageId);
             var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stage.StageNumber).ToList();
 
             if (model.Count > 0 && settings.Count == model.Count)

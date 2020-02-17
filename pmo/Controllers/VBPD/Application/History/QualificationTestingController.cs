@@ -11,8 +11,7 @@ using ViewModels;
 namespace pmo.Controllers.VBPD.Application.History
 {
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/qualification-testing")]
-    public class QualificationTestingController : BaseProjectDetailController
-    {
+    public class QualificationTestingController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/QualificationTesting";
         public QualificationTestingController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
@@ -21,7 +20,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(stageId, version);
+            var model = GetViewModel(_stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -33,7 +32,7 @@ namespace pmo.Controllers.VBPD.Application.History
             var currentVersion = _context.QualificationTestings
                 .AsNoTracking()
                 .Include(s => s.Stage)
-                .Where(n => n.StageId == stageId)
+                .Where(n => n.StageId == _stageId)
                 .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -55,7 +54,7 @@ namespace pmo.Controllers.VBPD.Application.History
             // get latest transaction of latest version
             var latestRecord = _context.QualificationTestings
                 .Include(s => s.Stage)
-                .Where(n => n.StageId == stageId)
+                .Where(n => n.StageId == _stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -128,10 +127,10 @@ namespace pmo.Controllers.VBPD.Application.History
         public IActionResult Edit(QualificationTestingViewModel vm)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.Where(s => s.Id == stageId).First();
+            var stage = _context.Stages.Where(s => s.Id == _stageId).First();
             var latestQualificationTesting = _context.QualificationTestings
                   .Include(s => s.Stage)
-                  .Where(n => n.StageId == stageId)
+                  .Where(n => n.StageId == _stageId)
                   .OrderByDescending(o => o.CreateDate)
                   .FirstOrDefault();
             if (!ModelState.IsValid)

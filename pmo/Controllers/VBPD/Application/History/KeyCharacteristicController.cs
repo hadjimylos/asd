@@ -11,11 +11,10 @@ using System.Linq;
 using ViewModels;
 using ViewModels.Helpers;
 
-namespace pmo.Controllers.Application.History
+namespace pmo.Controllers
 {
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/key-characteristic")]
-    public class KeyCharacteristicController : BaseProjectDetailController
-    {
+    public class KeyCharacteristicController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
 
         public KeyCharacteristicController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
@@ -27,7 +26,7 @@ namespace pmo.Controllers.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(stageId, version);
+            var model = GetViewModel(_stageId, version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -37,7 +36,7 @@ namespace pmo.Controllers.Application.History
             var currentVersion = _context.KeyCharacteristics
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.StageId == stageId)
+                 .Where(n => n.StageId == _stageId)
                  .Max(m => m.Version);
 
             var model = new CreateVersionViewModel
@@ -58,7 +57,7 @@ namespace pmo.Controllers.Application.History
             // get latest transaction of latest version
             var latestRecord = _context.KeyCharacteristics
                 .Include(s => s.Stage)
-                .Where(n => n.StageId == stageId)
+                .Where(n => n.StageId == _stageId)
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
@@ -94,10 +93,10 @@ namespace pmo.Controllers.Application.History
             var currentVersion = _context.KeyCharacteristics
                  .AsNoTracking()
                  .Include(s => s.Stage)
-                 .Where(n => n.StageId == stageId)
+                 .Where(n => n.StageId == _stageId)
                  .OrderByDescending(c => c.CreateDate)
                  .FirstOrDefault();
-            var currentStage = _context.Stages.First(n => n.Id == stageId);
+            var currentStage = _context.Stages.First(n => n.Id == _stageId);
 
 
             if (currentVersion == null)
@@ -139,10 +138,10 @@ namespace pmo.Controllers.Application.History
             int currentVersion = 0;
             var latestKeyCharacteristics = _context.KeyCharacteristics
                .Include(s => s.Stage)
-               .Where(n => n.StageId == stageId)
+               .Where(n => n.StageId == _stageId)
                .OrderByDescending(o => o.CreateDate)
                .FirstOrDefault();
-            var stage = _context.Stages.First(s => s.Id == stageId);
+            var stage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;

@@ -14,8 +14,7 @@ using ViewModels.Helpers;
 namespace pmo.Controllers.Application
 {
     [Route("vbpd-projects/{projectId}/stages/{stageNumber}/risk")]
-    public class RiskController : BaseProjectDetailController
-    {
+    public class RiskController : BaseStageComponentController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Risk";
 
@@ -28,13 +27,13 @@ namespace pmo.Controllers.Application
         public IActionResult Index(int projectId)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId;
+            ViewBag.StageId = _stageId;
             var vm = _mapper.Map<List<RiskViewModel>>(
                 _context.Risks
                 .Include(x=>x.Stage)
                 .Include(x => x.RiskImpact)
                 .Include(x => x.RiskType)
-                .Where(x=>x.StageId== stageId).ToList());
+                .Where(x=>x.StageId== _stageId).ToList());
             return View($"{path}/Index.cshtml",vm);
         }
 
@@ -43,11 +42,11 @@ namespace pmo.Controllers.Application
         public IActionResult Create(int projectId)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId;
+            ViewBag.StageId = _stageId;
             var riskViewModel = new RiskViewModel()
             {
                 isCreate = true,
-                StageId=stageId,
+                StageId=_stageId,
                 RiskTypeList = _listService.Tags_SelectList(TagCategoryHelper.RiskType),
                 RiskImpactList = _listService.Tags_SelectList(TagCategoryHelper.RiskImpact),
 
@@ -61,7 +60,7 @@ namespace pmo.Controllers.Application
         public IActionResult Create(int projectId, RiskViewModel riskViewModel)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId;            
+            ViewBag.StageId = _stageId;            
 
             if (!ModelState.IsValid)
             {
@@ -82,7 +81,7 @@ namespace pmo.Controllers.Application
         public IActionResult Edit(int projectId, int id)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId;
+            ViewBag.StageId = _stageId;
             var risk = _context.Risks.Include(x => x.Stage)
                 .Include(x => x.RiskImpact)
                 .Include(x => x.RiskType)
@@ -104,7 +103,7 @@ namespace pmo.Controllers.Application
         public IActionResult Edit(int projectId, RiskViewModel model)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = stageId; 
+            ViewBag.StageId = _stageId; 
             model.isCreate = false;
 
             if (!ModelState.IsValid)
@@ -121,7 +120,7 @@ namespace pmo.Controllers.Application
             riskRecord.RiskPropability = domainModel.RiskPropability;
             riskRecord.RiskImpactTagId = domainModel.RiskImpactTagId;
             riskRecord.RiskTypeTagId = domainModel.RiskTypeTagId;
-            riskRecord.StageId = stageId;
+            riskRecord.StageId = _stageId;
 
             _context.Risks.Update(riskRecord);
             _context.SaveChanges();
