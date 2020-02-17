@@ -3,7 +3,7 @@
     public class StageFile : DatabaseModel {
         public int FileTagId { get; set; }
 
-        [ForeignKey("RequiredScheduleTagId")]
+        [ForeignKey("FileTagId")]
         public virtual Tag FileTag { get; set; }
 
         public int StageId { get; set; }
