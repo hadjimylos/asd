@@ -34,8 +34,6 @@ namespace dbModels {
 
         public decimal WorkRequirementAmount { get; set; }
 
-        public string WorkRequirementUrl { get; set; }
-
         public bool StrategicAlignment { get; set; }
 
         public string AddToTecnicalAbilities { get; set; }
