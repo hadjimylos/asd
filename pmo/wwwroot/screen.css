@@ -229,52 +229,61 @@ body .panel.hide {
   display: none;
 }
 body .btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   -webkit-appearance: none;
   -webkit-writing-mode: unset;
-  background-color: #00859b;
   border: none;
-  padding: 4px 8px;
+  background-color: #00859b;
+  padding: 8px 16px;
   border-radius: 3px;
+  font-family: Roboto-Light;
+  font-size: 1em;
   color: #ffffff;
-  font-weight: 500;
-  letter-spacing: 2px;
   min-width: 50px;
   text-align: center;
+  cursor: pointer;
 }
 body .btn:hover {
-  cursor: pointer;
   background-color: #006f82;
   transition-duration: 0.3s;
 }
+body .btn:focus {
+  box-shadow: 0 0 0 0.2rem #008ea5;
+}
 body .btn.large {
-  font-size: 12px;
+  font-size: 1.25em;
 }
 body .btn.green {
   background-color: #008264;
 }
 body .btn.green:hover {
   background-color: #006950;
-  cursor: pointer;
   transition-duration: 0.3s;
+}
+body .btn.green:focus {
+  box-shadow: 0 0 0 0.2rem #00cf9f;
 }
 body .btn.red {
   background-color: #c82333;
 }
 body .btn.red:hover {
   background-color: #b21f2d;
-  cursor: pointer;
   transition-duration: 0.3s;
+}
+body .btn.red:focus {
+  box-shadow: 0 0 0 0.2rem #ed979f;
 }
 body .btn.grey {
   background-color: #6c757d;
 }
 body .btn.grey:hover {
   background-color: #60686f;
-  cursor: pointer;
   transition-duration: 0.3s;
+}
+body .btn.grey:focus {
+  box-shadow: 0 0 0 0.2rem #afb5ba;
+}
+body .btn > i {
+  margin-right: 4px;
 }
 body .btn:focus,
 body input:focus,
@@ -814,6 +823,35 @@ body h3 {
 }
 .sidenav-checklist-component .wrapper .navs .dropdown .actions button {
   border-radius: 0;
+}
+.validation-page-component .wrapper {
+  padding: 4em 2em;
+  background: #f5f6f7;
+}
+.validation-page-component .wrapper .validation .title {
+  font-size: 3.5em;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 0.25em;
+}
+.validation-page-component .wrapper .validation .text {
+  font-size: 1.25em;
+  font-weight: 100;
+}
+.validation-page-component .wrapper .validation hr {
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 1.5em 0;
+}
+.validation-page-component .wrapper .validation .prompt {
+  margin-bottom: 1.5em;
+}
+.validation-page-component .wrapper .validation .actions .action-wrapper {
+  display: flex;
+  align-items: center;
+}
+.validation-page-component .wrapper .validation .actions .action-wrapper .btn:not(:first-child) {
+  margin-left: 8px;
 }
 .daterangepicker {
   position: absolute;
