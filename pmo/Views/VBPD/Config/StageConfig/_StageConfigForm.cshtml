@@ -4,123 +4,127 @@
     var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
 }
 
-<form class="form-component" method="post" action="/admin/stage-config/@postWhere">
-    @if(!Model.isCreate) {
-        <input asp-for="Id" type="hidden" />
-    }
-
-    @Html.AntiForgeryToken()
-    <div class="wrapper">
-        <div class="fields">
-            <div class="field">
-                <div class="label">CURRENT STAGE NUMBER</div>
-                <div class="data">@Model.StageNumber</div>
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "StageNumber")
-                </ul>
-            </div>
-
-            @if (!Model.isCreate) {
-                <div class="field">
-                    <div class="label">REQUIRED SCHEDULES</div>
-                    <select asp-for="ScheduleIds" asp-items="Model.SelectSchedules" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ScheduleIds")
-                    </ul>
-                </div>
+    <div class="form-component">
+        <form class="form-component" method="post" action="/admin/stage-config/@postWhere">
+            @if (!Model.isCreate)
+            {
+                <input asp-for="Id" type="hidden" />
             }
 
-            <div class="field">
-                <div class="label">ALLOW CREATION OF RISK ASSESMENTS</div>
-                <input asp-for="AllowInsertRiskAssesments" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "AllowInsertRiskAssesments")
-                </ul>
-            </div>
+            @Html.AntiForgeryToken()
+            <div class="wrapper">
+                <div class="fields">
+                    <div class="field">
+                        <div class="label">CURRENT STAGE NUMBER</div>
+                        <div class="data">@Model.StageNumber</div>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "StageNumber")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM PROJECT JUSTIFICATION</div>
-                <input asp-for="MinProjectJustifications" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinProjectJustifications")
-                </ul>
-            </div>
+                    @if (!Model.isCreate)
+                    {
+                        <div class="field">
+                            <div class="label">REQUIRED SCHEDULES</div>
+                            <select asp-for="ScheduleIds" asp-items="Model.SelectSchedules" class="data select2"></select>
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", "ScheduleIds")
+                            </ul>
+                        </div>
+                    }
 
-            <div class="field">
-                <div class="label">MINIMUM BUSINESS CASES</div>
-                <input asp-for="MinBusinessCases" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinBusinessCases")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">ALLOW CREATION OF RISK ASSESMENTS</div>
+                        <input asp-for="AllowInsertRiskAssesments" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "AllowInsertRiskAssesments")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM PRODUCT INFRINGEMENT PATENTABILITIES</div>
-                <input asp-for="MinProductInfringementPatentabilities" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinProductInfringementPatentabilities")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM PROJECT JUSTIFICATION</div>
+                        <input asp-for="MinProjectJustifications" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinProjectJustifications")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM KEY CHARACTERISTICS</div>
-                <input asp-for="MinKeyCharacteristics" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinKeyCharacteristics")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM BUSINESS CASES</div>
+                        <input asp-for="MinBusinessCases" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinBusinessCases")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM CUSTOMER DESIGN APPROVALS</div>
-                <input asp-for="MinCustomerDesignApprovals" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinCustomerDesignApprovals")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM PRODUCT INFRINGEMENT PATENTABILITIES</div>
+                        <input asp-for="MinProductInfringementPatentabilities" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinProductInfringementPatentabilities")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM INVESTMENT PLANS</div>
-                <input asp-for="MinInvestmentPlans" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinInvestmentPlans")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM KEY CHARACTERISTICS</div>
+                        <input asp-for="MinKeyCharacteristics" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinKeyCharacteristics")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM PRODUCT INTRO CHECKLIST</div>
-                <input asp-for="MinProductIntroChecklist" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinProductIntroChecklist")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM CUSTOMER DESIGN APPROVALS</div>
+                        <input asp-for="MinCustomerDesignApprovals" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinCustomerDesignApprovals")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM RAMP RESOURCE PLANS</div>
-                <input asp-for="MinRampResourcePlans" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinRampResourcePlans")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM INVESTMENT PLANS</div>
+                        <input asp-for="MinInvestmentPlans" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinInvestmentPlans")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM QUALIFICATION TESTING</div>
-                <input asp-for="MinQualificationTesting" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinQualificationTesting")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM PRODUCT INTRO CHECKLIST</div>
+                        <input asp-for="MinProductIntroChecklist" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinProductIntroChecklist")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <div class="label">MINIMUM REQUIRED DESIGN CONCEPTS</div>
-                <input asp-for="MinDesignConcepts" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "MinDesignConcepts")
-                </ul>
-            </div>
+                    <div class="field">
+                        <div class="label">MINIMUM RAMP RESOURCE PLANS</div>
+                        <input asp-for="MinRampResourcePlans" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinRampResourcePlans")
+                        </ul>
+                    </div>
 
-            <div class="field">
-                <input type="submit" class="data btn" value="SUBMIT" />
+                    <div class="field">
+                        <div class="label">MINIMUM QUALIFICATION TESTING</div>
+                        <input asp-for="MinQualificationTesting" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinQualificationTesting")
+                        </ul>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">MINIMUM REQUIRED DESIGN CONCEPTS</div>
+                        <input asp-for="MinDesignConcepts" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "MinDesignConcepts")
+                        </ul>
+                    </div>
+
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
-</form>
