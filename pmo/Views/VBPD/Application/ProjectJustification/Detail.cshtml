@@ -1,0 +1,69 @@
+﻿@model ProjectJustificationViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "_VbpdProjectDetailLayout";
+}
+    <div class="detail-component">
+        <div class="wrapper">
+            <div class="header">
+                <h1>Project justification</h1>
+                <a type="button" class="btn green" href="Edit">Edit</a>
+            </div>
+            <div class="details">
+                <div class="detail">
+                    <div class="label">Add To Inhouse Technical Abilities </div>
+                    <div class="data">@Model.AddToInhouseTechnicalAbilities</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Advantages We Offer</div>
+                    <div class="data">@Model.AdvantagesWeOffer</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Application</div>
+                    <div class="data">@Model.Application</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Benchmark Samples</div>
+                    <div class="data">@Model.BenchmarkSamples</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Competetion</div>
+                    <div class="data">@Model.Competetion</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Customer Motivation</div>
+                    <div class="data">@Model.CustomerMotivation</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Drawing Spec Standards</div>
+                    <div class="data">@Model.DrawingSpecStandards</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Other Requirements</div>
+                    <div class="data">@Model.OtherRequirements</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Model Requirements</div>
+                    <div class="data">@Model.RegulatoryRequirements</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Scope</div>
+                    <div class="data">@Model.Scope</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Single Use Product</div>
+                    <div class="data">@Model.SingleUseProduct</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Technical Feasibility</div>
+                    <div class="data">@Model.TechnicalFeasibility</div>
+                </div>
+                <div class="detail">
+                    <div class="label">Why Our Offer Preferred</div>
+                    <div class="data">@Model.WhyOurOfferPreferred</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
