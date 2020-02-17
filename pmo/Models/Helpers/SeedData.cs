@@ -1110,36 +1110,6 @@ namespace Helpers
                     _context.Database.ExecuteSqlInterpolated($"SET IDENTITY_INSERT dbo.UserCitizenShip OFF");
                     #endregion
 
-                    #region Insert DeliverableRegisterConfig
-                    _context.DeliverableRegisterConfigs.AddRange(new List<DeliverableRegisterConfig>()
-                    {
-                        new DeliverableRegisterConfig(){ Id=1, StageConfigId=2, TagId=744},
-                        new DeliverableRegisterConfig(){ Id=2,  StageConfigId=3, TagId=745},
-                        new DeliverableRegisterConfig(){ Id=3,  StageConfigId=3, TagId=746},
-                        new DeliverableRegisterConfig(){ Id=4,  StageConfigId=3, TagId=747},
-                        new DeliverableRegisterConfig(){ Id=5,  StageConfigId=3, TagId=748},
-                        new DeliverableRegisterConfig(){ Id=6,  StageConfigId=3, TagId=749},
-                        new DeliverableRegisterConfig(){ Id=7,  StageConfigId=3, TagId=750},
-                        new DeliverableRegisterConfig(){ Id=8,  StageConfigId=3, TagId=751},
-                        new DeliverableRegisterConfig(){ Id=9,  StageConfigId=3, TagId=752},
-                        new DeliverableRegisterConfig(){ Id=10,  StageConfigId=3, TagId=753},
-                        new DeliverableRegisterConfig(){ Id=21,  StageConfigId=3, TagId=754},
-                        new DeliverableRegisterConfig(){ Id=22,  StageConfigId=3, TagId=755},
-                        new DeliverableRegisterConfig(){ Id=23,  StageConfigId=3, TagId=756},
-                        new DeliverableRegisterConfig(){ Id=24,  StageConfigId=3, TagId=757},
-                        new DeliverableRegisterConfig(){ Id=25,  StageConfigId=3, TagId=758},
-                        new DeliverableRegisterConfig(){ Id=26,  StageConfigId=3, TagId=759},
-                        new DeliverableRegisterConfig(){ Id=27,  StageConfigId=4, TagId=760},
-                        new DeliverableRegisterConfig(){ Id=28,  StageConfigId=4, TagId=761},
-                        new DeliverableRegisterConfig(){ Id=29,  StageConfigId=4, TagId=761}
-
-                    });
-
-                    _context.Database.ExecuteSqlInterpolated($"SET IDENTITY_INSERT dbo.DeliverableRegisterConfigs ON;");
-                    _context.SaveChanges();
-                    _context.Database.ExecuteSqlInterpolated($"SET IDENTITY_INSERT dbo.DeliverableRegisterConfigs OFF");
-                    #endregion
-
                     transaction.Commit();
                 }
 

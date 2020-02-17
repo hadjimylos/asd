@@ -18,7 +18,6 @@ namespace dbModels
         public int StageNumber { get; set; }
         public virtual List<Schedule> Schedules { get; set; }
         public virtual List<Risk> Risks { get; set; }
-        public virtual List<DeliverableRegister> DeliverableRegisters { get; set; }
 
         public virtual List<ProjectJustification> ProjectJustificationHistory { get; set; }
         public virtual List<BusinessCase> BusinessCaseHistory { get; set; }

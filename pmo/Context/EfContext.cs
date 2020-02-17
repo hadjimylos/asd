@@ -49,8 +49,6 @@ namespace pmo
         public DbSet<BusinessCase_ManufacturingLocation> BusinessCase_ManufacturingLocations { get; set; }
         public DbSet<Project_User> Project_User { get; set; }
         public DbSet<ProjectStateHistory> ProjectStateHistories { get; set; }
-        public DbSet<DeliverableRegister> DeliverableRegisters { get; set; }
-        public DbSet<DeliverableRegisterConfig> DeliverableRegisterConfigs { get; set; }
         public DbSet<StageFile> StageFiles { get; set; }
         public DbSet<StageFileConfig> StageFileConfigs { get; set; }
 
