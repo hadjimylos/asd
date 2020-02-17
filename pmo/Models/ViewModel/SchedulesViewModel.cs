@@ -11,7 +11,7 @@ namespace ViewModels
         public string ViewModelDate 
         { 
             get { 
-                return Date.ToString("MM/dd/yyyy"); 
+                return Date.ToString("dd/MM/yyyy"); 
             } set {
                 Date = DateTime.Parse(value);                    
             } 

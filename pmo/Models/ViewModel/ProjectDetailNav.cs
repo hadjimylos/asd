@@ -71,7 +71,7 @@
 
                 // add flat navigations
                 stage.DesignConceptsUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/design-concepts";
-                stage.SchedulesUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/schedules";
+                stage.SchedulesUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/schedules/detail";
                 stage.RisksUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/risks";
             });
 
