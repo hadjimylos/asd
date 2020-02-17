@@ -367,33 +367,29 @@ body h3 {
   color: #c82333;
 }
 .actions-component {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0px;
-  background-color: #008264;
+  background: #f5f6f7;
+  border: 1px solid #dee2e6;
   border-radius: 3px;
+  margin-bottom: 25px;
 }
-.actions-component div {
+.actions-component .wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
+.actions-component .wrapper .header h1 {
+  margin: 0;
+  padding: 0;
+}
+.actions-component .wrapper .actions {
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
 }
-.actions-component .search input {
-  padding: 10px;
-  font-size: 8px;
-}
-.actions-component .search button {
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-}
-.actions-component .search .select2-selection {
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-.actions-component .search .select2-search__field {
-  font-size: 8px;
+.actions-component .wrapper .actions > .action:not(:first-child) {
+  margin-left: 8px;
 }
 .displayone-component .wrapper {
   padding: 30px;
@@ -650,6 +646,174 @@ body h3 {
   padding: 15px;
   box-sizing: border-box;
   width: 100%;
+}
+.sidenav-checklist-component {
+  background: #333f48;
+  width: 300px;
+  letter-spacing: 1;
+}
+.sidenav-checklist-component .wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.sidenav-checklist-component .wrapper:hover .navs .nav-section .item-wrapper .descrip:after {
+  visibility: visible;
+}
+.sidenav-checklist-component .wrapper > .title {
+  padding: 20px 0px;
+  border-bottom: 1px solid #6c757d;
+}
+.sidenav-checklist-component .wrapper > .title > * {
+  color: #d5dce0;
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.sidenav-checklist-component .wrapper .navs {
+  overflow-y: auto;
+}
+.sidenav-checklist-component .wrapper .navs .nav {
+  color: #d5dce0;
+}
+.sidenav-checklist-component .wrapper .navs .nav:hover {
+  background: #00000013;
+}
+.sidenav-checklist-component .wrapper .navs .nav.active {
+  color: #ffffff;
+  background: #2A363B;
+}
+.sidenav-checklist-component .wrapper .navs .nav.completed {
+  color: #00b58b;
+}
+.sidenav-checklist-component .wrapper .navs .nav.pending {
+  color: #de4050;
+}
+.sidenav-checklist-component .wrapper .navs .nav .item-wrapper {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: inherit;
+  padding: 6px 8px;
+}
+.sidenav-checklist-component .wrapper .navs .nav .item-wrapper .icon-descrip {
+  display: flex;
+  align-items: center;
+}
+.sidenav-checklist-component .wrapper .navs .nav .item-wrapper .icon-descrip .icon {
+  margin-right: 8px;
+}
+.sidenav-checklist-component .wrapper .navs .nav .item-wrapper .version {
+  font-family: Roboto-Black;
+}
+.sidenav-checklist-component .wrapper .navs .simple-nav-section {
+  border-bottom: 1px solid #6c757d;
+  padding: 6px 0px;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section {
+  border-bottom: 1px solid #6c757d;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section > .item-wrapper {
+  display: flex;
+  padding: 12px 8px;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section > .item-wrapper .descrip {
+  font-weight: 600;
+  color: #637986;
+  letter-spacing: 2px;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section > .item-wrapper .descrip:hover {
+  color: #d5dce0;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section > .item-wrapper .descrip:after {
+  font-family: 'Font Awesome 5 Free';
+  content: '\F078';
+  float: right;
+  visibility: hidden;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section .nav-section-items {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.15s ease-out;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section .nav-section-items .dropdown .dropdown-items .nav .item-wrapper {
+  padding: 4px 8px 4px 32px;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section .nav-section-items .dropdown .dropdown-items .nav .item-wrapper .icon-descrip .icon {
+  font-size: 8px;
+  text-align: center;
+  color: #7d939f;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section .nav-section-items .dropdown .dropdown-items .nav .item-wrapper .icon-descrip .descrip {
+  font-size: 12px;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section .nav-section-items .dropdown:last-child {
+  margin-bottom: 12px;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section.active > .item-wrapper .descrip:after {
+  content: '\F077';
+}
+.sidenav-checklist-component .wrapper .navs .nav-section.active .nav-section-items {
+  max-height: 5000px;
+  transition: max-height 0.25s ease-in;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section .actions {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  justify-content: space-evenly;
+}
+.sidenav-checklist-component .wrapper .navs .nav-section .actions button {
+  border-radius: 0;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown > .item-wrapper {
+  display: flex;
+  padding: 6px 8px;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown > .item-wrapper .descrip {
+  color: #a9b7c0;
+  letter-spacing: 2.5;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown > .item-wrapper .descrip:hover {
+  color: #d5dce0;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown > .item-wrapper .descrip:before {
+  font-family: 'Font Awesome 5 Free';
+  content: '\F0DA';
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 8px;
+  width: 1em;
+  text-align: center;
+  transition: all linear 0.25s;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown .dropdown-items {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.15s ease-out;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown.active > .item-wrapper .descrip:before {
+  content: '\F0D7';
+}
+.sidenav-checklist-component .wrapper .navs .dropdown.active .dropdown-items {
+  max-height: 5000px;
+  transition: max-height 0.25s ease-in;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown .actions {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  justify-content: space-evenly;
+}
+.sidenav-checklist-component .wrapper .navs .dropdown .actions button {
+  border-radius: 0;
 }
 .daterangepicker {
   position: absolute;
