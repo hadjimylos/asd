@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200218100644_GateKeeper")]
+    partial class GateKeeper
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,9 +192,6 @@ namespace pmo.Migrations
                     b.Property<int>("Decision")
                         .HasColumnType("int");
 
-                    b.Property<int>("GateConfigId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
 
@@ -200,8 +199,6 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GateConfigId");
 
                     b.HasIndex("ProjectId");
 
@@ -7453,12 +7450,6 @@ namespace pmo.Migrations
 
             modelBuilder.Entity("dbModels.Gate", b =>
                 {
-                    b.HasOne("dbModels.GateConfig", "GateConfig")
-                        .WithMany("Gates")
-                        .HasForeignKey("GateConfigId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("dbModels.Project", "Project")
                         .WithMany("GateHistory")
                         .HasForeignKey("ProjectId")
@@ -7484,7 +7475,7 @@ namespace pmo.Migrations
             modelBuilder.Entity("dbModels.GateKeeperConfig", b =>
                 {
                     b.HasOne("dbModels.GateConfig", "GateConfig")
-                        .WithMany("GateKeeperConfigs")
+                        .WithMany("GateKeepers")
                         .HasForeignKey("GateConfigId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

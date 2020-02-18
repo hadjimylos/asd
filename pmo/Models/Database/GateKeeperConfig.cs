@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
@@ -10,5 +11,7 @@ namespace dbModels {
 
         [ForeignKey("GateConfigId")]
         public virtual GateConfig GateConfig { get; set; }
+
+        public virtual List<GateKeeper> GateKeepers { get; set; }
     }
 }

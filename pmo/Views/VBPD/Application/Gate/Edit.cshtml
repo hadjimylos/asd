@@ -1,0 +1,47 @@
+﻿@model GateViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+<form class="form-component" method="post">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            <div class="field">
+                <div class="label">Actual Review Date</div>
+                <input asp-for="@Model.ActualReviewDate" type="date" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ActualReviewDate")
+                </ul>
+            </div>
+
+            @for (int i = 0; i < Model.GateKeepersNew.Count; i++) {
+                <input asp-for="@Model.GateKeepersNew[i].Label" type="hidden" />
+                <input asp-for="@Model.GateKeepersNew[i].GateKeeperConfigId" type="hidden" />
+
+                <div class="field">
+                    <div class="label">@Model.GateKeepersNew[i].Label</div>
+                    <input asp-for="@Model.GateKeepersNew[i].GateKeeperName" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", $"GateKeepersNew[{i}].GateKeeperName")
+                    </ul>
+                </div>
+            }
+
+            <div class="field">
+                <div class="label">Comments</div>
+                <input asp-for="Comments" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Comments")
+                </ul>
+            </div>
+
+            <div class="field">
+                <input type="submit" class="btn green" value="Save Changes" />
+            </div>
+        </div>
+    </div>
+</form>
+

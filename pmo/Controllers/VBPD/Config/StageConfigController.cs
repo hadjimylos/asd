@@ -62,9 +62,9 @@ namespace pmo.Controllers {
             var vm = _mapper.Map<StageConfigViewModel>(config);
             vm.isCreate = false;
             vm.GateKeepers = _context.GateConfigs
-                .Include(i => i.GateKeepers)
+                .Include(i => i.GateKeeperConfigs)
                 .First(w => w.GateNumber == config.StageNumber)
-                .GateKeepers
+                .GateKeeperConfigs
                 .Select(s => s.Keeper)
                 .ToList();
 

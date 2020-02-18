@@ -21,7 +21,7 @@ namespace pmo
         public DbSet<BusinessCase> BusinessCases { get; set; }
         public DbSet<CustomerDesignApproval> CustomerDesignApprovals { get; set; }
         public DbSet<Gate> Gates { get; set; }
-        public DbSet<GateApprovers> GateApprovers { get; set; }
+        public DbSet<GateKeeper> GateKeepers { get; set; }
         public DbSet<GateConfig> GateConfigs { get; set; }
         public DbSet<InvestmentPlan> InvestmentPlans { get; set; }
         public DbSet<KeyCharacteristic> KeyCharacteristics { get; set; }

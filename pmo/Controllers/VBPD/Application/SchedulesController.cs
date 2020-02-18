@@ -110,7 +110,7 @@ namespace pmo.Controllers
                         viewModel.Add(new SchedulesViewModel() {Id=0, Date=DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag, ScheduleType = settings.Where(x=>x.RequiredScheduleTagId==tag).First().RequiredSchedule });
                     }
                 }
-               
+
             }
             else
             {                

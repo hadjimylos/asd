@@ -20,7 +20,8 @@
         </div>
     }
     @if ((bool)ViewBag.DisplayMoveToGate) {
-        <form method="post" class="actions" action="">
+        <form method="post" class="actions" action="/vbpd-projects/@Model.ProjectId/gates/move-to-gate">
+            @Html.AntiForgeryToken()
             <input type="submit" class="btn green" value="Move to Gate" />
         </form>
     }
