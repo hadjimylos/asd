@@ -5,29 +5,28 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
-    <div class="detail-component">
-        <div class="wrapper">
-            <div class="header">
-                <h1>Details</h1>
+<div class="detail-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1>Details</h1>
+        </div>
+        <div class="details">
+            <div class="detail">
+                <div class="label">Who sent for approval</div>
+                <div class="value">@Model.SentForApprovalBy</div>
             </div>
-            <div class="details">
-                <div class="detail">
-                    <div class="label">Who sent for approval</div>
-                    <div class="data">@Model.SentForApprovalBy</div>
-                </div>
-                <div class="detail">
-                    <div class="label">Date Sent to Customer for Approval</div>
-                    <div class="data">@Model.DateSentForApprove</div>
-                </div>
-                <div class="detail">
-                    <div class="label">Approved By</div>
-                    <div class="data">@Model.ApprovedBy</div>
-                </div>
-                <div class="detail">
-                    <div class="label">Approved Date</div>
-                    <div class="data">@Model.ApprovedDate</div>
-                </div>
+            <div class="detail">
+                <div class="label">Date Sent to Customer for Approval</div>
+                <div class="value">@Model.DateSentForApprove</div>
+            </div>
+            <div class="detail">
+                <div class="label">Approved By</div>
+                <div class="value">@Model.ApprovedBy</div>
+            </div>
+            <div class="detail">
+                <div class="label">Approved Date</div>
+                <div class="value">@Model.ApprovedDate</div>
             </div>
         </div>
     </div>
-
+</div>

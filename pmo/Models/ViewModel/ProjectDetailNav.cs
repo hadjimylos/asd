@@ -6,11 +6,13 @@
     using System.Linq;
     using ViewModels.Helpers;
 
-    public class ProjectDetailNav {
+    public class ProjectDetailNav
+    {
         private readonly EfContext _context;
         private readonly IMapper _mapper;
 
-        public ProjectDetailNav(EfContext context, IMapper mapper, int projectId) {
+        public ProjectDetailNav(EfContext context, IMapper mapper, int projectId)
+        {
             _context = context;
             _mapper = mapper;
             this.ProjectId = projectId;
@@ -20,7 +22,8 @@
         public int ProjectId { get; set; }
         public List<NavigationStage> Stages { get; set; }
         public List<NavigationGate> Gates { get; set; }
-        private void populateNav(int projectId) {
+        private void populateNav(int projectId)
+        {
             var projectDetail = _context.ProjectDetails
                 .Where(w => w.ProjectId == projectId)
                 .OrderByDescending(o => o.CreateDate)
@@ -32,7 +35,8 @@
                 .Where(w => w.ProjectId == projectId)
                 .ToList();
 
-            foreach (var stage in stages) {
+            foreach (var stage in stages)
+            {
                 stage.ProjectJustificationHistory = stage.ProjectJustificationHistory.RemoveTransactions();
                 stage.BusinessCaseHistory = stage.BusinessCaseHistory.RemoveTransactions();
                 stage.ProductInfrigmentPatentabilityHistory = stage.ProductInfrigmentPatentabilityHistory.RemoveTransactions();
@@ -44,7 +48,8 @@
 
             // convert to nav objects
             var stageNavs = _mapper.Map<List<NavigationStage>>(stages);
-            stageNavs.ForEach(stage => {
+            stageNavs.ForEach(stage =>
+            {
                 // map history components to nav
                 stage.ProjectJustificationNavs = _mapper.Map<List<ProjectJustificationNav>>(stage.ProjectJustificationHistory);
                 stage.BusinessCaseNavs = _mapper.Map<List<BusinessCaseNav>>(stage.BusinessCaseHistory);
@@ -66,7 +71,7 @@
                 // add flat navigations
                 stage.SchedulesUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/schedules/detail";
                 stage.DisplaySchedules = stage.Schedules.Count > 0;
-                stage.RisksUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/risks";
+                stage.RisksUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/risk";
                 stage.DisplayRisks = stage.Risks.Count > 0;
             });
 
@@ -79,9 +84,7 @@
             this.Gates = gateNavs;
             this.Stages = stageNavs;
         }
-
     }
-
     public class NavigationStage : Stage {
         public List<ProjectJustificationNav> ProjectJustificationNavs { get; set; }
         public List<BusinessCaseNav> BusinessCaseNavs { get; set; }
