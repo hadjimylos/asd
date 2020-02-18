@@ -41,14 +41,7 @@
                                 @Html.Partial("_ListNavigationStage", navmodel.Stages)
                             </div>
                         </div>
-                        <div class="nav-section active">
-                            <div class="item-wrapper">
-                                <div class="descrip">Stage @activeStageNumber</div>
-                            </div>
-                            <div class="nav-section-items">
-                                @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))
-                            </div>
-                        </div>
+                        @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))   
                     </div>
                 </div>
             </div>

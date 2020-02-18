@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20200214131613_SeedData.Designer.cs" />
     <Compile Remove="Migrations\20200214131806_SeedDataManyToMany.cs" />
     <Compile Remove="Migrations\20200214131806_SeedDataManyToMany.Designer.cs" />
+    <Compile Remove="Migrations\20200218135745_AddProjectState.cs" />
+    <Compile Remove="Migrations\20200218135745_AddProjectState.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

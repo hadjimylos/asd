@@ -1,28 +1,78 @@
 ﻿@model (int ActiveStageNumber, int ProjectId)
-@{ 
-    var activeNavs = (List<ActiveStageNav>)ViewBag.ActiveStageNavs;
+@{
+    var activeStageNavs = (List<ActiveNav>)ViewBag.ActiveStageNavs;
+    var activeGateNavs = (List<ActiveNav>)ViewBag.ActiveGateNavs;
 }
 
-<div class="nav-section-items">
-    @foreach (var nav in activeNavs) {
-        var activeClass = nav.IsComplete ? "completed" : "pending";
-        var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
-        var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
+<div class="nav-section active">
+    @if (activeStageNavs.Count > 0) {
+        <div class="item-wrapper">
+            <div class="descrip">Stage @Model.ActiveStageNumber</div>
+        </div>
+        <div class="nav-section-items">
+            <div class="nav-section-items">
+                @foreach (var nav in activeStageNavs) {
+                    var activeClass = nav.IsComplete ? "completed" : "pending";
+                    var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                    var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
 
-        <div class="nav @activeClass">
-            <a class="item-wrapper" href="@nav.Url">
-                <div class="icon-descrip">
-                    <i class="@iconClass"></i>
-                    <div class="descrip">@nav.Component</div>
-                </div>
-                <div class="version">@version</div>
-            </a>
+                    <div class="nav @activeClass">
+                        <a class="item-wrapper" href="@nav.Url">
+                            <div class="icon-descrip">
+                                <i class="@iconClass"></i>
+                                <div class="descrip">@nav.Component</div>
+                            </div>
+                            <div class="version">@version</div>
+                        </a>
+                    </div>
+                }
+                @if ((bool)ViewBag.DisplayMoveToGate) {
+                    <form method="post" class="actions" action="/vbpd-projects/@Model.ProjectId/gates/move-to-gate">
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn green" value="Move to Gate" />
+                    </form>
+                }
+            </div>
         </div>
     }
-    @if ((bool)ViewBag.DisplayMoveToGate) {
-        <form method="post" class="actions" action="/vbpd-projects/@Model.ProjectId/gates/move-to-gate">
-            @Html.AntiForgeryToken()
-            <input type="submit" class="btn green" value="Move to Gate" />
-        </form>
+    else {
+        <div class="item-wrapper">
+            <div class="descrip">Gate @Model.ActiveStageNumber</div>
+        </div>
+        <div class="nav-section-items">
+            <div class="nav-section-items">
+                @foreach (var nav in activeGateNavs) {
+                    var activeClass = nav.IsComplete ? "completed" : "pending";
+                    var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                    var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
+
+                    <div class="nav @activeClass">
+                        <a class="item-wrapper" href="@nav.Url">
+                            <div class="icon-descrip">
+                                <i class="@iconClass"></i>
+                                <div class="descrip">@nav.Component</div>
+                            </div>
+                            <div class="version">@version</div>
+                        </a>
+                    </div>
+                }
+                @if ((bool)ViewBag.DisplayGateDecisions) {
+                    <div class="actions">
+                        <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
+                            @Html.AntiForgeryToken()
+                            <input type="submit" class="btn green" value="Go" />
+                        </form>
+                        <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/on-hold">
+                            @Html.AntiForgeryToken()
+                            <input type="submit" class="btn red" value="On Hold" />
+                        </form>
+                        <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/close">
+                            @Html.AntiForgeryToken()
+                            <input type="submit" class="btn grey" value="Close" />
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
     }
 </div>

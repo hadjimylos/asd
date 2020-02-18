@@ -3,6 +3,7 @@
     using dbModels;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Linq;
     using ViewModels;
@@ -15,7 +16,7 @@
         public GateController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             this._currentGate = _context.Gates
                 .OrderByDescending(o => o.CreateDate)
-                .First(f => f.Decision == GateDecisionType.Open);
+                .FirstOrDefault(f => f.Decision == GateDecisionType.Open || f.Decision == GateDecisionType.PendingDecision);
         }
 
         [Route("edit")]
@@ -106,6 +107,78 @@
 
             _context.SaveChanges();
             return View($"{path}/Edit.cshtml", model);
+        }
+
+        [Route("go")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        public IActionResult Go() {
+            // alter decision
+            _currentGate.Decision = GateDecisionType.Go;
+
+            // create new stage
+            _context.Stages.Add(new Stage {
+                ProjectId = _projectId,
+                StageNumber = ++_currentGate.GateConfig.GateNumber,
+            });
+
+            // add project state history
+            _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                ProjectId = _projectId,
+                ProjectState = ProjectState.Go,
+            });
+
+            _context.SaveChanges();
+
+            return Redirect($"/vbpd-projects/{_projectId}");
+        }
+
+        [Route("close")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        public IActionResult Close() {
+            // alter decision
+            _currentGate.Decision = GateDecisionType.Closed;
+
+            // create new stage
+            _context.Stages.Add(new Stage {
+                ProjectId = _projectId,
+                StageNumber = ++_currentGate.GateConfig.GateNumber,
+            });
+
+            // add project state history
+            _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                ProjectId = _projectId,
+                ProjectState = ProjectState.Closed,
+            });
+
+            _context.SaveChanges();
+
+            return Redirect($"/vbpd-projects/{_projectId}");
+        }
+
+        [Route("on-hold")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        public IActionResult OnHold() {
+            // alter decision
+            _currentGate.Decision = GateDecisionType.OnHold;
+
+            // create new stage
+            _context.Stages.Add(new Stage {
+                ProjectId = _projectId,
+                StageNumber = ++_currentGate.GateConfig.GateNumber,
+            });
+
+            // add project state history
+            _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                ProjectId = _projectId,
+                ProjectState = ProjectState.OnHold,
+            });
+
+            _context.SaveChanges();
+
+            return Redirect($"/vbpd-projects/{_projectId}");
         }
     }
 }
