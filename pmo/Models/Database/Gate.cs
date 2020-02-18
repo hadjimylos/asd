@@ -7,11 +7,12 @@ namespace dbModels
     public enum GateDecisionType {
         // pending
         Open = 0, 
+        PendingDecision = 1,
         
         // decisons
-        Go = 1,
-        OnHold = 2,
-        Closed = 3
+        Go = 2,
+        OnHold = 3,
+        Closed = 4
     }
 
     public class Gate : DatabaseModel

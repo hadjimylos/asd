@@ -102,6 +102,7 @@
 
             _currentGate.ActualReviewDate = (DateTime)model.ActualReviewDate;
             _currentGate.Comments = model.Comments;
+            _currentGate.Decision = GateDecisionType.PendingDecision;
 
             _context.SaveChanges();
             return View($"{path}/Edit.cshtml", model);
