@@ -1,9 +1,7 @@
 ﻿using dbModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewModels
 {
@@ -16,5 +14,14 @@ namespace ViewModels
         public List<SelectListItem> ProductDropDown { set; get; }
 
         public new Tag Product { set; get; }
+
+        [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
+
+        public new   bool AddToInhouseTechnicalAbilities { get; set; }
+        [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
+
+        public new   int StageId { get; set; }
+
+
     }
 }
