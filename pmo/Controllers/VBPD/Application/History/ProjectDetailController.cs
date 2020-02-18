@@ -233,8 +233,7 @@ namespace pmo.Controllers {
             var model = _context.ProjectDetails.Where(
                 w => w.ProjectId == projectId && w.Version == version
             ).OrderByDescending(o => o.CreateDate)
-            .Include(i => i.Customers)
-            .Include(i => i.SalesRegions)
+            .IncludeAll()
             .First();
 
             var vm = _mapper.Map<VBPDProjectDetailViewModel>(model);

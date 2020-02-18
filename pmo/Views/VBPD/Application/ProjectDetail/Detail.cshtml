@@ -5,14 +5,16 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
-
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            <h1>Projects</h1>
+            <h1>Project Detail</h1>
         </div>
         <div class="actions">
-            <div class="action"><a class="btn green">Add new Version</a></div>
+            @{ if (Model.Version > 0)
+                { <div class="action"><a type="button" class="btn green" href="create-version">Add New Version</a></div>
+                }
+            }
         </div>
     </div>
 </div>
@@ -21,7 +23,6 @@
     <div class="wrapper">
         <div class="header-wrapper">
             <div class="header">
-                <h1>Details</h1>
             </div>
         </div>
         <div class="details">
@@ -43,31 +44,39 @@
             </div>
             <div class="detail">
                 <div class="label">PROJECT CATEGORIES</div>
-                <select disabled="disabled" asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="value select2"></select>
+                <div class="value">@Model.ProjectCategory.Name</div>
+
             </div>
             <div class="detail">
                 <div class="label">PROJECT CLASSIFICATIONS</div>
-                <select disabled="disabled" asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="value select2"></select>
+                <div class="value">@Model.ProjectClassification.Name</div>
+
             </div>
             <div class="detail">
                 <div class="label">PRODUCT LINES</div>
-                <select disabled="disabled" asp-for="ProductLineTagId" asp-items="Model.ProductLineDropDown" class="value select2"></select>
+                <div class="value">@Model.ProductLine.Name</div>
+
             </div>
             <div class="detail">
                 <div class="label">DESIGN AUTHORITIES</div>
-                <select disabled="disabled" asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="value select2"></select>
+                <div class="value">@Model.DesignAuthority.Name</div>
+
             </div>
             <div class="detail">
                 <div class="label">EXPORT APPLICATION TYPES</div>
-                <select disabled="disabled" asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="value select2"></select>
+
+                <div class="value">@Model.ExportApplicationType.Name</div>
+
             </div>
             <div class="detail">
                 <div class="label">SALES REGIONS</div>
-                <select disabled="disabled" asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="value select2"></select>
+                <div class="value">@Helpers.GetDelimited(Model.SalesRegions.Select(s => s.SalesRegion.Name).ToList())</div>
+
             </div>
             <div class="detail">
                 <div class="label">CUSTOMERS</div>
-                <select disabled="disabled" asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="value select2"></select>
+                <div class="value">@Helpers.GetDelimited(Model.Customers.Select(s => s.Customers.Name).ToList())</div>
+
             </div>
         </div>
     </div>
