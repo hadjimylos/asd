@@ -1,9 +1,5 @@
 ﻿@model List<SchedulesViewModel>
 
-@{
-    //var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
-}
-
 <form class="form-component" method="post" action="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/schedules/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">

@@ -24,10 +24,10 @@ namespace pmo.Controllers.Application
         }
 
         [Route("")]
-        public IActionResult Index(int projectId)
+        public IActionResult Index(int projectId , int stageNumber)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = _stageId;
+            ViewBag.StageNumber = stageNumber;
             var vm = _mapper.Map<List<RiskViewModel>>(
                 _context.Risks
                 .Include(x=>x.Stage)
@@ -39,10 +39,10 @@ namespace pmo.Controllers.Application
 
 
         [Route("create")]
-        public IActionResult Create(int projectId)
+        public IActionResult Create(int projectId ,int  stageNumber)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = _stageId;
+            ViewBag.StageNumber = stageNumber;
             var riskViewModel = new RiskViewModel()
             {
                 isCreate = true,
@@ -57,10 +57,10 @@ namespace pmo.Controllers.Application
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("create")]
-        public IActionResult Create(int projectId, RiskViewModel riskViewModel)
+        public IActionResult Create(int projectId,int stageNumber , RiskViewModel riskViewModel)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = _stageId;            
+            ViewBag.stageNumber = stageNumber;            
 
             if (!ModelState.IsValid)
             {
@@ -71,17 +71,17 @@ namespace pmo.Controllers.Application
             }
 
             var domainModel = _mapper.Map<Risk>(riskViewModel);
-            domainModel.StageId = ViewBag.StageId;
+            domainModel.StageId =_stageId;
             _context.Risks.Add(domainModel);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [Route("{id}")]
-        public IActionResult Edit(int projectId, int id)
+        public IActionResult Edit(int projectId,int  stageNumber , int id)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = _stageId;
+            ViewBag.StageNumber  =  stageNumber;
             var risk = _context.Risks.Include(x => x.Stage)
                 .Include(x => x.RiskImpact)
                 .Include(x => x.RiskType)
@@ -100,10 +100,10 @@ namespace pmo.Controllers.Application
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(int projectId, RiskViewModel model)
+        public IActionResult Edit(int projectId, int stageNumber , RiskViewModel model)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.StageId = _stageId; 
+            ViewBag.stageNumber = stageNumber; 
             model.isCreate = false;
 
             if (!ModelState.IsValid)

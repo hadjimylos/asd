@@ -17,10 +17,11 @@ namespace ViewModels {
         [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
         public new string Name { get; set; }
 
-        [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int RiskTypeTagId { get; set; }
-
-        [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int RiskImpactTagId { get; set; }
     }
 }

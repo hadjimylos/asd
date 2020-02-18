@@ -4,7 +4,7 @@
     //var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
 }
 
-    <form class="form-component" method="post" action="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/@(Model.isCreate?"create":"edit")">
+    <form class="form-component" method="post" action="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.stageNumber/risk/@(Model.isCreate?"create":"edit")">
         @if (!Model.isCreate)
         {
             <input asp-for="Id" type="hidden" />

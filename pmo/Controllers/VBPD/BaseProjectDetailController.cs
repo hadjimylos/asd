@@ -139,7 +139,7 @@
                     new ActiveNav {
                         Component = "Risks",
                         IsComplete = true,
-                        Url = $"{commonPath}/risks/edit"
+                        Url = $"{commonPath}/risk"
                     });
             }
 

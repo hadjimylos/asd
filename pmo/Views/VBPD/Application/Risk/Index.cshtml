@@ -12,7 +12,7 @@
             <h1>Risks</h1>
         </div>
         <div class="actions">
-            <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/create">CREATE</a>
+            <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/risk/create">CREATE</a>
 
         </div>
     </div>
@@ -32,7 +32,7 @@
             <div class="items">
                 @foreach (var risk in Model)
                 {
-                    <a class="item" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/risk/@risk.Id">
+                    <a class="item" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/risk/@risk.Id">
                         <div class="item-wrapper">
                             <div>@risk.Name</div>
                             <div>@risk.RiskPropability %</div>
