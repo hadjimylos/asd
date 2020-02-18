@@ -13,8 +13,8 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers
 {
-    [Route("vbpd-projects/{id}/team-members")]
-    public class TeamMembersController : BaseStageComponentController {
+    [Route("vbpd-projects/{projectId}/team-members")]
+    public class TeamMembersController : BaseProjectDetailController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/TeamMembers";
 
@@ -22,14 +22,14 @@ namespace pmo.Controllers
         {
             _listService = listService;
         }
-
-        public IActionResult Edit(int id)
+        [Route("edit")]
+        public IActionResult Edit(int projectId)
         {
-            if (!ProjectExists(id))
+            if (!ProjectExists(projectId))
                 return NotFound();
 
-            ViewBag.ProjectId = id;
-            var allTeamMembers = _context.Project_User.Where(w => w.ProjectId == id).ToList();
+            ViewBag.ProjectId = projectId;
+            var allTeamMembers = _context.Project_User.Where(w => w.ProjectId == projectId).ToList();
             var teamMembersViewModel = new TeamMembersViewModel {
                 // populate selected list items
                 Program_Manager = GetPopulated(allTeamMembers, JobDescripKeys.ProgramManager),
@@ -55,13 +55,14 @@ namespace pmo.Controllers
         }
 
         [HttpPost]
+        [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        
-        public IActionResult Edit(TeamMembersViewModel teamMembersViewModel, int id) {
-            if (!ProjectExists(id))
+
+        public IActionResult Edit(TeamMembersViewModel teamMembersViewModel, int projectId) {
+            if (!ProjectExists(projectId))
                 return NotFound();
 
-            ViewBag.ProjectId = id;
+            ViewBag.ProjectId = projectId;
 
             if (!ModelState.IsValid) {
                 SetDropdowns(teamMembersViewModel);
@@ -73,24 +74,24 @@ namespace pmo.Controllers
 
             using (var transaction = _context.Database.BeginTransaction()) {
                 try {
-                    _context.Project_User.RemoveRange(_context.Project_User.Where(r => r.ProjectId == id));
+                    _context.Project_User.RemoveRange(_context.Project_User.Where(r => r.ProjectId == projectId));
                     _context.SaveChanges();
 
-                    PopulateTeamMember(teamMembersViewModel.Program_Manager, JobDescripKeys.ProgramManager, id);
-                    PopulateTeamMember(teamMembersViewModel.Product_Manager, JobDescripKeys.ProductManager, id);
-                    PopulateTeamMember(teamMembersViewModel.Lead_Engineer, JobDescripKeys.LeadEngineer, id);
-                    PopulateTeamMember(teamMembersViewModel.Program_Management, JobDescripKeys.ProgramManagement, id);
-                    PopulateTeamMember(teamMembersViewModel.Product_Engineering, JobDescripKeys.ProductEngineering, id);
-                    PopulateTeamMember(teamMembersViewModel.Advanced_Technology, JobDescripKeys.AdvancedTechnology, id);
-                    PopulateTeamMember(teamMembersViewModel.Sales, JobDescripKeys.Sales, id);
-                    PopulateTeamMember(teamMembersViewModel.Industry_Segment, JobDescripKeys.IndustrySegment, id);
-                    PopulateTeamMember(teamMembersViewModel.Operations, JobDescripKeys.Operations, id);
-                    PopulateTeamMember(teamMembersViewModel.Manufacturing_Engineering, JobDescripKeys.ManufacturingEngineering, id);
-                    PopulateTeamMember(teamMembersViewModel.Planning, JobDescripKeys.Planning, id);
-                    PopulateTeamMember(teamMembersViewModel.Sourcing, JobDescripKeys.Sourcing, id);
-                    PopulateTeamMember(teamMembersViewModel.Quality, JobDescripKeys.Quality, id);
-                    PopulateTeamMember(teamMembersViewModel.Laboratory_Testing, JobDescripKeys.LaboratoryTesting, id);
-                    PopulateTeamMember(teamMembersViewModel.Finance, JobDescripKeys.Finance, id);
+                    PopulateTeamMember(teamMembersViewModel.Program_Manager, JobDescripKeys.ProgramManager, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Product_Manager, JobDescripKeys.ProductManager, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Lead_Engineer, JobDescripKeys.LeadEngineer, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Program_Management, JobDescripKeys.ProgramManagement, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Product_Engineering, JobDescripKeys.ProductEngineering, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Advanced_Technology, JobDescripKeys.AdvancedTechnology, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Sales, JobDescripKeys.Sales, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Industry_Segment, JobDescripKeys.IndustrySegment, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Operations, JobDescripKeys.Operations, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Manufacturing_Engineering, JobDescripKeys.ManufacturingEngineering, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Planning, JobDescripKeys.Planning, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Sourcing, JobDescripKeys.Sourcing, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Quality, JobDescripKeys.Quality, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Laboratory_Testing, JobDescripKeys.LaboratoryTesting, projectId);
+                    PopulateTeamMember(teamMembersViewModel.Finance, JobDescripKeys.Finance, projectId);
                     _context.SaveChanges();
 
                     transaction.Commit();
@@ -145,9 +146,9 @@ namespace pmo.Controllers
 
         }
 
-        private bool ProjectExists(int id)
+        private bool ProjectExists(int projectId)
         {
-            return _context.Projects.Find(id) != null;
+            return _context.Projects.Find(projectId) != null;
         }
     }
 }

@@ -13,7 +13,7 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers {
     [Route("vbpd-projects/{projectId}/project-detail")]
-    public class ProjectDetailController : BaseController {
+    public class ProjectDetailController : BaseProjectDetailController {
         private readonly string viewPath = "~/Views/VBPD/Application/ProjectDetail";
         private readonly IListService _listService;
         private readonly IHttpContextAccessor _httpContextAccessor;

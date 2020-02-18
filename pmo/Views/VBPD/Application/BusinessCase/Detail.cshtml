@@ -70,7 +70,7 @@
                 </div>
                 <div class="detail">
                     <div class="label">ManufacturingLocations</div>
-                    <div class="value">-----@*@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.).ToList())*@</div>
+                    <div class="value">@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.ManufacturingLocations.Name).ToList())</div>
                 </div>
                 <div class="detail">
                     <div class="label">Customer Market Analysis</div>

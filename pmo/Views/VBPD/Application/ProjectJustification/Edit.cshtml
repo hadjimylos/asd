@@ -8,7 +8,7 @@
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            <h1>Project Justification</h1>
+            <h1>Technical Feasibility &amp; Scope</h1>
         </div>
         <div class="actions">
             @{ if (Model.Version > 0)
@@ -102,7 +102,7 @@
                     @Html.Partial("_FieldErrors", "WhyOurOfferPreferred")
                 </ul>
                 <div class="field">
-                    <input type="submit" class="data btn" value="SUBMIT" />
+                    <input type="submit" class="data btn" value="Edit & Save Version @Model.Version" />
                 </div>
             </div>
         </div>
