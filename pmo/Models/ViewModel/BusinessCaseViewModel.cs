@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ViewModels.Helpers;
 
 namespace ViewModels
 {
@@ -11,51 +13,43 @@ namespace ViewModels
     {
 
         public List<BusinessCaseViewModel> Versions { get; set; }
+        [Required(ErrorMessage = ErrorMessages.Required)]
 
         public new int StageId { get; set; }
         public new virtual Stage Stage { get; set; }
-
-        public new bool WillCustomerFundQual { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        public new bool WillCustomerFundQual { get; set; }     
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new bool WillCustomerFundTooling { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal ProbabiltyOfWin { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal TargetFirstYearGrossMargin { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime DataStartingDate { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new int NumberOfYears { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal DiscountRate { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal TaxRate { get; set; }
-
-        public new string GpaRequirements { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal MultipleFieldsGeneratedTable { get; set; }
-
-        public new string ProjectScope { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal WorkRequirementAmount { get; set; }
-
-        public new string WorkRequirementUrl { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new bool StrategicAlignment { get; set; }
-
-        public new string AddToTecnicalAbilities { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime ProjectCompletion { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal TimeFromProjectCompletionToRevenueGeneration { get; set; }
-
-        public new string CustomerMarketAnalysis { get; set; }
-
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new bool Changes { get; set; }
 
         public new virtual List<BusinessCase_ManufacturingLocation> ManufacturingLocations { get; set; }
 
         public MultiSelectList ManufacturingLocationsDropDown { set; get; }
+        [Required, MinLength(1, ErrorMessage = Helpers.ErrorMessages.AtLeastOne)]
         public List<int> ManufacturingLocationsIds { get; set; }
 
     }
