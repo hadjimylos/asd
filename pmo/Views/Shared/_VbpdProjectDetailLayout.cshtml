@@ -16,14 +16,39 @@
 <body>
     <div class="layout-inline-component">
         <div class="wrapper">
-            <div class="nav-left-component">
+            <div class="sidenav-checklist-component">
                 <div class="wrapper">
                     <div class="title">
-                        <h4>VBPD Project</h4>
+                        <h3><i class="fas fa-project-diagram"></i> VBPD Project</h3>
                     </div>
                     <div class="navs">
-                        @Html.Partial("_ListNavigationStage", navmodel.Stages)
-                        @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))
+                        <div class="simple-nav-section">
+                            <div class="nav">
+                                <a class="item-wrapper" href="/vbpd-projects/@projectId">
+                                    <div class="icon-descrip">
+                                        <i class="icon fas fa-home"></i>
+                                        <div class="descrip">Home</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="nav-section">
+                            <div class="item-wrapper">
+                                <div class="descrip">History</div>
+                            </div>
+                            <div class="nav-section-items">
+                                @Html.Partial("_ListNavigationStage", navmodel.Stages)
+                            </div>
+                        </div>
+                        <div class="nav-section active">
+                            <div class="item-wrapper">
+                                <div class="descrip">Stage @activeStageNumber</div>
+                            </div>
+                            <div class="nav-section-items">
+                                @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,88 +1,27 @@
 ﻿@model (int ActiveStageNumber, int ProjectId)
+@{ 
+    var activeNavs = (List<ActiveStageNav>)ViewBag.ActiveStageNavs;
+}
 
 <div class="nav-section-items">
-    <div class="dropdown-items">
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/schedules/edit">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Schedules</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/risk">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Risks</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
+    @foreach (var nav in activeNavs) {
+        var activeClass = nav.IsComplete ? "completed" : "pending";
+        var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+        var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
 
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/project-justification/edit">
+        <div class="nav @activeClass">
+            <a class="item-wrapper" href="@nav.Url">
                 <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Project Justification</div>
+                    <i class="@iconClass"></i>
+                    <div class="descrip">@nav.Component</div>
                 </div>
-                <div class="version">V1</div>
+                <div class="version">@version</div>
             </a>
         </div>
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/business-case/edit">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Business Case</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/product-infrigment-patentability/edit">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Product Infrigment Patentability</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/key-characteristic/edit">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Key Characteristic</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/customer-design-approval/edit">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Customer Design Approval</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/investment-plan/edit">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Investment Plan</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
-        <div class="nav">
-            <a class="item-wrapper" href="/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/product-intro-checklist/edit">
-                <div class="icon-descrip">
-                    <i class="icon"></i>
-                    <div class="descrip">Product Intro Checklist</div>
-                </div>
-                <div class="version">V1</div>
-            </a>
-        </div>
-    </div>
+    }
+    @if ((bool)ViewBag.DisplayMoveToGate) {
+        <form method="post" class="actions" action="">
+            <input type="submit" class="btn green" value="Move to Gate" />
+        </form>
+    }
 </div>

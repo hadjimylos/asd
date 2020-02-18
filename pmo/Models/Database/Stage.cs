@@ -26,5 +26,6 @@ namespace dbModels
         public virtual List<CustomerDesignApproval> CustomerDesignApprovalHistory { get; set; }
         public virtual List<InvestmentPlan> InvestmentPlanHistory { get; set; }
         public virtual List<ProductIntroChecklist> ProductIntroChecklistHistory { get; set; }
+        public virtual List<StageFile> Files { get; set; }
     }
 }
