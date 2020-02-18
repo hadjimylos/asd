@@ -65,6 +65,7 @@
                 .Count();
 
             var commonPath = $"/vbpd-projects/{this._projectId}/stages/{activeStage.StageNumber}";
+
             var vals = new List<ActiveNav>() {
                     new ActiveNav {
                         Component = "Technical Feasibility & Scope",
