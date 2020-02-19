@@ -1,13 +1,27 @@
 ﻿using dbModels;
-﻿using CustomValidators;
+using CustomValidators;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System;
 
-namespace ViewModels {
+namespace ViewModels
+{
     public class FinancialDataViewModel : FinancialData
-    {
+    {  
+        public bool Totals { get; set; }
+
+        //public decimal CostExtended { get { return Quantity * StdCostEstimated; } set { } }
+        //public decimal RevenueExtended { get { return Quantity * SalesCostEstimated; } }
+        //public decimal StdMarginEstimatedDollar { get { return RevenueExtended - CostExtended; } }
+        //public decimal StdMarginEstimatedPercent { get { return StdMarginEstimatedDollar / RevenueExtended; } }
+        //public decimal TotalExpenses { get { return GPACapital + GPAExpense + QualCosts + OtherDevelopmentExpenses; } }
+        //public decimal NetProfitBeforeTax { get { return RevenueExtended - CostExtended - QualCosts - OtherDevelopmentExpenses; } }
+        //public decimal NetProfitAfterTax { get { return NetProfitBeforeTax * (1 - (BusinessCase.TaxRate / 100)); } }
+        //public decimal FreeCashFlow { get { return NetProfitAfterTax - GPACapital; } }
+        //public decimal PresentValue { get { return FreeCashFlow / Convert.ToDecimal(Math.Pow(Convert.ToDouble(1 + (BusinessCase.DiscountRate / 100)), Convert.ToDouble(Index))); } }
+
         public decimal CostExtended { get; set; }
         public decimal RevenueExtended { get; set; }
         public decimal StdMarginEstimatedDollar { get; set; }
@@ -18,6 +32,20 @@ namespace ViewModels {
         public decimal FreeCashFlow { get; set; }
         public decimal PresentValue { get; set; }
         public decimal CumulativeCashFlow { get; set; }
+        public string YearAsString
+        {
+            get
+            {
+                if (Year != 0)
+                {
+                    return Year.ToString();
+                }
+                else
+                {
+                    return "Total";
+                }
+            }
+        }
 
 
     }
