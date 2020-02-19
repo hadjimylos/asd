@@ -12,6 +12,7 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);
   font-family: Roboto-Light;
+  font-size: 1em;
   color: #2A363B;
   margin: 0;
 }
@@ -32,14 +33,24 @@ body form {
 body input[type="text"],
 body input[type="number"],
 body textarea {
-  box-sizing: border-box;
   width: 100%;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-  color: #444;
-  line-height: 28px;
+  font-family: inherit;
+  font-size: inherit;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  padding: 0.375em 0.75em;
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+body input[type="text"]:focus,
+body input[type="number"]:focus,
+body textarea:focus {
+  outline: 0;
+  border-color: rgba(0, 133, 155, 0.5);
+  box-shadow: 0 0 0 0.225rem rgba(0, 133, 155, 0.35);
 }
 body textarea {
   width: 100%;
@@ -52,11 +63,11 @@ body .fields > .field:not(:first-child) {
   margin-top: 25px;
 }
 body .fields .field .label {
-  margin-bottom: 3px;
+  margin-bottom: 6px;
 }
 body .errors {
   padding-left: unset;
-  margin-top: 3px;
+  margin-top: 6px;
 }
 body .errors > li:not(:first-child) {
   margin-top: 2px;
@@ -64,7 +75,13 @@ body .errors > li:not(:first-child) {
 body .errors li {
   display: block;
   color: #c82333;
+  font-size: 0.875em;
   font-weight: 600;
+}
+body .errors li:before {
+  font-family: 'Font Awesome 5 Free';
+  content: '\F06A';
+  margin-right: 4px;
 }
 body select {
   width: 100%;
@@ -262,6 +279,7 @@ body .btn:hover {
 }
 body .btn:focus {
   box-shadow: 0 0 0 0.2rem #008ea5;
+  outline: none;
 }
 body .btn.large {
   font-size: 1.25em;
@@ -299,12 +317,6 @@ body .btn.grey:focus {
 body .btn > i {
   margin-right: 4px;
 }
-body .btn:focus,
-body input:focus,
-body .select2:focus,
-body .select2-selection:focus {
-  outline: none;
-}
 body h1,
 body h2,
 body h3 {
@@ -323,13 +335,6 @@ body h2 {
 }
 body h3 {
   font-size: 18px;
-}
-.select2-selection {
-  font-size: 10px;
-  border-color: #f5f6f7;
-}
-.select2-selection:active {
-  border-color: #f5f6f7;
 }
 .list-component .wrapper {
   border: 1px solid #dee2e6;
@@ -373,9 +378,9 @@ body h3 {
 .list-component .wrapper .items .item:nth-of-type(odd) {
   background: #f5f6f7;
 }
-.form-component {
-  font-size: 13px;
-  color: #2A363B;
+.form-component .wrapper {
+  padding: 12px 20px;
+  box-sizing: border-box;
 }
 .error-component .wrapper .error {
   display: flex;
@@ -388,7 +393,6 @@ body h3 {
   background: #f5f6f7;
   border: 1px solid #dee2e6;
   border-radius: 3px;
-  margin-bottom: 25px;
 }
 .actions-component .wrapper {
   display: flex;
@@ -612,24 +616,31 @@ body h3 {
 }
 .detail-component {
   background: #f5f6f7;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
 }
-.detail-component .selfs > .detail-component:not(:first-child) {
-  margin-top: 10px;
+.detail-component .selfs > .detail-component {
+  margin-top: 20px;
 }
 .detail-component > .wrapper {
   padding: 12px 20px;
 }
-.detail-component > .wrapper > .header {
+.detail-component > .wrapper .header-wrapper {
   display: flex;
   justify-content: space-between;
-  align-content: center;
-  margin-bottom: 15px;
+  align-items: center;
+  margin-bottom: 20px;
 }
-.detail-component > .wrapper > .header h1 {
+.detail-component > .wrapper .header-wrapper .header h1 {
   padding: 0;
   margin: 0;
+}
+.detail-component > .wrapper .header-wrapper .actions {
+  display: flex;
+  align-items: center;
+}
+.detail-component > .wrapper .header-wrapper .actions > .action:not(:first-child) {
+  margin-left: 8px;
 }
 .detail-component > .wrapper .details .detail {
   display: flex;
@@ -637,7 +648,7 @@ body h3 {
   padding: 8px 0;
 }
 .detail-component > .wrapper .details .detail .label {
-  margin-right: 8px;
+  margin-right: 12px;
 }
 .detail-component > .wrapper .details .detail .value {
   font-weight: 600;
@@ -1218,5 +1229,71 @@ body h3 {
   .daterangepicker .drp-calendar.left {
     clear: none !important;
   }
+}
+.select2-container--default {
+  width: 100%;
+}
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.select2-container--default .select2-selection--single {
+  height: auto;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding-top: 0.375em;
+  padding-bottom: 0.375em;
+  line-height: 1.5;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: auto;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  background: #f5f6f7;
+  border-left: 1px solid #ced4da;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-bottom: 0.375em;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+  background-color: #f5f6f7;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  margin-top: 0.375em;
+  margin-right: 0.375em;
+  padding: 0.25em 0.375em;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
+  margin-right: 4px;
+}
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  outline: none;
+  border-color: rgba(0, 133, 155, 0.5);
+  box-shadow: 0 0 0 0.225rem rgba(0, 133, 155, 0.35);
+}
+.select2-container--default .select2-dropdown {
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+}
+.select2-container--default .select2-dropdown .select2-search--dropdown {
+  padding: 0.375em;
+}
+.select2-container--default .select2-dropdown .select2-search--dropdown .select2-search__field {
+  font-family: Roboto;
+  font-size: 1em;
+  color: #2A363B;
+  padding: 0.375em 0.75em;
+  outline: none;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
 }
 

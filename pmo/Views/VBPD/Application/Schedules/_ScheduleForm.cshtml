@@ -4,11 +4,7 @@
     //var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
 }
 
-<form class="form-component" method="post" action="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/component/edit">
-    @*@if (!Model.isCreate)
-    {
-        <input asp-for="Id" type="hidden" />
-    }*@
+<form class="form-component" method="post" action="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/schedules/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="fields">
@@ -19,10 +15,7 @@
                 <input type="hidden" asp-for="@Model[i].TagId" />
                 <input type="hidden" asp-for="@Model[i].Id" />
                 <input type="hidden" asp-for="@Model[i].StageId" />
-                <input asp-for="@Model[i].ViewModelDate" class="data single-select-calendar" type="text" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", Model[i].ViewModelDate)
-                </ul>
+                <input asp-for="@Model[i].ViewModelDate" class="data" type="text" />
             </div>
             }
 

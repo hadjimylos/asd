@@ -101,7 +101,7 @@ namespace pmo.Controllers
                 }
             }
 
-            return RedirectToAction(actionName: "Index", controllerName: "VBPD");
+            return Redirect($"/vbpd-projects/{_projectId}");
         }
 
         private void SetDropdowns(TeamMembersViewModel model) {
