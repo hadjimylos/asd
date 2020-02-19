@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using ViewModels;
 using pmo.Services.Lists;
 using ViewModels.Helpers;
+using dbModels;
+using System.Linq;
 
 namespace pmo.Controllers {
     [Route("vbpd-projects")]
@@ -59,6 +61,48 @@ namespace pmo.Controllers {
 
             _projectService.AddNewVBPDProject(model);
             return RedirectToAction("Index");
+        }
+
+        [Route("open")]
+        public IActionResult Open()
+        {
+            var _projectDets = new List<List<ProjectDetail>>();
+            var projects = _projectService.GetAllVBPDOpenProjectDetailList("Go");
+            foreach (var projectDetail in projects)
+            {
+                _projectDets.Add(projectDetail.ProjectDetail);   
+            }
+            var openProjects = _projectDets.SelectMany(x => x).ToList();
+            var vm = _mapper.Map<List<VBPDViewModel>>(openProjects);
+            return View($"{path}/Index.cshtml", vm);
+        }
+
+        [Route("on-hold")]
+        public IActionResult Hold()
+        {
+            var _projectDets = new List<List<ProjectDetail>>();
+            var projects = _projectService.GetAllVBPDOpenProjectDetailList("OnHold");
+            foreach (var projectDetail in projects)
+            {
+                _projectDets.Add(projectDetail.ProjectDetail);
+            }
+            var openProjects = _projectDets.SelectMany(x => x).ToList();
+            var vm = _mapper.Map<List<VBPDViewModel>>(openProjects);
+            return View($"{path}/Index.cshtml", vm);
+        }
+
+        [Route("closed")]
+        public IActionResult Closed()
+        {
+            var _projectDets = new List<List<ProjectDetail>>();
+            var projects = _projectService.GetAllVBPDOpenProjectDetailList("Closed");
+            foreach (var projectDetail in projects)
+            {
+                _projectDets.Add(projectDetail.ProjectDetail);
+            }
+            var openProjects = _projectDets.SelectMany(x => x).ToList();
+            var vm = _mapper.Map<List<VBPDViewModel>>(openProjects);
+            return View($"{path}/Index.cshtml", vm);
         }
     }
 }

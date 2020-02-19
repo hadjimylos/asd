@@ -8,6 +8,7 @@ using System.Linq;
 using ViewModels;
 using ViewModels.Helpers;
 using pmo.Services.Users;
+using System;
 
 namespace pmo.Services.Projects
 {
@@ -31,7 +32,30 @@ namespace pmo.Services.Projects
 
             return projects;
         }
+        public List<Project> GetAllVBPDOpenProjectDetailList(string option)
+        {
+            var open_projects = _context.ProjectStateHistories.IncludeAll()
+                .Where(p => p.ProjectState == (ProjectState)Enum.Parse(typeof(ProjectState),option)   && p.ModifiedByUser == _httpContextAccessor.HttpContext.User.Identity.Name)
+                .Select(p => p.Project).ToList();
 
+            open_projects.ForEach(
+                project => _context.ProjectDetails.Where(
+                        p => p.ProjectId == project.Id)
+                        .Include(p => p.Project)
+                        .Include(t => t.ProjectClassification)
+                        .Include(t => t.ProductLine)
+                        .Include(t => t.ProjectCategory)
+                        .Include(t => t.DesignAuthority)
+                        .ToList());
+
+            open_projects = open_projects.GroupBy(s => s.Id)
+            .Select(s => s.OrderByDescending(x => x.CreateDate).FirstOrDefault()).ToList();
+
+
+
+
+            return open_projects;
+        }
         public void AddNewVBPDProject(VBPDViewModel model)
         {
             using (var transaction = _context.Database.BeginTransaction())
