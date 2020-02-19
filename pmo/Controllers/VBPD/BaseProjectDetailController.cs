@@ -14,6 +14,7 @@
         private readonly List<ActiveNav> _activeGateNavs;
         private readonly bool _displayGateDecisions;
         protected readonly int _projectId;
+        protected readonly int _projectState;
 
         public BaseProjectDetailController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             // set nav component for all of these pages here
@@ -41,6 +42,7 @@
             this._displayGateDecisions = activeGate?.Decision == GateDecisionType.PendingDecision;
             this._activeStageNavs = activeStage == null ? new List<ActiveNav>() : GetActiveStageNavs(activeStage);
             this._activeGateNavs = activeGate == null ? new List<ActiveNav>() : GetActiveGateNavs(activeGate);
+            this._projectState =(int)_context.ProjectStateHistories.Where(p => p.ProjectId == _projectId).OrderByDescending(d => d.CreateDate).First().ProjectState;
             this._nav = new ProjectDetailNav(_context, _mapper, _projectId);
         }
 
@@ -166,7 +168,7 @@
             ViewData["DisplayMoveToGate"] = showMoveToGateBtn;
             ViewData["ActiveGateNavs"] = _activeGateNavs;
             ViewData["DisplayGateDecisions"] = this._displayGateDecisions;
-
+            ViewData["ProjectState"] = _projectState;
             base.OnActionExecuting(filterContext);
         }
     }

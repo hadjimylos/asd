@@ -6,6 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using ViewModels;
 
     [Route("vbpd-projects/{projectId}/gates")]
@@ -14,9 +15,8 @@
         private Gate _currentGate;
 
         public GateController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
-            this._currentGate = _context.Gates
-                .OrderByDescending(o => o.CreateDate)
-                .FirstOrDefault(f => f.Decision == GateDecisionType.Open || f.Decision == GateDecisionType.PendingDecision);
+            this._currentGate = _context.Gates.Include(s=>s.GateConfig)
+                .OrderByDescending(o => o.CreateDate).First();
         }
 
         [Route("edit")]
@@ -82,7 +82,7 @@
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public IActionResult Edit(GateViewModel model) {
+        public  IActionResult Edit(GateViewModel model) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
                 return View($"{path}/Edit.cshtml", model);
@@ -105,7 +105,7 @@
             _currentGate.Comments = model.Comments;
             _currentGate.Decision = GateDecisionType.PendingDecision;
 
-            _context.SaveChanges();
+             _context.SaveChanges();
             return View($"{path}/Edit.cshtml", model);
         }
 
@@ -139,14 +139,6 @@
         public IActionResult Close() {
             // alter decision
             _currentGate.Decision = GateDecisionType.Closed;
-
-            // create new stage
-            _context.Stages.Add(new Stage {
-                ProjectId = _projectId,
-                StageNumber = ++_currentGate.GateConfig.GateNumber,
-            });
-
-            // add project state history
             _context.ProjectStateHistories.Add(new ProjectStateHistory {
                 ProjectId = _projectId,
                 ProjectState = ProjectState.Closed,
@@ -163,14 +155,7 @@
         public IActionResult OnHold() {
             // alter decision
             _currentGate.Decision = GateDecisionType.OnHold;
-
-            // create new stage
-            _context.Stages.Add(new Stage {
-                ProjectId = _projectId,
-                StageNumber = ++_currentGate.GateConfig.GateNumber,
-            });
-
-            // add project state history
+           
             _context.ProjectStateHistories.Add(new ProjectStateHistory {
                 ProjectId = _projectId,
                 ProjectState = ProjectState.OnHold,

@@ -73,6 +73,13 @@ namespace pmo.Services.Projects
                         ProjectId = project.Id,
                         StageNumber = 1
                     };
+
+                    _context.ProjectStateHistories.Add(new ProjectStateHistory
+                    {
+                        ProjectId = project.Id,
+                        ProjectState = ProjectState.Go,
+                    });
+
                     _context.Stages.Add(stage);
                     _context.SaveChanges();
                     transaction.Commit();
