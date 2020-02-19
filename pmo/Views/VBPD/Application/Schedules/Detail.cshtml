@@ -4,7 +4,20 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 @Html.AntiForgeryToken()
-<h1>Index</h1>
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1>Index</h1>
+        </div>
+        <div class="actions">
+            <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/schedules/edit">EDIT</a>
+
+        </div>
+    </div>
+</div>
+
+
 <div class="detail-component">
     <div class="wrapper">
         <div class="header">

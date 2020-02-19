@@ -81,7 +81,7 @@ namespace pmo.Controllers
             var model = _context.Schedules
                 .Include(x => x.Stage)
                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                .Include(x => x.ScheduleType).ToList();
+                .Include(x => x.ScheduleType).AsNoTracking().ToList();
             var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stageNumber).ToList();
 
             if (model.Count > 0 && settings.Count == model.Count)
@@ -137,21 +137,34 @@ namespace pmo.Controllers
                 return View(viewModel);
             }
 
-            var model = _context.Schedules.AsNoTracking().Include(x => x.Stage).Include(x => x.ScheduleType).ToList();
+            var model = _context.Schedules.Include(x => x.Stage).Where(x=>x.Stage.StageNumber==stageNumber && x.Stage.ProjectId==projectId).ToList();
+
             if (model.Count > 0)
             {
                 var modelToUpdate = _mapper.Map<List<Schedule>>(viewModel);
-                _context.Schedules.UpdateRange(modelToUpdate.Where(x=>x.Id!=0));
-                _context.Schedules.AddRange(modelToUpdate.Where(x => x.Id == 0));
+                foreach (var item in _mapper.Map<List<Schedule>>(viewModel))
+                {
+                    if (item.Id!=0)
+                    {
+                        model.Where(x => x.Id == item.Id).First().Date = item.Date;
+                    }
+                    else
+                    {
+                        _context.Schedules.Add(item);
+                    }
+                }
+                _context.Schedules.UpdateRange(model);
+                _context.SaveChanges();
 
             }
             else
             {
-               var modelToInsert = _mapper.Map<List<Schedule>>(viewModel);
-               _context.Schedules.AddRange(modelToInsert);
+                var modelToInsert = _mapper.Map<List<Schedule>>(viewModel);
+                _context.Schedules.AddRange(modelToInsert);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
-            return RedirectToAction("edit", new { projectId , stageNumber });
+
+            return RedirectToAction("detail", new { projectId , stageNumber });
         }
     }
 }
