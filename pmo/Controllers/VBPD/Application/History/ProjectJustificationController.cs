@@ -105,32 +105,14 @@ namespace pmo.Controllers
                 var vm = new ProjectJustificationViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<ProjectJustificationViewModel>(),
                     Stage = currentStage,
-
-                    //toDO producttag id does not exist
-
-                    //ProductDropDown = _context.Tags.Include(C => C.TagCategory) 
-                    //    .Where(t => t.TagCategory.Key == TagCategoryHelper.ProductLine)//
-                    //    .ToList().Select(s => new SelectListItem
-                    //    {
-                    //        Value = s.Id.ToString(),
-                    //        Text = s.Name,
-                    //    }).ToList()
-                };
+                    Versions = GetVersionHistory()
+            };
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
-            //model.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
-            //    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-            //    .ToList().Select(s => new SelectListItem
-            //    {
-            //        Value = s.Id.ToString(),
-            //        Text = s.Name,
-            //        Selected = s.Id == model.RequirementSourceId
-            //    }).ToList();
+            model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -150,7 +132,7 @@ namespace pmo.Controllers
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = lastProjectJustification == null ? 0 : lastProjectJustification.Version;
                 //vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory) //todo 
                 //    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
@@ -204,10 +186,11 @@ namespace pmo.Controllers
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private List<ProjectJustificationViewModel> GetVersionHistory(int stageId)
+        private List<ProjectJustificationViewModel> GetVersionHistory()
         {
             var grouped = _context.ProjectJustifications.Include(k => k.Product)
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();
@@ -230,7 +213,6 @@ namespace pmo.Controllers
             .Include(i => i.Product)
             .Include(s => s.Stage)
             .FirstOrDefault();
-
             var vm = _mapper.Map<ProjectJustificationViewModel>(model);
             return vm;
         }

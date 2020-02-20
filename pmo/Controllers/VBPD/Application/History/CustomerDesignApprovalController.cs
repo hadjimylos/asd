@@ -106,14 +106,14 @@ namespace pmo.Controllers.Application.History
                 var vm = new CustomerDesignApprovalViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<CustomerDesignApprovalViewModel>(),
+                    Versions = GetVersionHistory(),
                     Stage = currentStage
                 };
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
+            model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -133,7 +133,7 @@ namespace pmo.Controllers.Application.History
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
@@ -221,10 +221,11 @@ namespace pmo.Controllers.Application.History
             var vm = _mapper.Map<CustomerDesignApprovalViewModel>(model);
             return vm;
         }
-        private List<CustomerDesignApprovalViewModel> GetVersionHistory(int stageId)
+        private List<CustomerDesignApprovalViewModel> GetVersionHistory()
         {
             var grouped = _context.CustomerDesignApprovals
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();

@@ -98,14 +98,14 @@ namespace pmo.Controllers.VBPD.Application.History
                 var vm = new ProductIntroChecklistViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<ProductIntroChecklistViewModel>(),
+                    Versions = GetVersionHistory(),
                     Stage = currentStage
                 };
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var model = GetViewModel(_stageId, currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
+            model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -125,7 +125,7 @@ namespace pmo.Controllers.VBPD.Application.History
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = _context.Stages.Where(s => s.Id == stage.Id).FirstOrDefault();
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = latestProductIntoChecklist == null ? 0 : latestProductIntoChecklist.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
@@ -211,15 +211,17 @@ namespace pmo.Controllers.VBPD.Application.History
             return vm;
         }
 
-        private List<ProductIntroChecklistViewModel> GetVersionHistory(int stageId)
+        private List<ProductIntroChecklistViewModel> GetVersionHistory()
         {
             var grouped = _context.ProductIntroChecklists
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();
 
             if (grouped.Count == 0) { return new List<ProductIntroChecklistViewModel>(); }
+
             List<ProductIntroChecklist> versions = new List<ProductIntroChecklist>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
             return _mapper.Map<List<ProductIntroChecklistViewModel>>(versions);

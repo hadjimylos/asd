@@ -104,7 +104,7 @@ namespace pmo.Controllers
                 var vm = new KeyCharacteristicViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<KeyCharacteristicViewModel>(),
+                    Versions = GetVersionHistory(),
                     Stage = currentStage,
                     RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                         .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
@@ -118,7 +118,7 @@ namespace pmo.Controllers
             }
 
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
+            model.Versions = GetVersionHistory();
             model.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                 .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
                 .ToList().Select(s => new SelectListItem
@@ -146,7 +146,7 @@ namespace pmo.Controllers
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = latestKeyCharacteristics == null ? 0 : latestKeyCharacteristics.Version;
                 vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                     .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
@@ -191,10 +191,11 @@ namespace pmo.Controllers
             return RedirectToAction("Detail", new {version =currentVersion });
         }
 
-        private List<KeyCharacteristicViewModel> GetVersionHistory(int stageId)
+        private List<KeyCharacteristicViewModel> GetVersionHistory()
         {
             var grouped = _context.KeyCharacteristics.Include(k=>k.RequirementSource)
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();

@@ -120,7 +120,7 @@ namespace pmo.Controllers.VBPD.Application.History
                 var vm = new BusinessCaseViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<BusinessCaseViewModel>(),
+                    Versions = GetVersionHistory(),
                     Stage = currentStage, ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations)
                 };
                 return View($"{viewPath}/Edit.cshtml", vm);
@@ -128,7 +128,7 @@ namespace pmo.Controllers.VBPD.Application.History
 
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
             model.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations, model.ManufacturingLocationsIds);
-            model.Versions = GetVersionHistory(currentStage.Id);
+            model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -148,7 +148,7 @@ namespace pmo.Controllers.VBPD.Application.History
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = latestBusinessCase == null ? 0 : latestBusinessCase.Version;
                 vm.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations, vm.ManufacturingLocationsIds);
                 return View($"{viewPath}/Edit.cshtml", vm);
@@ -256,10 +256,11 @@ namespace pmo.Controllers.VBPD.Application.History
             return RedirectToAction("Detail", new { projectId, stageNumber, version = currentVersion });
         }
 
-        private List<BusinessCaseViewModel> GetVersionHistory(int stageId)
+        private List<BusinessCaseViewModel> GetVersionHistory()
         {
             var grouped = _context.BusinessCases
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();

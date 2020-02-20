@@ -101,13 +101,13 @@ namespace pmo.Controllers {
                 var vm = new ProductInfrigmentPatentabilityViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<ProductInfrigmentPatentabilityViewModel>(),
+                    Versions = GetVersionHistory(),
                     Stage = currentStage
                 };
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
-            model.Versions = GetVersionHistory(_stageId);
+            model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -127,7 +127,7 @@ namespace pmo.Controllers {
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = latestProductInfrigmentPatentability == null ? 0 : latestProductInfrigmentPatentability.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
@@ -216,10 +216,11 @@ namespace pmo.Controllers {
             var vm = _mapper.Map<ProductInfrigmentPatentabilityViewModel>(model);
             return vm;
         }
-        private List<ProductInfrigmentPatentabilityViewModel> GetVersionHistory(int stageId)
+        private List<ProductInfrigmentPatentabilityViewModel> GetVersionHistory()
         {
             var grouped = _context.ProductInfrigmentPatentabilities
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();

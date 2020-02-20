@@ -15,8 +15,8 @@
         private Gate _currentGate;
 
         public GateController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
-            this._currentGate = _context.Gates.Include(s=>s.GateConfig)
-                .OrderByDescending(o => o.CreateDate).First();
+            this._currentGate = _context.Gates.Include(s=>s.GateConfig).Where(g=>g.ProjectId==_projectId)
+                .OrderByDescending(o => o.CreateDate).FirstOrDefault();
         }
 
         [Route("edit")]

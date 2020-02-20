@@ -67,7 +67,7 @@ namespace pmo.Controllers.Application.History
 
                     // set variables for create
                     latestRecord.Id = 0;
-                    latestRecord.Version = ++latestRecord.Version;
+                    latestRecord.Version = latestRecord.Version+1;
                     _context.Add(latestRecord);
                     _context.SaveChanges();
                     transaction.Commit();
@@ -97,14 +97,14 @@ namespace pmo.Controllers.Application.History
                 var vm = new InvestmentPlanViewModel()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<InvestmentPlanViewModel>(),
+                    Versions = GetVersionHistory(),
                     Stage = currentStage
                 };
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var model = GetViewModel(currentStage.Id, currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
+            model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -124,7 +124,7 @@ namespace pmo.Controllers.Application.History
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = latestInvestmentPlan == null ? 0 : latestInvestmentPlan.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
@@ -216,15 +216,17 @@ namespace pmo.Controllers.Application.History
             return vm;
         }
 
-        private List<InvestmentPlanViewModel> GetVersionHistory(int stageId)
+        private List<InvestmentPlanViewModel> GetVersionHistory()
         {
             var grouped = _context.InvestmentPlans
-                .Where(w => w.StageId == stageId)
+                .Include(s => s.Stage)
+                .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();
 
             if (grouped.Count == 0) { return new List<InvestmentPlanViewModel>(); }
+
             List<InvestmentPlan> versions = new List<InvestmentPlan>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
             return _mapper.Map<List<InvestmentPlanViewModel>>(versions);
