@@ -30,18 +30,17 @@
                        o.CreateDate
                ).FirstOrDefault();
 
-            var activeGate = _context.Gates.IncludeAll()
+            var gate = _context.Gates.IncludeAll()
                 .Where(w =>
-                    w.ProjectId == _projectId &&
-                    (w.Decision == GateDecisionType.PendingDecision || w.Decision == GateDecisionType.Open)
+                    w.ProjectId == _projectId
                 ).OrderByDescending(
                     o =>
                         o.CreateDate
                 ).FirstOrDefault();
 
-            this._displayGateDecisions = activeGate?.Decision == GateDecisionType.PendingDecision;
+            this._displayGateDecisions = gate?.Decision == GateDecisionType.PendingDecision || gate? .Decision == GateDecisionType.OnHold || gate?.Decision== GateDecisionType.Closed;
             this._activeStageNavs = activeStage == null ? new List<ActiveNav>() : GetActiveStageNavs(activeStage);
-            this._activeGateNavs = activeGate == null ? new List<ActiveNav>() : GetActiveGateNavs(activeGate);
+            this._activeGateNavs = gate == null ? new List<ActiveNav>() : GetActiveGateNavs(gate);
             this._projectState =(int)_context.ProjectStateHistories.Where(p => p.ProjectId == _projectId).OrderByDescending(d => d.CreateDate).First().ProjectState;
             this._nav = new ProjectDetailNav(_context, _mapper, _projectId);
         }

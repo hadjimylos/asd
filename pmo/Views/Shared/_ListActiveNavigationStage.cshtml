@@ -61,8 +61,11 @@
                         </a>
                     </div>
                 }
-                <div class="actions">
-                    @{ if (ViewData["ProjectState"].ToString() == "1")
+            <div class="actions">
+                @{
+                    @if ((bool)ViewBag.DisplayGateDecisions)
+                    {
+                        if (ViewData["ProjectState"].ToString() == "1")
                         {
                             <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
                                 @Html.AntiForgeryToken()
@@ -90,6 +93,7 @@
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Unkill" />
                             </form>
+                            }
                         }
                     }
                 </div>

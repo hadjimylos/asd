@@ -106,7 +106,7 @@
             _currentGate.Decision = GateDecisionType.PendingDecision;
 
              _context.SaveChanges();
-            return View($"{path}/Edit.cshtml", model);
+            return RedirectToAction("edit");
         }
 
         [Route("go")]
@@ -119,7 +119,7 @@
             // create new stage
             _context.Stages.Add(new Stage {
                 ProjectId = _projectId,
-                StageNumber = ++_currentGate.GateConfig.GateNumber,
+                StageNumber = _currentGate.GateConfig.GateNumber+1,
             });
 
             // add project state history
