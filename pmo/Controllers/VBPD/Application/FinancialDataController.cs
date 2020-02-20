@@ -13,10 +13,10 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers.VBPD.Application
 {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/business-case/{businessCaseId}/FinancialData")]
+    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/business-case/{businessCaseId}/financial-data")]
     public class FinancialDataController : BaseStageComponentController    
     {
-        private readonly string viewPath = "~/Views/VBPD/Application/FinancialData";
+        private readonly string path = "~/Views/VBPD/Application/FinancialData";
         private readonly IListService _listService;
         public FinancialDataController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IListService listService) : base(context, mapper, httpContextAccessor)
         {
@@ -29,21 +29,24 @@ namespace pmo.Controllers.VBPD.Application
         [AutoValidateAntiforgeryToken]
         public IActionResult Detail(int projectId, int stageNumber, int businessCaseId)
         {
-            return View();
+            ViewBag.ProjectId = projectId;
+            ViewBag.StageNumber = stageNumber;
+            ViewBag.BusinessCaseId = businessCaseId;
+
+            return View($"{path}/Detail.cshtml");
         }
-        [HttpPost]
-        [Route("")]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult Detail(int projectId, int stageNumber, int businessCaseId, FinancialDataViewModel model)
-        {
-            return View();
-        }
+        
 
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(int projectId, int stageNumber, int businessCaseId)
         {
-            return View();
+            ViewBag.ProjectId = projectId;
+            ViewBag.StageNumber = stageNumber;
+            ViewBag.BusinessCaseId = businessCaseId;
+            
+            return View($"{path}/Edit.cshtml");
+
         }
 
         [HttpPost]
@@ -51,7 +54,12 @@ namespace pmo.Controllers.VBPD.Application
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(int projectId, int stageNumber, int businessCaseId, FinancialDataViewModel model)
         {
-            return View();
+            ViewBag.ProjectId = projectId;
+            ViewBag.StageNumber = stageNumber;
+            ViewBag.BusinessCaseId = businessCaseId;
+
+            return View($"{path}/Detail.cshtml");
+
         }
     }
 }

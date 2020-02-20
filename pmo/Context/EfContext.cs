@@ -49,6 +49,8 @@ namespace pmo
         public DbSet<ProjectStateHistory> ProjectStateHistories { get; set; }
         public DbSet<StageFile> StageFiles { get; set; }
         public DbSet<StageFileConfig> StageFileConfigs { get; set; }
+        public DbSet<FinancialData> FinancialData { get; set; }
+
 
 
         public EfContext(DbContextOptions<EfContext> options)
