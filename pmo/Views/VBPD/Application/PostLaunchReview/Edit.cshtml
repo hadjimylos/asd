@@ -1,0 +1,122 @@
+﻿@model PostLaunchReviewViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_VbpdProjectDetailLayout";
+}
+    <div class="actions-component">
+        <div class="wrapper">
+            <div class="header">
+                <h1>Post Launch Review</h1>
+            </div>
+            <div class="actions">
+                @{ if (Model.Version > 0)
+                    { <div class="action"><a type="button" class="btn green" href="create-version">Add New Version</a></div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+<form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@Model.Stage.StageNumber/post-launch-review/edit">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="form-section">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Describe what was done well </div>
+                    <input asp-for="DoneWell" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "DoneWell")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Describe what was done poorly</div>
+                    <input asp-for="DonePoorly" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "DonePoorly")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Describe any bottlenecks or obstacles encountered</div>
+                    <input asp-for="Bottlenecks" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Bottlenecks")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Describe lessons learned form the project</div>
+                    <input asp-for="LessonsLearned" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "LessonsLearned")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Compare the actual results versus expected</div>
+                    <input asp-for="ActualVSExpected" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ActualVSExpected")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Describe the commercial success or failure of this project</div>
+                    <input asp-for="Commercial" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Commercial")
+                    </ul>
+                    <div class="field">
+                        <input type="submit" class="data btn" value="Edit & Save Version @Model.Version" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="versioning-section">
+            <div class="choose-history">
+                <div class="select-history-wrapper">
+                    <select class="select-history select2">
+                        <option value="clear">CLEAR</option>
+                        <option value="all">VIEW ALL</option>
+                        @foreach (var version in Model.Versions)
+                        {
+                            <option value="@version.Id">Stage: @version.Stage.StageNumber => Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="versions">
+                @foreach (var version in Model.Versions)
+                {
+                    <div showversion="@version.Id" class="version">
+                        <div class="values">
+                            <div class="select-single-field">
+                                <div class="label">Describe what was done well</div>
+                                <div class="data">@version.DoneWell</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Describe what was done poorly</div>
+                                <div class="data">@version.DonePoorly</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Describe any bottlenecks or obstacles encountered</div>
+                                <div class="data">@version.Bottlenecks</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Describe lessons learned form the project</div>
+                                <div class="data">@version.LessonsLearned</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Compare the actual results versus expected</div>
+                                <div class="data">@version.ActualVSExpected</div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Describe the commercial success or failure of this project</div>
+                                <div class="data">@version.Commercial</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</form>

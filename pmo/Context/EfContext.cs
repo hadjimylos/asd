@@ -50,7 +50,7 @@ namespace pmo
         public DbSet<StageFile> StageFiles { get; set; }
         public DbSet<StageFileConfig> StageFileConfigs { get; set; }
         public DbSet<FinancialData> FinancialData { get; set; }
-
+        public DbSet<PostLaunchReview> PostLaunchReviews { get; set; }
 
 
         public EfContext(DbContextOptions<EfContext> options)
@@ -141,6 +141,7 @@ namespace pmo
                     MinProjectJustifications = 1,
                     MinQualificationTesting=0,
                     MinRampResourcePlans = 0,
+                    MinPostLaunchReviews=0,
                     ModifiedByUser = "system"
                     },
                 new StageConfig(){ Id=2,
@@ -156,6 +157,7 @@ namespace pmo
                     MinProjectJustifications = 0,
                     MinQualificationTesting=0,
                     MinRampResourcePlans = 0,
+                    MinPostLaunchReviews=0,
                     ModifiedByUser = "system"
                     },
                 new StageConfig(){ Id=3,
@@ -171,6 +173,7 @@ namespace pmo
                     MinProjectJustifications = 0,
                     MinQualificationTesting=0,
                     MinRampResourcePlans = 1,
+                    MinPostLaunchReviews=0,
                     ModifiedByUser = "system"
                     },
                 new StageConfig(){ Id=4,
@@ -186,6 +189,7 @@ namespace pmo
                     MinProjectJustifications = 0,
                     MinQualificationTesting=1,
                     MinRampResourcePlans = 0,
+                    MinPostLaunchReviews=0,
                     ModifiedByUser = "system"
                     },
                 new StageConfig(){ Id=5,
@@ -201,6 +205,7 @@ namespace pmo
                     MinProjectJustifications = 0,
                     MinQualificationTesting=0,
                     MinRampResourcePlans = 0,
+                    MinPostLaunchReviews=1,
                     ModifiedByUser = "system"
                     }
             });

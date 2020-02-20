@@ -26,6 +26,8 @@ namespace dbModels {
 
         public int MinDesignConcepts { get; set; }
 
+        public int MinPostLaunchReviews { get; set; }
+
         public virtual List<StageConfig_RequiredSchedule> RequiredSchedules { get; set; }
     }
 }

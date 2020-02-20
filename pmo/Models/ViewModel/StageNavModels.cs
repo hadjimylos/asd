@@ -8,4 +8,5 @@
     public class CustomerDesignApprovalNav : CustomerDesignApproval { public string Url { get; set; } }
     public class InvestmentPlanNav : InvestmentPlan { public string Url { get; set; } }
     public class ProductIntroChecklistNav : ProductIntroChecklist { public string Url { get; set; } }
+    public class PostLaunchReviewNav : PostLaunchReview { public string Url { get; set; } }
 }

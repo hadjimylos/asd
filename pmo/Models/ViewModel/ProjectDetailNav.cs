@@ -44,6 +44,7 @@
                 stage.CustomerDesignApprovalHistory = stage.CustomerDesignApprovalHistory.RemoveTransactions();
                 stage.InvestmentPlanHistory = stage.InvestmentPlanHistory.RemoveTransactions();
                 stage.ProductIntroChecklistHistory = stage.ProductIntroChecklistHistory.RemoveTransactions();
+                stage.PostLaunchReviewHistory = stage.PostLaunchReviewHistory.RemoveTransactions();
             }
 
             // convert to nav objects
@@ -58,6 +59,7 @@
                 stage.CustomerDesignApprovalNavs = _mapper.Map<List<CustomerDesignApprovalNav>>(stage.CustomerDesignApprovalHistory);
                 stage.InvestmentPlanNavs = _mapper.Map<List<InvestmentPlanNav>>(stage.InvestmentPlanHistory);
                 stage.ProductIntroChecklistNavs = _mapper.Map<List<ProductIntroChecklistNav>>(stage.ProductIntroChecklistHistory);
+                stage.PostLaunchReviewNavs = _mapper.Map<List<PostLaunchReviewNav>>(stage.PostLaunchReviewHistory);
 
                 // set URLs for each nav component list
                 stage.ProjectJustificationNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/project-justification/{item.Version}");
@@ -67,7 +69,7 @@
                 stage.CustomerDesignApprovalNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/customer-design-approval/{item.Version}");
                 stage.InvestmentPlanNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/investment-plan/{item.Version}");
                 stage.ProductIntroChecklistNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/product-intro-checklist/{item.Version}");
-
+                stage.PostLaunchReviewNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/post-launch-review/{item.Version}");
                 // add flat navigations
                 stage.SchedulesUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/schedules/detail";
                 stage.DisplaySchedules = stage.Schedules.Count > 0;
@@ -93,6 +95,7 @@
         public List<CustomerDesignApprovalNav> CustomerDesignApprovalNavs { get; set; }
         public List<InvestmentPlanNav> InvestmentPlanNavs { get; set; }
         public List<ProductIntroChecklistNav> ProductIntroChecklistNavs { get; set; }
+        public List<PostLaunchReviewNav> PostLaunchReviewNavs { get; set; }
         public string SchedulesUrl { get; set; }
         public bool DisplaySchedules { get; set; }
         public string RisksUrl { get; set; }

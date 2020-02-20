@@ -1,0 +1,40 @@
+﻿@model PostLaunchReviewViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "_VbpdProjectDetailLayout";
+}
+<div class="detail-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1>Post Launch Review</h1>
+        </div>
+        <div class="details">
+            <div class="detail">
+                <div class="label">Describe what was done well</div>
+                <div class="value">@Model.DoneWell</div>
+            </div>
+            <div class="detail">
+                <div class="label">Describe what was done poorly</div>
+                <div class="value">@Model.DonePoorly</div>
+            </div>
+            <div class="detail">
+                <div class="label">Describe any bottlenecks or obstacles encountered</div>
+                <div class="value">@Model.Bottlenecks</div>
+            </div>
+            <div class="detail">
+                <div class="label">Describe lessons learned form the project</div>
+                <div class="value">@Model.LessonsLearned</div>
+            </div>
+            <div class="detail">
+                <div class="label">Compare the actual results versus expected</div>
+                <div class="value">@Model.ActualVSExpected</div>
+            </div>
+            <div class="detail">
+                <div class="label">Describe the commercial success or failure of this project</div>
+                <div class="value">@Model.Commercial</div>
+            </div>
+        </div>
+    </div>
+</div>
+
