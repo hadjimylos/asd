@@ -6,13 +6,13 @@ namespace dbModels {
         [Required]
         public string Name { get; set; }
 
-        public virtual List<ProjectDetail> ProjectDetail { get; set; }
+        public virtual List<ProjectDetail> ProjectDetails { get; set; }
         
         public virtual List<Stage> StageHistory { get; set; }
         
         public virtual List<Gate> GateHistory { get; set; }
 
-        public virtual List<Project_User> TeamMember { get; set; }
+        public virtual List<Project_User> TeamMembers { get; set; }
 
         public virtual List<ProjectStateHistory> ProjectStateHistory { get; set; }
     }

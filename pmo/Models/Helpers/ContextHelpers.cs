@@ -60,6 +60,14 @@ namespace ViewModels.Helpers
             return latestTransactionsOnly.ToList();
         }
 
+        public static List<T> DistinctProjectDetail<T>(this IQueryable<T> listDetails) where T : ProjectDetail {
+            return listDetails.ToList().GroupBy(s => s.ProjectId)
+                .Select(
+                    s =>
+                        s.OrderByDescending(x => x.CreateDate).First()
+                ).ToList();
+        }
+
         public static string GetDelimited(List<string> items) {
             if (items.Count == 0)
                 return string.Empty;

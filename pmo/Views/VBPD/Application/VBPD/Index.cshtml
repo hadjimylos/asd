@@ -1,4 +1,4 @@
-﻿@model List<VBPDViewModel>
+﻿@model List<dbModels.ProjectDetail>
 
 @{
     ViewData["Title"] = "Projects";
@@ -33,7 +33,7 @@
                 @foreach (var modelItem in Model)
                 {
                     <a class="item" href="/vbpd-projects/@modelItem.ProjectId">
-                        <div class="item-wrapper by-13">
+                        <div class="item-wrapper">
                             <div>@modelItem.Project.Name</div>
                             <div>@modelItem.Salesforce</div>
                             <div>@modelItem.ProjectCategory.Name</div>

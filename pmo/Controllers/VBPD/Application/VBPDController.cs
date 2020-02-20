@@ -8,6 +8,8 @@ using pmo.Services.Lists;
 using ViewModels.Helpers;
 using dbModels;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace pmo.Controllers {
     [Route("vbpd-projects")]
@@ -22,9 +24,8 @@ namespace pmo.Controllers {
         }
 
         public IActionResult Index() {
-            var projects = _projectService.GetAllVBPDProjectDetailList();
-            var vm = _mapper.Map<List<VBPDViewModel>>(projects);
-            return View($"{path}/Index.cshtml", vm);
+            var model = GetProjectDetails();
+            return View($"{path}/Index.cshtml", model);
         }
 
         [Route("create")]
@@ -64,45 +65,48 @@ namespace pmo.Controllers {
         }
 
         [Route("open")]
-        public IActionResult Open()
-        {
-            var _projectDets = new List<List<ProjectDetail>>();
-            var projects = _projectService.GetAllVBPDOpenProjectDetailList("Go");
-            foreach (var projectDetail in projects)
-            {
-                _projectDets.Add(projectDetail.ProjectDetail);   
-            }
-            var openProjects = _projectDets.SelectMany(x => x).ToList();
-            var vm = _mapper.Map<List<VBPDViewModel>>(openProjects);
-            return View($"{path}/Index.cshtml", vm);
-        }
-
-        [Route("on-hold")]
-        public IActionResult Hold()
-        {
-            var _projectDets = new List<List<ProjectDetail>>();
-            var projects = _projectService.GetAllVBPDOpenProjectDetailList("OnHold");
-            foreach (var projectDetail in projects)
-            {
-                _projectDets.Add(projectDetail.ProjectDetail);
-            }
-            var openProjects = _projectDets.SelectMany(x => x).ToList();
-            var vm = _mapper.Map<List<VBPDViewModel>>(openProjects);
-            return View($"{path}/Index.cshtml", vm);
+        public IActionResult Open() {
+            var model = GetProjectDetails(ProjectState.Go);
+            return View($"{path}/Index.cshtml", model);
         }
 
         [Route("closed")]
-        public IActionResult Closed()
-        {
-            var _projectDets = new List<List<ProjectDetail>>();
-            var projects = _projectService.GetAllVBPDOpenProjectDetailList("Closed");
-            foreach (var projectDetail in projects)
-            {
-                _projectDets.Add(projectDetail.ProjectDetail);
-            }
-            var openProjects = _projectDets.SelectMany(x => x).ToList();
-            var vm = _mapper.Map<List<VBPDViewModel>>(openProjects);
-            return View($"{path}/Index.cshtml", vm);
+        public IActionResult Closed() {
+            var model = GetProjectDetails(ProjectState.Closed);
+            return View($"{path}/Index.cshtml", model);
         }
+
+        [Route("on-hold")]
+        public IActionResult OnHold() {
+            var model = GetProjectDetails(ProjectState.OnHold);
+            return View($"{path}/Index.cshtml", model);
+        }
+
+        private IQueryable<ProjectDetail> GetQueryableProjectDetails() {
+            var myId = _context.Users.First(f => f.NetworkUsername == _httpContextAccessor.HttpContext.User.Identity.Name).Id;
+            return _context.ProjectDetails
+                .IncludeAll()
+                .Include(i => i.Project)
+                    .ThenInclude(i => i.ProjectStateHistory)
+                .Include(i => i.Project)
+                    .ThenInclude(i => i.TeamMembers)
+                .Where(
+                    w =>
+                        w.Project.TeamMembers.Select(s => s.UserId).Contains(myId)
+                );
+        }
+
+        private List<ProjectDetail> GetProjectDetails(ProjectState state) {
+            return GetQueryableProjectDetails().Where(
+                    w =>
+                        w.Project.ProjectStateHistory.OrderByDescending(o => o.CreateDate).First().ProjectState == state
+                ).DistinctProjectDetail();
+        }
+
+        private List<ProjectDetail> GetProjectDetails()
+        {
+            return GetQueryableProjectDetails().DistinctProjectDetail();
+        }
+
     }
 }

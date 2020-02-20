@@ -9,8 +9,6 @@ namespace pmo.Services.Projects
 {
     public interface IProjectService
     {
-        List<ProjectDetail> GetAllVBPDProjectDetailList();
-        List<Project> GetAllVBPDOpenProjectDetailList(string option);
         void AddNewVBPDProject(VBPDViewModel model);
 
     }
