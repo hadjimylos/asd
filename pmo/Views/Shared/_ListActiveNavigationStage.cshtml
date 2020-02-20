@@ -74,16 +74,17 @@
                                 <input type="submit" class="btn red" value="Close" />
                             </form>
                         }
+
                         else if (ViewData["ProjectState"].ToString() == "2") {
-                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
+                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/on-hold">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Remove Hold" />
                             </form>
                         }
                         else {
-                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
+                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/close">
                                 @Html.AntiForgeryToken()
-                                <input type="submit" class="btn green" value="Unkill" />
+                                <input type="submit" class="btn green" value="Open" />
                             </form>
                         }
                     }

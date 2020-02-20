@@ -62,7 +62,7 @@
                             <option value="all">VIEW ALL</option>
                             @foreach (var version in Model.Versions)
                             {
-                                <option value="@version.Id">Stage: @version.Stage.StageNumber => Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
+                                <option value="@version.Id">Version: @version.Version , Last Update By: @version.ModifiedByUser</option>
                             }
                         </select>
                     </div>
