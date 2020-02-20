@@ -43,6 +43,9 @@ namespace ViewModels {
         [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
         public new int MinDesignConcepts { get; set; }
 
+        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
+        public new int MinPostLaunchReviews { get; set; }
+
         public List<SelectListItem> SelectSchedules { get; set; }
 
         public List<int> ScheduleIds { get; set; }

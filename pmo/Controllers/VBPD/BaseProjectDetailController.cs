@@ -109,6 +109,11 @@
                         IsComplete = activeStageConfig.MinProductIntroChecklist <= 0 || (activeStage.ProductIntroChecklistHistory.Count > 0 && activeStage.ProductIntroChecklistHistory.Max(m => m.Version) >= activeStageConfig.MinProductIntroChecklist),
                         Url = $"{commonPath}/product-intro-checklist/edit",
                         Version = activeStage.ProductIntroChecklistHistory.Count == 0 ? 0 : activeStage.ProductIntroChecklistHistory.Max(m => m.Version),
+                    },new ActiveNav {
+                        Component = "Post Launch Review",
+                        IsComplete = activeStageConfig.MinPostLaunchReviews <= 0 || (activeStage.PostLaunchReviewHistory.Count > 0 && activeStage.PostLaunchReviewHistory.Max(m => m.Version) >= activeStageConfig.MinPostLaunchReviews),
+                        Url = $"{commonPath}/post-launch-review/edit",
+                        Version = activeStage.PostLaunchReviewHistory.Count == 0 ? 0 : activeStage.PostLaunchReviewHistory.Max(m => m.Version),
                     },
                 };
 

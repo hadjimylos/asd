@@ -39,6 +39,7 @@ namespace pmo.Models.Mappings
             CreateMap<CustomerDesignApprovalNav, CustomerDesignApproval>().ReverseMap();
             CreateMap<InvestmentPlanNav, InvestmentPlan>().ReverseMap();
             CreateMap<ProductIntroChecklistNav, ProductIntroChecklist>().ReverseMap();
+            CreateMap<PostLaunchReviewNav, PostLaunchReview>().ReverseMap();
         }
     }
 }

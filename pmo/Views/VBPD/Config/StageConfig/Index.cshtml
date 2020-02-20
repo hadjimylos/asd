@@ -33,6 +33,7 @@
                 <div>QUALIFICATION TESTING</div>
                 <div>DESIGN CONCEPTS</div>
                 <div>SCHEDULES</div>
+                <div>POST LAUNCH REVIEW</div>
             </div>
             <div class="items">
                 @foreach (var config in Model) {
@@ -51,6 +52,7 @@
                             <div>@config.MinQualificationTesting</div>
                             <div>@config.MinDesignConcepts</div>
                             <div>@config.RequiredSchedules.Count</div>
+                            <div>@config.MinPostLaunchReviews</div>
                         </div>
                     </a>
                 }
