@@ -30,62 +30,6 @@ namespace pmo.Controllers
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
-        [Route("create-version")]
-        public IActionResult CreateVersion(int projectId, int stageNumber)
-        {
-            var currentVersion = _context.KeyCharacteristics
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .Max(m => m.Version);
-
-            var model = new CreateVersionViewModel
-            {
-                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/key-characteristic/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/key-characteristic/create-version",
-                ComponentName = "Key Characteristic",
-                CurrentVersion = currentVersion,
-            };
-            return View($"{viewPath}/CreateVersion.cshtml", model);
-        }
-
-        [HttpPost]
-        [Route("create-version")]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int projectId, int stageNumber)
-        {
-            // get latest transaction of latest version
-            var latestRecord = _context.KeyCharacteristics
-                .Include(s => s.Stage)
-                .Where(n => n.StageId == _stageId)
-                .OrderByDescending(o => o.CreateDate)
-                .FirstOrDefault();
-
-            if (latestRecord == null)
-            {//check to see if first record.If so redirect to edit only.
-                RedirectToAction("Edit");
-            }
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    // set variables for create
-                    latestRecord.Id = 0;        
-                    latestRecord.Version = ++latestRecord.Version;
-                    _context.Add(latestRecord);
-                    _context.SaveChanges();
-                    transaction.Commit();
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    throw e;
-                }
-
-                return RedirectToAction("Edit", new { stageNumber, projectId });
-            }
-        }
-
         [Route("edit")]
         public IActionResult Edit()
         {

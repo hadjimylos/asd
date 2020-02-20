@@ -27,68 +27,6 @@ namespace pmo.Controllers.VBPD.Application.History {
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
-        [Route("create-version")]
-        public IActionResult CreateVersion(int projectId, int stageNumber) {
-            var currentVersion = _context.BusinessCases
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .Max(m => m.Version);
-
-            var model = new CreateVersionViewModel {
-                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/business-case/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/business-case/create-version",
-                ComponentName = "Business Case",
-                CurrentVersion = currentVersion,
-            };
-            return View($"{viewPath}/CreateVersion.cshtml", model);
-        }
-
-        [HttpPost]
-        [Route("create-version")]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int projectId, int stageNumber) {
-            // get latest transaction of latest version
-            var latestRecord = _context.BusinessCases.AsNoTracking()
-                .Where(n => n.StageId == _stageId)
-                .OrderByDescending(o => o.CreateDate)
-                .FirstOrDefault();
-
-            if (latestRecord == null) {//check to see if first record.If so redirect to edit only.
-                RedirectToAction("Edit");
-            }
-            using (var transaction = _context.Database.BeginTransaction()) {
-                try {
-                    var manufIds = _context.BusinessCase_ManufacturingLocations.Where(s => s.BusinessCaseId == latestRecord.Id).Select(s => s.ManufacturingLocationsTagId).ToList();
-                    // set variables for create
-                    latestRecord.Id = 0;
-                    latestRecord.Version = ++latestRecord.Version;
-                    _context.Attach(latestRecord);
-                    _context.Entry(latestRecord).State = EntityState.Added;
-                    _context.SaveChanges();
-                    foreach (var tagId in manufIds) {
-                        _context.BusinessCase_ManufacturingLocations.Add(new BusinessCase_ManufacturingLocation() {
-                            Id = 0,
-                            BusinessCaseId = latestRecord.Id
-                           ,
-                            ManufacturingLocationsTagId = tagId
-
-                        });
-                        _context.SaveChanges();
-                    }
-
-
-                    transaction.Commit();
-                }
-                catch (Exception e) {
-                    transaction.Rollback();
-                    throw e;
-                }
-
-                return RedirectToAction("Edit", new { stageNumber, projectId });
-            }
-        }
-
         [Route("edit")]
         public IActionResult Edit() {
             // always populate latest version in edit if not just an empty form

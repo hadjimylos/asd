@@ -26,61 +26,7 @@ namespace pmo.Controllers.VBPD.Application.History
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
-        [Route("create-version")]
-        public IActionResult CreateVersion(int projectId, int stageNumber)
-        {
-            var currentVersion = _context.ProductIntroChecklists
-                .AsNoTracking()
-                .Include(s => s.Stage)
-                .Where(n => n.StageId == _stageId)
-                .Max(m => m.Version);
-
-            var model = new CreateVersionViewModel
-            {
-                BackPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/product-intro-checklist/{currentVersion}",
-                PostPath = $"/vbpd-projects/{projectId}/stages/{stageNumber}/product-intro-checklist/create-version",
-                ComponentName = "Product Intro Checklist",
-                CurrentVersion = currentVersion,
-            };
-
-            return View($"{viewPath}/CreateVersion.cshtml", model);
-        }
-
-        [HttpPost]
-        [Route("create-version")]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult PostCreateVerison(int projectId, int stageNumber)
-        {
-            // get latest transaction of latest version
-            var latestRecord = _context.ProductIntroChecklists
-                .Include(s => s.Stage)
-                .Where(n => n.StageId == _stageId)
-                .OrderByDescending(o => o.CreateDate)
-                .FirstOrDefault();
-
-            if (latestRecord == null)
-            {
-                RedirectToAction("Edit");
-            }
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    latestRecord.Id = 0;
-                    latestRecord.Version = ++latestRecord.Version;
-                    _context.Add(latestRecord);
-                    _context.SaveChanges();
-                    transaction.Commit();
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    throw e;
-                }
-                return RedirectToAction("Edit", new { projectId, stageNumber });
-            }
-        }
-
+        
         [Route("edit")]
         public IActionResult Edit()
         {
