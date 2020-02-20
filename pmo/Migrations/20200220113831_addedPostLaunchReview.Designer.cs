@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200220113831_addedPostLaunchReview")]
+    partial class addedPostLaunchReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,9 +48,6 @@ namespace pmo.Migrations
 
                     b.Property<string>("GpaRequirements")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("LaborRate")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
@@ -172,53 +171,6 @@ namespace pmo.Migrations
                     b.HasIndex("StageId");
 
                     b.ToTable("CustomerDesignApprovals");
-                });
-
-            modelBuilder.Entity("dbModels.FinancialData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BusinessCaseId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("GPACapital")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("GPAExpense")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ModifiedByUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("OtherDevelopmentExpenses")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("QualCosts")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SalesCostEstimated")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("StdCostEstimated")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusinessCaseId");
-
-                    b.ToTable("FinancialData");
                 });
 
             modelBuilder.Entity("dbModels.Gate", b =>
@@ -7552,15 +7504,6 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.Stage", "Stage")
                         .WithMany("CustomerDesignApprovalHistory")
                         .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("dbModels.FinancialData", b =>
-                {
-                    b.HasOne("dbModels.BusinessCase", "BusinessCase")
-                        .WithMany()
-                        .HasForeignKey("BusinessCaseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
