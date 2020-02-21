@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
+using ViewModels.Helpers;
+
 
 namespace pmo.Controllers.Application.History
 {
@@ -34,17 +36,14 @@ namespace pmo.Controllers.Application.History
         [Route("edit")]
         public IActionResult Edit(int stageNumber, int projectId)
         {
-            // always populate latest version in edit
-            //Tha skasei ama einai 0
-            var currentVersion = _context.CustomerDesignApprovals
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
+            ViewBag.StageNumber = _stageNumber;
+            ViewBag.ProjectId = _projectId;
+
+            var latestSavedVersion = _context.CustomerDesignApprovals.AsNoTracking().GetLatestVersion(_projectId);
+
 
             var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-            if (currentVersion == null)
+            if (latestSavedVersion == null)
             {
                 var vm = new CustomerDesignApprovalViewModel()
                 {
@@ -55,7 +54,7 @@ namespace pmo.Controllers.Application.History
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            var model = GetViewModel(latestSavedVersion.StageId, latestSavedVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -66,23 +65,19 @@ namespace pmo.Controllers.Application.History
         public IActionResult Edit(CustomerDesignApprovalViewModel vm)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.Where(s=>s.Id==_stageId).First();
-            var latestCustomerDesignApproval = _context.CustomerDesignApprovals
-                  .Include(s => s.Stage)
-                  .Where(n => n.StageId == _stageId)
-                  .OrderByDescending(o => o.CreateDate)
-                  .FirstOrDefault();
+            var currentStage = _context.Stages.Where(s=>s.Id==_stageId).First();
+            var latestCustomerDesignApproval = _context.CustomerDesignApprovals.GetLatestVersion(_projectId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = stage;
+                vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
-            customerDesignApproval.StageId = stage.Id;
+            customerDesignApproval.StageId = currentStage.Id;
             if (latestCustomerDesignApproval == null)
             {
                 using (var transaction = _context.Database.BeginTransaction())
@@ -107,7 +102,7 @@ namespace pmo.Controllers.Application.History
                 currentVersion = latestCustomerDesignApproval.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestCustomerDesignApproval.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate) //if same user update record
+                if (isUpdate && currentStage.StageNumber == latestCustomerDesignApproval.Stage.StageNumber)//if same user and sameStage then update
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
@@ -136,7 +131,7 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
-                            customerDesignApproval.Version = currentVersion;
+                            customerDesignApproval.Version = currentVersion+=1;
                             _context.CustomerDesignApprovals.Add(customerDesignApproval);
                             _context.SaveChanges();
                             transaction.Commit();

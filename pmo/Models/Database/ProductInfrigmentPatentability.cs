@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels
 {
-    public class ProductInfrigmentPatentability: HistoryModel
-    {
+    public class ProductInfrigmentPatentability: StageHistoryModel {
         public bool ContainsInfingmentIssues { get; set; }
 
         public string PatentNumber { get; set; }
@@ -19,10 +18,5 @@ namespace dbModels
         public bool InventionDisclosureSubmitted { get; set; }
 
         public DateTime ProductFirstTimeOfferedForSale { get; set; }
-
-        public int StageId { get; set; }
-
-        [ForeignKey("StageId")]
-        public virtual Stage Stage { get; set; }
     }
 }

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class CustomerDesignApproval: HistoryModel
-    {
+    public class CustomerDesignApproval: StageHistoryModel {
        
         public string SentForApprovalBy { get; set; }
 
@@ -13,10 +12,5 @@ namespace dbModels {
         public string ApprovedBy { get; set; }
         
         public DateTime ApprovedDate { get; set; }
-
-        public int StageId { get; set; }
-
-        [ForeignKey("StageId")]
-        public virtual Stage Stage { get; set; }
     }
 }

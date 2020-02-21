@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
+using ViewModels.Helpers;
+
 
 namespace pmo.Controllers
 {
@@ -28,13 +30,8 @@ namespace pmo.Controllers
         public IActionResult Edit(int projectId, int stageNumber)
         {
             // always populate latest version in edit
-            var currentVersion = _context.PostLaunchReviews
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
-            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var currentVersion = _context.PostLaunchReviews.AsNoTracking().GetLatestVersion(_projectId);
+            var currentStage = _context.Stages.First(n => n.Id == _stageId);
             if (currentVersion == null)
             {
                 var vm = new PostLaunchReviewViewModel()
@@ -46,7 +43,7 @@ namespace pmo.Controllers
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            var model = GetViewModel(currentVersion.Id, currentVersion.Version);
             model.Versions = GetVersionHistory(currentStage.Id);
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -57,23 +54,19 @@ namespace pmo.Controllers
         public IActionResult Edit(PostLaunchReviewViewModel vm, int projectId, int stageNumber)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.Where(n => n.Id == _stageId).First();
-            var latestPLR = _context.PostLaunchReviews
-               .Include(s => s.Stage)
-               .Where(n => n.StageId == _stageId)
-               .OrderByDescending(o => o.CreateDate)
-               .FirstOrDefault();
+            var currentStage = _context.Stages.First(s => s.Id == _stageId);
+            var latestPLR = _context.PostLaunchReviews.GetLatestVersion(_projectId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = stage;
-                vm.Versions = GetVersionHistory(stage.Id);
+                vm.Stage = currentStage;
+                vm.Versions = GetVersionHistory(currentStage.Id);
                 vm.Version = latestPLR == null ? 0 : latestPLR.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
             var PLR = _mapper.Map<PostLaunchReview>(vm);
-            PLR.StageId = stage.Id;
+            PLR.StageId = currentStage.Id;
             //first version
             if (latestPLR == null)
             {
@@ -99,7 +92,7 @@ namespace pmo.Controllers
                 currentVersion = latestPLR.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestPLR.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//same user trying to edit 
+                if (isUpdate && currentStage.StageNumber == latestPLR.Stage.StageNumber)//if same user and sameStage then update
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
@@ -129,7 +122,7 @@ namespace pmo.Controllers
                     {
                         try
                         {
-                            PLR.Version = currentVersion;
+                            PLR.Version = currentVersion+=1;
                             _context.PostLaunchReviews.Add(PLR);
                             _context.SaveChanges();
                             transaction.Commit();

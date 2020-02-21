@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
+using ViewModels.Helpers;
+
 
 namespace pmo.Controllers.VBPD.Application.History
 {
@@ -31,15 +33,11 @@ namespace pmo.Controllers.VBPD.Application.History
         public IActionResult Edit()
         {
             // always populate latest version in edit
-            var currentVersion = _context.ProductIntroChecklists
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
+            var latestVersion = _context.ProductIntroChecklists
+                 .AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s=>s.Id == _stageId);
 
-            if (currentVersion == null)
+            if (latestVersion == null)
             {
                 var vm = new ProductIntroChecklistViewModel()
                 {
@@ -50,7 +48,7 @@ namespace pmo.Controllers.VBPD.Application.History
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(_stageId, currentVersion.Version);
+            var model = GetViewModel(latestVersion.StageId, latestVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -61,22 +59,18 @@ namespace pmo.Controllers.VBPD.Application.History
         public IActionResult Edit(ProductIntroChecklistViewModel vm, int projectId, int stageNumber)
         {
             int currentVersion = 0;
-            var latestProductIntoChecklist = _context.ProductIntroChecklists
-               .Include(s => s.Stage)
-               .Where(n => n.StageId == _stageId)
-               .OrderByDescending(o => o.CreateDate)
-               .FirstOrDefault();
-            var stage = _context.Stages.First(s=>s.Id == _stageId);
+            var latestProductIntoChecklist = _context.ProductIntroChecklists.GetLatestVersion(_projectId);
+            var currentStage = _context.Stages.First(s=>s.Id == _stageId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = _context.Stages.Where(s => s.Id == stage.Id).FirstOrDefault();
+                vm.Stage = _context.Stages.Where(s => s.Id == currentStage.Id).FirstOrDefault();
                 vm.Versions = GetVersionHistory();
                 vm.Version = latestProductIntoChecklist == null ? 0 : latestProductIntoChecklist.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var productIntroChecklist = _mapper.Map<ProductIntroChecklist>(vm);
-            productIntroChecklist.StageId = _stageId;
+            productIntroChecklist.StageId = currentStage.Id;
             if (latestProductIntoChecklist == null)//first version
             {
                 using (var transaction = _context.Database.BeginTransaction())
@@ -101,7 +95,7 @@ namespace pmo.Controllers.VBPD.Application.History
                 currentVersion = latestProductIntoChecklist.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestProductIntoChecklist.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//same user  trying to edit 
+                if (isUpdate && currentStage.StageNumber == latestProductIntoChecklist.Stage.StageNumber)//if same user and sameStage then update
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
@@ -128,7 +122,7 @@ namespace pmo.Controllers.VBPD.Application.History
                     {
                         try
                         {
-                            productIntroChecklist.Version = currentVersion;
+                            productIntroChecklist.Version = currentVersion+=1;
                             _context.ProductIntroChecklists.Add(productIntroChecklist);
                             _context.SaveChanges();
                             transaction.Commit();

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ViewModels;
+using ViewModels.Helpers;
+
 
 namespace pmo.Controllers {
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-infrigment-patentability")]
@@ -31,12 +33,7 @@ namespace pmo.Controllers {
             // always populate latest version in edit
             //Tha skasei ama einai 0
             var currentVersion = _context.ProductInfrigmentPatentabilities
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
-
+                 .AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s=>s.Id==_stageId);
             if (currentVersion == null)
             {
@@ -48,7 +45,7 @@ namespace pmo.Controllers {
                 };
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            var model = GetViewModel(currentVersion.Id, currentVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -59,22 +56,19 @@ namespace pmo.Controllers {
         public IActionResult Edit(ProductInfrigmentPatentabilityViewModel vm)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.First(s=>s.Id   == _stageId);
+            var currentStage = _context.Stages.First(s=>s.Id   == _stageId);
             var latestProductInfrigmentPatentability = _context.ProductInfrigmentPatentabilities
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .OrderByDescending(o => o.CreateDate)
-                 .FirstOrDefault();
+                 .GetLatestVersion(_projectId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = stage;
+                vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = latestProductInfrigmentPatentability == null ? 0 : latestProductInfrigmentPatentability.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var productInfrigmentPatentability = _mapper.Map<ProductInfrigmentPatentability>(vm);
-            productInfrigmentPatentability.StageId = stage.Id;
+            productInfrigmentPatentability.StageId = currentStage.Id;
             if (latestProductInfrigmentPatentability == null)
             {
 
@@ -100,7 +94,7 @@ namespace pmo.Controllers {
                 currentVersion = latestProductInfrigmentPatentability.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestProductInfrigmentPatentability.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//same user  trying to edit 
+                if (isUpdate && currentStage.StageNumber == latestProductInfrigmentPatentability.Stage.StageNumber)//if same user and sameStage then update
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
@@ -130,7 +124,7 @@ namespace pmo.Controllers {
                     {
                         try
                         {
-                            productInfrigmentPatentability.Version = currentVersion;
+                            productInfrigmentPatentability.Version = currentVersion+1;
                             _context.ProductInfrigmentPatentabilities.Add(productInfrigmentPatentability);
                             _context.SaveChanges();
                             transaction.Commit();

@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class InvestmentPlan: HistoryModel
-    {
+    public class InvestmentPlan: StageHistoryModel {
         public string ItemNumber { get; set; }
 
         public string Item { get; set; }
@@ -14,10 +13,5 @@ namespace dbModels {
         public string Cost { get; set; }
 
         public string Terms { get; set; }
-
-        public int StageId { get; set; }
-
-        [ForeignKey("StageId")]
-        public virtual Stage Stage { get; set; }
     }
 }

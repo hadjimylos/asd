@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class KeyCharacteristic : HistoryModel
-    {
+    public class KeyCharacteristic : StageHistoryModel {
         public string ItemNumber { get; set; }
         
         public string Requirement { get; set; }
@@ -15,10 +14,5 @@ namespace dbModels {
         public string MeasuredValue { get; set; }
         
         public string ExpectedOutcomeRisk { get; set; }
-
-        public int StageId { get; set; }
-
-        [ForeignKey("StageId")]
-        public virtual Stage Stage { get; set; }
     }
 }

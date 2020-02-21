@@ -35,12 +35,7 @@ namespace pmo.Controllers
         public IActionResult Edit()
         {
             // always populate latest version in edit if not just an empty form
-            var currentVersion = _context.ProjectJustifications
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
+            var currentVersion = _context.ProjectJustifications.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
 
 
@@ -55,7 +50,7 @@ namespace pmo.Controllers
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            var model = GetViewModel(currentVersion.StageId, currentVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -66,16 +61,12 @@ namespace pmo.Controllers
         public IActionResult Edit(ProjectJustificationViewModel vm, int projectId, int stageNumber)
         {
             int currentVersion = 0;
-            var lastProjectJustification = _context.ProjectJustifications
-               .Include(s => s.Stage)
-               .Where(n => n.StageId == _stageId)
-               .OrderByDescending(o => o.CreateDate)
-               .FirstOrDefault();
-            var stage = _context.Stages.First(s => s.Id == _stageId);
+            var lastProjectJustification = _context.ProjectJustifications.GetLatestVersion(_projectId);
+            var currentStage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = stage;
+                vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = lastProjectJustification == null ? 0 : lastProjectJustification.Version;
                 //vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory) //todo 
@@ -89,7 +80,7 @@ namespace pmo.Controllers
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var projectJust = _mapper.Map<ProjectJustification>(vm);
-            projectJust.StageId = stage.Id;
+            projectJust.StageId = currentStage.Id;
             if (lastProjectJustification == null)  //first version
             {
                 projectJust.Version = 1;
@@ -102,7 +93,7 @@ namespace pmo.Controllers
                 currentVersion = lastProjectJustification.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = lastProjectJustification.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//if same user then update
+                if (isUpdate && currentStage.StageNumber == lastProjectJustification.Stage.StageNumber)//if same user and sameStage then update
                 {
                     lastProjectJustification.AddToInhouseTechnicalAbilities = projectJust.AddToInhouseTechnicalAbilities;
                     lastProjectJustification.AdvantagesWeOffer = projectJust.AdvantagesWeOffer;
@@ -123,6 +114,7 @@ namespace pmo.Controllers
                 }
                 else
                 {//if not then new record 
+                    projectJust.Version = currentVersion =+ 1;
                     _context.ProjectJustifications.Add(projectJust);
                     _context.SaveChanges();
                 }

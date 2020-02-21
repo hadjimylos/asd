@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public class BusinessCase: HistoryModel
-    {
-        public int StageId { get; set; }
-        
-        [ForeignKey("StageId")]
-        public virtual Stage Stage { get; set; }
+    public class BusinessCase: StageHistoryModel {
 
         public bool WillCustomerFundQual { get; set; }
 

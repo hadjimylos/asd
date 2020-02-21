@@ -5,5 +5,6 @@ namespace dbModels {
         public int Version { get; set; }
 
         public DateTime LastModified { get; set; }
+
     }
 }

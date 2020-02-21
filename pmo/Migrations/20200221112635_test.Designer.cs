@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200221112635_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -314,38 +316,6 @@ namespace pmo.Migrations
                             GateNumber = 5,
                             ModifiedByUser = "system"
                         });
-                });
-
-            modelBuilder.Entity("dbModels.GateFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("GateId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GateNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModifiedByUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GateId");
-
-                    b.ToTable("GateFiles");
                 });
 
             modelBuilder.Entity("dbModels.GateKeeper", b =>
@@ -7285,13 +7255,6 @@ namespace pmo.Migrations
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Qualification Testing - Field Name?",
                             TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 767,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Upload any pertinent documentation",
-                            TagCategoryId = 16
                         });
                 });
 
@@ -7441,14 +7404,6 @@ namespace pmo.Migrations
                             FriendlyName = "Stage Files",
                             IsFixed = false,
                             Key = "stage-files"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FriendlyName = "Gate Files",
-                            IsFixed = false,
-                            Key = "gate-files"
                         });
                 });
 
@@ -7619,14 +7574,6 @@ namespace pmo.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("dbModels.GateFile", b =>
-                {
-                    b.HasOne("dbModels.Gate", "Gate")
-                        .WithMany("GateFiles")
-                        .HasForeignKey("GateId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("dbModels.GateKeeper", b =>

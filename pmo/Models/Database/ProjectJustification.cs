@@ -2,14 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
-    public  class ProjectJustification : HistoryModel
-    {
-       
-        public int StageId { get; set; }
-        
-        [ForeignKey("StageId")]
-        public virtual Stage Stage { get; set; }
-
+    public  class ProjectJustification : StageHistoryModel {
         public string CustomerMotivation { get; set; }
 
         public string Application { get; set; }

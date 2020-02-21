@@ -47,7 +47,14 @@ namespace ViewModels.Helpers
 
             return queryable;
         }
-        
+     
+        public static T GetLatestVersion<T>(this IQueryable<T> queryable, int projectId) where T : StageHistoryModel {
+            return  queryable
+                 .Include(p => p.Stage)
+                 .OrderByDescending(c => c.CreateDate)
+                 .Where(w => w.Stage.ProjectId == projectId).FirstOrDefault();
+        }
+
         public static string GetRouteValue (HttpRequest request, string key) {
             return (string)request.RouteValues[key];
         }

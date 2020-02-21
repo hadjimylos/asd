@@ -30,16 +30,14 @@ namespace pmo.Controllers.VBPD.Application.History {
         [Route("edit")]
         public IActionResult Edit() {
             // always populate latest version in edit if not just an empty form
-            var currentVersion = _context.BusinessCases
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
+            ViewBag.StageNumber = _stageNumber;
+            ViewBag.ProjectId = _projectId;
+
+            var latestSavedVersion = _context.BusinessCases.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
 
 
-            if (currentVersion == null) {
+            if (latestSavedVersion == null) {
                 var vm = new BusinessCaseViewModel() {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
@@ -49,7 +47,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            var model = GetViewModel(latestSavedVersion.StageId, latestSavedVersion.Version);
             model.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations, model.ManufacturingLocationsIds);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
@@ -60,22 +58,18 @@ namespace pmo.Controllers.VBPD.Application.History {
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(BusinessCaseViewModel vm, int projectId, int stageNumber) {
             int currentVersion = 0;
-            var latestBusinessCase = _context.BusinessCases
-               .Include(s => s.Stage)
-               .Where(n => n.StageId == _stageId)
-               .OrderByDescending(o => o.CreateDate)
-               .FirstOrDefault();
-            var stage = _context.Stages.First(s => s.Id == _stageId);
+            var latestBusinessCase = _context.BusinessCases.GetLatestVersion(projectId);
+            var currentStage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
-                vm.Stage = stage;
+                vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = latestBusinessCase == null ? 0 : latestBusinessCase.Version;
                 vm.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations, vm.ManufacturingLocationsIds);
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var businessCase = _mapper.Map<BusinessCase>(vm);
-            businessCase.StageId = stage.Id;
+            businessCase.StageId = currentStage.Id;
             if (latestBusinessCase == null) {  //first version
                 using (var transaction = _context.Database.BeginTransaction()) {
                     try {
@@ -105,7 +99,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                 currentVersion = latestBusinessCase.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestBusinessCase.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//if same user then update
+                if (isUpdate && currentStage.StageNumber == latestBusinessCase.Stage.StageNumber)//if same user and sameStage then update
                 {
                     using (var transaction = _context.Database.BeginTransaction()) {
                         try {
@@ -148,6 +142,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                     }
                 }
                 else {//if not then new record and 
+                    businessCase.Version = currentVersion+=1;
                     _context.BusinessCases.Add(businessCase);
                     _context.SaveChanges();
 

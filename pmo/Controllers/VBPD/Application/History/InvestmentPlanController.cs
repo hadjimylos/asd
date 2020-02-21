@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
+using ViewModels.Helpers;
+
 
 namespace pmo.Controllers.Application.History
 {
@@ -28,15 +30,12 @@ namespace pmo.Controllers.Application.History
         [Route("edit")]
         public IActionResult Edit(int projectId, int stageNumber)
         {
+            ViewBag.StageNumber = _stageNumber;
+            ViewBag.ProjectId = _projectId;
             // always populate latest version in edit
-            var currentVersion = _context.InvestmentPlans
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
-            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-            if (currentVersion == null)
+            var latestSavedVersion = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
+            var currentStage = _context.Stages.First(n => n.Id == _stageId);
+            if (latestSavedVersion == null)
             {
                 var vm = new InvestmentPlanViewModel()
                 {
@@ -47,7 +46,7 @@ namespace pmo.Controllers.Application.History
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            var model = GetViewModel(latestSavedVersion.Id, latestSavedVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -58,23 +57,19 @@ namespace pmo.Controllers.Application.History
         public IActionResult Edit(InvestmentPlanViewModel vm, int projectId, int stageNumber)
         {
             int currentVersion = 0;
-            var stage = _context.Stages.Where(n => n.Id == _stageId).First();
-            var latestInvestmentPlan = _context.InvestmentPlans
-               .Include(s => s.Stage)
-               .Where(n => n.StageId == _stageId)
-               .OrderByDescending(o => o.CreateDate)
-               .FirstOrDefault();
+            var currentStage = _context.Stages.Where(n => n.Id == _stageId).First();
+            var latestInvestmentPlan = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = stage;
+                vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = latestInvestmentPlan == null ? 0 : latestInvestmentPlan.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
             var investmentPlan = _mapper.Map<InvestmentPlan>(vm);
-            investmentPlan.StageId = stage.Id;
+            investmentPlan.StageId = currentStage.Id;
             //first version
             if (latestInvestmentPlan == null)
             {
@@ -100,7 +95,7 @@ namespace pmo.Controllers.Application.History
                 currentVersion = latestInvestmentPlan.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestInvestmentPlan.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//same user trying to edit 
+                if (isUpdate && currentStage.StageNumber == latestInvestmentPlan.Stage.StageNumber)//if same user and sameStage then update
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
@@ -130,7 +125,7 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
-                            investmentPlan.Version = currentVersion;
+                            investmentPlan.Version = currentVersion+=1;
                             _context.InvestmentPlans.Add(investmentPlan);
                             _context.SaveChanges();
                             transaction.Commit();

@@ -33,17 +33,14 @@ namespace pmo.Controllers
         [Route("edit")]
         public IActionResult Edit()
         {
+            ViewBag.StageNumber = _stageNumber;
+            ViewBag.ProjectId = _projectId;
+
             // always populate latest version in edit if not just an empty form
-            var currentVersion = _context.KeyCharacteristics
-                 .AsNoTracking()
-                 .Include(s => s.Stage)
-                 .Where(n => n.StageId == _stageId)
-                 .OrderByDescending(c => c.CreateDate)
-                 .FirstOrDefault();
+            var latestSavedVersion = _context.KeyCharacteristics.AsNoTracking().GetLatestVersion(_projectId);
+
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
-
-
-            if (currentVersion == null)
+            if (latestSavedVersion == null)
             {
                 var vm = new KeyCharacteristicViewModel()
                 {
@@ -61,7 +58,7 @@ namespace pmo.Controllers
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var model = GetViewModel(currentStage.Id, currentVersion.Version);
+            var model = GetViewModel(latestSavedVersion.StageId, latestSavedVersion.Version);
             model.Versions = GetVersionHistory();
             model.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                 .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
@@ -80,16 +77,12 @@ namespace pmo.Controllers
         public IActionResult Edit(KeyCharacteristicViewModel vm, int projectId, int stageNumber)
         {
             int currentVersion = 0;
-            var latestKeyCharacteristics = _context.KeyCharacteristics
-               .Include(s => s.Stage)
-               .Where(n => n.StageId == _stageId)
-               .OrderByDescending(o => o.CreateDate)
-               .FirstOrDefault();
-            var stage = _context.Stages.First(s => s.Id == _stageId);
+            var latestKeyCharacteristics = _context.KeyCharacteristics.GetLatestVersion(projectId);
+            var currentStage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
-                vm.Stage = stage;
+                vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = latestKeyCharacteristics == null ? 0 : latestKeyCharacteristics.Version;
                 vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
@@ -103,7 +96,7 @@ namespace pmo.Controllers
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var keyCharacteristic = _mapper.Map<KeyCharacteristic>(vm);
-            keyCharacteristic.StageId = stage.Id;
+            keyCharacteristic.StageId = currentStage.Id;
             if (latestKeyCharacteristics == null)  //first version
             {
                 keyCharacteristic.Version = 1;
@@ -116,7 +109,8 @@ namespace pmo.Controllers
                 currentVersion = latestKeyCharacteristics.Version;
                 string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
                 var isUpdate = latestKeyCharacteristics.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate)//if same user then update
+
+                if (isUpdate && currentStage.StageNumber == latestKeyCharacteristics.Stage.StageNumber)//if same user and sameStage then update
                 {
                     latestKeyCharacteristics.ItemNumber = keyCharacteristic.ItemNumber;
                     latestKeyCharacteristics.MeasuredValue = keyCharacteristic.MeasuredValue;
@@ -127,7 +121,10 @@ namespace pmo.Controllers
                     _context.SaveChanges();
                 }
                 else
-                {//if not then new record 
+                {
+                    //if not then new record and new version
+                    //
+                    keyCharacteristic.Version = currentVersion+=1;
                     _context.KeyCharacteristics.Add(keyCharacteristic);
                     _context.SaveChanges();
                 }
