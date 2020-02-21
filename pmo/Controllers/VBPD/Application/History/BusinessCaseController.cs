@@ -22,7 +22,7 @@ namespace pmo.Controllers.VBPD.Application.History {
 
         [Route("{version}")]
         public IActionResult Detail(int version) {
-            var model = GetViewModel(_stageId, version);
+            var model = GetViewModel(version);
             model.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations, model.ManufacturingLocationsIds);
             return View($"{viewPath}/Detail.cshtml", model);
         }
@@ -47,7 +47,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var model = GetViewModel(latestSavedVersion.StageId, latestSavedVersion.Version);
+            var model = GetViewModel(latestSavedVersion.Version);
             model.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations, model.ManufacturingLocationsIds);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
@@ -56,9 +56,9 @@ namespace pmo.Controllers.VBPD.Application.History {
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(BusinessCaseViewModel vm, int projectId, int stageNumber) {
+        public IActionResult Edit(BusinessCaseViewModel vm) {
             int currentVersion = 0;
-            var latestBusinessCase = _context.BusinessCases.GetLatestVersion(projectId);
+            var latestBusinessCase = _context.BusinessCases.GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
@@ -155,7 +155,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                     _context.SaveChanges();
                 }
             }
-            return RedirectToAction("Detail", new { projectId, stageNumber, version = currentVersion });
+            return RedirectToAction("Detail", new { version = currentVersion });
         }
 
         private List<BusinessCaseViewModel> GetVersionHistory() {
@@ -175,13 +175,11 @@ namespace pmo.Controllers.VBPD.Application.History {
             var vm = _mapper.Map<List<BusinessCaseViewModel>>(versions);
             return vm;
         }
-        private BusinessCaseViewModel GetViewModel(int stageId, int version) {
-            var model = _context.BusinessCases.Where(
-                s => s.StageId == stageId && s.Version == version
-            ).OrderByDescending(o => o.CreateDate)
-            .Include(m => m.ManufacturingLocations)
-            .Include(s => s.Stage)
-            .FirstOrDefault();
+        private BusinessCaseViewModel GetViewModel(int version) {
+            var model = _context.BusinessCases.Where(s => s.Version == version)
+                .Include(m => m.ManufacturingLocations)
+                .GetLatestVersion(_projectId);
+
             var vm = _mapper.Map<BusinessCaseViewModel>(model);
 
 

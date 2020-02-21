@@ -26,7 +26,7 @@ namespace pmo.Controllers
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(_stageId, version);
+            var model = GetViewModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -58,7 +58,7 @@ namespace pmo.Controllers
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var model = GetViewModel(latestSavedVersion.StageId, latestSavedVersion.Version);
+            var model = GetViewModel(latestSavedVersion.Version);
             model.Versions = GetVersionHistory();
             model.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
                 .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
@@ -74,10 +74,10 @@ namespace pmo.Controllers
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(KeyCharacteristicViewModel vm, int projectId, int stageNumber)
+        public IActionResult Edit(KeyCharacteristicViewModel vm)
         {
             int currentVersion = 0;
-            var latestKeyCharacteristics = _context.KeyCharacteristics.GetLatestVersion(projectId);
+            var latestKeyCharacteristics = _context.KeyCharacteristics.GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid)
             {
@@ -155,15 +155,11 @@ namespace pmo.Controllers
             }
             return vm;
         }
-        private KeyCharacteristicViewModel GetViewModel(int stageId, int version)
+        private KeyCharacteristicViewModel GetViewModel(int version)
         {
-            var model = _context.KeyCharacteristics.Where(
-                s => s.StageId == stageId && s.Version == version
-            ).OrderByDescending(o => o.CreateDate)
+            var model = _context.KeyCharacteristics.Where(s => s.Version == version)
             .Include(i => i.RequirementSource)
-            .Include(s => s.Stage)
-            .FirstOrDefault();
-
+            .GetLatestVersion(_projectId);
             var vm = _mapper.Map<KeyCharacteristicViewModel>(model);
             vm.RequirementSourceText = model.RequirementSource.Name;
             return vm;

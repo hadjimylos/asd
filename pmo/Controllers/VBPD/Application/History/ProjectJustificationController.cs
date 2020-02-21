@@ -2,10 +2,7 @@
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using pmo.Services.Lists;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
@@ -27,14 +24,15 @@ namespace pmo.Controllers
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(_stageId, version);
+            var model = GetViewModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
         [Route("edit")]
         public IActionResult Edit()
         {
-            // always populate latest version in edit if not just an empty form
+            ViewBag.StageNumber = _stageNumber;
+            ViewBag.ProjectId = _projectId;
             var currentVersion = _context.ProjectJustifications.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
 
@@ -50,7 +48,7 @@ namespace pmo.Controllers
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
-            var model = GetViewModel(currentVersion.StageId, currentVersion.Version);
+            var model = GetViewModel(currentVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -58,7 +56,7 @@ namespace pmo.Controllers
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(ProjectJustificationViewModel vm, int projectId, int stageNumber)
+        public IActionResult Edit(ProjectJustificationViewModel vm)
         {
             int currentVersion = 0;
             var lastProjectJustification = _context.ProjectJustifications.GetLatestVersion(_projectId);
@@ -114,7 +112,7 @@ namespace pmo.Controllers
                 }
                 else
                 {//if not then new record 
-                    projectJust.Version = currentVersion =+ 1;
+                    projectJust.Version = currentVersion += 1;
                     _context.ProjectJustifications.Add(projectJust);
                     _context.SaveChanges();
                 }
@@ -141,14 +139,9 @@ namespace pmo.Controllers
             var vm = _mapper.Map<List<ProjectJustificationViewModel>>(versions);
             return vm;
         }
-        private ProjectJustificationViewModel GetViewModel(int stageId, int version)
+        private ProjectJustificationViewModel GetViewModel( int version)
         {
-            var model = _context.ProjectJustifications.Where(
-                s => s.StageId == stageId && s.Version == version
-            ).OrderByDescending(o => o.CreateDate)
-            .Include(i => i.Product)
-            .Include(s => s.Stage)
-            .FirstOrDefault();
+            var model = _context.ProjectJustifications.Where(s => s.Version == version).Include(i => i.Product).GetLatestVersion(_projectId);
             var vm = _mapper.Map<ProjectJustificationViewModel>(model);
             return vm;
         }

@@ -24,7 +24,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(_stageId, version);
+            var model = GetViewModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -32,7 +32,8 @@ namespace pmo.Controllers.VBPD.Application.History
         [Route("edit")]
         public IActionResult Edit()
         {
-            // always populate latest version in edit
+            ViewBag.StageNumber = _stageNumber;
+            ViewBag.ProjectId = _projectId;
             var latestVersion = _context.ProductIntroChecklists
                  .AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s=>s.Id == _stageId);
@@ -48,7 +49,7 @@ namespace pmo.Controllers.VBPD.Application.History
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(latestVersion.StageId, latestVersion.Version);
+            var model = GetViewModel( latestVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -56,7 +57,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(ProductIntroChecklistViewModel vm, int projectId, int stageNumber)
+        public IActionResult Edit(ProductIntroChecklistViewModel vm)
         {
             int currentVersion = 0;
             var latestProductIntoChecklist = _context.ProductIntroChecklists.GetLatestVersion(_projectId);
@@ -138,16 +139,10 @@ namespace pmo.Controllers.VBPD.Application.History
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private ProductIntroChecklistViewModel GetViewModel(int stageId, int version)
+        private ProductIntroChecklistViewModel GetViewModel(int version)
         {
-            var model = _context.ProductIntroChecklists.Where(
-                s => s.StageId == stageId && s.Version == version
-            ).OrderByDescending(o => o.CreateDate)
-            .Include(s => s.Stage)
-            .FirstOrDefault();
-
+            var model = _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
             var vm = _mapper.Map<ProductIntroChecklistViewModel>(model);
-
             return vm;
         }
 

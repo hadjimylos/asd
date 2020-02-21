@@ -22,13 +22,13 @@ namespace pmo.Controllers.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(_stageId, version);
+            var model = GetViewModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
 
         [Route("edit")]
-        public IActionResult Edit(int projectId, int stageNumber)
+        public IActionResult Edit()
         {
             ViewBag.StageNumber = _stageNumber;
             ViewBag.ProjectId = _projectId;
@@ -46,7 +46,7 @@ namespace pmo.Controllers.Application.History
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(latestSavedVersion.Id, latestSavedVersion.Version);
+            var model = GetViewModel(latestSavedVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -54,11 +54,11 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(InvestmentPlanViewModel vm, int projectId, int stageNumber)
+        public IActionResult Edit(InvestmentPlanViewModel vm)
         {
             int currentVersion = 0;
             var currentStage = _context.Stages.Where(n => n.Id == _stageId).First();
-            var latestInvestmentPlan = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
+            var latestInvestmentPlan = _context.InvestmentPlans.GetLatestVersion(_projectId);
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState;
@@ -142,14 +142,9 @@ namespace pmo.Controllers.Application.History
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private InvestmentPlanViewModel GetViewModel(int stageId, int version)
+        private InvestmentPlanViewModel GetViewModel(int version)
         {
-            var model = _context.InvestmentPlans.Where(
-                s => s.StageId == stageId && s.Version == version
-            ).OrderByDescending(o => o.CreateDate)
-            .Include(s => s.Stage)
-            .FirstOrDefault();
-
+            var model = _context.InvestmentPlans.Where(s => s.Version == version).GetLatestVersion(_projectId);
             var vm = _mapper.Map<InvestmentPlanViewModel>(model);
 
             return vm;

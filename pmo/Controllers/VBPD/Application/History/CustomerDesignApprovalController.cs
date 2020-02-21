@@ -28,21 +28,19 @@ namespace pmo.Controllers.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(_stageId, version);
+            var model = GetViewModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
        
         [Route("edit")]
-        public IActionResult Edit(int stageNumber, int projectId)
+        public IActionResult Edit()
         {
             ViewBag.StageNumber = _stageNumber;
             ViewBag.ProjectId = _projectId;
 
             var latestSavedVersion = _context.CustomerDesignApprovals.AsNoTracking().GetLatestVersion(_projectId);
-
-
-            var currentStage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
+            var currentStage = _context.Stages.First(s => s.Id == _stageId);
             if (latestSavedVersion == null)
             {
                 var vm = new CustomerDesignApprovalViewModel()
@@ -54,7 +52,7 @@ namespace pmo.Controllers.Application.History
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(latestSavedVersion.StageId, latestSavedVersion.Version);
+            var model = GetViewModel(latestSavedVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -148,13 +146,11 @@ namespace pmo.Controllers.Application.History
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private CustomerDesignApprovalViewModel GetViewModel(int stageId, int version)
+        private CustomerDesignApprovalViewModel GetViewModel(int version)
         {
-            var model = _context.CustomerDesignApprovals.Where(
-                s => s.StageId == stageId && s.Version == version
-            ).OrderByDescending(o => o.CreateDate)
-            .Include(s => s.Stage)
-            .FirstOrDefault();
+            var model = _context.CustomerDesignApprovals
+                 .Where(s => s.Version == version)
+                 .GetLatestVersion(_projectId);
 
             var vm = _mapper.Map<CustomerDesignApprovalViewModel>(model);
             return vm;

@@ -23,15 +23,15 @@ namespace pmo.Controllers {
         [Route("{version}")]
         public IActionResult Detail( int version)
         {
-            var model = GetViewModel(_stageId, version);
+            var model = GetViewModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
         [Route("edit")]
         public IActionResult Edit()
         {
-            // always populate latest version in edit
-            //Tha skasei ama einai 0
+            ViewBag.StageNumber = _stageNumber;
+            ViewBag.ProjectId = _projectId;
             var currentVersion = _context.ProductInfrigmentPatentabilities
                  .AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s=>s.Id==_stageId);
@@ -45,7 +45,7 @@ namespace pmo.Controllers {
                 };
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel(currentVersion.Id, currentVersion.Version);
+            var model = GetViewModel(currentVersion.Version);
             model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -141,14 +141,9 @@ namespace pmo.Controllers {
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private ProductInfrigmentPatentabilityViewModel GetViewModel(int stageId, int version)
+        private ProductInfrigmentPatentabilityViewModel GetViewModel(int version)
         {
-            var model = _context.ProductInfrigmentPatentabilities.Where(
-                s => s.StageId == stageId && s.Version == version
-            ).OrderByDescending(o => o.CreateDate)
-            .Include(s => s.Stage)
-            .FirstOrDefault();
-
+            var model = _context.ProductInfrigmentPatentabilities.Where(s => s.Version == version).GetLatestVersion(_projectId);
             var vm = _mapper.Map<ProductInfrigmentPatentabilityViewModel>(model);
             return vm;
         }
