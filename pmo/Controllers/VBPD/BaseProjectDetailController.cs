@@ -38,10 +38,10 @@
                         o.CreateDate
                 ).FirstOrDefault();
 
-            this._displayGateDecisions = gate?.Decision == GateDecisionType.PendingDecision || gate? .Decision == GateDecisionType.OnHold || gate?.Decision== GateDecisionType.Closed;
+            this._displayGateDecisions = gate?.Decision == GateDecisionType.PendingDecision || gate?.Decision == GateDecisionType.OnHold || gate?.Decision == GateDecisionType.Closed;
             this._activeStageNavs = activeStage == null ? new List<ActiveNav>() : GetActiveStageNavs(activeStage);
             this._activeGateNavs = gate == null ? new List<ActiveNav>() : GetActiveGateNavs(gate);
-            this._projectState =(int)_context.ProjectStateHistories.Where(p => p.ProjectId == _projectId).OrderByDescending(d => d.CreateDate).First().ProjectState;
+            this._projectState = (int)_context.ProjectStateHistories.Where(p => p.ProjectId == _projectId).OrderByDescending(d => d.CreateDate).First().ProjectState;
             this._nav = new ProjectDetailNav(_context, _mapper, _projectId);
         }
 
@@ -66,99 +66,92 @@
                 .Count();
 
             var commonPath = $"/vbpd-projects/{this._projectId}/stages/{activeStage.StageNumber}";
-
-            var vals = new List<ActiveNav>() {
+            return new List<ActiveNav>() {
                     new ActiveNav {
                         Component = "Technical Feasibility & Scope",
                         IsComplete = activeStageConfig.MinProjectJustifications <= 0 || (activeStage.ProjectJustificationHistory.Count > 0 && activeStage.ProjectJustificationHistory.Max(m => m.Version) >= activeStageConfig.MinProjectJustifications),
                         Url = $"{commonPath}/project-justification/edit",
                         Version = activeStage.ProjectJustificationHistory.Count == 0 ? 0 : activeStage.ProjectJustificationHistory.Max(m => m.Version),
+                        Visible = activeStageConfig.MinProjectJustifications > 0,
                     },
                     new ActiveNav {
                         Component = "Business Cases",
                         IsComplete = activeStageConfig.MinBusinessCases <= 0 || (activeStage.BusinessCaseHistory.Count > 0 && activeStage.BusinessCaseHistory.Max(m => m.Version) >= activeStageConfig.MinBusinessCases),
                         Url = $"{commonPath}/business-case/edit",
                         Version = activeStage.BusinessCaseHistory.Count == 0 ? 0 : activeStage.BusinessCaseHistory.Max(m => m.Version),
+                        Visible = activeStageConfig.MinBusinessCases > 0,
                     },
                     new ActiveNav {
                         Component = "Product Infrigment Patentabilities",
                         IsComplete = activeStageConfig.MinProductInfringementPatentabilities <= 0 || (activeStage.ProductInfrigmentPatentabilityHistory.Count > 0 && activeStage.ProductInfrigmentPatentabilityHistory.Max(m => m.Version) >= activeStageConfig.MinProductInfringementPatentabilities),
                         Url = $"{commonPath}/product-infrigment-patentability/edit",
                         Version = activeStage.ProductInfrigmentPatentabilityHistory.Count == 0 ? 0 : activeStage.ProductInfrigmentPatentabilityHistory.Max(m => m.Version),
+                        Visible = activeStageConfig.MinProductInfringementPatentabilities > 0,
                     },
                     new ActiveNav {
                         Component = "Key Characteristics",
                         IsComplete = activeStageConfig.MinKeyCharacteristics <= 0 || (activeStage.KeyCharacteristicHistory.Count > 0 && activeStage.KeyCharacteristicHistory.Max(m => m.Version) >= activeStageConfig.MinKeyCharacteristics),
                         Url = $"{commonPath}/key-characteristic/edit",
                         Version = activeStage.KeyCharacteristicHistory.Count == 0 ? 0 : activeStage.KeyCharacteristicHistory.Max(m => m.Version),
+                        Visible = activeStageConfig.MinKeyCharacteristics > 0,
                     },
                     new ActiveNav {
                         Component = "Customer Design Approvals",
                         IsComplete = activeStageConfig.MinCustomerDesignApprovals <= 0 || (activeStage.CustomerDesignApprovalHistory.Count > 0 && activeStage.CustomerDesignApprovalHistory.Max(m => m.Version) >= activeStageConfig.MinCustomerDesignApprovals),
                         Url = $"{commonPath}/customer-design-approval/edit",
                         Version = activeStage.CustomerDesignApprovalHistory.Count == 0 ? 0 : activeStage.CustomerDesignApprovalHistory.Max(m => m.Version),
+                        Visible = activeStageConfig.MinCustomerDesignApprovals > 0,
                     },
                     new ActiveNav {
                         Component = "Investment Plans",
                         IsComplete = activeStageConfig.MinInvestmentPlans <= 0 || (activeStage.InvestmentPlanHistory.Count > 0 && activeStage.InvestmentPlanHistory.Max(m => m.Version) >= activeStageConfig.MinInvestmentPlans),
                         Url = $"{commonPath}/investment-plan/edit",
                         Version = activeStage.InvestmentPlanHistory.Count == 0 ? 0 : activeStage.InvestmentPlanHistory.Max(m => m.Version),
+                        Visible = activeStageConfig.MinInvestmentPlans > 0,
                     },
                     new ActiveNav {
                         Component = "Product Intro Checklist",
                         IsComplete = activeStageConfig.MinProductIntroChecklist <= 0 || (activeStage.ProductIntroChecklistHistory.Count > 0 && activeStage.ProductIntroChecklistHistory.Max(m => m.Version) >= activeStageConfig.MinProductIntroChecklist),
                         Url = $"{commonPath}/product-intro-checklist/edit",
                         Version = activeStage.ProductIntroChecklistHistory.Count == 0 ? 0 : activeStage.ProductIntroChecklistHistory.Max(m => m.Version),
-                    },new ActiveNav {
+                        Visible = activeStageConfig.MinProductIntroChecklist > 0,
+                    },
+                    new ActiveNav {
                         Component = "Post Launch Review",
                         IsComplete = activeStageConfig.MinPostLaunchReviews <= 0 || (activeStage.PostLaunchReviewHistory.Count > 0 && activeStage.PostLaunchReviewHistory.Max(m => m.Version) >= activeStageConfig.MinPostLaunchReviews),
                         Url = $"{commonPath}/post-launch-review/edit",
                         Version = activeStage.PostLaunchReviewHistory.Count == 0 ? 0 : activeStage.PostLaunchReviewHistory.Max(m => m.Version),
+                        Visible = activeStageConfig.MinPostLaunchReviews > 0,
                     },
-                };
-
-
-
-            // only display schedules if configs permit
-            if (countScheduleConfigs > 0) {
-                vals.Add(
                     new ActiveNav {
                         Component = "Schedules",
                         IsComplete = activeStage.Schedules.Count == countScheduleConfigs,
                         Url = $"{commonPath}/schedules/edit",
-                    });
-            }
-
-            // only display if files are meant for this stage
-            if (countStageFileConfigs > 0) {
-                vals.Add(
+                        Visible = countScheduleConfigs > 0,
+                    },
                     new ActiveNav {
                         Component = "Files",
                         IsComplete = activeStage.Files.Count == countStageFileConfigs,
                         Url = $"{commonPath}/files/edit",
-                    });
-            }
-
-            // only allow risk analysis insert if configs say so
-            if (activeStageConfig.AllowInsertRiskAssesments) {
-                vals.Add(
+                        Visible = countStageFileConfigs > 0,
+                    },
                     new ActiveNav {
                         Component = "Risks",
                         IsComplete = true,
-                        Url = $"{commonPath}/risk"
-                    });
-            }
-
-            return vals;
+                        Url = $"{commonPath}/risk",
+                        Visible = activeStageConfig.AllowInsertRiskAssesments,
+                    },
+                };
         }
 
-        private List<ActiveNav> GetActiveGateNavs (Gate activeGate) {
+        private List<ActiveNav> GetActiveGateNavs(Gate activeGate) {
             // single edit page for time being
             return new List<ActiveNav>() {
                 new ActiveNav {
                     IsComplete = activeGate.Decision == GateDecisionType.PendingDecision,
                     Component = "Edit Gate",
                     Url = $"/vbpd-projects/{this._projectId}/gates/edit",
+                    Visible = true,
                 }
             };
         }
@@ -166,10 +159,6 @@
         public override void OnActionExecuting(ActionExecutingContext filterContext) {
             ViewData["ProjectNav"] = _nav;
             ViewData["ActiveStageNavs"] = _activeStageNavs;
-            bool showMoveToGateBtn = _activeStageNavs
-                .FirstOrDefault(f => !f.IsComplete) == null &&
-                _activeStageNavs.Count > 0;
-            ViewData["DisplayMoveToGate"] = showMoveToGateBtn;
             ViewData["ActiveGateNavs"] = _activeGateNavs;
             ViewData["DisplayGateDecisions"] = this._displayGateDecisions;
             ViewData["ProjectState"] = _projectState;

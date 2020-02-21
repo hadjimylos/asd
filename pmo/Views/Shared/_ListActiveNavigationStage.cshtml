@@ -2,21 +2,22 @@
 @{
     var activeStageNavs = (List<ActiveNav>)ViewBag.ActiveStageNavs;
     var activeGateNavs = (List<ActiveNav>)ViewBag.ActiveGateNavs;
+
+    bool showMoveToGateBtn = activeStageNavs
+                .FirstOrDefault(f => !f.IsComplete && f.Visible) == null &&
+                activeStageNavs.Count > 0;
 }
 
 <div class="nav-section active">
-    @if (activeStageNavs.Count > 0)
-    {
+    @if (activeStageNavs.Count > 0) {
         <div class="item-wrapper">
             <div class="descrip">Stage @Model.ActiveStageNumber</div>
         </div>
         <div class="nav-section-items">
             <div class="nav-section-items">
-                @foreach (var nav in activeStageNavs)
-                {
+                @foreach (var nav in activeStageNavs.Where(w => w.Visible).ToList()) {
                     var activeClass = nav.IsComplete ? "completed" : "pending";
                     var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
-                    var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
 
                     <div class="nav @activeClass">
                         <a class="item-wrapper" href="@nav.Url">
@@ -27,8 +28,7 @@
                         </a>
                     </div>
                 }
-                @if ((bool)ViewBag.DisplayMoveToGate)
-                {
+                @if (showMoveToGateBtn) {
                     <form method="post" class="actions" action="/vbpd-projects/@Model.ProjectId/gates/move-to-gate">
                         @Html.AntiForgeryToken()
                         <input type="submit" class="btn green" value="Move to Gate" />
@@ -37,15 +37,13 @@
             </div>
         </div>
     }
-    else
-    {
+    else {
         <div class="item-wrapper">
             <div class="descrip">Gate @Model.ActiveStageNumber</div>
         </div>
         <div class="nav-section-items">
             <div class="nav-section-items">
-                @foreach (var nav in activeGateNavs)
-                {
+                @foreach (var nav in activeGateNavs.Where(w => w.Visible).ToList()) {
                     var activeClass = nav.IsComplete ? "completed" : "pending";
                     var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
                     var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
@@ -60,12 +58,9 @@
                         </a>
                     </div>
                 }
-            <div class="actions">
-                @{
-                    @if ((bool)ViewBag.DisplayGateDecisions)
-                    {
-                        if (ViewData["ProjectState"].ToString() == "1")
-                        {
+                <div class="actions">
+                    @if ((bool)ViewBag.DisplayGateDecisions) {
+                        if (ViewData["ProjectState"].ToString() == "1") {
                             <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Go" />
@@ -79,20 +74,17 @@
                                 <input type="submit" class="btn red" value="Close" />
                             </form>
                         }
-                        else if (ViewData["ProjectState"].ToString() == "2")
-                        {
+                        else if (ViewData["ProjectState"].ToString() == "2") {
                             <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Remove Hold" />
                             </form>
                         }
-                        else
-                        {
+                        else {
                             <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Unkill" />
                             </form>
-                            }
                         }
                     }
                 </div>
