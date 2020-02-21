@@ -119,14 +119,11 @@
             // create new stage
             _context.Stages.Add(new Stage {
                 ProjectId = _projectId,
-                StageNumber = _currentGate.GateConfig.GateNumber+1,
+                StageNumber = _currentGate.GateConfig.GateNumber + 1,
             });
 
             // add project state history
-            _context.ProjectStateHistories.Add(new ProjectStateHistory {
-                ProjectId = _projectId,
-                ProjectState = ProjectState.Go,
-            });
+            this.ChangeProjectState(ProjectState.Go);
 
             _context.SaveChanges();
 
@@ -138,24 +135,16 @@
         [HttpPost]
         //Remove Close && add Close  --> both handle here
         public IActionResult Close() {
-            if (_currentGate.Decision == GateDecisionType.Closed) // Reopen project  
-            {
+            if (_currentGate.Decision == GateDecisionType.Closed) {
+                // Reopen project  
                 _currentGate.Decision = GateDecisionType.PendingDecision;
-                _context.ProjectStateHistories.Add(new ProjectStateHistory
-                {
-                    ProjectId = _projectId,
-                    ProjectState = ProjectState.Go,
-                });
+                this.ChangeProjectState(ProjectState.Go);
                 _context.SaveChanges();
             }
-            else //close project
-            {
+            else {
+                //close project
                 _currentGate.Decision = GateDecisionType.Closed;
-                _context.ProjectStateHistories.Add(new ProjectStateHistory
-                {
-                    ProjectId = _projectId,
-                    ProjectState = ProjectState.Closed,
-                });
+                this.ChangeProjectState(ProjectState.Closed);
                 _context.SaveChanges();
             }
             return Redirect($"/vbpd-projects/{_projectId}");
@@ -166,27 +155,26 @@
         [HttpPost]
         //Remove Hold && add On Hold  --> both handle here
         public IActionResult AddRemoveHold() {
-            if (_currentGate.Decision == GateDecisionType.OnHold) // remove hold from project 
-            {
+            if (_currentGate.Decision == GateDecisionType.OnHold) {
+                // remove hold from project 
                 _currentGate.Decision = GateDecisionType.PendingDecision;
-                _context.ProjectStateHistories.Add(new ProjectStateHistory
-                {
-                    ProjectId = _projectId,
-                    ProjectState = ProjectState.Go,
-                });
+                this.ChangeProjectState(ProjectState.Go);
                 _context.SaveChanges();
             }
-            else //add on hold on project
-            {
+            else  {
+                //add on hold on project
                 _currentGate.Decision = GateDecisionType.OnHold;
-                _context.ProjectStateHistories.Add(new ProjectStateHistory
-                {
-                    ProjectId = _projectId,
-                    ProjectState = ProjectState.OnHold,
-                });
+                this.ChangeProjectState(ProjectState.OnHold);
                 _context.SaveChanges();
             }
             return Redirect($"/vbpd-projects/{_projectId}");
+        }
+
+        private void ChangeProjectState(ProjectState projectState) {
+            _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                ProjectId = _projectId,
+                ProjectState = projectState,
+            });
         }
     }
 }
