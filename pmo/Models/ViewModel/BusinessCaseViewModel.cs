@@ -15,7 +15,7 @@ namespace ViewModels
         public List<BusinessCaseViewModel> Versions { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
 
-        public List<FinancialDataViewModel> FinancialData { get; set; }
+        public List<FinancialDataViewModel> FinancialDataViewModel { get; set; }
 
 
         public new int StageId { get; set; }

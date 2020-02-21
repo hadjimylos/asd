@@ -1,6 +1,89 @@
 ﻿@model List<FinancialDataViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Details";
     Layout = "_VbpdProjectDetailLayout";
+}
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1>Financial Data</h1>
+        </div>
+        <div class="actions">
+            <div class="action"><a type="button" class="btn green" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/business-case/@ViewBag.BusinessCaseId/financial-data/edit">Edit</a></div>
+
+        </div>
+    </div>
+</div>
+ 
+@if (Model.Count > 0)
+{
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Year</div>
+                <div>Quantity</div>
+                <div>Std Cost (Estimated)</div>
+                <div>Sales Price (Estimated)</div>
+                <div>Cost Extended</div>
+                <div>Revenue Extended</div>
+                <div>Std Margin (Estimated $)</div>
+                <div>Std Margin (Estimated %)</div>
+            </div>
+            <div class="items">
+                @foreach (var item in Model)
+                {
+                    <div class="item">
+                        <div class="item-wrapper">
+
+                            <div>@(item.Totals ? "Total:" : item.Year.ToString())</div>
+                            <div>@item.Quantity</div>
+                            <div>@(item.Totals ? "-" : item.StdCostEstimated.ToString())</div>
+                            <div>@(item.Totals ? "-" : item.SalesCostEstimated.ToString())</div>
+                            <div>@item.CostExtended</div>
+                            <div>@item.RevenueExtended</div>
+                            <div>@item.StdMarginEstimatedDollar</div>
+                            <div>@item.StdMarginEstimatedPercent</div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Year</div>
+                <div>GPA Capital</div>
+                <div>GPA Expense</div>
+                <div>Qual Costs</div>
+                <div>Other development Extended</div>
+                <div>Total Expenses</div>
+            </div>
+            <div class="items">
+                @foreach (var item in Model)
+                {<div class="item">
+                    <div class="item-wrapper">
+                        
+                            <div>@(item.Totals ? "Total:" : item.Year.ToString())</div>
+                            <div>@item.GPACapital</div>
+                            <div>@item.GPAExpense</div>
+                            <div>@item.QualCosts</div>
+                            <div>@item.OtherDevelopmentExpenses</div>
+                            <div>@item.TotalExpenses</div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    @Html.Partial("_NoData")
 }

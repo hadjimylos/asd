@@ -44,5 +44,7 @@ namespace dbModels {
         public bool Changes { get; set; }
 
         public virtual List<BusinessCase_ManufacturingLocation> ManufacturingLocations { get; set; }
+        public virtual List<FinancialData> FinancialData { get; set; }
+
     }
 }

@@ -1,67 +1,103 @@
 ﻿@model List<FinancialDataViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Edit";
     Layout = "_VbpdProjectDetailLayout";
 }
-
-    
-
-    <div class="list-component">
-        <div class="wrapper">
-            <div class="title">
-                <div>Year</div>
-                <div>Quantity</div>
-                <div>Std Cost (Estimated)</div>
-                <div>Sales Price (Estimated)</div>               
-            </div>
-            <div class="items">
-                <div class="item-wrapper">
-                    <div>2000</div>
-
-                    <div class="field">
-                        <input type="number" class="data" />
-                    </div>
-                    <div class="field">
-                        <input type="number" class="data" />
-                    </div>
-                    <div class="field">
-                        <input type="number" class="data" />
-                    </div>                   
+    <form class="form-component" method="post" action="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/business-case/@ViewBag.BusinessCaseId/financial-data/edit">
+        @Html.AntiForgeryToken()
+        <div class="actions-component">
+            <div class="wrapper">
+                <div class="header">
+                    <h1>Financial Data</h1>
                 </div>
-
+                @*<div class="actions">
+                    @{ if (Model.Version > 0)
+                        { <div class="action"><a type="button" class="btn green" href="create-version">Add New Version</a></div>
+                        }
+                    }
+                </div>*@
             </div>
         </div>
-    </div>
 
-    <div class="list-component">
-        <div class="wrapper">
-            <div class="title">
-                <div>Year</div>               
-                <div>GPA Capital</div>
-                <div>GPA Expense</div>
-                <div>Qual Costs</div>
-                <div>Other Development Expenses</div>
-            </div>
-            <div class="items">
-                <div class="item-wrapper">
-                    <div>2000</div>
-
-                    <div class="field">
-                        <input type="number" class="data" />
-                    </div>
-                    <div class="field">
-                        <input type="number" class="data" />
-                    </div>
-                    <div class="field">
-                        <input type="number" class="data" />
-                    </div>
-                    <div class="field">
-                        <input type="number" class="data" />
-                    </div>
-                  
+        <div class="list-component">
+            <div class="wrapper">
+                <div class="title">
+                    <div>Year</div>
+                    <div>Quantity</div>
+                    <div>Std Cost (Estimated)</div>
+                    <div>Sales Price (Estimated)</div>
                 </div>
+                <div class="items">
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <div>
+                                <div class="label">@Model[i].Year</div>
+                                <input type="hidden" asp-for="@Model[i].Year" />
+                                <input type="hidden" asp-for="@Model[i].Id" />
 
-            </div>
+                                <input type="hidden" asp-for="@Model[i].BusinessCaseId" value="@ViewBag.BusinessCaseId" />
+                            </div>
+
+                            <div class="field">
+                                <input type="number" class="data" asp-for="@Model[i].Quantity" />
+                            </div>
+                            <div class="field">
+                                <input type="number" class="data" asp-for="@Model[i].StdCostEstimated" />
+                            </div>
+                            <div class="field">
+                                <input type="number" class="data" asp-for="@Model[i].SalesCostEstimated" />
+                            </div>
+                        </div>
+                    </div>
+                            }
+
+                        </div>
+                    </div>
         </div>
-    </div>
+
+        <div class="list-component">
+            <div class="wrapper">
+                <div class="title">
+                    <div>Year</div>
+                    <div>GPA Capital</div>
+                    <div>GPA Expense</div>
+                    <div>Qual Costs</div>
+                    <div>Other Development Expenses</div>
+                </div>
+                <div class="items">
+                    @for (int i = 0; i < Model.Count; i++){
+                    <div class="item">
+                        
+                        <div class="item-wrapper">
+                            <div>
+                                <div class="label">@Model[i].Year</div>
+                            </div>
+
+                            <div class="field">
+                                <input type="number" class="data" asp-for="@Model[i].GPACapital" />
+                            </div>
+                            <div class="field">
+                                <input type="number" class="data" asp-for="@Model[i].GPAExpense" />
+                            </div>
+                            <div class="field">
+                                <input type="number" class="data" asp-for="@Model[i].QualCosts" />
+                            </div>
+                            <div class="field">
+                                <input type="number" class="data" asp-for="@Model[i].OtherDevelopmentExpenses" />
+                            </div>
+
+                        </div>
+                    </div>
+                            }
+                        </div>
+                </div>
+        </div>
+
+
+        <div class="field">
+            <input type="submit" class="data btn" value="SUBMIT" />
+        </div>
+    </form>

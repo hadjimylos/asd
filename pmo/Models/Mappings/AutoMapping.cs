@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dbModels;
+using System.Collections.Generic;
 using ViewModels;
 
 namespace pmo.Models.Mappings
@@ -30,6 +31,7 @@ namespace pmo.Models.Mappings
             CreateMap<ProjectJustification, ProjectJustificationViewModel>().ReverseMap();
             CreateMap<Gate, GateViewModel>().ReverseMap();
             CreateMap<PostLaunchReview, PostLaunchReviewViewModel>().ReverseMap();
+            CreateMap<FinancialData, FinancialDataViewModel>().ReverseMap();
 
             // stage subclasses
             CreateMap<ProjectJustificationNav, ProjectJustification>().ReverseMap();

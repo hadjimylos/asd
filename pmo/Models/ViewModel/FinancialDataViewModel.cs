@@ -26,20 +26,7 @@ namespace ViewModels
         public decimal FreeCashFlow { get; set; }
         public decimal PresentValue { get; set; }
         public decimal CumulativeCashFlow { get; set; }
-        public string YearAsString
-        {
-            get
-            {
-                if (Year != 0)
-                {
-                    return Year.ToString();
-                }
-                else
-                {
-                    return "Total";
-                }
-            }
-        }
+
 
 
     }

@@ -28,7 +28,8 @@ namespace pmo.Controllers
             ViewBag.ProjectId = projectId;
             ViewBag.StageId = _stageId;
             List<SchedulesViewModel> viewModel = new List<SchedulesViewModel>();
-            var model = _context.Schedules.Include(x => x.Stage).Include(x => x.ScheduleType).ToList();
+            //TODO: Fix possible error
+            var model = _context.Schedules.Include(x => x.Stage).Include(x => x.ScheduleType).Where(x=>x.StageId==_stageId).ToList();
             var stage = _context.Stages.Find(_stageId);
             var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stage.StageNumber).ToList();
 
@@ -141,8 +142,7 @@ namespace pmo.Controllers
 
             if (model.Count > 0)
             {
-                var modelToUpdate = _mapper.Map<List<Schedule>>(viewModel);
-                foreach (var item in _mapper.Map<List<Schedule>>(viewModel))
+                foreach (var item in viewModel)
                 {
                     if (item.Id!=0)
                     {
