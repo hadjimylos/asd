@@ -38,7 +38,8 @@ namespace pmo.Controllers
                 .IncludeAll()
                 .Where(
                     w =>
-                        w.GateNumber == _stageNumber
+                        w.GateNumber == _stageNumber &&
+                        w.Gate.ProjectId == _projectId
                 ).ToList();
 
             return View($"{path}/Edit.cshtml", model);

@@ -1,6 +1,6 @@
 ﻿namespace ViewModels {
     public class ActiveNav {
-        public bool IsComplete { get; set; }
+        public bool? IsComplete { get; set; }
         public string Url { get; set; }
         public string Component { get; set; }
         public int? Version { get; set; }

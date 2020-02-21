@@ -157,7 +157,6 @@
                     Visible = true,
                 },
                 new ActiveNav {
-                    IsComplete = activeGate.Decision == GateDecisionType.PendingDecision,
                     Component = "Gate Files",
                     Url = $"/vbpd-projects/{this._projectId}/stages/{stageNumber}/gate-files/edit",
                     Visible = true,

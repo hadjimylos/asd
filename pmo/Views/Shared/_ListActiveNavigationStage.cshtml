@@ -4,7 +4,8 @@
     var activeGateNavs = (List<ActiveNav>)ViewBag.ActiveGateNavs;
 
     bool showMoveToGateBtn = activeStageNavs
-                .FirstOrDefault(f => !f.IsComplete && f.Visible) == null &&
+                .Where(w => w.IsComplete != null)
+                .FirstOrDefault(f => !(bool)f.IsComplete && f.Visible) == null &&
                 activeStageNavs.Count > 0;
 }
 
@@ -16,8 +17,8 @@
         <div class="nav-section-items">
             <div class="nav-section-items">
                 @foreach (var nav in activeStageNavs.Where(w => w.Visible).ToList()) {
-                    var activeClass = nav.IsComplete ? "completed" : "pending";
-                    var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                    var activeClass = nav.IsComplete == null ? string.Empty : (bool)nav.IsComplete ? "completed" : "pending";
+                    var iconClass = nav.IsComplete == null ? string.Empty :  (bool)nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
 
                     <div class="nav @activeClass">
                         <a class="item-wrapper" href="@nav.Url">
@@ -44,8 +45,8 @@
         <div class="nav-section-items">
             <div class="nav-section-items">
                 @foreach (var nav in activeGateNavs.Where(w => w.Visible).ToList()) {
-                    var activeClass = nav.IsComplete ? "completed" : "pending";
-                    var iconClass = nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                    var activeClass = nav.IsComplete == null ? string.Empty :  (bool)nav.IsComplete ? "completed" : "pending";
+                    var iconClass = nav.IsComplete == null ? string.Empty :  (bool)nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
                     var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
 
                     <div class="nav @activeClass">

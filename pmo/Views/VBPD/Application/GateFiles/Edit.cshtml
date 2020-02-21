@@ -20,7 +20,6 @@
     <div class="list-component">
         <div class="wrapper">
             <div class="title">
-                <div>File Type</div>
                 <div>Download</div>
                 <div>Description</div>
                 <div>Created</div>
@@ -31,7 +30,6 @@
                 <div class="item">
                     @foreach (var upload in uploads) {
                         <div class="item-wrapper">
-                            <div>@upload.Description</div>
                             <a href="@upload.Url" target="_blank">
                                 <i class="fas fa-download"></i>
                             </a>
