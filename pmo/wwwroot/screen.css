@@ -40,8 +40,8 @@ body textarea {
   border: 1px solid #ced4da;
   border-radius: 3px;
   background-color: #ffffff;
-  background-clip: padding-box;
   padding: 0.375em 0.75em;
+  box-sizing: border-box;
   line-height: 1.5;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -58,6 +58,82 @@ body textarea {
   max-height: 500px;
   box-sizing: border-box;
   resize: none;
+}
+body .file-upload {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+body .file-upload + label {
+  font-family: inherit;
+  font-size: inherit;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  background-color: #ffffff;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+body .file-upload + label span {
+  padding: 0.375em 0.75em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+body .file-upload + label strong {
+  padding: 0.375em 0.75em;
+  color: #ffffff;
+  border-left: 1px solid #ced4da;
+  background-color: #00859b;
+}
+body .file-upload + label:hover strong {
+  background-color: #006b7c;
+}
+body input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+}
+body input[type='checkbox'] + label {
+  font-family: inherit;
+  font-size: inherit;
+  color: #495057;
+  line-height: 1.5;
+  display: inline-block;
+  position: relative;
+  padding-left: 2em;
+}
+body input[type='checkbox'] + label:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 22px;
+  height: 22px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  background-color: #ffffff;
+}
+body input[type='checkbox']:checked + label:after {
+  font-family: 'Font Awesome 5 Free';
+  content: "\F00C";
+  font-size: 20px;
+  font-weight: 900;
+  color: #00859b;
+  position: absolute;
+  left: 2px;
+  top: -2px;
 }
 body .fields > .field:not(:first-child) {
   margin-top: 25px;
@@ -876,6 +952,87 @@ body h3 {
 .validation-page-component .wrapper .validation .actions .action-wrapper .btn:not(:first-child) {
   margin-left: 8px;
 }
+.message-component .wrapper {
+  padding: 4em 2em;
+}
+.message-component .wrapper .message {
+  text-align: center;
+}
+.message-component .wrapper .message .title {
+  font-size: 3.5em;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 0.25em;
+}
+.message-component .wrapper .message .text {
+  font-size: 1.25em;
+  font-weight: 100;
+  margin-bottom: 0.5em;
+}
+.message-component .wrapper .message .icon {
+  font-size: 36px;
+  color: rgba(0, 0, 0, 0.2);
+}
+.input-table-component .wrapper {
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 2px 0px #bcc3ca;
+}
+.input-table-component .wrapper .postback-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.input-table-component .wrapper .postback-field .post-paths {
+  display: none;
+}
+.input-table-component .wrapper .postback-field .postback-wrapper {
+  width: 300px;
+}
+.input-table-component .wrapper .postback-field .postback-wrapper .num-fields-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.input-table-component .wrapper .titles {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #dee2e6;
+}
+.input-table-component .wrapper .titles .title:first-child {
+  width: 60px;
+}
+.input-table-component .wrapper .titles .title {
+  font-family: Roboto-Black;
+  font-size: 16px;
+  font-weight: 900;
+  color: #677078;
+  padding: 14px 10px;
+  user-select: none;
+}
+.input-table-component .wrapper .rows .row {
+  padding: 10px;
+  box-sizing: border-box;
+}
+.input-table-component .wrapper .rows .row .fields {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.input-table-component .wrapper .rows .row .fields .field:first-child {
+  width: 60px;
+}
+.input-table-component .wrapper .rows .row .fields .field {
+  margin-top: unset;
+}
+.input-table-component .wrapper .rows .row .fields .field .descrip {
+  padding: 0.375em 0.75em;
+  box-sizing: border-box;
+  line-height: 1.5;
+  padding-left: unset;
+}
+.input-table-component .wrapper .rows .row .fields .field .errors {
+  margin: unset;
+}
 .daterangepicker {
   position: absolute;
   color: inherit;
@@ -1245,8 +1402,7 @@ body h3 {
   height: auto;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-  padding-top: 0.375em;
-  padding-bottom: 0.375em;
+  padding: 0.375em 2.25em 0.375em 0.75em;
   line-height: 1.5;
 }
 .select2-container--default .select2-selection--single .select2-selection__arrow {
@@ -1258,9 +1414,7 @@ body h3 {
   border-left: 1px solid #ced4da;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-  padding-left: 0.75em;
-  padding-right: 0.75em;
-  padding-bottom: 0.375em;
+  padding: 0 0.75em 0.375em 0.75em;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
   background-color: #f5f6f7;

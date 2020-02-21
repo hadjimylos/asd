@@ -130,6 +130,17 @@ eval("// use jquery\nvar $ = __webpack_require__(/*! jquery */ \"./node_modules/
 
 /***/ }),
 
+/***/ "./front_end/js/components/fileupload.js":
+/*!***********************************************!*\
+  !*** ./front_end/js/components/fileupload.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("var components = document.querySelectorAll('.file-upload');\nvar hasComponents = components.length > 0;\n\nif (hasComponents) {\n  components.forEach(function (component) {\n    var label = component.nextElementSibling;\n    var labelVal = label.innerHTML; // set event listeners\n\n    component.addEventListener(\"change\", function (e) {\n      var fileName = ''; // if you want multiple file support\n      // add this:\n      // data-multiple-caption=\"{count} files selected\" multiple\n      // to the html element\n\n      if (component.files && component.files.length > 1) fileName = (component.getAttribute('data-multiple-caption') || '').replace('{count}', component.files.length);else fileName = e.target.value.split('\\\\').pop();\n      if (fileName) label.querySelector('span').innerHTML = fileName;else label.innerHTML = labelVal;\n    });\n  });\n}\n\n//# sourceURL=webpack:///./front_end/js/components/fileupload.js?");
+
+/***/ }),
+
 /***/ "./front_end/js/components/historyform.js":
 /*!************************************************!*\
   !*** ./front_end/js/components/historyform.js ***!
@@ -138,6 +149,17 @@ eval("// use jquery\nvar $ = __webpack_require__(/*! jquery */ \"./node_modules/
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n\nvar components = document.querySelectorAll('.historyform-component');\nvar hasComponents = components.length > 0;\n\nif (hasComponents) {\n  components.forEach(function (component) {\n    // shared variables\n    var historyDropdown = component.querySelector('.select-history');\n    var versionClass = '.versioning-section .versions .version'; // populate by default active\n\n    var currentActives = component.querySelectorAll(\"\".concat(versionClass, \".active\"));\n\n    if (currentActives.length > 0) {\n      // only keep 1st active and remove the rest\n      for (i = 1; i < currentActives.length; i++) {\n        currentActives[i].classList.remove('active');\n      } // set active in dropdown of selection\n\n\n      var valueOfActive = currentActives[0].attributes.showversion.value;\n      historyDropdown.value = valueOfActive;\n    } // add event listeners\n\n\n    $(historyDropdown).on('change', function (e) {\n      var versions = component.querySelectorAll(\"\".concat(versionClass, \".active\"));\n      versions.forEach(function (activeVersion) {\n        activeVersion.classList.remove('active');\n      });\n      var selectedValue = e.currentTarget.value;\n\n      if (selectedValue === 'clear') {\n        return;\n      } else if (selectedValue === 'all') {\n        var newActives = component.querySelectorAll(versionClass);\n        newActives.forEach(function (newActive) {\n          newActive.classList.add('active');\n        });\n      } else {\n        var newActive = component.querySelector(\"\".concat(versionClass, \"[showversion=\\\"\").concat(selectedValue, \"\\\"]\"));\n        newActive.classList.add('active');\n      }\n    });\n  });\n}\n\n//# sourceURL=webpack:///./front_end/js/components/historyform.js?");
+
+/***/ }),
+
+/***/ "./front_end/js/components/input-table.js":
+/*!************************************************!*\
+  !*** ./front_end/js/components/input-table.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("var components = document.querySelectorAll('.input-table-component');\nvar hasComponents = components.length > 0;\n\nif (hasComponents) {\n  submitForm = function submitForm(component, postPathSelector) {\n    var postPath = component.querySelector(postPathSelector).innerText;\n    component.action = postPath;\n    component.submit();\n  };\n\n  components.forEach(function (component) {\n    // add fields and titles widths dynamically:\n    var titles = component.querySelector('.titles');\n    var titlesCount = titles.querySelectorAll('.title').length;\n    titles.classList.add(\"by-\".concat(titlesCount));\n    component.querySelectorAll('.fields').forEach(function (fields) {\n      fields.classList.add(\"by-\".concat(titlesCount));\n    }); // check to see if dynamic rows input is present\n\n    var hasPostback = component.querySelectorAll('.postback-field').length > 0;\n\n    if (hasPostback) {\n      component.querySelectorAll('.refresh-rows').forEach(function (refresh) {\n        refresh.addEventListener('click', function (e) {\n          submitForm(component, '.post-refresh');\n        });\n      });\n      component.querySelectorAll('.save-submit').forEach(function (refresh) {\n        refresh.addEventListener('click', function (e) {\n          submitForm(component, '.post-save');\n        });\n      });\n    }\n  });\n}\n\n//# sourceURL=webpack:///./front_end/js/components/input-table.js?");
 
 /***/ }),
 
@@ -236,7 +258,7 @@ eval("// support Array.prototype.includes\nif (!Array.prototype.includes) {\n  O
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// import all used css here:\n// e.g. require('./toggle.js');\n__webpack_require__(/*! ./global/pollyfills */ \"./front_end/js/global/pollyfills.js\");\n\n__webpack_require__(/*! ./global/generic */ \"./front_end/js/global/generic.js\");\n\n__webpack_require__(/*! ./global/maintain-browser-position */ \"./front_end/js/global/maintain-browser-position.js\");\n\n__webpack_require__(/*! ./components/dropdown */ \"./front_end/js/components/dropdown.js\");\n\n__webpack_require__(/*! ./components/toggle-default-leave */ \"./front_end/js/components/toggle-default-leave.js\");\n\n__webpack_require__(/*! ./components/displayone */ \"./front_end/js/components/displayone.js\");\n\n__webpack_require__(/*! ./components/select-calendar */ \"./front_end/js/components/select-calendar.js\");\n\n__webpack_require__(/*! ./components/checkbox-toggle */ \"./front_end/js/components/checkbox-toggle.js\");\n\n__webpack_require__(/*! ./components/historyform */ \"./front_end/js/components/historyform.js\");\n\n__webpack_require__(/*! ./components/nav-left */ \"./front_end/js/components/nav-left.js\");\n\n__webpack_require__(/*! ./components/list */ \"./front_end/js/components/list.js\");\n\n__webpack_require__(/*! ./components/sidenav-checklist */ \"./front_end/js/components/sidenav-checklist.js\");\n\n//# sourceURL=webpack:///./front_end/js/main.js?");
+eval("// import all used css here:\n// e.g. require('./toggle.js');\n__webpack_require__(/*! ./global/pollyfills */ \"./front_end/js/global/pollyfills.js\");\n\n__webpack_require__(/*! ./global/generic */ \"./front_end/js/global/generic.js\");\n\n__webpack_require__(/*! ./global/maintain-browser-position */ \"./front_end/js/global/maintain-browser-position.js\");\n\n__webpack_require__(/*! ./components/dropdown */ \"./front_end/js/components/dropdown.js\");\n\n__webpack_require__(/*! ./components/toggle-default-leave */ \"./front_end/js/components/toggle-default-leave.js\");\n\n__webpack_require__(/*! ./components/displayone */ \"./front_end/js/components/displayone.js\");\n\n__webpack_require__(/*! ./components/select-calendar */ \"./front_end/js/components/select-calendar.js\");\n\n__webpack_require__(/*! ./components/checkbox-toggle */ \"./front_end/js/components/checkbox-toggle.js\");\n\n__webpack_require__(/*! ./components/historyform */ \"./front_end/js/components/historyform.js\");\n\n__webpack_require__(/*! ./components/nav-left */ \"./front_end/js/components/nav-left.js\");\n\n__webpack_require__(/*! ./components/list */ \"./front_end/js/components/list.js\");\n\n__webpack_require__(/*! ./components/sidenav-checklist */ \"./front_end/js/components/sidenav-checklist.js\");\n\n__webpack_require__(/*! ./components/fileupload */ \"./front_end/js/components/fileupload.js\");\n\n__webpack_require__(/*! ./components/input-table */ \"./front_end/js/components/input-table.js\");\n\n//# sourceURL=webpack:///./front_end/js/main.js?");
 
 /***/ }),
 
