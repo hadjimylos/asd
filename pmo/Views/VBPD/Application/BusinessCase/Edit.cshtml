@@ -11,10 +11,7 @@
     2)     WorkRequired attachment
 
 *@
-
-
-
-<form class="historyform-component" method="post" action="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageNumber/business-case/edit">
+<form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@ViewBag.CurrentStageNumber/business-case/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="form-section">

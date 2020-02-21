@@ -30,11 +30,10 @@ namespace pmo.Controllers.Application.History
         [Route("edit")]
         public IActionResult Edit()
         {
-            ViewBag.StageNumber = _stageNumber;
-            ViewBag.ProjectId = _projectId;
             // always populate latest version in edit
             var latestSavedVersion = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
+            ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (latestSavedVersion == null)
             {
                 var vm = new InvestmentPlanViewModel()

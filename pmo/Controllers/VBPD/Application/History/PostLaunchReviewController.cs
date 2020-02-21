@@ -28,12 +28,12 @@ namespace pmo.Controllers
 
         [Route("edit")]
         public IActionResult Edit()
-        {
-            ViewBag.StageNumber = _stageNumber;
-            ViewBag.ProjectId = _projectId;
+        {         
             // always populate latest version in edit
             var currentVersion = _context.PostLaunchReviews.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
+            ViewBag.CurrentStageNumber = currentStage.StageNumber;
+
             if (currentVersion == null)
             {
                 var vm = new PostLaunchReviewViewModel()
@@ -45,8 +45,8 @@ namespace pmo.Controllers
 
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            var model = GetViewModel( currentVersion.Version);
-            model.Versions = GetVersionHistory(currentStage.Id);
+            var model = GetViewModel(currentVersion.Version);
+            model.Versions = GetVersionHistory();
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
@@ -62,7 +62,7 @@ namespace pmo.Controllers
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = currentStage;
-                vm.Versions = GetVersionHistory(currentStage.Id);
+                vm.Versions = GetVersionHistory();
                 vm.Version = latestPLR == null ? 0 : latestPLR.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
@@ -149,10 +149,10 @@ namespace pmo.Controllers
             return vm;
         }
 
-        private List<PostLaunchReviewViewModel> GetVersionHistory(int stageId)
+        private List<PostLaunchReviewViewModel> GetVersionHistory()
         {
             var grouped = _context.PostLaunchReviews
-                .Where(w => w.StageId == stageId)
+                  .Include(s => s.Stage)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();

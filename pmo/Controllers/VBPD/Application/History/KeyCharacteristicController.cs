@@ -33,13 +33,10 @@ namespace pmo.Controllers
         [Route("edit")]
         public IActionResult Edit()
         {
-            ViewBag.StageNumber = _stageNumber;
-            ViewBag.ProjectId = _projectId;
-
             // always populate latest version in edit if not just an empty form
             var latestSavedVersion = _context.KeyCharacteristics.AsNoTracking().GetLatestVersion(_projectId);
-
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
+            ViewBag.CurrentStageNumber= currentStage.StageNumber;
             if (latestSavedVersion == null)
             {
                 var vm = new KeyCharacteristicViewModel()

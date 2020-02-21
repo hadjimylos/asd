@@ -35,12 +35,10 @@ namespace pmo.Controllers.Application.History
        
         [Route("edit")]
         public IActionResult Edit()
-        {
-            ViewBag.StageNumber = _stageNumber;
-            ViewBag.ProjectId = _projectId;
-
+        {          
             var latestSavedVersion = _context.CustomerDesignApprovals.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s => s.Id == _stageId);
+            ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (latestSavedVersion == null)
             {
                 var vm = new CustomerDesignApprovalViewModel()

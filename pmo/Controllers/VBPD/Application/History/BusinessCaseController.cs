@@ -29,14 +29,11 @@ namespace pmo.Controllers.VBPD.Application.History {
 
         [Route("edit")]
         public IActionResult Edit() {
-            // always populate latest version in edit if not just an empty form
-            ViewBag.StageNumber = _stageNumber;
-            ViewBag.ProjectId = _projectId;
 
+            // always populate latest version in edit if not just an empty form
             var latestSavedVersion = _context.BusinessCases.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
-
-
+            ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (latestSavedVersion == null) {
                 var vm = new BusinessCaseViewModel() {
                     StageId = currentStage.Id,

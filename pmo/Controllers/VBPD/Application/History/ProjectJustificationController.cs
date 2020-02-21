@@ -31,12 +31,9 @@ namespace pmo.Controllers
         [Route("edit")]
         public IActionResult Edit()
         {
-            ViewBag.StageNumber = _stageNumber;
-            ViewBag.ProjectId = _projectId;
             var currentVersion = _context.ProjectJustifications.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
-
-
+            ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (currentVersion == null)
             {
                 var vm = new ProjectJustificationViewModel()

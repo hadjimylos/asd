@@ -30,11 +30,11 @@ namespace pmo.Controllers {
         [Route("edit")]
         public IActionResult Edit()
         {
-            ViewBag.StageNumber = _stageNumber;
-            ViewBag.ProjectId = _projectId;
             var currentVersion = _context.ProductInfrigmentPatentabilities
                  .AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s=>s.Id==_stageId);
+            ViewBag.CurrentStageNumber = currentStage.StageNumber;
+
             if (currentVersion == null)
             {
                 var vm = new ProductInfrigmentPatentabilityViewModel()
