@@ -34,5 +34,7 @@ namespace dbModels
         public virtual GateConfig GateConfig { get; set; }
 
         public virtual List<GateKeeper> GateKeepers { get; set; }
+
+        public virtual List<GateFile> GateFiles { get; set; }
     }
 }

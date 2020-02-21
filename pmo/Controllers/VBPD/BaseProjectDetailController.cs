@@ -144,13 +144,22 @@
                 };
         }
 
-        private List<ActiveNav> GetActiveGateNavs(Gate activeGate) {
+
+        private List<ActiveNav> GetActiveGateNavs (Gate activeGate) {
+            var stageNumber = activeGate.GateConfig.GateNumber;
+
             // single edit page for time being
             return new List<ActiveNav>() {
                 new ActiveNav {
                     IsComplete = activeGate.Decision == GateDecisionType.PendingDecision,
                     Component = "Edit Gate",
                     Url = $"/vbpd-projects/{this._projectId}/gates/edit",
+                    Visible = true,
+                },
+                new ActiveNav {
+                    IsComplete = activeGate.Decision == GateDecisionType.PendingDecision,
+                    Component = "Gate Files",
+                    Url = $"/vbpd-projects/{this._projectId}/stages/{stageNumber}/gate-files/edit",
                     Visible = true,
                 }
             };
