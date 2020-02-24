@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200220103204_FinancialData")]
-    partial class FinancialData
+    [Migration("20200224135854_ManyToManySeedData")]
+    partial class ManyToManySeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -207,7 +207,7 @@ namespace pmo.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("SalesCostEstimated")
+                    b.Property<decimal>("SalesPriceEstimated")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("StdCostEstimated")
@@ -316,6 +316,38 @@ namespace pmo.Migrations
                             GateNumber = 5,
                             ModifiedByUser = "system"
                         });
+                });
+
+            modelBuilder.Entity("dbModels.GateFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GateNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GateId");
+
+                    b.ToTable("GateFiles");
                 });
 
             modelBuilder.Entity("dbModels.GateKeeper", b =>
@@ -617,9 +649,6 @@ namespace pmo.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("MitigationPlan")
                         .HasColumnType("nvarchar(max)");
 
@@ -635,14 +664,58 @@ namespace pmo.Migrations
                     b.Property<DateTime>("TargetDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RiskId");
 
                     b.ToTable("Mitigations");
+                });
+
+            modelBuilder.Entity("dbModels.PostLaunchReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActualVSExpected")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bottlenecks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Commercial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DonePoorly")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoneWell")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LessonsLearned")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("PostLaunchReviews");
                 });
 
             modelBuilder.Entity("dbModels.ProductInfrigmentPatentability", b =>
@@ -1305,6 +1378,9 @@ namespace pmo.Migrations
                     b.Property<int>("MinKeyCharacteristics")
                         .HasColumnType("int");
 
+                    b.Property<int>("MinPostLaunchReviews")
+                        .HasColumnType("int");
+
                     b.Property<int>("MinProductInfringementPatentabilities")
                         .HasColumnType("int");
 
@@ -1341,6 +1417,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 1,
@@ -1359,6 +1436,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 1,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 0,
@@ -1377,6 +1455,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 1,
                             MinKeyCharacteristics = 1,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 1,
                             MinProductIntroChecklist = 1,
                             MinProjectJustifications = 0,
@@ -1395,6 +1474,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 0,
@@ -1413,6 +1493,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 1,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 0,
@@ -7506,7 +7587,7 @@ namespace pmo.Migrations
             modelBuilder.Entity("dbModels.FinancialData", b =>
                 {
                     b.HasOne("dbModels.BusinessCase", "BusinessCase")
-                        .WithMany()
+                        .WithMany("FinancialData")
                         .HasForeignKey("BusinessCaseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -7525,6 +7606,14 @@ namespace pmo.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("dbModels.GateFile", b =>
+                {
+                    b.HasOne("dbModels.Gate", "Gate")
+                        .WithMany("GateFiles")
+                        .HasForeignKey("GateId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("dbModels.GateKeeper", b =>
@@ -7580,6 +7669,15 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.Risk", "Risk")
                         .WithMany()
                         .HasForeignKey("RiskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("dbModels.PostLaunchReview", b =>
+                {
+                    b.HasOne("dbModels.Stage", "Stage")
+                        .WithMany("PostLaunchReviewHistory")
+                        .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

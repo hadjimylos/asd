@@ -647,9 +647,6 @@ namespace pmo.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("MitigationPlan")
                         .HasColumnType("nvarchar(max)");
 
@@ -664,9 +661,6 @@ namespace pmo.Migrations
 
                     b.Property<DateTime>("TargetDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -7291,13 +7285,6 @@ namespace pmo.Migrations
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Qualification Testing - Field Name?",
                             TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 767,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Upload any pertinent documentation",
-                            TagCategoryId = 16
                         });
                 });
 
@@ -7447,14 +7434,6 @@ namespace pmo.Migrations
                             FriendlyName = "Stage Files",
                             IsFixed = false,
                             Key = "stage-files"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FriendlyName = "Gate Files",
-                            IsFixed = false,
-                            Key = "gate-files"
                         });
                 });
 
@@ -7606,7 +7585,7 @@ namespace pmo.Migrations
             modelBuilder.Entity("dbModels.FinancialData", b =>
                 {
                     b.HasOne("dbModels.BusinessCase", "BusinessCase")
-                        .WithMany()
+                        .WithMany("FinancialData")
                         .HasForeignKey("BusinessCaseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

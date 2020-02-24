@@ -59,8 +59,7 @@ namespace pmo
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
+        protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
             SeedData(builder);
             SeedDataAfter(builder);
@@ -229,8 +228,6 @@ namespace pmo
                 new TagCategory { Id = 13, IsFixed = true, FriendlyName = "Design Authority", Key = "design-authority" },
                 new TagCategory { Id = 14, IsFixed = true, FriendlyName = "Export Application Type", Key = "export-application-type" },
                 new TagCategory { Id = 15, IsFixed = false, FriendlyName = "Stage Files", Key = "stage-files" },
-                new TagCategory { Id = 16, IsFixed = false, FriendlyName = "Gate Files", Key = "gate-files" },
-
             });
 
             builder.Entity<Tag>().HasData(new List<Tag>() {               
@@ -1024,9 +1021,6 @@ namespace pmo
                     new Tag { Id = 764, Name = "Customer Design Approval - Upload any pertinent documentation", TagCategoryId = 15 },
                     new Tag { Id = 765, Name = "Ramp and Resource Plan - Field Name?", TagCategoryId = 15 },
                     new Tag { Id = 766, Name = "Qualification Testing - Field Name?", TagCategoryId = 15 },
-
-                    //Gate Files
-                    new Tag { Id = 767, Name = "Upload any pertinent documentation", TagCategoryId = 16 },
             });
             #endregion
             #region  Gate Seed Data

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace pmo.Migrations
 {
-    public partial class SeedDataManyToMany : Migration
+    public partial class ManyToManySeedData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

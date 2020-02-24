@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200218100644_GateKeeper")]
-    partial class GateKeeper
+    [Migration("20200224135523_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,9 @@ namespace pmo.Migrations
 
                     b.Property<string>("GpaRequirements")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("LaborRate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
@@ -173,6 +176,53 @@ namespace pmo.Migrations
                     b.ToTable("CustomerDesignApprovals");
                 });
 
+            modelBuilder.Entity("dbModels.FinancialData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BusinessCaseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("GPACapital")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("GPAExpense")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ModifiedByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("OtherDevelopmentExpenses")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("QualCosts")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SalesPriceEstimated")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("StdCostEstimated")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessCaseId");
+
+                    b.ToTable("FinancialData");
+                });
+
             modelBuilder.Entity("dbModels.Gate", b =>
                 {
                     b.Property<int>("Id")
@@ -192,6 +242,9 @@ namespace pmo.Migrations
                     b.Property<int>("Decision")
                         .HasColumnType("int");
 
+                    b.Property<int>("GateConfigId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
 
@@ -199,6 +252,8 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GateConfigId");
 
                     b.HasIndex("ProjectId");
 
@@ -261,6 +316,38 @@ namespace pmo.Migrations
                             GateNumber = 5,
                             ModifiedByUser = "system"
                         });
+                });
+
+            modelBuilder.Entity("dbModels.GateFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GateNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GateId");
+
+                    b.ToTable("GateFiles");
                 });
 
             modelBuilder.Entity("dbModels.GateKeeper", b =>
@@ -562,9 +649,6 @@ namespace pmo.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("MitigationPlan")
                         .HasColumnType("nvarchar(max)");
 
@@ -580,14 +664,58 @@ namespace pmo.Migrations
                     b.Property<DateTime>("TargetDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RiskId");
 
                     b.ToTable("Mitigations");
+                });
+
+            modelBuilder.Entity("dbModels.PostLaunchReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActualVSExpected")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bottlenecks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Commercial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DonePoorly")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoneWell")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LessonsLearned")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("PostLaunchReviews");
                 });
 
             modelBuilder.Entity("dbModels.ProductInfrigmentPatentability", b =>
@@ -1250,6 +1378,9 @@ namespace pmo.Migrations
                     b.Property<int>("MinKeyCharacteristics")
                         .HasColumnType("int");
 
+                    b.Property<int>("MinPostLaunchReviews")
+                        .HasColumnType("int");
+
                     b.Property<int>("MinProductInfringementPatentabilities")
                         .HasColumnType("int");
 
@@ -1286,6 +1417,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 1,
@@ -1304,6 +1436,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 1,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 0,
@@ -1322,6 +1455,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 1,
                             MinKeyCharacteristics = 1,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 1,
                             MinProductIntroChecklist = 1,
                             MinProjectJustifications = 0,
@@ -1340,6 +1474,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 0,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 0,
@@ -1358,6 +1493,7 @@ namespace pmo.Migrations
                             MinDesignConcepts = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
+                            MinPostLaunchReviews = 1,
                             MinProductInfringementPatentabilities = 0,
                             MinProductIntroChecklist = 0,
                             MinProjectJustifications = 0,
@@ -1394,128 +1530,6 @@ namespace pmo.Migrations
                     b.HasIndex("StageConfigId");
 
                     b.ToTable("StageConfig_RequiredSchedules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 1,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 2,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 3,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 4,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 5,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 6,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 7,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 8,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 9,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 10,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 11,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 12,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 13,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 14,
-                            StageConfigId = 3
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedByUser = "system",
-                            RequiredScheduleTagId = 15,
-                            StageConfigId = 3
-                        });
                 });
 
             modelBuilder.Entity("dbModels.StageFile", b =>
@@ -7448,13 +7462,36 @@ namespace pmo.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("dbModels.FinancialData", b =>
+                {
+                    b.HasOne("dbModels.BusinessCase", "BusinessCase")
+                        .WithMany("FinancialData")
+                        .HasForeignKey("BusinessCaseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("dbModels.Gate", b =>
                 {
+                    b.HasOne("dbModels.GateConfig", "GateConfig")
+                        .WithMany("Gates")
+                        .HasForeignKey("GateConfigId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("dbModels.Project", "Project")
                         .WithMany("GateHistory")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("dbModels.GateFile", b =>
+                {
+                    b.HasOne("dbModels.Gate", "Gate")
+                        .WithMany("GateFiles")
+                        .HasForeignKey("GateId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("dbModels.GateKeeper", b =>
@@ -7475,7 +7512,7 @@ namespace pmo.Migrations
             modelBuilder.Entity("dbModels.GateKeeperConfig", b =>
                 {
                     b.HasOne("dbModels.GateConfig", "GateConfig")
-                        .WithMany("GateKeepers")
+                        .WithMany("GateKeeperConfigs")
                         .HasForeignKey("GateConfigId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -7510,6 +7547,15 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.Risk", "Risk")
                         .WithMany()
                         .HasForeignKey("RiskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("dbModels.PostLaunchReview", b =>
+                {
+                    b.HasOne("dbModels.Stage", "Stage")
+                        .WithMany("PostLaunchReviewHistory")
+                        .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -7565,7 +7611,7 @@ namespace pmo.Migrations
                         .IsRequired();
 
                     b.HasOne("dbModels.Project", "Project")
-                        .WithMany("ProjectDetail")
+                        .WithMany("ProjectDetails")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -7633,7 +7679,7 @@ namespace pmo.Migrations
             modelBuilder.Entity("dbModels.ProjectStateHistory", b =>
                 {
                     b.HasOne("dbModels.Project", "Project")
-                        .WithMany()
+                        .WithMany("ProjectStateHistory")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -7642,7 +7688,7 @@ namespace pmo.Migrations
             modelBuilder.Entity("dbModels.Project_User", b =>
                 {
                     b.HasOne("dbModels.Project", "Project")
-                        .WithMany("TeamMember")
+                        .WithMany("TeamMembers")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

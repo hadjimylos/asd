@@ -20,8 +20,12 @@
     <Compile Remove="Migrations\20200214131806_SeedDataManyToMany.Designer.cs" />
     <Compile Remove="Migrations\20200218135745_AddProjectState.cs" />
     <Compile Remove="Migrations\20200218135745_AddProjectState.Designer.cs" />
+    <Compile Remove="Migrations\20200221151610_RenameColumn.cs" />
+    <Compile Remove="Migrations\20200221151610_RenameColumn.Designer.cs" />
     <Compile Remove="Migrations\20200224125953_SchedulesAddForeignKeyToConfig.cs" />
     <Compile Remove="Migrations\20200224125953_SchedulesAddForeignKeyToConfig.Designer.cs" />
+    <Compile Remove="Migrations\20200224134911_RenameColumn.cs" />
+    <Compile Remove="Migrations\20200224134911_RenameColumn.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
