@@ -9,28 +9,28 @@ namespace pmo.Models.Mappings
     {
         public AutoMapping()
         {
-            CreateMap<User, UserViewModel>().ReverseMap().ReverseMap();
+            CreateMap<User, forms.UserForm>().ReverseMap().ReverseMap();
             CreateMap<StageConfig, StageConfigViewModel>().ReverseMap();
             CreateMap<GateConfig, GateConfigViewModel>().ReverseMap();
             CreateMap<Role, RoleViewModel>().ReverseMap();
             CreateMap<Tag, TagViewModel>().ReverseMap();
             CreateMap<TagCategory, TagCategoryViewModel>().ReverseMap();
-            CreateMap<Project, VBPDViewModel>().ReverseMap();
-            CreateMap<ProjectDetail, VBPDViewModel>().ReverseMap();
-            CreateMap<ProjectDetail, VBPDProjectDetailViewModel>().ReverseMap();
-            CreateMap<CustomerDesignApproval, CustomerDesignApprovalViewModel>().ReverseMap();
+            CreateMap<Project, forms.VBPDForm>().ReverseMap();
+            CreateMap<ProjectDetail, forms.VBPDForm>().ReverseMap();
+            CreateMap<ProjectDetail, forms.VBPDProjectDetailForm>().ReverseMap();
+            CreateMap<CustomerDesignApproval, forms.CustomerDesignApprovalForm>().ReverseMap();
             CreateMap<Schedule, SchedulesViewModel>().ReverseMap();
-            CreateMap<InvestmentPlan, InvestmentPlanViewModel>().ReverseMap();
-            CreateMap<KeyCharacteristic, KeyCharacteristicViewModel>().ReverseMap();
-            CreateMap<ProductIntroChecklist, ProductIntroChecklistViewModel>().ReverseMap();
-            CreateMap<Risk, RiskViewModel>().ReverseMap();
+            CreateMap<InvestmentPlan, forms.InvestmentPlanForm>().ReverseMap();
+            CreateMap<KeyCharacteristic, forms.KeyCharacteristicForm>().ReverseMap();
+            CreateMap<ProductIntroChecklist, forms.ProductIntroChecklistForm>().ReverseMap();
+            CreateMap<Risk, forms.RiskForm>().ReverseMap();
             CreateMap<Gate, NavigationGate>().ReverseMap();
             CreateMap<Stage, NavigationStage>().ReverseMap();
-            CreateMap<ProductInfrigmentPatentability, ProductInfrigmentPatentabilityViewModel>().ReverseMap();
+            CreateMap<ProductInfrigmentPatentability, forms.ProductInfrigmentPatentabilityForm>().ReverseMap();
             CreateMap<BusinessCaseViewModel, BusinessCase>().ReverseMap();
-            CreateMap<ProjectJustification, ProjectJustificationViewModel>().ReverseMap();
+            CreateMap<ProjectJustification, forms.ProjectJustificationForm>().ReverseMap();
             CreateMap<Gate, GateViewModel>().ReverseMap();
-            CreateMap<PostLaunchReview, PostLaunchReviewViewModel>().ReverseMap();
+            CreateMap<PostLaunchReview, forms.PostLaunchReviewForm>().ReverseMap();
             CreateMap<FinancialData, FinancialDataViewModel>().ReverseMap();
 
             // stage subclasses

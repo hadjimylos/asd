@@ -28,7 +28,7 @@ namespace pmo.Services.Users
             var userid = _context.Users.Where(u => u.NetworkUsername.ToLower() == _httpContextAccessor.HttpContext.User.Identity.Name.ToLower()).Select(s => s.Id).FirstOrDefault();
             return userid;
         }
-        public bool AddNewUser(UserViewModel userViewModel)
+        public bool AddNewUser(forms.UserForm userViewModel)
         {
             userViewModel.isCreate = true;
             var domainModel = _mapper.Map<User>(userViewModel);
@@ -44,7 +44,7 @@ namespace pmo.Services.Users
             _context.SaveChanges();
             return true;
         }
-        public bool UpdateUser(UserViewModel userViewModel)
+        public bool UpdateUser(forms.UserForm userViewModel)
         {
             userViewModel.isCreate = false;
             var user = _context.Users.Include(x => x.Citizenships).Include(x => x.Role).AsNoTracking().Where(x => x.Id == userViewModel.Id).FirstOrDefault();

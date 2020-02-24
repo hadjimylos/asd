@@ -24,13 +24,13 @@ namespace pmo.Controllers {
         }
         public IActionResult Index()
         {
-            var vm = _mapper.Map<List<UserViewModel>>(_context.Users.Include(i => i.Role).ToList());
+            var vm = _mapper.Map<List<forms.UserForm>>(_context.Users.Include(i => i.Role).ToList());
             return View($"{path}/Index.cshtml", vm);
         }
 
         [Route("create")]
         public IActionResult Create() {
-            UserViewModel userViewModel = new UserViewModel() { isCreate = true};
+            forms.UserForm userViewModel = new forms.UserForm() { isCreate = true};
             userViewModel.RoleList = _listService.Roles();
             userViewModel.CitizenshipsList = _listService.Tags_SelectList(TagCategoryHelper.Citizenships); 
 
@@ -40,7 +40,7 @@ namespace pmo.Controllers {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("create")]
-        public IActionResult Create(UserViewModel userViewModel) {
+        public IActionResult Create(forms.UserForm userViewModel) {
             userViewModel.isCreate = true;
 
             if (!ModelState.IsValid)
@@ -65,7 +65,7 @@ namespace pmo.Controllers {
             if (user == null) {
                 return NotFound();
             }
-            var vm = _mapper.Map<UserViewModel>(user);
+            var vm = _mapper.Map<forms.UserForm>(user);
             vm.RoleList = _listService.Roles(vm.RoleId);
             var Ready= _context.Tags.Where(x => vm.UserCitizenships.Contains(x.Id)).ToList();
             vm.CitizenshipsList = _listService.Tags_MultiSelectList<Tag>(TagCategoryHelper.Citizenships, Ready);
@@ -77,7 +77,7 @@ namespace pmo.Controllers {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public ActionResult Edit(UserViewModel vm) {
+        public ActionResult Edit(forms.UserForm vm) {
 
             if (!ModelState.IsValid)
             {

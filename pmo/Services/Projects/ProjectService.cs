@@ -20,7 +20,7 @@ namespace pmo.Services.Projects
             _userService =  userService ;
         }
         
-        public void AddNewVBPDProject(VBPDViewModel model)
+        public void AddNewVBPDProject(forms.VBPDForm model)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {

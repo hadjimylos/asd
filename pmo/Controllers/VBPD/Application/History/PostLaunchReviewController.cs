@@ -22,7 +22,7 @@ namespace pmo.Controllers
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(version);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -36,10 +36,10 @@ namespace pmo.Controllers
 
             if (currentVersion == null)
             {
-                var vm = new PostLaunchReviewViewModel()
+                var vm = new forms.PostLaunchReviewForm()
                 {
                     StageId = currentStage.Id,
-                    Versions = new List<PostLaunchReviewViewModel>(),
+                    Versions = new List<forms.PostLaunchReviewForm>(),
                     Stage = currentStage
                 };
 
@@ -53,7 +53,7 @@ namespace pmo.Controllers
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(PostLaunchReviewViewModel vm)
+        public IActionResult Edit(forms.PostLaunchReviewForm vm)
         {
             int currentVersion = 0;
             var currentStage = _context.Stages.First(s => s.Id == _stageId);
@@ -141,15 +141,15 @@ namespace pmo.Controllers
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private PostLaunchReviewViewModel GetViewModel(int version)
+        private forms.PostLaunchReviewForm GetViewModel(int version)
         {
             var model = _context.PostLaunchReviews.Where(s => s.Version == version).GetLatestVersion(_projectId);
-            var vm = _mapper.Map<PostLaunchReviewViewModel>(model);
+            var vm = _mapper.Map<forms.PostLaunchReviewForm>(model);
 
             return vm;
         }
 
-        private List<PostLaunchReviewViewModel> GetVersionHistory()
+        private List<forms.PostLaunchReviewForm> GetVersionHistory()
         {
             var grouped = _context.PostLaunchReviews
                   .Include(s => s.Stage)
@@ -157,10 +157,15 @@ namespace pmo.Controllers
                 .GroupBy(g => g.Version)
                 .ToList();
 
-            if (grouped.Count == 0) { return new List<PostLaunchReviewViewModel>(); }
+            if (grouped.Count == 0) { return new List<forms.PostLaunchReviewForm>(); }
             List<PostLaunchReview> versions = new List<PostLaunchReview>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            return _mapper.Map<List<PostLaunchReviewViewModel>>(versions);
+            return _mapper.Map<List<forms.PostLaunchReviewForm>>(versions);
+        }
+
+        private PostLaunchReview GetDBModel(int version)
+        {
+            return _context.PostLaunchReviews.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
     }
 }

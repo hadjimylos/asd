@@ -30,7 +30,7 @@ namespace pmo.Controllers
 
             ViewBag.ProjectId = projectId;
             var allTeamMembers = _context.Project_User.Where(w => w.ProjectId == projectId).ToList();
-            var teamMembersViewModel = new TeamMembersViewModel {
+            var teamMembersViewModel = new forms.TeamMembersForm {
                 // populate selected list items
                 Program_Manager = GetPopulated(allTeamMembers, JobDescripKeys.ProgramManager),
                 Product_Manager = GetPopulated(allTeamMembers, JobDescripKeys.ProductManager),
@@ -58,7 +58,7 @@ namespace pmo.Controllers
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
 
-        public IActionResult Edit(TeamMembersViewModel teamMembersViewModel, int projectId) {
+        public IActionResult Edit(forms.TeamMembersForm teamMembersViewModel, int projectId) {
             if (!ProjectExists(projectId))
                 return NotFound();
 
@@ -104,7 +104,7 @@ namespace pmo.Controllers
             return Redirect($"/vbpd-projects/{_projectId}");
         }
 
-        private void SetDropdowns(TeamMembersViewModel model) {
+        private void SetDropdowns(forms.TeamMembersForm model) {
             var selectList = _context.Users.AsNoTracking().Select(s => new SelectListItem {
                 Text = s.NetworkUsername,
                 Value = s.Id.ToString(),

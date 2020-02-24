@@ -47,7 +47,7 @@ namespace pmo.Controllers {
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(VBPDProjectDetailViewModel model, int projectId) {
+        public IActionResult Edit(forms.VBPDProjectDetailForm model, int projectId) {
             var latestProjectDetail = _context.ProjectDetails.Where(
                    w => w.ProjectId == projectId
                ).OrderByDescending(o => o.CreateDate)
@@ -119,7 +119,7 @@ namespace pmo.Controllers {
             return RedirectToAction("Detail", new { projectId, version = latestProjectDetail.Version });
         }
 
-        private List<VBPDProjectDetailViewModel> GetVersionHistory(int projectId) {
+        private List<forms.VBPDProjectDetailForm> GetVersionHistory(int projectId) {
             var grouped = _context.ProjectDetails
                 .Where(w => w.ProjectId == projectId)
                 .ToList()
@@ -131,10 +131,10 @@ namespace pmo.Controllers {
             List<ProjectDetail> versions = new List<ProjectDetail>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
 
-            return _mapper.Map<List<VBPDProjectDetailViewModel>>(versions);
+            return _mapper.Map<List<forms.VBPDProjectDetailForm>>(versions);
         }
 
-        private void InsertManyToMany(VBPDProjectDetailViewModel model, int projectDetailId) {
+        private void InsertManyToMany(forms.VBPDProjectDetailForm model, int projectDetailId) {
             // insert many to many
             model.CustomerIds.ForEach(customerId => {
                 _context.ProjectDetail_Customers.Add(new ProjectDetail_Customer {
@@ -151,14 +151,14 @@ namespace pmo.Controllers {
             _context.SaveChanges();
         }
 
-        private VBPDProjectDetailViewModel GetViewModel(int projectId, int version) {
+        private forms.VBPDProjectDetailForm GetViewModel(int projectId, int version) {
             var model = _context.ProjectDetails.Where(
                 w => w.ProjectId == projectId && w.Version == version
             ).OrderByDescending(o => o.CreateDate)
             .IncludeAll()
             .First();
 
-            var vm = _mapper.Map<VBPDProjectDetailViewModel>(model);
+            var vm = _mapper.Map<forms.VBPDProjectDetailForm>(model);
             SetDropdowns(vm);
 
             // set many to many selected:
@@ -168,7 +168,7 @@ namespace pmo.Controllers {
             return vm;
         }
 
-        private void SetDropdowns(VBPDProjectDetailViewModel model) {
+        private void SetDropdowns(forms.VBPDProjectDetailForm model) {
             // get all tags
             List<string> tagDropdowns = new List<string>() {
                 TagCategoryHelper.ProjectCategory,

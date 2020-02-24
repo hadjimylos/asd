@@ -26,7 +26,7 @@ namespace pmo.Controllers
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(version);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -39,7 +39,7 @@ namespace pmo.Controllers
             ViewBag.CurrentStageNumber= currentStage.StageNumber;
             if (latestSavedVersion == null)
             {
-                var vm = new KeyCharacteristicViewModel()
+                var vm = new forms.KeyCharacteristicForm()
                 {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
@@ -71,7 +71,7 @@ namespace pmo.Controllers
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(KeyCharacteristicViewModel vm)
+        public IActionResult Edit(forms.KeyCharacteristicForm vm)
         {
             int currentVersion = 0;
             var latestKeyCharacteristics = _context.KeyCharacteristics.GetLatestVersion(_projectId);
@@ -129,7 +129,7 @@ namespace pmo.Controllers
             return RedirectToAction("Detail", new {version =currentVersion });
         }
 
-        private List<KeyCharacteristicViewModel> GetVersionHistory()
+        private List<forms.KeyCharacteristicForm> GetVersionHistory()
         {
             var grouped = _context.KeyCharacteristics.Include(k=>k.RequirementSource)
                 .Include(s => s.Stage)
@@ -140,26 +140,30 @@ namespace pmo.Controllers
 
             if (grouped.Count == 0)
             {
-                return new List<KeyCharacteristicViewModel>();
+                return new List<forms.KeyCharacteristicForm>();
             }
 
             List<KeyCharacteristic> versions = new List<KeyCharacteristic>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            var vm  = _mapper.Map<List<KeyCharacteristicViewModel>>(versions);
+            var vm  = _mapper.Map<List<forms.KeyCharacteristicForm>>(versions);
             foreach (var item in vm)
             {
                 item.RequirementSourceText = item.RequirementSource.Name;
             }
             return vm;
         }
-        private KeyCharacteristicViewModel GetViewModel(int version)
+        private forms.KeyCharacteristicForm GetViewModel(int version)
         {
             var model = _context.KeyCharacteristics.Where(s => s.Version == version)
             .Include(i => i.RequirementSource)
             .GetLatestVersion(_projectId);
-            var vm = _mapper.Map<KeyCharacteristicViewModel>(model);
+            var vm = _mapper.Map<forms.KeyCharacteristicForm>(model);
             vm.RequirementSourceText = model.RequirementSource.Name;
             return vm;
+        }
+        private KeyCharacteristic GetDBModel(int version)
+        {
+            return _context.KeyCharacteristics.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
     }
 }

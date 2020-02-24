@@ -30,7 +30,7 @@ namespace pmo.Controllers {
 
         [Route("create")]
         public IActionResult Create() {
-            var project = new VBPDViewModel();
+            var project = new forms.VBPDForm();
             project.ProjectCategoryTagDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectCategory);
             project.ProductLineDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProductLine);
             project.ProjectClassificationDropDown = _listService.Tags_SelectList(TagCategoryHelper.ProjectClassification);
@@ -45,7 +45,7 @@ namespace pmo.Controllers {
         [HttpPost]
         [Route("create")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Create(VBPDViewModel model) {
+        public IActionResult Create(forms.VBPDForm model) {
             if (!ModelState.IsValid) {
 
                 ViewBag.Errors = ModelState;

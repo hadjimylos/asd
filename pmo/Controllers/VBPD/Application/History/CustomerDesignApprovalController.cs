@@ -16,7 +16,6 @@ namespace pmo.Controllers.Application.History
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/customer-design-approval")]
     public class CustomerDesignApprovalController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
-        private readonly string UploadViewPath = "~/Views/VBPD";
 
 
         public CustomerDesignApprovalController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
@@ -28,7 +27,7 @@ namespace pmo.Controllers.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(version);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -41,7 +40,7 @@ namespace pmo.Controllers.Application.History
             ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (latestSavedVersion == null)
             {
-                var vm = new CustomerDesignApprovalViewModel()
+                var vm = new forms.CustomerDesignApprovalForm()
                 {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
@@ -58,7 +57,7 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(CustomerDesignApprovalViewModel vm)
+        public IActionResult Edit(forms.CustomerDesignApprovalForm vm)
         {
             int currentVersion = 0;
             var currentStage = _context.Stages.Where(s=>s.Id==_stageId).First();
@@ -144,16 +143,21 @@ namespace pmo.Controllers.Application.History
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private CustomerDesignApprovalViewModel GetViewModel(int version)
+        private forms.CustomerDesignApprovalForm GetViewModel(int version)
         {
             var model = _context.CustomerDesignApprovals
                  .Where(s => s.Version == version)
                  .GetLatestVersion(_projectId);
 
-            var vm = _mapper.Map<CustomerDesignApprovalViewModel>(model);
+            var vm = _mapper.Map<forms.CustomerDesignApprovalForm>(model);
             return vm;
         }
-        private List<CustomerDesignApprovalViewModel> GetVersionHistory()
+
+        private CustomerDesignApproval GetDBModel(int version)
+        {
+            return _context.CustomerDesignApprovals.Where(s => s.Version == version).GetLatestVersion(_projectId);
+        }
+        private List<forms.CustomerDesignApprovalForm> GetVersionHistory()
         {
             var grouped = _context.CustomerDesignApprovals
                 .Include(s => s.Stage)
@@ -164,16 +168,16 @@ namespace pmo.Controllers.Application.History
 
             if (grouped.Count == 0)
             {
-                return new List<CustomerDesignApprovalViewModel>();
+                return new List<forms.CustomerDesignApprovalForm>();
             }
 
             List<CustomerDesignApproval> versions = new List<CustomerDesignApproval>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
 
-            return _mapper.Map<List<CustomerDesignApprovalViewModel>>(versions);
+            return _mapper.Map<List<forms.CustomerDesignApprovalForm>>(versions);
         }
 
-        private void SetDropdowns(CustomerDesignApprovalViewModel model)
+        private void SetDropdowns(forms.CustomerDesignApprovalForm model)
         {
             var teamMembers = _context.Project_User.Where(p => p.ProjectId == model.Stage.ProjectId).Include(u => u.User).Select(s => new SelectListItem()
             {

@@ -1,12 +1,13 @@
-﻿using dbModels;
+﻿using CustomValidators;
+using dbModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
-namespace ViewModels {
-    public class VBPDProjectDetailViewModel : ProjectDetail {
-        public List<VBPDProjectDetailViewModel> Versions { get; set; }
+namespace forms {
+    public class VBPDProjectDetailForm : ProjectDetail {
+        public List<VBPDProjectDetailForm> Versions { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string EndUseDestinationCountry { set; get; }
@@ -23,28 +24,28 @@ namespace ViewModels {
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ExportControlCode { set; get; }
 
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int ProjectCategoryTagId { get; set; }
         public List<SelectListItem> ProjectCategoryTagDropDown { set; get; }
 
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int ProjectClassificationTagId { get; set; }
         public List<SelectListItem> ProjectClassificationDropDown { set; get; }
 
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int ProductLineTagId { get; set; }
         public List<SelectListItem> ProductLineDropDown { set; get; }
 
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int DesignAuthorityTagId { get; set; }
         public List<SelectListItem> DesignAuthorityDropDown { set; get; }
 
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int ExportApplicationTypeTagId { get; set; }
         public List<SelectListItem> ExportApplicationTypeDropDown { set; get; }
 

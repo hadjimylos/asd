@@ -24,7 +24,7 @@ namespace pmo.Controllers
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(version);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -36,7 +36,7 @@ namespace pmo.Controllers
             ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (currentVersion == null)
             {
-                var vm = new ProjectJustificationViewModel()
+                var vm = new forms.ProjectJustificationForm()
                 {
                     StageId = currentStage.Id,
                     Stage = currentStage,
@@ -53,7 +53,7 @@ namespace pmo.Controllers
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(ProjectJustificationViewModel vm)
+        public IActionResult Edit(forms.ProjectJustificationForm vm)
         {
             int currentVersion = 0;
             var lastProjectJustification = _context.ProjectJustifications.GetLatestVersion(_projectId);
@@ -117,7 +117,7 @@ namespace pmo.Controllers
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private List<ProjectJustificationViewModel> GetVersionHistory()
+        private List<forms.ProjectJustificationForm> GetVersionHistory()
         {
             var grouped = _context.ProjectJustifications.Include(k => k.Product)
                 .Include(s => s.Stage)
@@ -128,19 +128,24 @@ namespace pmo.Controllers
 
             if (grouped.Count == 0)
             {
-                return new List<ProjectJustificationViewModel>();
+                return new List<forms.ProjectJustificationForm>();
             }
 
             List<ProjectJustification> versions = new List<ProjectJustification>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            var vm = _mapper.Map<List<ProjectJustificationViewModel>>(versions);
+            var vm = _mapper.Map<List<forms.ProjectJustificationForm>>(versions);
             return vm;
         }
-        private ProjectJustificationViewModel GetViewModel( int version)
+        private forms.ProjectJustificationForm GetViewModel( int version)
         {
             var model = _context.ProjectJustifications.Where(s => s.Version == version).Include(i => i.Product).GetLatestVersion(_projectId);
-            var vm = _mapper.Map<ProjectJustificationViewModel>(model);
+            var vm = _mapper.Map<forms.ProjectJustificationForm>(model);
             return vm;
+        }
+
+        private ProjectJustification GetDBModel(int version)
+        {
+            return _context.ProjectJustifications.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace pmo.Controllers.Application
         {
             ViewBag.ProjectId = projectId;
             ViewBag.StageNumber = stageNumber;
-            var vm = _mapper.Map<List<RiskViewModel>>(
+            var vm = _mapper.Map<List<forms.RiskForm>>(
                 _context.Risks
                 .Include(x=>x.Stage)
                 .Include(x => x.RiskImpact)
@@ -43,7 +43,7 @@ namespace pmo.Controllers.Application
         {
             ViewBag.ProjectId = projectId;
             ViewBag.StageNumber = stageNumber;
-            var riskViewModel = new RiskViewModel()
+            var riskViewModel = new forms.RiskForm()
             {
                 isCreate = true,
                 StageId=_stageId,
@@ -57,7 +57,7 @@ namespace pmo.Controllers.Application
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("create")]
-        public IActionResult Create(int projectId,int stageNumber , RiskViewModel riskViewModel)
+        public IActionResult Create(int projectId,int stageNumber , forms.RiskForm riskViewModel)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.stageNumber = stageNumber;            
@@ -90,7 +90,7 @@ namespace pmo.Controllers.Application
             if (risk == null)
                 return NotFound();
 
-            var vm = _mapper.Map<RiskViewModel>(risk);
+            var vm = _mapper.Map<forms.RiskForm>(risk);
             vm.isCreate = false;
             vm.RiskTypeList = _listService.Tags_SelectList(TagCategoryHelper.RiskType);
             vm.RiskImpactList = _listService.Tags_SelectList(TagCategoryHelper.RiskImpact);
@@ -100,7 +100,7 @@ namespace pmo.Controllers.Application
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(int projectId, int stageNumber , RiskViewModel model)
+        public IActionResult Edit(int projectId, int stageNumber , forms.RiskForm model)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.stageNumber = stageNumber; 

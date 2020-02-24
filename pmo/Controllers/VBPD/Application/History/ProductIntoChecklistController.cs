@@ -24,7 +24,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(version);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -39,7 +39,7 @@ namespace pmo.Controllers.VBPD.Application.History
 
             if (latestVersion == null)
             {
-                var vm = new ProductIntroChecklistViewModel()
+                var vm = new forms.ProductIntroChecklistForm()
                 {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
@@ -56,7 +56,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(ProductIntroChecklistViewModel vm)
+        public IActionResult Edit(forms.ProductIntroChecklistForm vm)
         {
             int currentVersion = 0;
             var latestProductIntoChecklist = _context.ProductIntroChecklists.GetLatestVersion(_projectId);
@@ -138,14 +138,14 @@ namespace pmo.Controllers.VBPD.Application.History
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private ProductIntroChecklistViewModel GetViewModel(int version)
+        private forms.ProductIntroChecklistForm GetViewModel(int version)
         {
             var model = _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
-            var vm = _mapper.Map<ProductIntroChecklistViewModel>(model);
+            var vm = _mapper.Map<forms.ProductIntroChecklistForm>(model);
             return vm;
         }
 
-        private List<ProductIntroChecklistViewModel> GetVersionHistory()
+        private List<forms.ProductIntroChecklistForm> GetVersionHistory()
         {
             var grouped = _context.ProductIntroChecklists
                 .Include(s => s.Stage)
@@ -154,11 +154,16 @@ namespace pmo.Controllers.VBPD.Application.History
                 .GroupBy(g => g.Version)
                 .ToList();
 
-            if (grouped.Count == 0) { return new List<ProductIntroChecklistViewModel>(); }
+            if (grouped.Count == 0) { return new List<forms.ProductIntroChecklistForm>(); }
 
             List<ProductIntroChecklist> versions = new List<ProductIntroChecklist>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            return _mapper.Map<List<ProductIntroChecklistViewModel>>(versions);
+            return _mapper.Map<List<forms.ProductIntroChecklistForm>>(versions);
+        }
+
+        private ProductIntroChecklist GetDBModel(int version)
+        {
+            return _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
     }
 }

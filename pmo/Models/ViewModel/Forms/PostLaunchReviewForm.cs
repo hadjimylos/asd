@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
-namespace ViewModels
+namespace forms
 {
-    public class PostLaunchReviewViewModel : PostLaunchReview
+    public class PostLaunchReviewForm:PostLaunchReview
     {
-        public List<PostLaunchReviewViewModel> Versions { get; set; }
+        public List<PostLaunchReviewForm> Versions { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string DoneWell { get; set; }
@@ -21,7 +21,5 @@ namespace ViewModels
         public new string ActualVSExpected { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string Commercial { get; set; }
-        
-        public new virtual Stage Stage { get; set; }
     }
 }

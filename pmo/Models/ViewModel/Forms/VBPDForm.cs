@@ -1,54 +1,57 @@
-﻿using dbModels;
+﻿using CustomValidators;
+using dbModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
-namespace ViewModels
+namespace forms
 {
-    public class VBPDViewModel : ProjectDetail
+    public class VBPDForm : ProjectDetail
     {
-        public VBPDViewModel() {
+        public VBPDForm() {
             CustomerIds = new List<int>();
             SalesRegionIds = new List<int>();
 
         }
-
         [Required(ErrorMessage = ErrorMessages.Required)]
         public string Name { set; get; }
+
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string Salesforce { get; set; }
+
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int ProjectCategoryTagId { get; set; }
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
+
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int ProductLineTagId { get; set; }
+
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int ProjectClassificationTagId { get; set; }
+
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int ProjectId { get; set; }
+
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string EngineeringChecklistUrl { get; set; }
+        
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int DesignAuthorityTagId { get; set; }
+
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ProjectProcessType { set; get; }
+
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ExportControlCode { set; get; }
+
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
         public new int ExportApplicationTypeTagId { get; set; }
 
-
-        public new Project Project { get; set; }
-        public new Tag ProjectClassification { get; set; }
-        public new Tag ProjectCategory { get; set; }
-        public new Tag ProductLine { get; set; }
-        public new Tag DesignAuthority { get; set; }
-        public new Tag ExportApplicationType { get; set; }
         public new string EndUseDestinationCountry { get; set; }
  
         public SelectList ProjectCategoryTagDropDown { set; get; }
@@ -60,8 +63,8 @@ namespace ViewModels
 
         public MultiSelectList SalesRegionsDropDown { set; get; }
         public MultiSelectList CustomerDropDown { set; get; }
-        public new List<int> SalesRegionIds { get; set; }
-        public  List<int> CustomerIds { get; set; }
+        public List<int> SalesRegionIds { get; set; }
+        public List<int> CustomerIds { get; set; }
 
     }
 }

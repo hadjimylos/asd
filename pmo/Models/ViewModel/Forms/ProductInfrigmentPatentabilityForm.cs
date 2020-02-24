@@ -2,16 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using ViewModels.Helpers;
 
-namespace ViewModels
+namespace forms
 {
-    public class ProductInfrigmentPatentabilityViewModel: ProductInfrigmentPatentability
+    public class ProductInfrigmentPatentabilityForm:ProductInfrigmentPatentability
     {
-        public List<ProductInfrigmentPatentabilityViewModel> Versions { get; set; }
-
+        public List<ProductInfrigmentPatentabilityForm> Versions { get; set; }
+        
         public new bool ContainsInfingmentIssues { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
@@ -26,7 +24,5 @@ namespace ViewModels
         public new bool InventionDisclosureSubmitted { get; set; }
 
         public new DateTime ProductFirstTimeOfferedForSale { get; set; }
-
-        public new virtual Stage Stage { get; set; }
     }
 }

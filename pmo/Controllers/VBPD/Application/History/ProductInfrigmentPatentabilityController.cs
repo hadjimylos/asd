@@ -6,7 +6,6 @@ using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ViewModels;
 using ViewModels.Helpers;
 
 
@@ -14,7 +13,6 @@ namespace pmo.Controllers {
     [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-infrigment-patentability")]
     public class ProductInfrigmentPatentabilityController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/ProductInfrigmentPatentability";
-        private readonly string UploadViewPath = "~/Views/VBPD";
 
         public ProductInfrigmentPatentabilityController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
@@ -37,7 +35,7 @@ namespace pmo.Controllers {
 
             if (currentVersion == null)
             {
-                var vm = new ProductInfrigmentPatentabilityViewModel()
+                var vm = new forms.ProductInfrigmentPatentabilityForm()
                 {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
@@ -53,7 +51,7 @@ namespace pmo.Controllers {
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(ProductInfrigmentPatentabilityViewModel vm)
+        public IActionResult Edit(forms.ProductInfrigmentPatentabilityForm vm)
         {
             int currentVersion = 0;
             var currentStage = _context.Stages.First(s=>s.Id   == _stageId);
@@ -141,13 +139,13 @@ namespace pmo.Controllers {
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private ProductInfrigmentPatentabilityViewModel GetViewModel(int version)
+        private forms.ProductInfrigmentPatentabilityForm GetViewModel(int version)
         {
             var model = _context.ProductInfrigmentPatentabilities.Where(s => s.Version == version).GetLatestVersion(_projectId);
-            var vm = _mapper.Map<ProductInfrigmentPatentabilityViewModel>(model);
+            var vm = _mapper.Map<forms.ProductInfrigmentPatentabilityForm>(model);
             return vm;
         }
-        private List<ProductInfrigmentPatentabilityViewModel> GetVersionHistory()
+        private List<forms.ProductInfrigmentPatentabilityForm> GetVersionHistory()
         {
             var grouped = _context.ProductInfrigmentPatentabilities
                 .Include(s => s.Stage)
@@ -158,13 +156,18 @@ namespace pmo.Controllers {
 
             if (grouped.Count == 0)
             {
-                return new List<ProductInfrigmentPatentabilityViewModel>();
+                return new List<forms.ProductInfrigmentPatentabilityForm>();
             }
 
             List<ProductInfrigmentPatentability> versions = new List<ProductInfrigmentPatentability>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
 
-            return _mapper.Map<List<ProductInfrigmentPatentabilityViewModel>>(versions);
+            return _mapper.Map<List<forms.ProductInfrigmentPatentabilityForm>>(versions);
+        }
+
+        private ProductIntroChecklist GetDBModel(int version)
+        {
+            return _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
 
     }

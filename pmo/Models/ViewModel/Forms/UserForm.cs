@@ -4,16 +4,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using ViewModels.Helpers;
 
-namespace ViewModels {
-    public class UserViewModel : User {
+namespace forms {
+    public class UserForm : User {
         public bool isCreate { get; set; }
         
-        [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
-        [UserExistsActiveDirectory(Helpers.ErrorMessages.MissingUserActiveDirectory)]
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        [UserExistsActiveDirectory(ErrorMessages.MissingUserActiveDirectory)]
         public new string NetworkUsername { get; set; }
 
-        [Required(ErrorMessage = Helpers.ErrorMessages.Required)]
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new string RoleId { get; set; }
 
         public SelectList RoleList { get; set; }
@@ -21,7 +22,7 @@ namespace ViewModels {
 
         private List<int> _userCitizenships = new List<int>();
 
-        [Required, MinLength(1, ErrorMessage = Helpers.ErrorMessages.AtLeastOne)]
+        [Required, MinLength(1, ErrorMessage = ErrorMessages.AtLeastOne)]
         public List<int> UserCitizenships
         {
             get

@@ -11,6 +11,6 @@ namespace ViewModels
         
         public List<TagViewModel> TagViewModel { get; set; }
 
-        public List<UserViewModel> UserViewModel { get; set; }
+        public List<forms.UserForm> UserViewModel { get; set; }
     }
 }

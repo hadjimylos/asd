@@ -1,14 +1,15 @@
-﻿using dbModels;
+﻿using CustomValidators;
+using dbModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
-namespace ViewModels
+namespace forms
 {
-    public class KeyCharacteristicViewModel : KeyCharacteristic
+    public class KeyCharacteristicForm : KeyCharacteristic
     {
-        public List<KeyCharacteristicViewModel> Versions { get; set; }
+        public List<KeyCharacteristicForm> Versions { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ItemNumber { get; set; }
@@ -21,14 +22,10 @@ namespace ViewModels
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int StageId { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = ErrorMessages.Required)]
-
+        [MinValue(1)]
         public new int RequirementSourceId { get; set; }
-        public string RequirementSourceText { get; set; }
         public List<SelectListItem> RequirementSourceDropDown { set; get; }
-
-        public new Tag RequirementSource { set; get; }
-        public new Stage Stage { get; set; }
+        public string RequirementSourceText { get; set; }
     }
-
 }
+

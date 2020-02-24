@@ -22,7 +22,7 @@ namespace pmo.Controllers.Application.History
         [Route("{version}")]
         public IActionResult Detail(int version)
         {
-            var model = GetViewModel(version);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -36,7 +36,7 @@ namespace pmo.Controllers.Application.History
             ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (latestSavedVersion == null)
             {
-                var vm = new InvestmentPlanViewModel()
+                var vm = new forms.InvestmentPlanForm()
                 {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
@@ -53,7 +53,7 @@ namespace pmo.Controllers.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(InvestmentPlanViewModel vm)
+        public IActionResult Edit(forms.InvestmentPlanForm vm)
         {
             int currentVersion = 0;
             var currentStage = _context.Stages.Where(n => n.Id == _stageId).First();
@@ -141,15 +141,15 @@ namespace pmo.Controllers.Application.History
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private InvestmentPlanViewModel GetViewModel(int version)
+        private forms.InvestmentPlanForm GetViewModel(int version)
         {
             var model = _context.InvestmentPlans.Where(s => s.Version == version).GetLatestVersion(_projectId);
-            var vm = _mapper.Map<InvestmentPlanViewModel>(model);
+            var vm = _mapper.Map<forms.InvestmentPlanForm>(model);
 
             return vm;
         }
 
-        private List<InvestmentPlanViewModel> GetVersionHistory()
+        private List<forms.InvestmentPlanForm> GetVersionHistory()
         {
             var grouped = _context.InvestmentPlans
                 .Include(s => s.Stage)
@@ -158,11 +158,16 @@ namespace pmo.Controllers.Application.History
                 .GroupBy(g => g.Version)
                 .ToList();
 
-            if (grouped.Count == 0) { return new List<InvestmentPlanViewModel>(); }
+            if (grouped.Count == 0) { return new List<forms.InvestmentPlanForm>(); }
 
             List<InvestmentPlan> versions = new List<InvestmentPlan>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            return _mapper.Map<List<InvestmentPlanViewModel>>(versions);
+            return _mapper.Map<List<forms.InvestmentPlanForm>>(versions);
+        }
+
+        private InvestmentPlan GetDBModel(int version)
+        {
+            return _context.InvestmentPlans.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
     }
 }
