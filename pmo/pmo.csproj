@@ -44,6 +44,11 @@
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.7.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Models\ViewModel\Detail\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
