@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dbModels;
+using forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,7 +36,7 @@ namespace pmo.Controllers.VBPD.Application.History {
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
             ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (latestSavedVersion == null) {
-                var vm = new BusinessCaseViewModel() {
+                var vm = new BusinessCaseForm() {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
                     Stage = currentStage,
@@ -53,7 +54,7 @@ namespace pmo.Controllers.VBPD.Application.History {
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(BusinessCaseViewModel vm) {
+        public IActionResult Edit(BusinessCaseForm vm) {
             int currentVersion = 0;
             var latestBusinessCase = _context.BusinessCases.GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s => s.Id == _stageId);
@@ -155,7 +156,7 @@ namespace pmo.Controllers.VBPD.Application.History {
             return RedirectToAction("Detail", new { version = currentVersion });
         }
 
-        private List<BusinessCaseViewModel> GetVersionHistory() {
+        private List<BusinessCaseForm> GetVersionHistory() {
             var grouped = _context.BusinessCases
                 .Include(s => s.Stage)
                 .Where(i => i.Stage.ProjectId == _projectId)
@@ -164,20 +165,20 @@ namespace pmo.Controllers.VBPD.Application.History {
                 .ToList();
 
             if (grouped.Count == 0) {
-                return new List<BusinessCaseViewModel>();
+                return new List<BusinessCaseForm>();
             }
 
             List<BusinessCase> versions = new List<BusinessCase>();
             grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            var vm = _mapper.Map<List<BusinessCaseViewModel>>(versions);
+            var vm = _mapper.Map<List<BusinessCaseForm>>(versions);
             return vm;
         }
-        private BusinessCaseViewModel GetViewModel(int version) {
+        private BusinessCaseForm GetViewModel(int version) {
             var model = _context.BusinessCases.Where(s => s.Version == version)
                 .Include(m => m.ManufacturingLocations)
                 .GetLatestVersion(_projectId);
 
-            var vm = _mapper.Map<BusinessCaseViewModel>(model);
+            var vm = _mapper.Map<BusinessCaseForm>(model);
 
 
             vm.ManufacturingLocationsIds = _context.BusinessCase_ManufacturingLocations

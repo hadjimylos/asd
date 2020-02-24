@@ -20,6 +20,8 @@
     <Compile Remove="Migrations\20200214131806_SeedDataManyToMany.Designer.cs" />
     <Compile Remove="Migrations\20200218135745_AddProjectState.cs" />
     <Compile Remove="Migrations\20200218135745_AddProjectState.Designer.cs" />
+    <Compile Remove="Migrations\20200224125953_SchedulesAddForeignKeyToConfig.cs" />
+    <Compile Remove="Migrations\20200224125953_SchedulesAddForeignKeyToConfig.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,11 +44,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="System.DirectoryServices" Version="4.7.0" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.7.0" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Models\ViewModel\Detail\" />
   </ItemGroup>
 
   <PropertyGroup>

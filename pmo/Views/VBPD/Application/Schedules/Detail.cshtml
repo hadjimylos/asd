@@ -1,9 +1,10 @@
-﻿@model List<SchedulesViewModel>
+﻿@model List<dbModels.Schedule>
 @{
     ViewData["Title"] = "Detail";
     Layout = "_VbpdProjectDetailLayout";
+    var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
+    var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
 }
-@Html.AntiForgeryToken()
 
 <div class="actions-component">
     <div class="wrapper">
@@ -11,8 +12,7 @@
             <h1>Index</h1>
         </div>
         <div class="actions">
-            <a class="btn" href="/vbpd-projects/@ViewBag.ProjectId/stages/@ViewBag.StageId/schedules/edit">EDIT</a>
-
+            <a class="btn" href="/vbpd-projects/@projectId/stages/@stageNumber/schedules/edit">EDIT</a>
         </div>
     </div>
 </div>
@@ -24,8 +24,7 @@
             <h1>Schedules </h1>
         </div>
         <div class="details">
-            @foreach (var schedule in Model)
-            {
+            @foreach (var schedule in Model) {
                 <div class="detail">
                     <div class="label">@schedule.ScheduleType.Name:</div>
                     <div class="value">@schedule.Date.ToString("MM/dd/yyyy")</div>

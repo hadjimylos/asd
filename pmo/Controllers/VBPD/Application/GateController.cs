@@ -1,6 +1,7 @@
 ﻿namespace pmo.Controllers {
     using AutoMapper;
     using dbModels;
+    using forms;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -29,13 +30,13 @@
                 .Where(w => w.GateId == _currentGate.Id)
                 .ToList();
 
-            var model = _mapper.Map<GateViewModel>(_currentGate);
+            var model = _mapper.Map<GateForm>(_currentGate);
 
             // apply defaults for save else load as is
             if (gateKeepers.Count > 0) {
                 gateKeepers.ForEach(
                     f =>
-                        model.GateKeepersNew.Add(new GateKeeperViewModel {
+                        model.GateKeepersNew.Add(new GateKeeperForm {
                             Label = f.GateKeeperConfig.Keeper,
                             GateKeeperConfigId = f.GateKeeperConfigId,
                             GateKeeperName = f.GateKeeperName,
@@ -45,7 +46,7 @@
                 // initialize as empty  
                 gateKeeperConfigs.ForEach(
                     f =>
-                        model.GateKeepersNew.Add(new GateKeeperViewModel {
+                        model.GateKeepersNew.Add(new GateKeeperForm {
                             Label = f.Keeper,
                             GateKeeperConfigId = f.Id
                         })
@@ -82,7 +83,7 @@
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public  IActionResult Edit(GateViewModel model) {
+        public  IActionResult Edit(GateForm model) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
                 return View($"{path}/Edit.cshtml", model);

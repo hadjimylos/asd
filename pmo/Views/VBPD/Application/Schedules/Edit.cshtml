@@ -1,9 +1,28 @@
-﻿@model List<SchedulesViewModel>
+﻿@model List<ScheduleForm>
 @{
     ViewData["Title"] = "Edit";
     Layout = "_VbpdProjectDetailLayout";
+    var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
+    var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
 }
 
-<h1>Edit</h1>
+<form class="form-component" method="post" action="/vbpd-projects/@projectId/stages/@stageNumber/schedules/edit">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            @for (int i = 0; i < Model.Count; i++) {
+                <div class="field">
+                    <div class="label">@Model[i].ScheduleType.Name</div>
+                    <input type="hidden" asp-for="@Model[i].TagId" />
+                    <input type="hidden" asp-for="@Model[i].Id" />
+                    <input type="hidden" asp-for="@Model[i].StageId" />
+                    <input asp-for="@Model[i].Date" class="data" type="date" />
+                </div>
+            }
 
-@Html.Partial("_ScheduleForm.cshtml", Model)
+            <div class="field">
+                <input type="submit" class="data btn" value="SUBMIT" />
+            </div>
+        </div>
+    </div>
+</form>

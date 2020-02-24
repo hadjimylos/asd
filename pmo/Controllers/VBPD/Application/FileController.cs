@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dbModels;
+using forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,26 +11,25 @@ using System.Linq;
 using ViewModels;
 using ViewModels.Helpers;
 
-namespace pmo.Controllers
-{
+namespace pmo.Controllers {
     [Route("vbpd-projects/{projectId}/stages/{stageNumber}/files")]
     public class FileController : BaseStageComponentController {
         private readonly string documentLibraryToSharepointPath = $"{Config.AppSettings["Sharepoint:documentLibraryToSharepointPath"]}";
         private readonly ISharePointService _SharePointService;
         private readonly string path = "~/Views/VBPD/Application/Files";
 
-        public FileController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor,ISharePointService SharePointService) : base(context, mapper, httpContextAccessor) {
+        public FileController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, ISharePointService SharePointService) : base(context, mapper, httpContextAccessor) {
             _SharePointService = SharePointService;
         }
 
         [Route("edit")]
         public IActionResult Edit() {
-            List<SharepointFile> model = new List<SharepointFile>();
+            List<FileForm> model = new List<FileForm>();
 
-            var uploadedFiles = _context.StageFiles.Where (
+            var uploadedFiles = _context.StageFiles.Where(
                 w =>
                     w.StageId == _stageId
-            ).Select (
+            ).Select(
                 s =>
                     s.FileTagId
             ).ToList();
@@ -42,8 +42,8 @@ namespace pmo.Controllers
 
 
             requiredFiles.ForEach(requiredFile => {
-                model.Add (
-                    new SharepointFile {
+                model.Add(
+                    new FileForm {
                         TagDescription = requiredFile.RequiredFile.Name,
                         TagId = requiredFile.RequiredFileTagId,
                     });
@@ -52,7 +52,7 @@ namespace pmo.Controllers
             // list of uploaded files
             ViewBag.Uploaded = _context.StageFiles
                 .IncludeAll()
-                .Where (
+                .Where(
                     w =>
                         w.StageId == _stageId
                 ).ToList();
@@ -63,7 +63,7 @@ namespace pmo.Controllers
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public IActionResult Edit(List<SharepointFile> files) {
+        public IActionResult Edit(List<FileForm> files) {
             var saveFiles = files.Where(w => w.File != null).ToList();
             var projectName = _context.Projects.Find(_projectId).Name;
 
@@ -80,7 +80,7 @@ namespace pmo.Controllers
                     FileTagId = f.TagId,
                 });
             });
-            
+
             _context.SaveChanges();
             return RedirectToAction("Edit", new { projectId = _projectId, stageNumber = _stageNumber });
         }

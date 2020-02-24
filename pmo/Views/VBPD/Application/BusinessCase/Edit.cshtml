@@ -1,16 +1,10 @@
-﻿@model BusinessCaseViewModel
+﻿@model forms.BusinessCaseForm
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "_VbpdProjectDetailLayout";
 }
-@*
-        missing fields from form
 
-    1)     Phase 1 / 2 Dropdown
-    2)     WorkRequired attachment
-
-*@
 <form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@ViewBag.CurrentStageNumber/business-case/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">

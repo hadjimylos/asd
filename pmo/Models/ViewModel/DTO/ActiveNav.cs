@@ -1,4 +1,4 @@
-﻿namespace ViewModels {
+﻿namespace dto {
     public class ActiveNav {
         public bool? IsComplete { get; set; }
         public string Url { get; set; }

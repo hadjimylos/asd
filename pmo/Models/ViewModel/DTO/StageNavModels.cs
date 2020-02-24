@@ -1,4 +1,4 @@
-﻿namespace ViewModels {
+﻿namespace dto {
     using dbModels;
 
     public class ProjectJustificationNav : ProjectJustification { public string Url { get; set; } }

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
-namespace ViewModels {
-    public class StageConfigViewModel : StageConfig  {
+namespace forms {
+    public class StageConfigForm : StageConfig {
 
-        public StageConfigViewModel() {
+        public StageConfigForm() {
             ScheduleIds = new List<int>();
         }
 

@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
-namespace ViewModels { 
-    public class RoleViewModel:Role {
+namespace forms { 
+    public class RoleForm : Role {
         public bool isCreate { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]

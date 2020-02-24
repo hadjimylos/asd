@@ -1,37 +1,32 @@
 ﻿using AutoMapper;
 using dbModels;
-using System.Collections.Generic;
-using ViewModels;
+using dto;
+using forms;
 
-namespace pmo.Models.Mappings
-{
-    public class AutoMapping : Profile
-    {
-        public AutoMapping()
-        {
-            CreateMap<User, forms.UserForm>().ReverseMap().ReverseMap();
-            CreateMap<StageConfig, StageConfigViewModel>().ReverseMap();
-            CreateMap<GateConfig, GateConfigViewModel>().ReverseMap();
-            CreateMap<Role, RoleViewModel>().ReverseMap();
-            CreateMap<Tag, TagViewModel>().ReverseMap();
-            CreateMap<TagCategory, TagCategoryViewModel>().ReverseMap();
-            CreateMap<Project, forms.VBPDForm>().ReverseMap();
-            CreateMap<ProjectDetail, forms.VBPDForm>().ReverseMap();
-            CreateMap<ProjectDetail, forms.VBPDProjectDetailForm>().ReverseMap();
-            CreateMap<CustomerDesignApproval, forms.CustomerDesignApprovalForm>().ReverseMap();
-            CreateMap<Schedule, SchedulesViewModel>().ReverseMap();
-            CreateMap<InvestmentPlan, forms.InvestmentPlanForm>().ReverseMap();
-            CreateMap<KeyCharacteristic, forms.KeyCharacteristicForm>().ReverseMap();
-            CreateMap<ProductIntroChecklist, forms.ProductIntroChecklistForm>().ReverseMap();
-            CreateMap<Risk, forms.RiskForm>().ReverseMap();
+namespace pmo.Models.Mappings {
+    public class AutoMapping : Profile {
+        public AutoMapping() {
+            CreateMap<User, UserForm>().ReverseMap().ReverseMap();
+            CreateMap<StageConfig, StageConfigForm>().ReverseMap();
+            CreateMap<Role, RoleForm>().ReverseMap();
+            CreateMap<Tag, TagForm>().ReverseMap();
+            CreateMap<TagCategory, TagCategoryForm>().ReverseMap();
+            CreateMap<Project, VBPDForm>().ReverseMap();
+            CreateMap<ProjectDetail, VBPDForm>().ReverseMap();
+            CreateMap<ProjectDetail, VBPDProjectDetailForm>().ReverseMap();
+            CreateMap<CustomerDesignApproval, CustomerDesignApprovalForm>().ReverseMap();
+            CreateMap<Schedule, ScheduleForm>().ReverseMap();
+            CreateMap<InvestmentPlan, InvestmentPlanForm>().ReverseMap();
+            CreateMap<KeyCharacteristic, KeyCharacteristicForm>().ReverseMap();
+            CreateMap<ProductIntroChecklist, ProductIntroChecklistForm>().ReverseMap();
+            CreateMap<Risk, RiskForm>().ReverseMap();
             CreateMap<Gate, NavigationGate>().ReverseMap();
             CreateMap<Stage, NavigationStage>().ReverseMap();
-            CreateMap<ProductInfrigmentPatentability, forms.ProductInfrigmentPatentabilityForm>().ReverseMap();
-            CreateMap<BusinessCaseViewModel, BusinessCase>().ReverseMap();
-            CreateMap<ProjectJustification, forms.ProjectJustificationForm>().ReverseMap();
-            CreateMap<Gate, GateViewModel>().ReverseMap();
-            CreateMap<PostLaunchReview, forms.PostLaunchReviewForm>().ReverseMap();
-            CreateMap<FinancialData, FinancialDataViewModel>().ReverseMap();
+            CreateMap<ProductInfrigmentPatentability, ProductInfrigmentPatentabilityForm>().ReverseMap();
+            CreateMap<BusinessCaseForm, BusinessCase>().ReverseMap();
+            CreateMap<ProjectJustification, ProjectJustificationForm>().ReverseMap();
+            CreateMap<Gate, GateForm>().ReverseMap();
+            CreateMap<PostLaunchReview, PostLaunchReviewForm>().ReverseMap();
 
             // stage subclasses
             CreateMap<ProjectJustificationNav, ProjectJustification>().ReverseMap();

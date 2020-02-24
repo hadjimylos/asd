@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
-namespace ViewModels {
-    public class TagViewModel:Tag {
+namespace forms {
+    public class TagForm : Tag {
 
         public bool isCreate { get; set; }
 

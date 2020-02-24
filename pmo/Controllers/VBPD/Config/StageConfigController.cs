@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using dbModels;
+using forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using ViewModels;
 
 namespace pmo.Controllers {
     [Route("vbpd-admin/stage-config")]
@@ -17,14 +17,14 @@ namespace pmo.Controllers {
         }
 
         public IActionResult Index() {
-            var vm = _mapper.Map<List<StageConfigViewModel>>(_context.StageConfigs.ToList());
+            var vm = _context.StageConfigs.ToList();
             return View($"{path}/Index.cshtml", vm);
         }
 
         [Route("create")]
         public IActionResult Create() {
             int currentStage = _context.StageConfigs.Count() + 1;
-            var stageconfigViewModel = new StageConfigViewModel() { 
+            var stageconfigViewModel = new StageConfigForm() {
                 StageNumber = currentStage,
                 isCreate = true,
             };
@@ -34,7 +34,7 @@ namespace pmo.Controllers {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("create")]
-        public IActionResult Create(StageConfigViewModel model) {
+        public IActionResult Create(StageConfigForm model) {
             model.isCreate = true;
             int currentStage = _context.StageConfigs.AsNoTracking().Count() + 1;
             model.StageNumber = currentStage;
@@ -49,7 +49,7 @@ namespace pmo.Controllers {
             _context.StageConfigs.Add(domainModel);
             _context.SaveChanges();
 
-            return RedirectToAction ("Edit", new { id = domainModel.Id });
+            return RedirectToAction("Edit", new { id = domainModel.Id });
         }
 
         [Route("{id}")]
@@ -59,7 +59,7 @@ namespace pmo.Controllers {
             if (config == null)
                 return NotFound();
 
-            var vm = _mapper.Map<StageConfigViewModel>(config);
+            var vm = _mapper.Map<StageConfigForm>(config);
             vm.isCreate = false;
             vm.GateKeepers = _context.GateConfigs
                 .Include(i => i.GateKeeperConfigs)
@@ -76,11 +76,11 @@ namespace pmo.Controllers {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(StageConfigViewModel model) {
+        public IActionResult Edit(StageConfigForm model) {
             // populate stage number as is from DB
             model.StageNumber = _context.StageConfigs
                 .AsNoTracking()
-                .First (
+                .First(
                     config => config.Id == model.Id
                 ).StageNumber;
 
@@ -134,10 +134,10 @@ namespace pmo.Controllers {
                     .Id,
             });
             _context.SaveChanges();
-            return RedirectToAction(actionName: "Edit", new { id= stageId });
+            return RedirectToAction(actionName: "Edit", new { id = stageId });
         }
 
-        private void SetTagList(StageConfigViewModel model) {
+        private void SetTagList(StageConfigForm model) {
             var selected = _context.StageConfig_RequiredSchedules
                 .Where(w => w.StageConfigId == model.Id).Select(s => s.RequiredScheduleTagId).ToList();
 

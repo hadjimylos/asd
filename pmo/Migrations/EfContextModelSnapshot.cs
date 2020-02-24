@@ -205,7 +205,7 @@ namespace pmo.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("SalesCostEstimated")
+                    b.Property<decimal>("SalesPriceEstimated")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("StdCostEstimated")
@@ -647,6 +647,9 @@ namespace pmo.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("MitigationPlan")
                         .HasColumnType("nvarchar(max)");
 
@@ -661,6 +664,9 @@ namespace pmo.Migrations
 
                     b.Property<DateTime>("TargetDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

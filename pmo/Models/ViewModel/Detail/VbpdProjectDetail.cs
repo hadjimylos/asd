@@ -29,7 +29,7 @@ namespace ViewModels {
 
             this.TeamMembers = _context.Project_User
                 .IncludeAll()
-                .Where (
+                .Where(
                     w => w.ProjectId == projectId
                 ).ToList()
                 .GroupBy(g => g.JobDescriptionKey)
