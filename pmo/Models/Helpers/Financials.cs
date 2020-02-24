@@ -23,7 +23,7 @@ namespace ViewModels.Helpers
                         Year = model.DataStartingDate.Year + i,
                         Quantity = 0,
                         StdCostEstimated = 0,
-                        SalesCostEstimated = 0,
+                        SalesPriceEstimated = 0,
                         GPACapital = 0,
                         GPAExpense = 0,
                         QualCosts = 0,
@@ -55,7 +55,7 @@ namespace ViewModels.Helpers
                 Year = 0,
                 Quantity = 0,
                 StdCostEstimated = 0,
-                SalesCostEstimated = 0,
+                SalesPriceEstimated = 0,
                 GPACapital = 0,
                 GPAExpense = 0,
                 QualCosts = 0,
@@ -69,7 +69,7 @@ namespace ViewModels.Helpers
                     if (!item.Totals)
                     {
                         item.CostExtended = CostExtended(item.Quantity, item.StdCostEstimated);
-                        item.RevenueExtended = RevenueExtended(item.Quantity, item.SalesCostEstimated);
+                        item.RevenueExtended = RevenueExtended(item.Quantity, item.SalesPriceEstimated);
                         item.StdMarginEstimatedDollar = StdMarginEstimatedDollar(item.RevenueExtended, item.CostExtended);
                         item.StdMarginEstimatedPercent = StdMarginEstimatedPercent(item.StdMarginEstimatedDollar, item.RevenueExtended);
                         item.TotalExpenses = TotalExpenses(item.GPACapital, item.GPAExpense, item.QualCosts, item.OtherDevelopmentExpenses);
@@ -104,7 +104,7 @@ namespace ViewModels.Helpers
                 FinancialData.Where(x=>x.Totals).First().CumulativeCashFlow = TotalsSum(FinancialData.Where(x => !x.Totals).Select(x => x.CumulativeCashFlow).ToList());
                 FinancialData.Where(x=>x.Totals).First().Quantity = Convert.ToInt32(TotalsSum(FinancialData.Where(x => !x.Totals).Select(x => x.Quantity).ToList()));
                 FinancialData.Where(x=>x.Totals).First().StdCostEstimated = 0.00M;
-                FinancialData.Where(x=>x.Totals).First().SalesCostEstimated = 0.00M;
+                FinancialData.Where(x=>x.Totals).First().SalesPriceEstimated = 0.00M;
                 FinancialData.Where(x => x.Totals).First().GPACapital = TotalsSum(FinancialData.Where(x => !x.Totals).Select(x => x.GPACapital).ToList());
                 FinancialData.Where(x => x.Totals).First().GPAExpense = TotalsSum(FinancialData.Where(x => !x.Totals).Select(x => x.GPAExpense).ToList());
                 FinancialData.Where(x => x.Totals).First().QualCosts = TotalsSum(FinancialData.Where(x => !x.Totals).Select(x => x.QualCosts).ToList());
@@ -156,9 +156,9 @@ namespace ViewModels.Helpers
         {
             return Math.Round(Decimal.Multiply(Quantity, StdCostEstimated), 2);
         }
-       public static  decimal RevenueExtended(decimal Quantity, decimal SalesCostEstimated)
+       public static  decimal RevenueExtended(decimal Quantity, decimal SalesPriceEstimated)
         {
-            return Math.Round(Decimal.Multiply(Quantity, SalesCostEstimated), 2);
+            return Math.Round(Decimal.Multiply(Quantity, SalesPriceEstimated), 2);
         }
        public static  decimal StdMarginEstimatedDollar(decimal RevenueExtended, decimal CostExtended)
         {

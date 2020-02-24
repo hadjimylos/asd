@@ -7,7 +7,7 @@ namespace ViewModels
         public bool Totals { get; set; }
 
         //public decimal CostExtended { get { return Quantity * StdCostEstimated; } set { } }
-        //public decimal RevenueExtended { get { return Quantity * SalesCostEstimated; } }
+        //public decimal RevenueExtended { get { return Quantity * SalesPriceEstimated; } }
         //public decimal StdMarginEstimatedDollar { get { return RevenueExtended - CostExtended; } }
         //public decimal StdMarginEstimatedPercent { get { return StdMarginEstimatedDollar / RevenueExtended; } }
         //public decimal TotalExpenses { get { return GPACapital + GPAExpense + QualCosts + OtherDevelopmentExpenses; } }

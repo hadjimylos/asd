@@ -2,12 +2,9 @@
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pmo.Services.Lists;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using ViewModels;
 using ViewModels.Helpers;
@@ -92,7 +89,7 @@ namespace pmo.Controllers.VBPD.Application
 
                     dbmodel.Where(x => x.Id == item.Id).First().Quantity = item.Quantity;
                     dbmodel.Where(x => x.Id == item.Id).First().StdCostEstimated = item.StdCostEstimated;
-                    dbmodel.Where(x => x.Id == item.Id).First().SalesCostEstimated = item.SalesCostEstimated;
+                    dbmodel.Where(x => x.Id == item.Id).First().SalesPriceEstimated = item.SalesPriceEstimated;
                     dbmodel.Where(x => x.Id == item.Id).First().GPACapital = item.GPACapital;
                     dbmodel.Where(x => x.Id == item.Id).First().GPAExpense = item.GPAExpense;
                     dbmodel.Where(x => x.Id == item.Id).First().QualCosts = item.QualCosts;
