@@ -9,9 +9,7 @@ namespace forms {
     public class BusinessCaseForm : BusinessCase {
         public List<BusinessCaseForm> Versions { get; set; }
 
-        [Required(ErrorMessage = ErrorMessages.Required)]
         public new bool WillCustomerFundQual { get; set; }
-        [Required(ErrorMessage = ErrorMessages.Required)]
         public new bool WillCustomerFundTooling { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal ProbabiltyOfWin { get; set; }
@@ -33,7 +31,6 @@ namespace forms {
         public new DateTime ProjectCompletion { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal TimeFromProjectCompletionToRevenueGeneration { get; set; }
-        [Required(ErrorMessage = ErrorMessages.Required)]
         public new bool Changes { get; set; }
 
         public MultiSelectList ManufacturingLocationsDropDown { set; get; }
