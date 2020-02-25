@@ -1,4 +1,5 @@
 ﻿using dbModels;
+﻿using CustomValidators;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -15,17 +16,22 @@ namespace forms {
         public new decimal ProbabiltyOfWin { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal TargetFirstYearGrossMargin { get; set; }
+        [MinValue(1700)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int FinancialStartYear { get; set; }
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal DiscountRate { get; set; }
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal TaxRate { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal MultipleFieldsGeneratedTable { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal WorkRequirementAmount { get; set; }
+        [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
+        public new decimal LaborRate { get; set; }
         public new bool StrategicAlignment { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime ProjectCompletion { get; set; }

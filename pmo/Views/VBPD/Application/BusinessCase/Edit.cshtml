@@ -63,6 +63,13 @@
                     </ul>
                 </div>
                 <div class="field">
+                    <div class="label">Labor Rate</div>
+                    <input asp-for="LaborRate" class="data" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "LaborRate")
+                    </ul>
+                </div>
+                <div class="field">
                     <div class="label">Project Scope</div>
                     <input asp-for="ProjectScope" class="data" />
                     <ul class="errors">
