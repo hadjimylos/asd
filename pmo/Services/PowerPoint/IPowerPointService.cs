@@ -1,5 +1,6 @@
 ﻿using dbModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Office.Interop.PowerPoint;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,19 @@ namespace pmo.Services.PowerPoint
 {
     public interface IPowerPointService
     {
-       
+        public void CreateTitleSlide(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string ProjectId, string ProjectName, int GateNumber, string ProgramManager);
+
+        public void AddImageToSlide(Microsoft.Office.Interop.PowerPoint._Slide slide, string picturePath, int Left, int Top, int Height = -1, int Width = -1);
+
+        public void AddFooterToSlide(Microsoft.Office.Interop.PowerPoint._Slide slide, string FooterText = "");
+
+        public void CreateTableSlide(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string Title, string[,] DataTable, string FooterText = "");
+
+        public string CreatePowerPoint();
+
+        //public string CreatePowerPointGate2();
+
+        public string CreatePowerPointGate3(ProjectDetail project, Project_User user, ProductInfrigmentPatentability pip, Risk risk, InvestmentPlan ip, BusinessCaseViewModel bc);
+
     }
 }
