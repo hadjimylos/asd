@@ -13,15 +13,15 @@
         <div class="form-section">
             <div class="fields">
                 <div class="field">
-                    <div class="label">Will Customer Fund Qual</div>
                     <input asp-for="WillCustomerFundQual" class="data" />
+                    <label asp-for="WillCustomerFundQual"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "WillCustomerFundQual")
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Will Customer Fund Tooling</div>
                     <input asp-for="WillCustomerFundTooling" class="data" />
+                    <label asp-for="WillCustomerFundTooling"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "WillCustomerFundTooling")
                     </ul>
