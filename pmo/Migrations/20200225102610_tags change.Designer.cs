@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200225102610_tags change")]
+    partial class tagschange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,11 +40,11 @@ namespace pmo.Migrations
                     b.Property<string>("CustomerMarketAnalysis")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DataStartingDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("DiscountRate")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("FinancialStartYear")
-                        .HasColumnType("int");
 
                     b.Property<string>("GpaRequirements")
                         .HasColumnType("nvarchar(max)");
@@ -58,6 +60,9 @@ namespace pmo.Migrations
 
                     b.Property<decimal>("MultipleFieldsGeneratedTable")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("NumberOfYears")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("ProbabiltyOfWin")
                         .HasColumnType("decimal(18,2)");
