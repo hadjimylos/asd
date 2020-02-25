@@ -27,6 +27,7 @@ namespace pmo.Models.Mappings {
             CreateMap<ProjectJustification, ProjectJustificationForm>().ReverseMap();
             CreateMap<Gate, GateForm>().ReverseMap();
             CreateMap<PostLaunchReview, PostLaunchReviewForm>().ReverseMap();
+            CreateMap<FinancialData, FinancialDataForm>().ReverseMap();
 
             // stage subclasses
             CreateMap<ProjectJustificationNav, ProjectJustification>().ReverseMap();

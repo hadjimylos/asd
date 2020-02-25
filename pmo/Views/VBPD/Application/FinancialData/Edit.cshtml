@@ -1,0 +1,98 @@
+﻿@model List<FinancialDataForm>
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_VbpdProjectDetailLayout";
+    var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
+    var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
+    var businessCaseId = int.Parse(Helpers.GetRouteValue(Context.Request, "businessCaseId"));
+}
+
+<form class="input-table-component" method="post">
+    <div class="wrapper">
+        <div class="postback-field">
+            <div class="post-paths">
+                <div class="post-refresh">/vbpd-projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/refresh</div>
+                <div class="post-save">/vbpd-projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/edit</div>
+            </div>
+            <div class="postback-wrapper">
+                <div class="label">How Many Years</div>
+                <div class="num-fields-wrapper">
+                    <input type="number" class="num-fields" value="@Model.Count" name="rowCount" />
+                    <button type="button" class="btn refresh-rows"><i class="fas fa-sync-alt"></i></button>
+                </div>
+            </div>
+            <div class="save">
+                <button type="button" class="btn green save-submit"><i class="far fa-save"></i> Save</button>
+            </div>
+        </div>
+        <div class="titles">
+            <div class="title">Year</div>
+            <div class="title">Quantity</div>
+            <div class="title">Std Cost Estimated</div>
+            <div class="title">Sales Cost Estimated</div>
+            <div class="title">GPA Capital</div>
+            <div class="title">GPA Expense</div>
+            <div class="title">Qual Costs</div>
+            <div class="title">Other Dev Expenses</div>
+        </div>
+        <div class="rows">
+            @for (int i = 0; i < Model.Count; i++) {
+                @* Always include Ids of objects as hidden parameters for quick map and update *@
+                <input type="hidden" asp-for="@Model[i].BusinessCaseId" />
+                <input type="hidden" asp-for="@Model[i].Id" />
+
+                <div class="row">
+                    <div class="fields">
+                        <div class="field">
+                            <input type="hidden" asp-for="@Model[i].Year">
+                            <div class="descrip">@Model[i].Year</div>
+                        </div>
+                        <div class="field">
+                            <input asp-for="@Model[i].Quantity" class="value" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", $"[{i}].Quantity")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <input asp-for="@Model[i].StdCostEstimated" class="value" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", $"[{i}].StdCostEstimated")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <input asp-for="@Model[i].SalesPriceEstimated" class="value" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", $"[{i}].SalesPriceEstimated")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <input asp-for="@Model[i].GPACapital" class="value" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", $"[{i}].GPACapital")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <input asp-for="@Model[i].GPAExpense" class="value" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", $"[{i}].GPAExpense")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <input asp-for="@Model[i].QualCosts" class="value" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", $"[{i}].QualCosts")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <input asp-for="@Model[i].OtherDevelopmentExpenses" class="value" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", $"[{i}].OtherDevelopmentExpenses")
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</form>

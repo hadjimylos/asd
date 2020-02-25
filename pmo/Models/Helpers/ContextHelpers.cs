@@ -1,6 +1,7 @@
 ﻿using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using pmo;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -47,7 +48,46 @@ namespace ViewModels.Helpers
 
             return queryable;
         }
-     
+
+        public static void UpdateRelated<T, T2>(this List<T> manyTable, IQueryable<T2> allCurrentRecordsBasedOnParentTable, EfContext context)
+            where T : DatabaseModel
+            where T2 : DatabaseModel {
+
+            var updateIds = manyTable
+                .Where (w => w.Id != 0)
+                .Select(s => s.Id)
+                .ToList();
+
+            // remove unused
+            var deletes = allCurrentRecordsBasedOnParentTable.Where (
+                    w =>
+                        !updateIds.Contains(w.Id)
+                );
+            context.RemoveRange(deletes);
+
+            // update existing
+            var updates = manyTable.Where(w => updateIds.Contains(w.Id)).ToList();
+            updates.ForEach(update => {
+                var trackedTable = context.FinancialData.IncludeAll().First(f => f.Id == update.Id);
+
+                // use reflection to set all non virtual properties of tracked table to new values
+                trackedTable.GetType()
+                    .GetProperties().Where(
+                        w =>
+                            !w.GetGetMethod().IsVirtual
+                    ).ToList().ForEach(f => {
+                        var newVal = update.GetType().GetProperty(f.Name).GetValue(update);
+                        f.SetValue(trackedTable, newVal);
+                    });
+            });
+
+            // instert missing
+            var inserts = manyTable.Where(w => w.Id == 0).ToList();
+            context.AddRange(inserts);
+
+            context.SaveChanges();
+        }
+
         public static T GetLatestVersion<T>(this IQueryable<T> queryable, int projectId) where T : StageHistoryModel {
             return  queryable
                  .Include(p => p.Stage)
