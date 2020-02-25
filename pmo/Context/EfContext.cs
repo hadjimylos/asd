@@ -461,7 +461,7 @@ namespace pmo
                  new Tag { Id = 222,  Name = "New to ITT", TagCategoryId = 4 },
 
                   //Project Classification
-                 new Tag { Id = 223,  Name = "Broad Market ", TagCategoryId = 4 },
+                 new Tag { Id = 223,  Name = "Broad Market ", TagCategoryId = 5 },
                  new Tag { Id = 224,  Name = "Customer Specific (No Marketing Required)", TagCategoryId = 5 },
                  new Tag { Id = 225,  Name = "Customer Specific (With Marketing Support)", TagCategoryId = 5 },
                
@@ -912,7 +912,7 @@ namespace pmo
                     new Tag { Id =  667 ,  Name ="Tesla/Daimler/Volvo", TagCategoryId =     8  },
                     new Tag { Id =  668 ,  Name ="Inventus", TagCategoryId =     8  },
                     new Tag { Id =  669 ,  Name ="New Warrior PEO Project Office", TagCategoryId =     8  },
-                    new Tag { Id =  670 ,  Name ="Broad Market", TagCategoryId =     8  },
+                    new Tag { Id =  670 ,  Name ="Broad Market", TagCategoryId =     8  }, // To DO  --  Delete this row 
                     //Product Line
                     new Tag { Id =  671, Name ="2mm", TagCategoryId =  9},
                     new Tag { Id =  672, Name ="38999 Series I, II, and III", TagCategoryId =  9},
