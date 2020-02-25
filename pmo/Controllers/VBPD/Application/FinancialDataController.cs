@@ -21,11 +21,6 @@ namespace pmo.Controllers.VBPD.Application {
             );
         }
 
-        [Route("")]
-        public IActionResult Detail() {
-            return View($"{path}/Detail.cshtml");
-        }
-
         [Route("edit")]
         public IActionResult Edit() {
             var financials = _context.FinancialData.AsNoTracking()
@@ -79,6 +74,25 @@ namespace pmo.Controllers.VBPD.Application {
             return View($"{path}/Edit.cshtml", rows);
         }
 
+        [HttpPost]
+        [Route("edit")]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Edit(List<forms.FinancialDataForm> model) {
+            var view = View($"{path}/Edit.cshtml", model);
+
+            if (!ModelState.IsValid) {
+                ViewBag.Errors = ModelState;
+                return view;
+            }
+
+            // update all based on newly mapped items
+            var newFinancials = _mapper.Map<List<FinancialData>>(model);
+            var allCurrentRecords = _context.FinancialData.Where(w => w.BusinessCaseId == _businessCaseId);
+            newFinancials.UpdateRelated(allCurrentRecords, _context);
+
+            return view;
+        }
+
         private List<FinancialDataForm> AddRows(List<FinancialDataForm> model, int rowCount, int yearStart) {
             List<FinancialDataForm> rows = new List<FinancialDataForm>();
             // append missing rows
@@ -92,27 +106,6 @@ namespace pmo.Controllers.VBPD.Application {
             }
 
             return rows;
-        }
-
-        [HttpPost]
-        [Route("edit")]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(List<forms.FinancialDataForm> model) {
-            if (!ModelState.IsValid) {
-                ViewBag.Errors = ModelState;
-                return View($"{path}/Edit.cshtml", model);
-            }
-
-            // update all based on newly mapped items
-            var newFinancials = _mapper.Map<List<FinancialData>>(model);
-            var allCurrentRecords = _context.FinancialData.Where(w => w.BusinessCaseId == _businessCaseId);
-            newFinancials.UpdateRelated(allCurrentRecords, _context);
-
-            return RedirectToAction("Detail", new {
-                projectId = _projectId,
-                stageNumber = _stageNumber,
-                businessCaseId = _businessCaseId 
-            });
         }
     }
 }
