@@ -6,6 +6,7 @@
     var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
     var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
     var businessCaseId = int.Parse(Helpers.GetRouteValue(Context.Request, "businessCaseId"));
+    var isRefreshed = Context.Request.Path.Value.Contains("refresh");
 }
 
 <form class="input-table-component" method="post">
@@ -23,6 +24,9 @@
                 </div>
             </div>
             <div class="save">
+                @if (isRefreshed) {
+                    <a href="/vbpd-projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/edit" class="btn grey">Cancel</a>
+                }
                 <button type="button" class="btn green save-submit"><i class="far fa-save"></i> Save</button>
             </div>
         </div>
