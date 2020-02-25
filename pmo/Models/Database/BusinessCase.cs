@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
     public class BusinessCase: StageHistoryModel {
@@ -13,9 +12,7 @@ namespace dbModels {
 
         public decimal TargetFirstYearGrossMargin { get; set; }
 
-        public DateTime DataStartingDate { get; set; }
-
-        public int NumberOfYears { get; set; }
+        public int FinancialStartYear { get; set; }
 
         public decimal DiscountRate { get; set; }
 

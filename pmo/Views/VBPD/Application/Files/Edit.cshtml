@@ -75,7 +75,7 @@
                         <div class="label">Description</div>
                         <input class="data" asp-for="@Model[i].Description" />
                         <ul class="errors">
-                            @Html.Partial("_FieldErrors", Model[i].Description)
+                            @Html.Partial("_FieldErrors", $"[{i}].Description")
                         </ul>
                     </div>
                 }

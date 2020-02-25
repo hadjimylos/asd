@@ -18,9 +18,7 @@ namespace forms {
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal TargetFirstYearGrossMargin { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
-        public new DateTime DataStartingDate { get; set; }
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new int NumberOfYears { get; set; }
+        public new int FinancialStartYear { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal DiscountRate { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]

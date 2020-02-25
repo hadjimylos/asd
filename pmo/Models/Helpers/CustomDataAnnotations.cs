@@ -29,7 +29,7 @@
         private readonly long _minValue;
 
         public MinValue(long minValue) {
-            _minValue = minValue;
+            _minValue = minValue - 1;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {

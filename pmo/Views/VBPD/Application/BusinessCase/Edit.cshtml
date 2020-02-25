@@ -3,9 +3,11 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "_VbpdProjectDetailLayout";
+    var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
+    var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
 }
 
-<form class="historyform-component" method="post" action="/vbpd-projects/@Model.Stage.ProjectId/stages/@ViewBag.CurrentStageNumber/business-case/edit">
+<form class="historyform-component" method="post" action="/vbpd-projects/@projectId/stages/@stageNumber/business-case/edit">
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="form-section">
@@ -39,21 +41,13 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Data Starting Date</div>
-                    <input asp-for="DataStartingDate" class="data" />
+                    <div class="label">Financials Start Year</div>
+                    <input asp-for="FinancialStartYear" class="data" />
                     <ul class="errors">
-                        @Html.Partial("_FieldErrors", "DataStartingDate")
+                        @Html.Partial("_FieldErrors", "FinancialStartYear")
                     </ul>
                 </div>
 
-
-                <div class="field">
-                    <div class="label">Number Of Years</div>
-                    <input asp-for="NumberOfYears" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "NumberOfYears")
-                    </ul>
-                </div>
                 <div class="field">
                     <div class="label">Discount Rate</div>
                     <input asp-for="DiscountRate" class="data" />
@@ -173,13 +167,8 @@
                                 <div class="data">@version.TargetFirstYearGrossMargin</div>
                             </div>
                             <div class="select-single-field">
-                                <div class="label">Data Starting Date</div>
-                                <div class="data">@version.DataStartingDate</div>
-                            </div>
-
-                            <div class="select-single-field">
-                                <div class="label">Number Of Years</div>
-                                <div class="data">@version.NumberOfYears</div>
+                                <div class="label">Financials Start Year</div>
+                                <div class="data">@version.FinancialStartYear</div>
                             </div>
                             <div class="select-single-field">
                                 <div class="label">Discount Rate</div>

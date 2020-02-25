@@ -104,8 +104,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                             latestBusinessCase.WillCustomerFundTooling = businessCase.WillCustomerFundTooling;
                             latestBusinessCase.ProbabiltyOfWin = businessCase.ProbabiltyOfWin;
                             latestBusinessCase.TargetFirstYearGrossMargin = businessCase.TargetFirstYearGrossMargin;
-                            latestBusinessCase.DataStartingDate = businessCase.DataStartingDate;
-                            latestBusinessCase.NumberOfYears = businessCase.NumberOfYears;
+                            latestBusinessCase.FinancialStartYear = businessCase.FinancialStartYear;
                             latestBusinessCase.DiscountRate = businessCase.DiscountRate;
                             latestBusinessCase.TaxRate = businessCase.TaxRate;
                             latestBusinessCase.ProjectScope = businessCase.ProjectScope;
