@@ -21,7 +21,7 @@ namespace pmo.Controllers {
         [Route("{version}")]
         public IActionResult Detail( int version)
         {
-            var model = GetViewModel(version);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -165,9 +165,9 @@ namespace pmo.Controllers {
             return _mapper.Map<List<forms.ProductInfrigmentPatentabilityForm>>(versions);
         }
 
-        private ProductIntroChecklist GetDBModel(int version)
+        private ProductInfrigmentPatentability GetDBModel(int version)
         {
-            return _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
+            return _context.ProductInfrigmentPatentabilities.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
 
     }

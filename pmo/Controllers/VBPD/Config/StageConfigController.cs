@@ -17,7 +17,7 @@ namespace pmo.Controllers {
         }
 
         public IActionResult Index() {
-            var vm = _context.StageConfigs.ToList();
+            var vm = _context.StageConfigs.Include(s=>s.RequiredSchedules).ToList();
             return View($"{path}/Index.cshtml", vm);
         }
 

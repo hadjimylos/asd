@@ -23,8 +23,7 @@ namespace pmo.Controllers.VBPD.Application.History {
 
         [Route("{version}")]
         public IActionResult Detail(int version) {
-            var model = GetViewModel(version);
-            model.ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations, model.ManufacturingLocationsIds);
+            var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
@@ -186,6 +185,11 @@ namespace pmo.Controllers.VBPD.Application.History {
                 .Select(s => s.ManufacturingLocationsTagId)
                 .ToList();
             return vm;
+        }
+
+        private BusinessCase GetDBModel(int version)
+        {
+            return _context.BusinessCases.IncludeAll().Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
     }
 }
