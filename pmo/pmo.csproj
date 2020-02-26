@@ -52,6 +52,18 @@
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.7.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="wwwroot\PowerPointAssets\ThemeITT\Theme.thmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\PowerPointExports\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
