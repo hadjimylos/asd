@@ -3,10 +3,18 @@
     var activeStageNavs = (List<ActiveNav>)ViewBag.ActiveStageNavs;
     var activeGateNavs = (List<ActiveNav>)ViewBag.ActiveGateNavs;
 
-    bool showMoveToGateBtn = activeStageNavs
-                .Where(w => w.IsComplete != null)
-                .FirstOrDefault(f => !(bool)f.IsComplete && f.Visible) == null &&
-                activeStageNavs.Count > 0;
+    var incompleteParents = activeStageNavs.Where(w => w.IsComplete != null && !(bool)w.IsComplete && w.Visible).ToList();
+    var parentsWithIncompleteChildren = activeStageNavs
+        .Where (
+            parent =>
+                parent.ChildNavs.Count (
+                    child =>
+                        child.IsComplete != null &&
+                        !(bool)child.IsComplete &&
+                        child.Visible
+        ) > 0).ToList();
+
+    bool showMoveToGateBtn = (incompleteParents.Count + parentsWithIncompleteChildren.Count) == 0;
 }
 
 <div class="nav-section">
