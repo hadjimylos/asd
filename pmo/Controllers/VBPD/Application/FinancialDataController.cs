@@ -10,7 +10,7 @@ using System.Linq;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers.VBPD.Application {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/business-case/{businessCaseId}/financial-data")]
+    [Route("vbpd-projects/{projectId}/stages/{stageNumber}/business-case/{businessCaseId}/financial-data")]
     public class FinancialDataController : BaseStageComponentController {
         private readonly string path = "~/Views/VBPD/Application/FinancialData";
         private readonly int _businessCaseId;
@@ -78,11 +78,10 @@ namespace pmo.Controllers.VBPD.Application {
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(List<forms.FinancialDataForm> model) {
-            var view = View($"{path}/Edit.cshtml", model);
 
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
-                return view;
+                return View($"{path}/Edit.cshtml", model);
             }
 
             // update all based on newly mapped items
@@ -90,7 +89,11 @@ namespace pmo.Controllers.VBPD.Application {
             var allCurrentRecords = _context.FinancialData.Where(w => w.BusinessCaseId == _businessCaseId);
             newFinancials.UpdateRelated(allCurrentRecords, _context);
 
-            return view;
+            return RedirectToAction("Edit", new {
+                projectId = _projectId,
+                stageNumber = _stageNumber,
+                businessCaseId = _businessCaseId,
+            });
         }
 
         private List<FinancialDataForm> AddRows(List<FinancialDataForm> model, int rowCount, int yearStart) {

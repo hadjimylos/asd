@@ -66,6 +66,11 @@
                 .Distinct()
                 .Count();
 
+            var activeBusinessCase = activeStage
+                .BusinessCaseHistory
+                .OrderByDescending(o => o.CreateDate)
+                .FirstOrDefault();
+
             var commonPath = $"/vbpd-projects/{this._projectId}/stages/{activeStage.StageNumber}";
             return new List<ActiveNav>() {
                     new ActiveNav {
@@ -81,6 +86,15 @@
                         Url = $"{commonPath}/business-case/edit",
                         Version = activeStage.BusinessCaseHistory.Count == 0 ? 0 : activeStage.BusinessCaseHistory.Max(m => m.Version),
                         Visible = activeStageConfig.MinBusinessCases > 0,
+
+                        ChildNavs = new List<ActiveNav>(){ 
+                            new ActiveNav {
+                                Component = "Financials",
+                                IsComplete = activeStageConfig.MinBusinessCases <= 0 || (activeBusinessCase?.FinancialData.Count > 0),
+                                Url = $"{commonPath}/business-case/{activeBusinessCase?.Id}/financial-data/edit",
+                                Visible = activeStageConfig.MinBusinessCases > 0 && activeBusinessCase != null,
+                            }
+                        } 
                     },
                     new ActiveNav {
                         Component = "Product Infrigment Patentabilities",

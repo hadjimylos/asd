@@ -18,15 +18,43 @@
             <div class="nav-section-items">
                 @foreach (var nav in activeStageNavs.Where(w => w.Visible).ToList()) {
                     var activeClass = nav.IsComplete == null ? string.Empty : (bool)nav.IsComplete ? "completed" : "pending";
-                    var iconClass = nav.IsComplete == null ? string.Empty :  (bool)nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                    var iconClass = nav.IsComplete == null ? string.Empty : (bool)nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                    var isActiveClass = Context.Request.Path.Value.ToLower() == nav.Url.ToLower() ? "active" : string.Empty;
 
-                    <div class="nav @activeClass">
+                    <div class="nav @activeClass @isActiveClass">
                         <a class="item-wrapper" href="@nav.Url">
                             <div class="icon-descrip">
                                 <i class="@iconClass"></i>
                                 <div class="descrip">@nav.Component</div>
                             </div>
                         </a>
+
+                        @foreach (var child in nav.ChildNavs) {
+                            var activeClassChild = nav.IsComplete == null ? string.Empty : (bool)child.IsComplete ? "completed" : "pending";
+                            var iconClassChild = nav.IsComplete == null ? string.Empty : (bool)child.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                            var disabledClass = !nav.Visible ? "disabled" : string.Empty;
+                            var isActiveClassChild = Context.Request.Path.Value.ToLower() == child.Url.ToLower() ? "active" : string.Empty;
+
+                            <div class="nav @activeClassChild @disabledClass @isActiveClassChild">
+                                @if (!child.Visible) {
+                                    <div class="item-wrapper">
+                                        <div class="icon-descrip">
+                                            <i class="icon fas fa-square"></i>
+                                            <div class="descrip">@child.Component</div>
+                                        </div>
+                                    </div>
+                                }
+                                else {
+                                    <a class="item-wrapper" href="@child.Url">
+                                        <div class="icon-descrip">
+                                            <i class="@iconClassChild"></i>
+                                            <div class="descrip">@child.Component</div>
+                                        </div>
+                                    </a>
+                                }
+
+                            </div>
+                        }
                     </div>
                 }
                 @if (showMoveToGateBtn) {
@@ -45,11 +73,12 @@
         <div class="nav-section-items">
             <div class="nav-section-items">
                 @foreach (var nav in activeGateNavs.Where(w => w.Visible).ToList()) {
-                    var activeClass = nav.IsComplete == null ? string.Empty :  (bool)nav.IsComplete ? "completed" : "pending";
-                    var iconClass = nav.IsComplete == null ? string.Empty :  (bool)nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
+                    var activeClass = nav.IsComplete == null ? string.Empty : (bool)nav.IsComplete ? "completed" : "pending";
+                    var iconClass = nav.IsComplete == null ? string.Empty : (bool)nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
                     var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
+                    var isActiveClass = Context.Request.Path.Value.ToLower() == nav.Url.ToLower() ? "active" : string.Empty;
 
-                    <div class="nav @activeClass">
+                    <div class="nav @activeClass @isActiveClass">
                         <a class="item-wrapper" href="@nav.Url">
                             <div class="icon-descrip">
                                 <i class="@iconClass"></i>
