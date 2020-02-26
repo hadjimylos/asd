@@ -16,7 +16,7 @@ body form {
 }
 body input[type="text"],
 body input[type="number"],
-body input[type="datetime-local"],
+body input[type="date"],
 body textarea {
   width: 100%;
   font-family: inherit;
@@ -32,7 +32,7 @@ body textarea {
 }
 body input[type="text"]:focus,
 body input[type="number"]:focus,
-body input[type="datetime-local"]:focus,
+body input[type="date"]:focus,
 body textarea:focus {
   outline: 0;
   border-color: rgba(0, 133, 155, 0.5);
@@ -45,7 +45,7 @@ body textarea {
   box-sizing: border-box;
   resize: none;
 }
-body .file-upload {
+body input[type="file"] {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
@@ -53,7 +53,7 @@ body .file-upload {
   position: absolute;
   z-index: -1;
 }
-body .file-upload + label {
+body input[type="file"] + label {
   font-family: inherit;
   font-size: inherit;
   color: #495057;
@@ -69,19 +69,19 @@ body .file-upload + label {
   white-space: nowrap;
   overflow: hidden;
 }
-body .file-upload + label span {
+body input[type="file"] + label span {
   padding: 0.375em 0.75em;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
-body .file-upload + label strong {
+body input[type="file"] + label strong {
   padding: 0.375em 0.75em;
   color: #ffffff;
   border-left: 1px solid #ced4da;
   background-color: #00859b;
 }
-body .file-upload + label:hover strong {
+body input[type="file"] + label:hover strong {
   background-color: #006b7c;
 }
 body input[type='checkbox'] {
@@ -92,6 +92,8 @@ body input[type='checkbox'] {
   overflow: hidden;
 }
 body input[type='checkbox'] + label {
+  user-select: none;
+  cursor: pointer;
   font-family: inherit;
   font-size: inherit;
   color: #495057;
