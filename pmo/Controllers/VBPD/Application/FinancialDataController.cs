@@ -23,15 +23,32 @@ namespace pmo.Controllers.VBPD.Application {
 
         [Route("edit")]
         public IActionResult Edit() {
-            var financials = _context.FinancialData.AsNoTracking()
-                .Where (
-                    w =>
-                        w.BusinessCaseId == _businessCaseId
-                ).ToList();
+            var currentBusinessCase = _context.BusinessCases
+                .Include(i => i.FinancialData).First(f => f.Id == _businessCaseId);
 
-            var model = _mapper.Map<List<FinancialDataForm>>(financials);
+            if (currentBusinessCase.FinancialData.Count > 0) {
+                var model = _mapper.Map<List<FinancialDataForm>>(currentBusinessCase.FinancialData);
+                return View($"{path}/Edit.cshtml", model);
+            } else if (currentBusinessCase.Version > 1) {
+                
+                // previous case data
+                int previousVersion = currentBusinessCase.Version - 1;
+                var previousBusinessCase = _context.BusinessCases
+                    .Include(i => i.FinancialData).Include(i => i.Stage)
+                    .First(f => f.Version == previousVersion && f.Stage.ProjectId == _projectId);
+                var model = _mapper.Map<List<FinancialDataForm>>(previousBusinessCase.FinancialData);
 
-            return View($"{path}/Edit.cshtml", model);
+                // indicate that these should be insert and not update
+                model.ForEach(f => {
+                    f.Id = 0;
+                    f.BusinessCaseId = _businessCaseId;
+                });
+
+                return View($"{path}/Edit.cshtml", model);
+            }
+
+            // no previous case
+            return View($"{path}/Edit.cshtml", new List<FinancialDataForm>());
         }
 
         [HttpPost]
