@@ -10,8 +10,9 @@ namespace forms {
     public class BusinessCaseForm : BusinessCase {
         public List<BusinessCaseForm> Versions { get; set; }
 
-        [Display(Name = "Will Customer Fund Qual")]
+        [Display(Name = "Will Customer Fund Qual?")]
         public new bool WillCustomerFundQual { get; set; }
+        [Display(Name = "Will Customer Fund Tooling?")]
         public new bool WillCustomerFundTooling { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal ProbabiltyOfWin { get; set; }
@@ -33,6 +34,7 @@ namespace forms {
         [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal LaborRate { get; set; }
+        [Display(Name = "Strategic Alignment")]
         public new bool StrategicAlignment { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime ProjectCompletion { get; set; }

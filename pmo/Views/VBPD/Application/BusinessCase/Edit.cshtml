@@ -82,8 +82,8 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Strategic Alignment</div>
                     <input asp-for="StrategicAlignment" class="data" />
+                    <label asp-for="StrategicAlignment"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "StrategicAlignment")
                     </ul>
@@ -125,8 +125,8 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Changes</div>
                     <input asp-for="Changes" class="data" />
+                    <label asp-for="Changes"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "Changes")
                     </ul>

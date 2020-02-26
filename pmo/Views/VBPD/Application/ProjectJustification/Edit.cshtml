@@ -11,8 +11,8 @@
         <div class="form-section">
             <div class="fields">
                 <div class="field">
-                    <div class="label">Add To Inhouse Technical Abilities </div>
                     <input asp-for="AddToInhouseTechnicalAbilities" class="data" />
+                    <label asp-for="AddToInhouseTechnicalAbilities"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "AddToInhouseTechnicalAbilities")
                     </ul>

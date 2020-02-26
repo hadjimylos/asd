@@ -12,8 +12,8 @@
         <div class="form-section">
             <div class="fields">
                 <div class="field">
-                    <div class="label">Is Marketing Required </div>
                     <input asp-for="IsMarketingRequired" class="data" />
+                    <label asp-for="IsMarketingRequired"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "IsMarketingRequired")
                     </ul>

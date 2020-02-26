@@ -12,8 +12,8 @@
         <div class="form-section">
             <div class="fields">
                 <div class="field">
-                    <div class="label">Are there potential infringement issues?</div>
-                    <input asp-for="ContainsFeaturesRequiringIPProtection" class="data" />
+                    <input asp-for="ContainsInfingmentIssues" class="data" />
+                    <label asp-for="ContainsInfingmentIssues"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "ContainsFeaturesRequiringIPProtection")
                     </ul>
@@ -40,15 +40,15 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Are there features of the product that require IP protection?</div>
                     <input asp-for="ContainsFeaturesRequiringIPProtection" class="data" />
+                    <label asp-for="ContainsFeaturesRequiringIPProtection"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "ContainsFeaturesRequiringIPProtection")
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Has an invention disclosure been submitted?</div>
                     <input asp-for="InventionDisclosureSubmitted" class="data" />
+                    <label asp-for="InventionDisclosureSubmitted"></label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "InventionDisclosureSubmitted")
                     </ul>

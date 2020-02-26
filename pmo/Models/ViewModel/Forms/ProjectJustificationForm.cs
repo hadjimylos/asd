@@ -14,6 +14,7 @@ namespace forms
         public List<SelectListItem> ProductDropDown { set; get; }
         public new Tag Product { set; get; }
         [Required(ErrorMessage = ErrorMessages.Required)]
+        [Display(Name = "Addition to our Technical Capabilities")]
         public new bool AddToInhouseTechnicalAbilities { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int StageId { get; set; }
