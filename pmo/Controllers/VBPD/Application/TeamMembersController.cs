@@ -57,7 +57,6 @@ namespace pmo.Controllers
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-
         public IActionResult Edit(forms.TeamMembersForm teamMembersViewModel, int projectId) {
             if (!ProjectExists(projectId))
                 return NotFound();
@@ -101,7 +100,7 @@ namespace pmo.Controllers
                 }
             }
 
-            return Redirect($"/vbpd-projects/{_projectId}");
+            return RedirectToAction("Edit");
         }
 
         private void SetDropdowns(forms.TeamMembersForm model) {

@@ -138,7 +138,7 @@ namespace pmo.Controllers
                 }
             }
 
-            return RedirectToAction("Detail", new { version = currentVersion });
+            return this._editAction;
         }
 
         private forms.PostLaunchReviewForm GetViewModel(int version)

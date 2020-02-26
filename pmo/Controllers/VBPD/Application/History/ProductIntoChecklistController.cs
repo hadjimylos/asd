@@ -135,7 +135,8 @@ namespace pmo.Controllers.VBPD.Application.History
                     }
                 }
             }
-            return RedirectToAction("Detail", new { version = currentVersion });
+
+            return this._editAction;
         }
 
         private forms.ProductIntroChecklistForm GetViewModel(int version)

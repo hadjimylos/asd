@@ -61,8 +61,6 @@ namespace pmo.Controllers {
                 return View($"{viewPath}/Edit.cshtml", model);
             }
 
-            // NOTE!!!!!!!!: here please check to see if first record. If so create and continue. (not necessary for Project Detail specifically)
-
             // transaction logic:
             // check to see if new record or edit latest
             string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
@@ -116,7 +114,7 @@ namespace pmo.Controllers {
                 }     
             }
 
-            return RedirectToAction("Detail", new { projectId, version = latestProjectDetail.Version });
+            return RedirectToAction("Edit", new { projectId = this._projectId });
         }
 
         private List<forms.VBPDProjectDetailForm> GetVersionHistory(int projectId) {

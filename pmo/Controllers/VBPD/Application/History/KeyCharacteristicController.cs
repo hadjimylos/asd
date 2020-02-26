@@ -126,7 +126,8 @@ namespace pmo.Controllers
                     _context.SaveChanges();
                 }
             }
-            return RedirectToAction("Detail", new {version =currentVersion });
+
+            return this._editAction;
         }
 
         private List<forms.KeyCharacteristicForm> GetVersionHistory()

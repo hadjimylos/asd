@@ -64,14 +64,6 @@ namespace pmo.Controllers
                 vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = lastProjectJustification == null ? 0 : lastProjectJustification.Version;
-                //vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory) //todo 
-                //    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                //    .ToList().Select(s => new SelectListItem
-                //    {
-                //        Value = s.Id.ToString(),
-                //        Text = s.Name,
-                //        Selected = s.Id == vm.RequirementSourceId
-                //    }).ToList();
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             var projectJust = _mapper.Map<ProjectJustification>(vm);
@@ -114,7 +106,8 @@ namespace pmo.Controllers
                     _context.SaveChanges();
                 }
             }
-            return RedirectToAction("Detail", new { version = currentVersion });
+
+            return this._editAction;
         }
 
         private List<forms.ProjectJustificationForm> GetVersionHistory()

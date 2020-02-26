@@ -64,7 +64,7 @@ namespace pmo.Controllers {
             });
 
             _context.SaveChanges();
-            return RedirectToAction("Edit", new { projectId = _projectId, stageNumber = _stageNumber });
+            return this._editAction;
         }
 
         [Route("delete")]

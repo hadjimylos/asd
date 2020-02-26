@@ -20,7 +20,6 @@ namespace pmo.Controllers {
         }
 
         [Route("detail")]
-        [AutoValidateAntiforgeryToken]
         public IActionResult Detail(int projectId, int stageNumber) {
             List<ScheduleForm> viewModel = new List<ScheduleForm>();
             //TODO: Fix possible error
@@ -59,7 +58,6 @@ namespace pmo.Controllers {
         }
 
         [Route("edit")]
-        [AutoValidateAntiforgeryToken]
         public IActionResult Edit(int projectId, int stageNumber) {
             var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
             List<ScheduleForm> viewModel = new List<ScheduleForm>();
@@ -129,7 +127,7 @@ namespace pmo.Controllers {
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("detail", new { projectId, stageNumber });
+            return this._editAction;
         }
     }
 }

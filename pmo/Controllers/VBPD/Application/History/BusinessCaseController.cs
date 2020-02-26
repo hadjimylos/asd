@@ -151,7 +151,8 @@ namespace pmo.Controllers.VBPD.Application.History {
                     _context.SaveChanges();
                 }
             }
-            return RedirectToAction("Detail", new { version = currentVersion });
+
+            return this._editAction;
         }
 
         private List<BusinessCaseForm> GetVersionHistory() {

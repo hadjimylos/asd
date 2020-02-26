@@ -138,7 +138,7 @@ namespace pmo.Controllers.Application.History
                 }
             }
 
-            return RedirectToAction("Detail", new { version = currentVersion });
+            return this._editAction;
         }
 
         private forms.InvestmentPlanForm GetViewModel(int version)
