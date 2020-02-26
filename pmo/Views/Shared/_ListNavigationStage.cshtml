@@ -1,11 +1,11 @@
 ﻿@model List<NavigationStage>
 
 @foreach (var item in Model) {
-    <div class="dropdown">
+    <div class="nav">
         <div class="item-wrapper">
             <div class="descrip">Stage @item.StageNumber</div>
         </div>
-        <div class="dropdown-items">
+        <div class="nav-section-items">
             @if (item.DisplaySchedules) {
                 var activeClass = Context.Request.Path.Value == item.SchedulesUrl ? "active" : string.Empty;
 
@@ -37,7 +37,7 @@
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
-                            <div class="descrip">Technical Feasibility &amp; Scope: Version @child.Version</div>
+                            <div class="descrip">Technical Feasibility &amp; Scope</div>
                         </div>
                     </a>
                 </div>
@@ -49,7 +49,7 @@
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
-                            <div class="descrip">Business Case: Version @child.Version</div>
+                            <div class="descrip">Business Case</div>
                         </div>
                     </a>
                 </div>
@@ -61,7 +61,7 @@
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
-                            <div class="descrip">Product Infrigment Patentability: Version @child.Version</div>
+                            <div class="descrip">Product Infrigment Patentability</div>
                         </div>
                     </a>
                 </div>
@@ -73,7 +73,7 @@
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
-                            <div class="descrip">Key Characteristic: Version @child.Version</div>
+                            <div class="descrip">Key Characteristic</div>
                         </div>
                     </a>
                 </div>
@@ -85,7 +85,7 @@
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
-                            <div class="descrip">Customer Design Approval: Version @child.Version</div>
+                            <div class="descrip">Customer Design Approval</div>
                         </div>
                     </a>
                 </div>
@@ -97,7 +97,7 @@
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
-                            <div class="descrip">Investment Plan: Version @child.Version</div>
+                            <div class="descrip">Investment Plan</div>
                         </div>
                     </a>
                 </div>
@@ -109,7 +109,7 @@
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
-                            <div class="descrip">Product Intro Checklist: Version @child.Version</div>
+                            <div class="descrip">Product Intro Checklist</div>
                         </div>
                     </a>
                 </div>
