@@ -7,7 +7,9 @@
         </div>
         <div class="dropdown-items">
             @if (item.DisplaySchedules) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == item.SchedulesUrl ? "active" : string.Empty;
+
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@item.SchedulesUrl">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -18,7 +20,9 @@
             }
 
             @if (item.DisplayRisks) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == item.RisksUrl ? "active" : string.Empty;
+
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@item.RisksUrl">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -27,9 +31,9 @@
                     </a>
                 </div>
             }
-
             @foreach (var child in item.ProjectJustificationNavs) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -40,7 +44,8 @@
 
             }
             @foreach (var child in item.BusinessCaseNavs) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -51,7 +56,8 @@
 
             }
             @foreach (var child in item.ProductInfrigmentPatentabilityNavs) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -62,7 +68,8 @@
 
             }
             @foreach (var child in item.KeyCharacteristicNavs) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -73,7 +80,8 @@
 
             }
             @foreach (var child in item.CustomerDesignApprovalNavs) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -84,7 +92,8 @@
 
             }
             @foreach (var child in item.InvestmentPlanNavs) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
@@ -95,7 +104,8 @@
 
             }
             @foreach (var child in item.ProductIntroChecklistNavs) {
-                <div class="nav">
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
                     <a class="item-wrapper" href="@child.Url">
                         <div class="icon-descrip">
                             <i class="icon fas fa-square"></i>
