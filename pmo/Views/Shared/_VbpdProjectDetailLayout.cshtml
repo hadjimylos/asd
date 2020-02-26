@@ -2,6 +2,7 @@
     var navmodel = (ProjectDetailNav)ViewData["ProjectNav"];
     var projectId = navmodel.ProjectId;
     var activeStageNumber = navmodel.Stages.Max(m => m.StageNumber);
+    var relativePath = Context.Request.Path.Value;
 }
 
 <!DOCTYPE html>
@@ -24,10 +25,31 @@
                     <div class="navs">
                         <div class="simple-nav-section">
                             <div class="nav">
-                                <a class="item-wrapper" href="/vbpd-projects">
+                                <a target="_blank" class="item-wrapper" href="/">
                                     <div class="icon-descrip">
                                         <i class="icon fas fa-home"></i>
                                         <div class="descrip">Home</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="nav">
+                                <a target="_blank" class="item-wrapper" href="/vbpd-projects">
+                                    <div class="icon-descrip">
+                                        <i class="icon fas fa-home"></i>
+                                        <div class="descrip">VBPD Projects List</div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            @{
+                                var href = $"/vbpd-projects/{projectId}";
+                                var activeClass = relativePath.ToLower() == href.ToLower() ? "active" : string.Empty;
+                            }
+                            <div class="nav @activeClass">
+                                <a class="item-wrapper" href="@href">
+                                    <div class="icon-descrip">
+                                        <i class="icon fas fa-home"></i>
+                                        <div class="descrip">Project Info: @navmodel.Stages[0].Project.Name</div>
                                     </div>
                                 </a>
                             </div>
