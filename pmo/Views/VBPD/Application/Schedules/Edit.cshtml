@@ -2,11 +2,9 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "_VbpdProjectDetailLayout";
-    var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
-    var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
 }
 
-<form class="form-component" method="post" action="/vbpd-projects/@projectId/stages/@stageNumber/schedules/edit">
+<form class="form-component" method="post">
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="fields">

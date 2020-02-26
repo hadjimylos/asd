@@ -4,9 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using ViewModels.Helpers;
 
 namespace forms { 
-    public class RiskForm:Risk {
-        public bool isCreate { get; set; }
-
+    public class RiskForm : Risk {
         public SelectList RiskTypeList { get; set; }
 
         public SelectList RiskImpactList { get; set; }

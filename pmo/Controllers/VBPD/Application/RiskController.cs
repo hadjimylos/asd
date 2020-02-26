@@ -13,15 +13,13 @@ namespace pmo.Controllers.Application {
     public class RiskController : BaseStageComponentController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Risk";
-
+        
         public RiskController(EfContext context, IMapper mapper, IListService listService, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             _listService = listService;
         }
 
         [Route("")]
-        public IActionResult Index(int projectId, int stageNumber) {
-            ViewBag.ProjectId = projectId;
-            ViewBag.StageNumber = stageNumber;
+        public IActionResult Index() {
             var vm = _mapper.Map<List<forms.RiskForm>>(
                 _context.Risks
                 .Include(x => x.Stage)
@@ -33,11 +31,8 @@ namespace pmo.Controllers.Application {
 
 
         [Route("create")]
-        public IActionResult Create(int projectId, int stageNumber) {
-            ViewBag.ProjectId = projectId;
-            ViewBag.StageNumber = stageNumber;
+        public IActionResult Create() {
             var riskViewModel = new forms.RiskForm() {
-                isCreate = true,
                 StageId = _stageId,
                 RiskTypeList = _listService.Tags_SelectList(TagCategoryHelper.RiskType),
                 RiskImpactList = _listService.Tags_SelectList(TagCategoryHelper.RiskImpact),
@@ -49,10 +44,7 @@ namespace pmo.Controllers.Application {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("create")]
-        public IActionResult Create(int projectId, int stageNumber, forms.RiskForm riskViewModel) {
-            ViewBag.ProjectId = projectId;
-            ViewBag.stageNumber = stageNumber;
-
+        public IActionResult Create(forms.RiskForm riskViewModel) {
             if (!ModelState.IsValid) {
                 riskViewModel.RiskTypeList = _listService.Tags_SelectList(TagCategoryHelper.RiskType);
                 riskViewModel.RiskImpactList = _listService.Tags_SelectList(TagCategoryHelper.RiskImpact);
@@ -68,9 +60,7 @@ namespace pmo.Controllers.Application {
         }
 
         [Route("{id}")]
-        public IActionResult Edit(int projectId, int stageNumber, int id) {
-            ViewBag.ProjectId = projectId;
-            ViewBag.StageNumber = stageNumber;
+        public IActionResult Edit(int id) {
             var risk = _context.Risks.Include(x => x.Stage)
                 .Include(x => x.RiskImpact)
                 .Include(x => x.RiskType)
@@ -80,7 +70,6 @@ namespace pmo.Controllers.Application {
                 return NotFound();
 
             var vm = _mapper.Map<forms.RiskForm>(risk);
-            vm.isCreate = false;
             vm.RiskTypeList = _listService.Tags_SelectList(TagCategoryHelper.RiskType);
             vm.RiskImpactList = _listService.Tags_SelectList(TagCategoryHelper.RiskImpact);
             return View($"{path}/Edit.cshtml", vm);
@@ -89,11 +78,7 @@ namespace pmo.Controllers.Application {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(int projectId, int stageNumber, forms.RiskForm model) {
-            ViewBag.ProjectId = projectId;
-            ViewBag.stageNumber = stageNumber;
-            model.isCreate = false;
-
+        public IActionResult Edit(forms.RiskForm model) {
             if (!ModelState.IsValid) {
                 model.RiskTypeList = _listService.Tags_SelectList(TagCategoryHelper.RiskType);
                 model.RiskImpactList = _listService.Tags_SelectList(TagCategoryHelper.RiskImpact);

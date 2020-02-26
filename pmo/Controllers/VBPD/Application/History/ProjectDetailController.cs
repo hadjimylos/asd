@@ -8,7 +8,6 @@ using pmo.Services.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers {

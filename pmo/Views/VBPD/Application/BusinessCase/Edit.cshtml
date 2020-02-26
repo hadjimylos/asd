@@ -3,11 +3,9 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "_VbpdProjectDetailLayout";
-    var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
-    var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
 }
 
-<form class="historyform-component" method="post" action="/vbpd-projects/@projectId/stages/@stageNumber/business-case/edit">
+<form class="historyform-component" method="post">
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="form-section">

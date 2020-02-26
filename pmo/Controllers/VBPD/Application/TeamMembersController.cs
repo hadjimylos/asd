@@ -28,7 +28,6 @@ namespace pmo.Controllers
             if (!ProjectExists(projectId))
                 return NotFound();
 
-            ViewBag.ProjectId = projectId;
             var allTeamMembers = _context.Project_User.Where(w => w.ProjectId == projectId).ToList();
             var teamMembersViewModel = new forms.TeamMembersForm {
                 // populate selected list items
@@ -60,8 +59,6 @@ namespace pmo.Controllers
         public IActionResult Edit(forms.TeamMembersForm teamMembersViewModel, int projectId) {
             if (!ProjectExists(projectId))
                 return NotFound();
-
-            ViewBag.ProjectId = projectId;
 
             if (!ModelState.IsValid) {
                 SetDropdowns(teamMembersViewModel);
