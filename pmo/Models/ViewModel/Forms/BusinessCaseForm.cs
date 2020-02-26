@@ -10,6 +10,7 @@ namespace forms {
     public class BusinessCaseForm : BusinessCase {
         public List<BusinessCaseForm> Versions { get; set; }
 
+        [Display(Name = "Will Customer Fund Qual")]
         public new bool WillCustomerFundQual { get; set; }
         public new bool WillCustomerFundTooling { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
