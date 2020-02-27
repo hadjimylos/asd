@@ -3,6 +3,7 @@ using dbModels;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace ViewModels {
     public class VbpdProjectDetail {
@@ -18,7 +19,7 @@ namespace ViewModels {
 
         public ProjectDetail ProjectDetail { get; set; }
 
-        public IEnumerable<IGrouping<string, Project_User>> TeamMembers { get; set; }
+        public List<Project_User> TeamMembers { get; set; }
 
         private void populate(int projectId) {
             this.ProjectDetail = _context.ProjectDetails
@@ -29,11 +30,12 @@ namespace ViewModels {
 
             this.TeamMembers = _context.Project_User
                 .IncludeAll()
+                .Include(i => i.User)
+                    .ThenInclude(i => i.Citizenships)
+                        .ThenInclude(i => i.Citizenships)
                 .Where(
                     w => w.ProjectId == projectId
-                ).ToList()
-                .GroupBy(g => g.JobDescriptionKey)
-                .ToList();
+                ).ToList();
         }
     }
 }
