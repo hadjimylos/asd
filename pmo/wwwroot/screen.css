@@ -401,6 +401,18 @@ body h2 {
 body h3 {
   font-size: 18px;
 }
+body .text-black {
+  color: #2A363B;
+}
+body .text-blue {
+  color: #00859b;
+}
+body .text-green {
+  color: #008264;
+}
+body .text-red {
+  color: #c82333;
+}
 .list-component .wrapper {
   border: 1px solid #dee2e6;
 }
