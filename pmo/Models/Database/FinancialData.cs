@@ -12,10 +12,10 @@ namespace dbModels {
         public int Quantity { get; set; }
         public decimal StdCostEstimated { get; set; }
         public decimal SalesPriceEstimated { get; set; }
-        public decimal GPACapital { get; set; }
-        public decimal GPAExpense { get; set; }
-        public decimal QualCosts { get; set; }
-        public decimal OtherDevelopmentExpenses { get; set; }
+        public decimal? GPACapital { get; set; }
+        public decimal? GPAExpense { get; set; }
+        public decimal? QualCosts { get; set; }
+        public decimal? OtherDevelopmentExpenses { get; set; }
 
         public decimal GetCostExtended() =>
             this.Quantity *
@@ -34,16 +34,16 @@ namespace dbModels {
             this.GetRevenueExtended();
 
         public decimal GetTotalExpenses() =>
-            this.GPACapital +
-            this.GPAExpense +
-            this.QualCosts +
-            this.OtherDevelopmentExpenses;
+            this.GPACapital ?? 0 +
+            this.GPAExpense ?? 0 +
+            this.QualCosts ?? 0 +
+            this.OtherDevelopmentExpenses ?? 0;
 
         public decimal GetNetProfitBeforeTax() =>
             this.GetRevenueExtended() -
             this.GetCostExtended() -
-            this.QualCosts -
-            this.OtherDevelopmentExpenses;
+            this.QualCosts ?? 0 -
+            this.OtherDevelopmentExpenses ?? 0;
 
         public decimal GetNetProfitAfterTax() =>
             this.GetNetProfitBeforeTax() *
@@ -53,7 +53,7 @@ namespace dbModels {
 
         public decimal GetFreeCashFlow() =>
             this.GetNetProfitAfterTax() -
-            this.GPACapital;
+            this.GPACapital ?? 0;
 
         public decimal GetPresentValue() =>
             this.GetFreeCashFlow() /

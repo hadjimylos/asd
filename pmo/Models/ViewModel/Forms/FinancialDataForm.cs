@@ -21,20 +21,9 @@ namespace forms {
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal SalesPriceEstimated { get; set; }
 
-        [MinValue(1)]
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new decimal GPACapital { get; set; }
-
-        [MinValue(1)]
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new decimal GPAExpense { get; set; }
-
-        [MinValue(1)]
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new decimal QualCosts { get; set; }
-
-        [MinValue(1)]
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new decimal OtherDevelopmentExpenses { get; set; }
+        public new decimal? GPACapital { get; set; }
+        public new decimal? GPAExpense { get; set; }
+        public new decimal? QualCosts { get; set; }
+        public new decimal? OtherDevelopmentExpenses { get; set; }
     }
 }
