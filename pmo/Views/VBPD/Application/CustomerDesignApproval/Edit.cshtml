@@ -19,7 +19,7 @@
                 </div>
                 <div class="field">
                     <div class="label">Date Sent to Customer for Approval</div>
-                    <input asp-for="DateSentForApprove" class="data" />
+                    <input asp-for="DateSentForApprove" type="date" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "DateSentForApprove")
                     </ul>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="field">
                     <div class="label">Approved Date</div>
-                    <input asp-for="ApprovedDate" class="data" />
+                    <input asp-for="ApprovedDate" type="date" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "ApprovedDate")
                     </ul>

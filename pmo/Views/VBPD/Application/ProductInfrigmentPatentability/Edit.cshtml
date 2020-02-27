@@ -55,7 +55,7 @@
                 </div>
                 <div class="field">
                     <div class="label">When was the 1st time the product was offered for sale?</div>
-                    <input asp-for="ProductFirstTimeOfferedForSale" class="data" />
+                    <input asp-for="ProductFirstTimeOfferedForSale" type="date" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "ProductFirstTimeOfferedForSale")
                     </ul>
