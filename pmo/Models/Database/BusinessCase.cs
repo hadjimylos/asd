@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace dbModels {
     public class BusinessCase: StageHistoryModel {
@@ -43,5 +44,32 @@ namespace dbModels {
         public virtual List<BusinessCase_ManufacturingLocation> ManufacturingLocations { get; set; }
         public virtual List<FinancialData> FinancialData { get; set; }
 
+        public decimal GetNPV() =>
+            FinancialData.Sum(s => s.GetPresentValue());
+
+        public decimal GetROI() =>
+            (
+                FinancialData.Sum(s => s.GetStandardMarginPrice()) *
+                (1 -
+                    (this.TaxRate / 100)
+                ) /
+                FinancialData.Count
+            ) /
+            FinancialData.Sum(s => s.GetTotalExpenses());
+
+        public decimal GetPaybackPeriod() {
+            var firstPositive = FinancialData.First(f => f.GetCumulativeCashFlow() > 0);
+
+            return 
+                (
+                    firstPositive.Year -
+                    this.FinancialStartYear
+                ) +
+                (
+                    1 -
+                    firstPositive.GetCumulativeCashFlow() /
+                    firstPositive.GetFreeCashFlow()
+                );
+        }
     }
 }
