@@ -5,77 +5,267 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
-<div class="detail-component">
+<div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            <h1>Business Case</h1>
+            <h1><i class="fas fa-clipboard-list"></i> Business Case</h1>
         </div>
-        <div class="details">
-            <div class="detail">
-                <div class="label">Will Customer Fund Qual</div>
-                <div class="value">@Model.WillCustomerFundQual</div>
+    </div>
+</div>
+
+<div class="layout-horrizontal-component">
+    <div class="wrapper">
+        <div class="sections">
+            <div class="section">
+                <div class="detail-component">
+                    <div class="wrapper">
+                        <div class="details">
+                            <div class="detail">
+                                <div class="label">Manufacturing Locations</div>
+                                <div class="value">@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.ManufacturingLocations.Name).ToList())</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Customer Market Analysis</div>
+                                <div class="value">@Model.CustomerMarketAnalysis</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Changes</div>
+                                <div class="value">@Model.Changes</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Data Starting Year</div>
+                                <div class="value">@Model.FinancialStartYear</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Number of Years</div>
+                                <div class="value">@Model.FinancialData.Count</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Discount Rate (%)</div>
+                                <div class="value">@Model.DiscountRate</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Tax Rate (%)</div>
+                                <div class="value">@Model.TaxRate</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Labor Rate ($/hr)</div>
+                                <div class="value">@Model.LaborRate</div>
+                            </div>
+                            @if (Model.FinancialData.Count > 0) {
+                                <div class="detail">
+                                    <div class="label">NPV</div>
+                                    <div class="value">$ @Model.GetNPV().ToString("N2")</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="label">ROI</div>
+                                    <div class="value">@(Model.GetROI() == null ? "--" : $"{Model.GetROI()?.ToString("N2")} %")</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="label">Payback Period (Years)</div>
+                                    <div class="value">@Model.GetPaybackPeriod().ToString("N2")</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="detail">
-                <div class="label">Will Customer Fund Tooling</div>
-                <div class="value">@Model.WillCustomerFundTooling</div>
-            </div>
-            <div class="detail">
-                <div class="label">Probabilty Of Win</div>
-                <div class="value">@Model.ProbabiltyOfWin</div>
-            </div>
-            <div class="detail">
-                <div class="label">Target First Year Gross Margin</div>
-                <div class="value">@Model.TargetFirstYearGrossMargin</div>
-            </div>
-            <div class="detail">
-                <div class="label">Financials Start Year</div>
-                <div class="value">@Model.FinancialStartYear</div>
-            </div>
-            <div class="detail">
-                <div class="label">Discount Rate</div>
-                <div class="value">@Model.DiscountRate</div>
-            </div>
-            <div class="detail">
-                <div class="label">Tax Rate</div>
-                <div class="value">@Model.TaxRate</div>
-            </div>
-            <div class="detail">
-                <div class="label">Project Scope</div>
-                <div class="value">@Model.ProjectScope</div>
-            </div>
-            <div class="detail">
-                <div class="label">Work Requirement Amount</div>
-                <div class="value">@Model.WorkRequirementAmount</div>
-            </div>
-            <div class="detail">
-                <div class="label">Strategic Alignment</div>
-                <div class="value">@Model.StrategicAlignment</div>
-            </div>
-            <div class="detail">
-                <div class="label">Add To Tecnical Abilities</div>
-                <div class="value">@Model.AddToTecnicalAbilities</div>
-            </div>
-            <div class="detail">
-                <div class="label">Project Completion</div>
-                <div class="value">@Model.ProjectCompletion</div>
-            </div>
-            <div class="detail">
-                <div class="label">Time From Project Completion To RevenueGeneration</div>
-                <div class="value">@Model.TimeFromProjectCompletionToRevenueGeneration</div>
-            </div>
-            <div class="detail">
-                <div class="label">ManufacturingLocations</div>
-                <div class="value">@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.ManufacturingLocations.Name).ToList())</div>
-            </div>
-            <div class="detail">
-                <div class="label">Customer Market Analysis</div>
-                <div class="value">@Model.CustomerMarketAnalysis</div>
-            </div>
-            <div class="detail">
-                <div class="label">Changes</div>
-                <div class="value">@Model.Changes</div>
+            <div class="section">
+                <div class="detail-component">
+                    <div class="wrapper">
+                        <div class="details">
+                            <div class="detail">
+                                <div class="label">Will Customer Fund Qual</div>
+                                <div class="value">@Model.WillCustomerFundQual</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Will Customer Fund Tooling</div>
+                                <div class="value">@Model.WillCustomerFundTooling</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Probabilty Of Win</div>
+                                <div class="value">@Model.ProbabiltyOfWin</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Target First Year Gross Margin</div>
+                                <div class="value">@Model.TargetFirstYearGrossMargin</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Project Scope</div>
+                                <div class="value">@Model.ProjectScope</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Work Requirement Amount</div>
+                                <div class="value">@Model.WorkRequirementAmount</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Strategic Alignment</div>
+                                <div class="value">@Model.StrategicAlignment</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Add To Tecnical Abilities</div>
+                                <div class="value">@Model.AddToTecnicalAbilities</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Project Completion</div>
+                                <div class="value">@Model.ProjectCompletion</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Time From Project Completion To RevenueGeneration</div>
+                                <div class="value">@Model.TimeFromProjectCompletionToRevenueGeneration</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1><i class="fas fa-clipboard-list"></i> Financials</h1>
+        </div>
+    </div>
+</div>
+
+@if (Model.FinancialData.Count > 0) {
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Year</div>
+                <div>Quantity</div>
+                <div>Std Cost (Estimated)</div>
+                <div>Sales Price (Estimated)</div>
+                <div>Cost Extended</div>
+                <div>Revenue Extended</div>
+                <div>Std Margin (Estimated)</div>
+                <div>Std Margin (Estimated)</div>
+            </div>
+            <div class="items">
+                @foreach (var financial in Model.FinancialData) {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <div>@financial.Year</div>
+                            <div>@financial.Quantity</div>
+                            <div>$ @financial.StdCostEstimated.ToString("N2")</div>
+                            <div>$ @financial.SalesPriceEstimated.ToString("N2")</div>
+                            <div>$ @financial.GetCostExtended().ToString("N2")</div>
+                            <div>$ @financial.GetRevenueExtended().ToString("N2")</div>
+                            <div>$ @financial.GetStandardMarginPrice().ToString("N2")</div>
+                            <div>@financial.GetStandardMarginPercent().ToString("N2") %</div>
+                        </div>
+                    </div>
+                }
+                <div class="item">
+                    <div class="item-wrapper bold-text">
+                        <div>Total</div>
+                        <div>@Model.FinancialData.Sum(s => s.Quantity).ToString("N0")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.StdCostEstimated).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.SalesPriceEstimated).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetCostExtended()).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetRevenueExtended()).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetStandardMarginPrice()).ToString("N2")</div>
+                        <div>@Model.FinancialData.Sum(s => s.GetStandardMarginPercent()).ToString("N2") %</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Year</div>
+                <div>GPA Capital</div>
+                <div>GPA Expense</div>
+                <div>Qual Costs</div>
+                <div>Other Development Expenses</div>
+                <div>Total Expenses</div>
+            </div>
+            <div class="items">
+                @foreach (var financial in Model.FinancialData) {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <div>@financial.Year</div>
+                            <div>@(financial.GPACapital == null ? "--" : $"$ {financial.GPACapital?.ToString("N2")}")</div>
+                            <div>@(financial.GPAExpense == null ? "--" : $"$ {financial.GPAExpense?.ToString("N2")}")</div>
+                            <div>@(financial.QualCosts == null ? "--" : $"$ {financial.QualCosts?.ToString("N2")}")</div>
+                            <div>@(financial.OtherDevelopmentExpenses == null ? "--" : $"$ {financial.OtherDevelopmentExpenses?.ToString("N2")}")</div>
+                            <div>$ @financial.GetTotalExpenses()</div>
+                        </div>
+                    </div>
+                }
+                <div class="item">
+                    <div class="item-wrapper bold-text">
+                        <div>Total</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GPACapital)?.ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GPAExpense)?.ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.QualCosts)?.ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.OtherDevelopmentExpenses)?.ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetTotalExpenses()).ToString("N2")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Year</div>
+                <div>Net Profit Before Tax</div>
+                <div>Net Profit After Tax</div>
+                <div>Free Cash Flow</div>
+                <div>Present Value</div>
+                <div>Cumulative Cash Flow</div>
+            </div>
+            <div class="items">
+                @foreach (var financial in Model.FinancialData) {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <div>@financial.Year</div>
+                            <div>$ @financial.GetNetProfitBeforeTax().ToString("N2")</div>
+                            <div>$ @financial.GetNetProfitAfterTax().ToString("N2")</div>
+                            <div>$ @financial.GetFreeCashFlow().ToString("N2")</div>
+                            <div>$ @financial.GetPresentValue().ToString("N2")</div>
+                            <div>$ @financial.GetCumulativeCashFlow().ToString("N2")</div>
+                        </div>
+                    </div>
+                }
+                <div class="item">
+                    <div class="item-wrapper bold-text">
+                        <div>Total</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetNetProfitBeforeTax()).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetNetProfitAfterTax()).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetFreeCashFlow()).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetPresentValue()).ToString("N2")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetCumulativeCashFlow()).ToString("N2")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else {
+    var path = Context.Request.Path.Value.Split("/");
+    path = path.Take(path.Length - 1).ToArray();
+    var fullpath = $"{string.Join("/", path)}/{Model.Id}/financial-data/edit";
+
+
+    <div class="message-component">
+        <div class="wrapper">
+            <div class="message">
+                <div class="title">
+                    No data found
+                </div>
+                <div class="text">
+                    Oops! We were unable to find any data.<br />
+                    Please navigate <a href="@fullpath">here</a> to insert some financial data...
+                </div>
+                <i class="icon far fa-smile"></i>
+            </div>
+        </div>
+    </div>
+}
