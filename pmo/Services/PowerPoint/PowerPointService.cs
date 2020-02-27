@@ -14,19 +14,32 @@ using ViewModels;
 
 namespace pmo.Services.PowerPoint
 {
-    public class PowerPointService: BaseStageComponentController, IPowerPointService
+    public class PowerPointService : BaseStageComponentController, IPowerPointService
     {
+        /// <summary>
+        /// Environment Initializations
+        /// </summary>
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly string _Theme;
         private readonly string _ExportPath;
         private readonly string _whiteSpace = "                                                  ";
         private readonly string _orangeTableStyleGUID = "FABFCF23-3B69-468F-B69F-88F6DE6A72F2";
-        public PowerPointService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment hostingEnvironment) : base(context, mapper, httpContextAccessor) {
+        public PowerPointService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment hostingEnvironment) : base(context, mapper, httpContextAccessor)
+        {
             _hostingEnvironment = hostingEnvironment;
             _Theme = _hostingEnvironment.WebRootPath + @"\PowerPointAssets\ThemeITT\Theme.thmx";
             _ExportPath = _hostingEnvironment.WebRootPath + @"\PowerPointExports\ppt";
         }
-
+        /// <summary>
+        /// Creates the Title Slide
+        /// </summary>
+        /// <param name="pptPresentation">Presentation object</param>
+        /// <param name="slides">Slides object</param>
+        /// <param name="SlideId">Slide increment</param>
+        /// <param name="ProjectId">Project ID</param>
+        /// <param name="ProjectName">Project Name</param>
+        /// <param name="GateNumber">Gate Number</param>
+        /// <param name="ProgramManager">Program Manager</param>
         public void CreateTitleSlide(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string ProjectId, string ProjectName, int GateNumber, string ProgramManager)
         {
             Microsoft.Office.Interop.PowerPoint.CustomLayout customLayoutTitle = pptPresentation.SlideMaster.CustomLayouts[4];
@@ -53,6 +66,15 @@ namespace pmo.Services.PowerPoint
             //objframe.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
 
         }
+        /// <summary>
+        /// Adds Image to specified position on slide
+        /// </summary>
+        /// <param name="slide">Slide object</param>
+        /// <param name="picturePath">Picture Path on Server</param>
+        /// <param name="Left">x</param>
+        /// <param name="Top">y</param>
+        /// <param name="Height">Height</param>
+        /// <param name="Width">Width</param>
         public void AddImageToSlide(Microsoft.Office.Interop.PowerPoint._Slide slide, string picturePath, int Left, int Top, int Height = -1, int Width = -1)
         {
             //string pictureFileName = _hostingEnvironment.WebRootPath + @"\PowerPointAssets\logo.png";
@@ -60,30 +82,82 @@ namespace pmo.Services.PowerPoint
             slide.Shapes.AddPicture(picturePath, MsoTriState.msoFalse, MsoTriState.msoTrue, Left, Top, Width, Height);
         }
 
+        /// <summary>
+        /// Formats the slide's footer 
+        /// </summary>
+        /// <param name="slide">Slide increment</param>
+        /// <param name="FooterText">Footer Text</param>
         public void AddFooterToSlide(Microsoft.Office.Interop.PowerPoint._Slide slide, string FooterText = "")
         {
             slide.HeadersFooters.SlideNumber.Visible = MsoTriState.msoCTrue;
             slide.HeadersFooters.DateAndTime.Visible = MsoTriState.msoCTrue;
             slide.HeadersFooters.Footer.Visible = MsoTriState.msoCTrue;
-            slide.HeadersFooters.Footer.Text = FooterText;
+            slide.HeadersFooters.Footer.Text = _whiteSpace+FooterText;
 
         }
 
+        /// <summary>
+        /// Generates a 2D Data Table from a given Objec
+        /// </summary>
+        /// <typeparam name="T">Object Type</typeparam>
+        /// <param name="TableData">Table Data</param>
+        /// <returns></returns>
         public string[,] GenerateTableData<T>(T TableData)
         {
-            if (TableData.GetType() == typeof(ProductInfrigmentPatentability))
+            
+            if (TableData.GetType() == typeof(PostLaunchReview))
+            {
+                PostLaunchReview plr = TableData as PostLaunchReview;
+                string[,] Data = new string[7, 2]{{ "Description", "Value"},
+                    { "Done Well", plr.DoneWell},
+                    { "Done Poorly", plr.DonePoorly},
+                    { "Bottlenecks", plr.Bottlenecks},
+                    { "Actual VS Expected", plr.ActualVSExpected},
+                    { "Commercial", plr.Commercial},
+                    { "Lessons Learned", plr.LessonsLearned},
+                    };
+
+                return Data;
+            }
+            else if (TableData.GetType() == typeof(InvestmentPlan))
+            {
+                InvestmentPlan ip = TableData as InvestmentPlan;
+                string[,] Data = new string[7, 2]{{ "Description", "Value"},
+                    { "Item Number", ip.ItemNumber},
+                    { "Item" , ip.Item},
+                    { "Purchased From" , ip.PurchasedFrom},
+                    { "Ship To location" , ip.ShipToLocation},
+                    { "Cost" , ip.Cost},
+                    { "Terms" , ip.Terms}
+                    };
+
+                return Data;
+            }
+            else if (TableData.GetType() == typeof(Risk))
+            {
+                Risk risk = TableData as Risk;
+                string[,] Data = new string[5, 2]{{ "Description", "Value"},
+                    { "Name", risk.Name},
+                    { "Risk Probability" , risk.RiskPropability+"%"},
+                    { "Risk Type" , risk.RiskType.Name},
+                    { "Risk Impact" , risk.RiskImpact.Name}
+                    };
+
+                return Data;
+            }
+            else if (TableData.GetType() == typeof(ProductInfrigmentPatentability))
             {
                 ProductInfrigmentPatentability pip = TableData as ProductInfrigmentPatentability;
                 string[,] Data = new string[8, 2]{{ "Description", "Value"},
                     { "Contains Infingment Issues", pip.ContainsInfingmentIssues?"Yes":"No"},
                     { "Patent Number" , pip.PatentNumber},
-                    {       "Issue" , pip.Issue},
-                     {       "Mitigation Strategy" , pip.MitigationStrategy},
-                      {      "Contains Features Requiring IP Protection" , pip.ContainsFeaturesRequiringIPProtection?"Yes":"No"},
-                     {       "Invention Disclosure Submitted" , pip.InventionDisclosureSubmitted?"Yes":"No"},
-                      {      "Product First Time Offered For Sale" , pip.ProductFirstTimeOfferedForSale.ToString("MM/dd/yyyy")}
+                    { "Issue" , pip.Issue},
+                    { "Mitigation Strategy" , pip.MitigationStrategy},
+                    { "Contains Features Requiring IP Protection" , pip.ContainsFeaturesRequiringIPProtection?"Yes":"No"},
+                    { "Invention Disclosure Submitted" , pip.InventionDisclosureSubmitted?"Yes":"No"},
+                    { "Product First Time Offered For Sale" , pip.ProductFirstTimeOfferedForSale.ToString("MM/dd/yyyy")}
                     };
-                
+
                 return Data;
             }
             else if (TableData == null)
@@ -93,23 +167,57 @@ namespace pmo.Services.PowerPoint
             return null;
         }
 
-            public string[,] GenerateTableData<T>(List<T> TableData)
+        /// <summary>
+        /// Generates a 2D Data Table from a given List of Objects
+        /// </summary>
+        /// <typeparam name="T">Object Type</typeparam>
+        /// <param name="TableData"> Table Data</param>
+        /// <returns></returns>
+        public string[,] GenerateTableData<T>(List<T> TableData)
         {
             var TableObjectType = TableData.FirstOrDefault();
-            if (TableData.FirstOrDefault().GetType() == typeof(BusinessCaseViewModel))
+            //if (TableData.FirstOrDefault().GetType() == typeof(BusinessCaseViewModel))
+            //{
+
+            //}
+
+            //else 
+            if (TableData.FirstOrDefault().GetType() == typeof(Schedule))
             {
-                
+                List<Schedule> schedule = TableData as List<Schedule>;
+                int Count = schedule.Count;
+                string[,] Data = new string[Count, 2];
+                Data[0, 0] = "Milestone";
+                Data[0, 1] = "Date";
+
+                for (int i = 1; i < Count; i++)
+                {
+                    Data[i, 0] = schedule[i - 1].ScheduleType.Name;
+                    Data[i, 1] = schedule[i - 1].Date.ToString("MM/dd/yyyy");
+                }
+
+                return Data;
             }
-            
-            else if (TableData.FirstOrDefault() == null)
+
+            else
+            if (TableData.FirstOrDefault() == null)
             {
                 throw new ArgumentNullException("Data is null");
             }
-                return new string[1,1];
+            return new string[1, 1];
 
         }
 
-        //In progress
+
+        /// <summary>
+        /// Creates a Table Slide with Title text
+        /// </summary>
+        /// <param name="pptPresentation">Presentation object</param>
+        /// <param name="slides">Slides Object</param>
+        /// <param name="SlideId">Slide Increment</param>
+        /// <param name="Title">Slide Title</param>
+        /// <param name="DataTable">Slide 2D Array</param>
+        /// <param name="FooterText">Footer Text</param>
         public void CreateTableSlide(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string Title, string[,] DataTable, string FooterText = "")
         {
             Microsoft.Office.Interop.PowerPoint.CustomLayout customLayoutContent = pptPresentation.SlideMaster.CustomLayouts[9];
@@ -155,7 +263,7 @@ namespace pmo.Services.PowerPoint
 
         }
 
-        public string CreatePowerPoint()
+        public string CreatePowerPointTestData()
         {
 
             Microsoft.Office.Interop.PowerPoint.Application pptApplication = new Microsoft.Office.Interop.PowerPoint.Application();
@@ -187,7 +295,8 @@ namespace pmo.Services.PowerPoint
             }
         }
 
-        public string CreatePowerPointGate2(ProjectDetail project, Project_User user, BusinessCaseViewModel businessCase)
+        public string CreatePowerPointGateReview(string Gate, ProjectDetail project, Project_User user, List<Schedule> schedules, 
+            ProductInfrigmentPatentability pip, Risk risk, InvestmentPlan ip, BusinessCase bc, PostLaunchReview plr)
         {
             Microsoft.Office.Interop.PowerPoint.Application pptApplication = new Microsoft.Office.Interop.PowerPoint.Application();
             // Create the Presentation File
@@ -197,50 +306,48 @@ namespace pmo.Services.PowerPoint
 
             try
             {
-
-                Microsoft.Office.Interop.PowerPoint.Slides slides;
-                slides = pptPresentation.Slides;
-                CreateTitleSlide(pptPresentation, slides, 1, project.Project.Id.ToString(), project.ProjectCategory.Name, 2, user.User.NetworkUsername);
-                CreateTableSlide(pptPresentation, slides, 2, "Business Cases", new string[2, 10] {{"1","2","3","4","5","6","7","8","9","10" },
-                                                                                                {"11","12","13","14","15","16","17","18","19","20" }}, _whiteSpace+"Gate 2 Review");
-
-                string SaveAs = _ExportPath + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".pptx";
-                pptPresentation.SaveAs(SaveAs, Microsoft.Office.Interop.PowerPoint.PpSaveAsFileType.ppSaveAsDefault, MsoTriState.msoTrue);
-                return SaveAs;
-
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            finally
-            {
-                pptPresentation.Close();
-                pptApplication.Quit();
-            }
-        }
-
-        //Slides: Title Page, Schedule, Product Infringement & Patentability (if exists), Risk Analysis, Investment Plan (if exists), Business Case.
-        public string CreatePowerPointGate3(ProjectDetail project, Project_User user, ProductInfrigmentPatentability pip, Risk risk, InvestmentPlan ip, BusinessCaseViewModel bc)
-        {
-            Microsoft.Office.Interop.PowerPoint.Application pptApplication = new Microsoft.Office.Interop.PowerPoint.Application();
-            // Create the Presentation File
-            Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoTrue);
-            pptPresentation.PageSetup.SlideSize = Microsoft.Office.Interop.PowerPoint.PpSlideSizeType.ppSlideSizeOnScreen;
-            pptPresentation.ApplyTheme(_Theme);
-
-            try
-            {
-
+                int pageIndex = 1;
                 Microsoft.Office.Interop.PowerPoint.Slides slides;
                 slides = pptPresentation.Slides;
                 CreateTitleSlide(pptPresentation, slides, 1, project.Project.Id.ToString(), project.Project.Name, 2, user.User.NetworkUsername);
 
-                string[,] ProductInfrigmentPatentabilityTable = GenerateTableData<ProductInfrigmentPatentability>(pip);
-                CreateTableSlide(pptPresentation, slides, 2, "Product Infringement Patentability", ProductInfrigmentPatentabilityTable, _whiteSpace+"Gate 3 Review");
+                if (schedules!=null)
+                {
+                    pageIndex++;
+                    string[,] SchedulesTable = GenerateTableData<Schedule>(schedules);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Schedules", SchedulesTable, $"Gate {Gate} Review");
+                }
+                if (pip != null)
+                {
+                    pageIndex++;
+                    string[,] ProductInfrigmentPatentabilityTable = GenerateTableData<ProductInfrigmentPatentability>(pip);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Product Infringement Patentability", ProductInfrigmentPatentabilityTable, $"Gate {Gate} Review");
+                }
 
-                string[,] RiskTable = GenerateTableData<Risk>(risk);
-                CreateTableSlide(pptPresentation, slides, 3, "Risk Analysis", RiskTable, _whiteSpace + "Gate 3 Review");
+                if (risk != null)
+                {
+                    pageIndex++;
+                    string[,] RiskTable = GenerateTableData<Risk>(risk);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Risk Analysis", RiskTable, $"Gate {Gate} Review");
+                }
+
+                if (ip != null)
+                {
+                    string[,] InvestmentPlanTable = GenerateTableData<InvestmentPlan>(ip);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Investment Plan", InvestmentPlanTable, $"Gate {Gate} Review");
+                }
+                if (bc != null)
+                {
+                    //pageIndex++;
+                    //string[,] InvestmentPlanTable = GenerateTableData<InvestmentPlan>(ip);
+                    //CreateTableSlide(pptPresentation, slides, pageIndex, "Investment Plan", InvestmentPlanTable, $"Gate {Gate} Review");
+                }
+                if (plr != null)
+                {
+                    pageIndex++;
+                    string[,] PLRTable = GenerateTableData<PostLaunchReview>(plr);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Post Launch Review", PLRTable, $"Gate {Gate} Review");
+                }
 
                 string SaveAs = _ExportPath + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".pptx";
                 pptPresentation.SaveAs(SaveAs, Microsoft.Office.Interop.PowerPoint.PpSaveAsFileType.ppSaveAsDefault, MsoTriState.msoTrue);
@@ -258,6 +365,12 @@ namespace pmo.Services.PowerPoint
             }
         }
 
+    }
+
+    public class TableRow 
+    {
+        public string Description { get; set; }
+        public string Value { get; set; }
 
     }
 }

@@ -19,11 +19,12 @@ namespace pmo.Services.PowerPoint
 
         public void CreateTableSlide(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string Title, string[,] DataTable, string FooterText = "");
 
-        public string CreatePowerPoint();
+        public string CreatePowerPointTestData();
 
-        //public string CreatePowerPointGate2();
+        public string CreatePowerPointGateReview(string Gate, ProjectDetail project, Project_User user, List<Schedule> schedules, 
+            ProductInfrigmentPatentability pip, Risk risk, InvestmentPlan ip, BusinessCase bc, PostLaunchReview plr);
 
-        public string CreatePowerPointGate3(ProjectDetail project, Project_User user, ProductInfrigmentPatentability pip, Risk risk, InvestmentPlan ip, BusinessCaseViewModel bc);
+
 
     }
 }
