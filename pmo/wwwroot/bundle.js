@@ -163,6 +163,17 @@ eval("var components = document.querySelectorAll('.input-table-component');\nvar
 
 /***/ }),
 
+/***/ "./front_end/js/components/layout-horrizontal.js":
+/*!*******************************************************!*\
+  !*** ./front_end/js/components/layout-horrizontal.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("var components = document.querySelectorAll('.layout-horrizontal-component');\nvar hasComponents = components.length > 0;\n\nif (hasComponents) {\n  components.forEach(function (component) {\n    var count = component.querySelectorAll('.section').length;\n    var sections = component.querySelectorAll('.section');\n    sections.forEach(function (section) {\n      section.classList.add(\"col-\".concat(count));\n    });\n  });\n}\n\n//# sourceURL=webpack:///./front_end/js/components/layout-horrizontal.js?");
+
+/***/ }),
+
 /***/ "./front_end/js/components/list.js":
 /*!*****************************************!*\
   !*** ./front_end/js/components/list.js ***!
@@ -258,7 +269,7 @@ eval("// support Array.prototype.includes\nif (!Array.prototype.includes) {\n  O
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// import all used css here:\n// e.g. require('./toggle.js');\n__webpack_require__(/*! ./global/pollyfills */ \"./front_end/js/global/pollyfills.js\");\n\n__webpack_require__(/*! ./global/generic */ \"./front_end/js/global/generic.js\");\n\n__webpack_require__(/*! ./global/maintain-browser-position */ \"./front_end/js/global/maintain-browser-position.js\");\n\n__webpack_require__(/*! ./components/dropdown */ \"./front_end/js/components/dropdown.js\");\n\n__webpack_require__(/*! ./components/toggle-default-leave */ \"./front_end/js/components/toggle-default-leave.js\");\n\n__webpack_require__(/*! ./components/displayone */ \"./front_end/js/components/displayone.js\");\n\n__webpack_require__(/*! ./components/select-calendar */ \"./front_end/js/components/select-calendar.js\");\n\n__webpack_require__(/*! ./components/checkbox-toggle */ \"./front_end/js/components/checkbox-toggle.js\");\n\n__webpack_require__(/*! ./components/historyform */ \"./front_end/js/components/historyform.js\");\n\n__webpack_require__(/*! ./components/nav-left */ \"./front_end/js/components/nav-left.js\");\n\n__webpack_require__(/*! ./components/list */ \"./front_end/js/components/list.js\");\n\n__webpack_require__(/*! ./components/sidenav-checklist */ \"./front_end/js/components/sidenav-checklist.js\");\n\n__webpack_require__(/*! ./components/fileupload */ \"./front_end/js/components/fileupload.js\");\n\n__webpack_require__(/*! ./components/input-table */ \"./front_end/js/components/input-table.js\");\n\n//# sourceURL=webpack:///./front_end/js/main.js?");
+eval("// import all used css here:\n// e.g. require('./toggle.js');\n__webpack_require__(/*! ./global/pollyfills */ \"./front_end/js/global/pollyfills.js\");\n\n__webpack_require__(/*! ./global/generic */ \"./front_end/js/global/generic.js\");\n\n__webpack_require__(/*! ./global/maintain-browser-position */ \"./front_end/js/global/maintain-browser-position.js\");\n\n__webpack_require__(/*! ./components/dropdown */ \"./front_end/js/components/dropdown.js\");\n\n__webpack_require__(/*! ./components/toggle-default-leave */ \"./front_end/js/components/toggle-default-leave.js\");\n\n__webpack_require__(/*! ./components/displayone */ \"./front_end/js/components/displayone.js\");\n\n__webpack_require__(/*! ./components/select-calendar */ \"./front_end/js/components/select-calendar.js\");\n\n__webpack_require__(/*! ./components/checkbox-toggle */ \"./front_end/js/components/checkbox-toggle.js\");\n\n__webpack_require__(/*! ./components/historyform */ \"./front_end/js/components/historyform.js\");\n\n__webpack_require__(/*! ./components/nav-left */ \"./front_end/js/components/nav-left.js\");\n\n__webpack_require__(/*! ./components/list */ \"./front_end/js/components/list.js\");\n\n__webpack_require__(/*! ./components/sidenav-checklist */ \"./front_end/js/components/sidenav-checklist.js\");\n\n__webpack_require__(/*! ./components/fileupload */ \"./front_end/js/components/fileupload.js\");\n\n__webpack_require__(/*! ./components/input-table */ \"./front_end/js/components/input-table.js\");\n\n__webpack_require__(/*! ./components/layout-horrizontal */ \"./front_end/js/components/layout-horrizontal.js\");\n\n//# sourceURL=webpack:///./front_end/js/main.js?");
 
 /***/ }),
 
