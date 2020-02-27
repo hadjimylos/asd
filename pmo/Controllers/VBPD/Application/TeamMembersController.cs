@@ -8,7 +8,6 @@ using pmo.Services.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers
@@ -73,21 +72,21 @@ namespace pmo.Controllers
                     _context.Project_User.RemoveRange(_context.Project_User.Where(r => r.ProjectId == projectId));
                     _context.SaveChanges();
 
-                    PopulateTeamMember(teamMembersViewModel.Program_Manager, JobDescripKeys.ProgramManager, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Product_Manager, JobDescripKeys.ProductManager, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Lead_Engineer, JobDescripKeys.LeadEngineer, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Program_Management, JobDescripKeys.ProgramManagement, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Product_Engineering, JobDescripKeys.ProductEngineering, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Advanced_Technology, JobDescripKeys.AdvancedTechnology, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Sales, JobDescripKeys.Sales, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Industry_Segment, JobDescripKeys.IndustrySegment, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Operations, JobDescripKeys.Operations, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Manufacturing_Engineering, JobDescripKeys.ManufacturingEngineering, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Planning, JobDescripKeys.Planning, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Sourcing, JobDescripKeys.Sourcing, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Quality, JobDescripKeys.Quality, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Laboratory_Testing, JobDescripKeys.LaboratoryTesting, projectId);
-                    PopulateTeamMember(teamMembersViewModel.Finance, JobDescripKeys.Finance, projectId);
+                    if (teamMembersViewModel.Program_Manager != null) PopulateTeamMember(teamMembersViewModel.Program_Manager, JobDescripKeys.ProgramManager, projectId);
+                    if (teamMembersViewModel.Product_Manager != null) PopulateTeamMember(teamMembersViewModel.Product_Manager, JobDescripKeys.ProductManager, projectId);
+                    if (teamMembersViewModel.Lead_Engineer != null) PopulateTeamMember(teamMembersViewModel.Lead_Engineer, JobDescripKeys.LeadEngineer, projectId);
+                    if (teamMembersViewModel.Program_Management != null) PopulateTeamMember(teamMembersViewModel.Program_Management, JobDescripKeys.ProgramManagement, projectId);
+                    if (teamMembersViewModel.Product_Engineering != null) PopulateTeamMember(teamMembersViewModel.Product_Engineering, JobDescripKeys.ProductEngineering, projectId);
+                    if (teamMembersViewModel.Advanced_Technology != null) PopulateTeamMember(teamMembersViewModel.Advanced_Technology, JobDescripKeys.AdvancedTechnology, projectId);
+                    if (teamMembersViewModel.Sales != null) PopulateTeamMember(teamMembersViewModel.Sales, JobDescripKeys.Sales, projectId);
+                    if (teamMembersViewModel.Industry_Segment != null) PopulateTeamMember(teamMembersViewModel.Industry_Segment, JobDescripKeys.IndustrySegment, projectId);
+                    if (teamMembersViewModel.Operations != null) PopulateTeamMember(teamMembersViewModel.Operations, JobDescripKeys.Operations, projectId);
+                    if (teamMembersViewModel.Manufacturing_Engineering != null) PopulateTeamMember(teamMembersViewModel.Manufacturing_Engineering, JobDescripKeys.ManufacturingEngineering, projectId);
+                    if (teamMembersViewModel.Planning != null) PopulateTeamMember(teamMembersViewModel.Planning, JobDescripKeys.Planning, projectId);
+                    if (teamMembersViewModel.Sourcing != null) PopulateTeamMember(teamMembersViewModel.Sourcing, JobDescripKeys.Sourcing, projectId);
+                    if (teamMembersViewModel.Quality != null) PopulateTeamMember(teamMembersViewModel.Quality, JobDescripKeys.Quality, projectId);
+                    if (teamMembersViewModel.Laboratory_Testing != null) PopulateTeamMember(teamMembersViewModel.Laboratory_Testing, JobDescripKeys.LaboratoryTesting, projectId);
+                    if (teamMembersViewModel.Finance != null) PopulateTeamMember(teamMembersViewModel.Finance, JobDescripKeys.Finance, projectId);
                     _context.SaveChanges();
 
                     transaction.Commit();
