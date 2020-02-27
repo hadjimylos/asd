@@ -1,4 +1,4 @@
-﻿@model List<FileForm>
+﻿@model StageFileForm
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,48 +11,48 @@
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            @if (Model.Count == 0)
+            @if (Model.FileUploadDropdown.Count == 0)
             {
                 <h1 class="text-black"><i class='fas fa-check-circle'></i> All Stage Files Uploaded</h1>
             }
             else
             {
-                <h1 class="text-red"><i class='fas fa-exclamation-circle'></i> @Model.Count Stage Files Remaining</h1>
+                <h1 class="text-red"><i class='fas fa-exclamation-circle'></i> @Model.FileUploadDropdown.Count Stage Files Remaining</h1>
             }
         </div>
     </div>
 </div>
 
-@if (Model.Count > 0)
+@if (Model.FileUploadDropdown.Count > 0)
 {
     <form class="form-component" enctype="multipart/form-data" method="post" action="/vbpd-projects/@projectId/stages/@stageNumber/files/edit">
         @Html.AntiForgeryToken()
         <div class="wrapper">
             <div class="fields">
-                @for (int i = 0; i < Model.Count; i++)
-                {
-                    <input type="hidden" asp-for="@Model[i].TagId">
-                    <input type="hidden" asp-for="@Model[i].TagDescription">
+                <select asp-for="@Model.TagId" asp-items="@Model.FileUploadDropdown" class="data select2">
+                    <option hidden disabled selected>-- Select --</option>
+                </select>
+                <input type="hidden" name="@Model.TagId" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "TagId")
+                </ul>
+                <input class="file-upload" type="file" id="files" name="stageFiles" />
 
-                    <div class="field">
-                        <div class="label">@Model[i].TagDescription</div>
-                        <input class="file-upload" asp-for="@Model[i].File" />
-                        <label asp-for="@Model[i].File" class="data">
-                            <span></span>
-                            <strong><i class="fas fa-upload"></i> Choose a file...</strong>
-                        </label>
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", Model[i].File)
-                        </ul>
-                    </div>
-                    <div class="field">
-                        <div class="label">Description</div>
-                        <input class="data" asp-for="@Model[i].Description" />
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", $"[{i}].Description")
-                        </ul>
-                    </div>
-                }
+                <label for="files" class="data">
+                    <span></span>
+                    <strong><i class="fas fa-upload"></i> Choose a file...</strong>
+                </label>
+
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "FileUploadDropdown")
+                </ul>
+                <div class="field">
+                    <div class="label">Description</div>
+                    <input class="data" type="text" name="description" />
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "Description")
+                    </ul>
+                </div>
             </div>
             <input type="submit" class="data btn" value="Submit" />
         </div>
@@ -61,7 +61,7 @@
 
 @if (uploads.Count > 0)
 {
-    @if (Model.Count != 0)
+    @if (Model.FileUploadDropdown.Count != 0)
     {
         <div class="actions-component">
             <div class="wrapper">

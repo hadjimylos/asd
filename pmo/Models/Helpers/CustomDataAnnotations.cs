@@ -34,7 +34,8 @@
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
             var success = ValidationResult.Success;
-            var fail = new ValidationResult($"Please insert a value greater than {_minValue}.");
+            string error = this.ErrorMessage ?? $"Please insert a value greater than {_minValue}.";
+            var fail = new ValidationResult(error);
 
             return Type.GetTypeCode(value.GetType()) switch {
                 TypeCode.Int16 => (short)value > _minValue ? success : fail,
