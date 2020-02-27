@@ -34,16 +34,16 @@ namespace dbModels {
             this.GetRevenueExtended();
 
         public decimal GetTotalExpenses() =>
-            this.GPACapital ?? 0 +
-            this.GPAExpense ?? 0 +
-            this.QualCosts ?? 0 +
-            this.OtherDevelopmentExpenses ?? 0;
+            (this.GPACapital ?? 0) +
+            (this.GPAExpense ?? 0) +
+            (this.QualCosts ?? 0) +
+            (this.OtherDevelopmentExpenses ?? 0);
 
         public decimal GetNetProfitBeforeTax() =>
             this.GetRevenueExtended() -
             this.GetCostExtended() -
-            this.QualCosts ?? 0 -
-            this.OtherDevelopmentExpenses ?? 0;
+            (this.QualCosts ?? 0) -
+            (this.OtherDevelopmentExpenses ?? 0);
 
         public decimal GetNetProfitAfterTax() =>
             this.GetNetProfitBeforeTax() *
@@ -53,7 +53,7 @@ namespace dbModels {
 
         public decimal GetFreeCashFlow() =>
             this.GetNetProfitAfterTax() -
-            this.GPACapital ?? 0;
+            (this.GPACapital ?? 0);
 
         public decimal GetPresentValue() =>
             this.GetFreeCashFlow() /
