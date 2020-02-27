@@ -2,60 +2,65 @@
 
 @{
     var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
+    var createUpdate = Model.isCreate ? "Create" : "Update";
 }
-    <div class="form-component">
-        <form class="form-component" method="post" action="/admin/users/@postWhere">
-            @if (!Model.isCreate)
-            {
-                <input asp-for="Id" type="hidden" />
-                <input asp-for="NetworkUsername" type="hidden" />
-            }
 
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1><i class="fas fa-user"></i> @createUpdate User</h1>
+        </div>
+    </div>
+</div>
+<div class="form-component">
+    <form class="form-component" method="post" action="/admin/users/@postWhere">
+        @if (!Model.isCreate)
+        {
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="NetworkUsername" type="hidden" />
+        }
 
-            @Html.AntiForgeryToken()
-            <div class="wrapper">
-                <div class="fields">
+        @Html.AntiForgeryToken()
+        <div class="wrapper">
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Network username</div>
+                    @if (!Model.isCreate)
+                    {
+                        @*<div class="label">@Model.NetworkUsername</div>*@
+                        <input asp-for="NetworkUsername" class="data" value="@Model.NetworkUsername" disabled />
+                    }
+                    else
+                    {
+                        <input asp-for="NetworkUsername" class="data" />
+                    }
 
-                    <div class="field">
-                        <div class="label">NETWORK USER NAME</div>
-                        @if (!Model.isCreate)
-                        {
-                            <div class="label">@Model.NetworkUsername</div>
-                        }
-                        else
-                        {
-                            <input asp-for="NetworkUsername" class="data" />
-                        }
-
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "NetworkUsername")
-                        </ul>
-                    </div>
-
-                    <div class="field">
-                        <div class="label">ROLE</div>
-                        <select asp-for="RoleId" asp-items="Model.RoleList" class="select2">
-                            <option hidden disabled selected>-- Select Role--</option>
-                        </select>
-
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "RoleId")
-                        </ul>
-                    </div>
-
-                    <div class="field">
-                        <div class="label">CITIZENSHIPS</div>
-                        <select asp-for="UserCitizenships" asp-items="Model.CitizenshipsList" class="select2">
-                        </select>
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "UserCitizenships")
-                        </ul>
-                    </div>
-
-                    <div class="field">
-                        <input type="submit" class="data btn" value="SUBMIT" />
-                    </div>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "NetworkUsername")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Role</div>
+                    <select asp-for="RoleId" asp-items="Model.RoleList" class="data select2">
+                        <option hidden disabled selected>-- Select Role--</option>
+                    </select>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "RoleId")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Citizenships</div>
+                    <select asp-for="UserCitizenships" asp-items="Model.CitizenshipsList" class="data select2">
+                    </select>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "UserCitizenships")
+                    </ul>
+                </div>
+                <div class="field">
+                    <button type="submit" class="data btn green"><i class="fas fa-save"></i> @createUpdate</button>
+                    <a class="btn grey" href="/admin/users"><i class="fas fa-chevron-circle-left"></i> Return</a>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
