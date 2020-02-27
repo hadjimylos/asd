@@ -47,8 +47,10 @@ namespace dbModels {
         public decimal GetNPV() =>
             FinancialData.Sum(s => s.GetPresentValue());
 
-        public decimal GetROI() =>
-            (
+        public decimal? GetROI() =>
+            FinancialData.Sum(s => s.GetTotalExpenses()) == 0 ?
+            null :
+            (decimal?)(
                 FinancialData.Sum(s => s.GetStandardMarginPrice()) *
                 (1 -
                     (this.TaxRate / 100)
