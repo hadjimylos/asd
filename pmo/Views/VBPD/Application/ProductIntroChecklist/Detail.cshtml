@@ -14,29 +14,35 @@
 </div>
 
 
-<div class="detail-component">
+<div class="layout-horrizontal-component">
     <div class="wrapper">
-        <div class="header">
-            <h1>Product Intro Checklist</h1>
-        </div>
-        <div class="details">
-            <div class="detail">
-                <div class="label">Is Marketing Required</div>
-                <div class="value">@Model.IsMarketingRequired</div>
+        <div class="sections">
+            <div class="section">
+                <div class="detail-component">
+                    <div class="wrapper">
+                        <div class="details">
+                            <div class="detail">
+                                <div class="label">Is Marketing Required</div>
+                                <div class="value">@Model.IsMarketingRequired</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Filename</div>
+                                <div class="value">@Model.Filename</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Approved By</div>
+                                <div class="value">@Model.ApprovedBy</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Approved By Date</div>
+                                <div class="value">@Model.ApprovedByDate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="detail">
-                <div class="label">Filename</div>
-                <div class="value">@Model.Filename</div>
-            </div>
-            <div class="detail">
-                <div class="label">Approved By</div>
-                <div class="value">@Model.ApprovedBy</div>
-            </div>
-            <div class="detail">
-                <div class="label">Approved By Date</div>
-                <div class="value">@Model.ApprovedByDate</div>
+            <div class="section">
             </div>
         </div>
     </div>
 </div>
-

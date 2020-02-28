@@ -31,6 +31,8 @@ namespace forms {
         public new decimal MultipleFieldsGeneratedTable { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal WorkRequirementAmount { get; set; }
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        public new string GpaRequirements { get; set; }
         [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new decimal LaborRate { get; set; }

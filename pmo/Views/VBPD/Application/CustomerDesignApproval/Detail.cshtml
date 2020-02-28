@@ -13,27 +13,36 @@
     </div>
 </div>
 
-<div class="detail-component">
+<div class="layout-horrizontal-component">
     <div class="wrapper">
-        <div class="header">
-            <h1>Details</h1>
-        </div>
-        <div class="details">
-            <div class="detail">
-                <div class="label">Who sent for approval</div>
-                <div class="value">@Model.SentForApprovalBy</div>
+        <div class="sections">
+            <div class="section">
+                <div class="detail-component">
+                    <div class="wrapper">
+                        <div class="details">
+                            <div class="details">
+                                <div class="detail">
+                                    <div class="label">Who sent for approval</div>
+                                    <div class="value">@Model.SentForApprovalBy</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="label">Date Sent to Customer for Approval</div>
+                                    <div class="value">@Model.DateSentForApprove</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="label">Approved By</div>
+                                    <div class="value">@Model.ApprovedBy</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="label">Approved Date</div>
+                                    <div class="value">@Model.ApprovedDate</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="detail">
-                <div class="label">Date Sent to Customer for Approval</div>
-                <div class="value">@Model.DateSentForApprove</div>
-            </div>
-            <div class="detail">
-                <div class="label">Approved By</div>
-                <div class="value">@Model.ApprovedBy</div>
-            </div>
-            <div class="detail">
-                <div class="label">Approved Date</div>
-                <div class="value">@Model.ApprovedDate</div>
+            <div class="section">
             </div>
         </div>
     </div>

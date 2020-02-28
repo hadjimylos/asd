@@ -13,31 +13,40 @@
     </div>
 </div>
 
-<div class="detail-component">
+
+
+<div class="layout-horrizontal-component">
     <div class="wrapper">
-        <div class="header">
-            <h1>Details</h1>
-        </div>
-        <div class="details">
-            <div class="detail">
-                <div class="label">Item Number</div>
-                <div class="value">@Model.ItemNumber</div>
+        <div class="sections">
+            <div class="section">
+                <div class="detail-component">
+                    <div class="wrapper">
+                        <div class="details">
+                            <div class="detail">
+                                <div class="label">Item Number</div>
+                                <div class="value">@Model.ItemNumber</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Date Sent to Customer for Approval</div>
+                                <div class="value">@Model.Requirement</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Approved By</div>
+                                <div class="value">@Model.MeasuredValue</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Approved Date</div>
+                                <div class="value">@Model.ExpectedOutcomeRisk</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Requirement Source</div>
+                                <div class="value">@Model.Requirement</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="detail">
-                <div class="label">Date Sent to Customer for Approval</div>
-                <div class="value">@Model.Requirement</div>
-            </div>
-            <div class="detail">
-                <div class="label">Approved By</div>
-                <div class="value">@Model.MeasuredValue</div>
-            </div>
-            <div class="detail">
-                <div class="label">Approved Date</div>
-                <div class="value">@Model.ExpectedOutcomeRisk</div>
-            </div>
-            <div class="detail">
-                <div class="label">Requirement Source</div>
-                <div class="value">@Model.Requirement</div>
+            <div class="section">
             </div>
         </div>
     </div>

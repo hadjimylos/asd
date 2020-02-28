@@ -115,6 +115,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                             latestBusinessCase.TimeFromProjectCompletionToRevenueGeneration = businessCase.TimeFromProjectCompletionToRevenueGeneration;
                             latestBusinessCase.CustomerMarketAnalysis = businessCase.CustomerMarketAnalysis;
                             latestBusinessCase.Changes = businessCase.Changes;
+                            latestBusinessCase.GpaRequirements = businessCase.GpaRequirements;
                             _context.BusinessCases.Update(latestBusinessCase);
                             _context.SaveChanges();
 

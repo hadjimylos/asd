@@ -14,39 +14,46 @@
     </div>
 </div>
 
-<div class="detail-component">
+<div class="layout-horrizontal-component">
     <div class="wrapper">
-        <div class="header">
-            <h1>Product Infrigment Patentability</h1>
-        </div>
-        <div class="details">
-            <div class="detail">
-                <div class="label">Are there potential infringement issues?</div>
-                <div class="value">@Model.ContainsFeaturesRequiringIPProtection</div>
+        <div class="sections">
+            <div class="section">
+                <div class="detail-component">
+                    <div class="wrapper">
+                        <div class="details">
+                            <div class="detail">
+                                <div class="label">Are there potential infringement issues?</div>
+                                <div class="value">@Model.ContainsFeaturesRequiringIPProtection</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Patent #</div>
+                                <div class="value">@Model.PatentNumber</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Issue</div>
+                                <div class="value">@Model.Issue</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Mitigation Strategy</div>
+                                <div class="value">@Model.MitigationStrategy</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Are there features of the product that require IP protection?</div>
+                                <div class="value">@Model.ContainsFeaturesRequiringIPProtection</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Has an invention disclosure been submitted?</div>
+                                <div class="value">@Model.InventionDisclosureSubmitted</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">When was the 1st time the product was offered for sale?</div>
+                                <div class="value">@Model.ProductFirstTimeOfferedForSale</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="detail">
-                <div class="label">Patent #</div>
-                <div class="value">@Model.PatentNumber</div>
-            </div>
-            <div class="detail">
-                <div class="label">Issue</div>
-                <div class="value">@Model.Issue</div>
-            </div>
-            <div class="detail">
-                <div class="label">Mitigation Strategy</div>
-                <div class="value">@Model.MitigationStrategy</div>
-            </div>
-            <div class="detail">
-                <div class="label">Are there features of the product that require IP protection?</div>
-                <div class="value">@Model.ContainsFeaturesRequiringIPProtection</div>
-            </div>
-            <div class="detail">
-                <div class="label">Has an invention disclosure been submitted?</div>
-                <div class="value">@Model.InventionDisclosureSubmitted</div>
-            </div>
-            <div class="detail">
-                <div class="label">When was the 1st time the product was offered for sale?</div>
-                <div class="value">@Model.ProductFirstTimeOfferedForSale</div>
+            <div class="section">
             </div>
         </div>
     </div>
