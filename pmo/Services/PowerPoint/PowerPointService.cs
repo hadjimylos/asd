@@ -134,7 +134,41 @@ namespace pmo.Services.PowerPoint
                             { "Get Payback Period", bc.GetPaybackPeriod().ToString()}
                             };
                         return Data;
-                        break;                   
+                    case BusinessCaseTableType.FinancialsCalculationsCost:
+                        List<FinancialData> fd = (TableData as BusinessCase).FinancialData as List<FinancialData>;
+                        int Count = fd.Count+2;
+                        string[,] Data2 = new string[Count, 2];
+                        Data2[0, 0] = "Year";
+                        Data2[0, 1] = "Quantity";
+                        Data2[0, 2] = "Standard Cost Estimated";
+                        Data2[0, 3] = "Sales Price Estimated";
+                        Data2[0, 4] = "Cost Extended";
+                        Data2[0, 5] = "Revenue Extended";
+                        Data2[0, 6] = "Standard Margin Price";
+                        Data2[0, 7] = "Standard Margin Price %";
+
+                        for (int i = 1; i < Count; i++)
+                        {
+                            Data2[i, 0] = fd[i - 1].Year.ToString();
+                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
+                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
+                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
+                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
+                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
+                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
+                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
+
+                        }
+
+                        Data2[Count - 1, 0] = "Total";
+                        Data2[Count - 1, 1] = fd.Sum(x=>x.Quantity).ToString();
+                        Data2[Count - 1, 2] = "-";
+                        Data2[Count - 1, 3] = "-";
+                        Data2[Count - 1, 4] = fd.Sum(x => x.GetCostExtended()).ToString();
+                        Data2[Count - 1, 5] = fd.Sum(x => x.GetRevenueExtended()).ToString();
+                        Data2[Count - 1, 6] = fd.Sum(x => x.GetStandardMarginPrice()).ToString();
+                        Data2[Count - 1, 7] = (fd.Sum(x => x.GetStandardMarginPercent())/(Count-2)).ToString();
+                        break;
                     default:
                         throw new ArgumentNullException("Business Case Table Type is not specified");                        
                 }  
@@ -213,37 +247,19 @@ namespace pmo.Services.PowerPoint
             if (TableData.FirstOrDefault().GetType() == typeof(BusinessCase))
             {
                 switch (type)
-                {
-                    case BusinessCaseTableType.None:
-                        throw new ArgumentNullException("Business Case Table Type is not specified");                        
-                    case BusinessCaseTableType.Simple:
-                        List<BusinessCase> bc = TableData as List<BusinessCase>;
-                        int Count = bc.Count;
-                        string[,] Data = new string[Count, 2];
-                        Data[0, 0] = "Milestone";
-                        Data[0, 1] = "Date";
-
-                        //for (int i = 1; i < Count; i++)
-                        //{
-                        //    Data[i, 0] = bc[i - 1].ScheduleType.Name;
-                        //    Data[i, 1] = bc[i - 1].Date.ToString("MM/dd/yyyy");
-                        //}
-                        break;
-                    case BusinessCaseTableType.BusinessCaseCalulations:
-                        break;
-                    case BusinessCaseTableType.FinancialsCalculationsCost:
-                        break;
+                { 
+                    
                     case BusinessCaseTableType.FinancialsCalculationsExpenses:
                         break;
                     default:
-                        break;
+                        throw new ArgumentNullException("Business Case Table Type is not specified");
                 }
 
             }
             else if (TableData.FirstOrDefault().GetType() == typeof(Schedule))
             {
                 List<Schedule> schedule = TableData as List<Schedule>;
-                int Count = schedule.Count;
+                int Count = schedule.Count+1;
                 string[,] Data = new string[Count, 2];
                 Data[0, 0] = "Milestone";
                 Data[0, 1] = "Date";
@@ -394,9 +410,17 @@ namespace pmo.Services.PowerPoint
                 }
                 if (bc != null)
                 {
-                    //pageIndex++;
-                    //string[,] InvestmentPlanTable = GenerateTableData<InvestmentPlan>(ip);
-                    //CreateTableSlide(pptPresentation, slides, pageIndex, "Investment Plan", InvestmentPlanTable, $"Gate {Gate} Review");
+                    pageIndex++;
+                    string[,] BusinessCaseTableSimple = GenerateTableData<BusinessCase>(bc,BusinessCaseTableType.Simple);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Business Case", BusinessCaseTableSimple, $"Gate {Gate} Review");
+
+                    pageIndex++;
+                    string[,] BusinessCaseTableCost = GenerateTableData<BusinessCase>(bc, BusinessCaseTableType.FinancialsCalculationsCost);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Project GPA", BusinessCaseTableCost, $"Gate {Gate} Review");
+
+                    pageIndex++;
+                    string[,] BusinessCaseTableExpenses = GenerateTableData<BusinessCase>(bc, BusinessCaseTableType.FinancialsCalculationsExpenses);
+                    CreateTableSlide(pptPresentation, slides, pageIndex, "Project Expenses", BusinessCaseTableExpenses, $"Gate {Gate} Review");
                 }
                 if (plr != null)
                 {
@@ -429,8 +453,7 @@ namespace pmo.Services.PowerPoint
     {
         None=1,
         Simple=2,
-        BusinessCaseCalulations = 3,
-        FinancialsCalculationsCost = 4,
-        FinancialsCalculationsExpenses = 5
+        FinancialsCalculationsCost = 3,
+        FinancialsCalculationsExpenses = 4
     }
 }
