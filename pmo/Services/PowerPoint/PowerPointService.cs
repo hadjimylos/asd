@@ -150,14 +150,13 @@ namespace pmo.Services.PowerPoint
                         for (int i = 1; i < Count; i++)
                         {
                             Data2[i, 0] = fd[i - 1].Year.ToString();
-                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
-                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
-                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
-                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
-                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
-                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
-                            Data2[i, 1] = fd[i - 1].Date.ToString("MM/dd/yyyy");
-
+                            Data2[i, 1] = fd[i - 1].Quantity.ToString();
+                            Data2[i, 2] = fd[i - 1].StdCostEstimated.ToString();
+                            Data2[i, 3] = fd[i - 1].SalesPriceEstimated.ToString();
+                            Data2[i, 4] = fd[i - 1].GetCostExtended().ToString();
+                            Data2[i, 5] = fd[i - 1].GetRevenueExtended().ToString();
+                            Data2[i, 6] = fd[i - 1].GetStandardMarginPrice().ToString();
+                            Data2[i, 7] = fd[i - 1].GetStandardMarginPercent().ToString();
                         }
 
                         Data2[Count - 1, 0] = "Total";
@@ -168,6 +167,34 @@ namespace pmo.Services.PowerPoint
                         Data2[Count - 1, 5] = fd.Sum(x => x.GetRevenueExtended()).ToString();
                         Data2[Count - 1, 6] = fd.Sum(x => x.GetStandardMarginPrice()).ToString();
                         Data2[Count - 1, 7] = (fd.Sum(x => x.GetStandardMarginPercent())/(Count-2)).ToString();
+                        return Data2;
+                    case BusinessCaseTableType.FinancialsCalculationsExpenses:
+                        List<FinancialData> fd2 = (TableData as BusinessCase).FinancialData as List<FinancialData>;
+                        int Count2 = fd2.Count + 2;
+                        string[,] Data3 = new string[Count2, 2];
+                        Data3[0, 0] = "Year";
+                        Data3[0, 1] = "GPA Capital";
+                        Data3[0, 2] = "GPA Expense";
+                        Data3[0, 3] = "Qual Costs";
+                        Data3[0, 4] = "Other Development Expenses";
+                        Data3[0, 5] = "Total Expenses";
+
+                        for (int i = 1; i < Count2; i++)
+                        {
+                            Data3[i, 0] = fd2[i - 1].Year.ToString();
+                            Data3[i, 1] = fd2[i - 1].GPACapital.ToString();
+                            Data3[i, 2] = fd2[i - 1].GPAExpense.ToString();
+                            Data3[i, 3] = fd2[i - 1].QualCosts.ToString();
+                            Data3[i, 4] = fd2[i - 1].OtherDevelopmentExpenses.ToString();
+                            Data3[i, 5] = fd2[i - 1].GetTotalExpenses().ToString();
+                        }
+
+                        Data3[Count2 - 1, 0] = "Total";
+                        Data3[Count2 - 1, 1] = fd2.Sum(x => x.GPACapital).ToString();
+                        Data3[Count2 - 1, 2] = fd2.Sum(x => x.GPAExpense).ToString();
+                        Data3[Count2 - 1, 3] = fd2.Sum(x => x.QualCosts).ToString();
+                        Data3[Count2 - 1, 4] = fd2.Sum(x => x.OtherDevelopmentExpenses).ToString();
+                        Data3[Count2 - 1, 5] = fd2.Sum(x => x.GetTotalExpenses()).ToString();
                         break;
                     default:
                         throw new ArgumentNullException("Business Case Table Type is not specified");                        
@@ -244,19 +271,7 @@ namespace pmo.Services.PowerPoint
         public string[,] GenerateTableData<T>(List<T> TableData, BusinessCaseTableType type = BusinessCaseTableType.None)
         {
             var TableObjectType = TableData.FirstOrDefault();
-            if (TableData.FirstOrDefault().GetType() == typeof(BusinessCase))
-            {
-                switch (type)
-                { 
-                    
-                    case BusinessCaseTableType.FinancialsCalculationsExpenses:
-                        break;
-                    default:
-                        throw new ArgumentNullException("Business Case Table Type is not specified");
-                }
-
-            }
-            else if (TableData.FirstOrDefault().GetType() == typeof(Schedule))
+           if (TableData.FirstOrDefault().GetType() == typeof(Schedule))
             {
                 List<Schedule> schedule = TableData as List<Schedule>;
                 int Count = schedule.Count+1;
@@ -370,6 +385,53 @@ namespace pmo.Services.PowerPoint
         public string CreatePowerPointGateReview(string Gate, ProjectDetail project, Project_User user, List<Schedule> schedules, 
             ProductInfrigmentPatentability pip, Risk risk, InvestmentPlan ip, BusinessCase bc, PostLaunchReview plr)
         {
+            string[,] SchedulesTable = null;
+            string[,] ProductInfrigmentPatentabilityTable = null;
+            string[,] RiskTable = null;
+            string[,] InvestmentPlanTable = null;
+            string[,] BusinessCaseTableSimple = null;
+            string[,] BusinessCaseTableCost = null;
+            string[,] BusinessCaseTableExpenses = null;
+            string[,] PLRTable = null;
+
+            try // Try Running all calculations & data tables
+            {
+                if (schedules != null)
+                {
+                    SchedulesTable = GenerateTableData<Schedule>(schedules);
+                }
+                if (pip != null)
+                {
+                    ProductInfrigmentPatentabilityTable = GenerateTableData<ProductInfrigmentPatentability>(pip); }
+
+                if (risk != null)
+                {
+                    RiskTable = GenerateTableData<Risk>(risk);
+                }
+
+                if (ip != null)
+                {
+                    InvestmentPlanTable = GenerateTableData<InvestmentPlan>(ip);
+                }
+                if (bc != null)
+                {
+                    BusinessCaseTableSimple = GenerateTableData<BusinessCase>(bc, BusinessCaseTableType.Simple);
+
+                    BusinessCaseTableCost = GenerateTableData<BusinessCase>(bc, BusinessCaseTableType.FinancialsCalculationsCost);
+
+                    BusinessCaseTableExpenses = GenerateTableData<BusinessCase>(bc, BusinessCaseTableType.FinancialsCalculationsExpenses);
+                       }
+                if (plr != null)
+                {
+                    PLRTable = GenerateTableData<PostLaunchReview>(plr);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
             Microsoft.Office.Interop.PowerPoint.Application pptApplication = new Microsoft.Office.Interop.PowerPoint.Application();
             // Create the Presentation File
             Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoTrue);
@@ -378,6 +440,7 @@ namespace pmo.Services.PowerPoint
 
             try
             {
+
                 int pageIndex = 1;
                 Microsoft.Office.Interop.PowerPoint.Slides slides;
                 slides = pptPresentation.Slides;
@@ -386,46 +449,39 @@ namespace pmo.Services.PowerPoint
                 if (schedules!=null)
                 {
                     pageIndex++;
-                    string[,] SchedulesTable = GenerateTableData<Schedule>(schedules);
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Schedules", SchedulesTable, $"Gate {Gate} Review");
                 }
                 if (pip != null)
                 {
                     pageIndex++;
-                    string[,] ProductInfrigmentPatentabilityTable = GenerateTableData<ProductInfrigmentPatentability>(pip);
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Product Infringement Patentability", ProductInfrigmentPatentabilityTable, $"Gate {Gate} Review");
                 }
 
                 if (risk != null)
                 {
                     pageIndex++;
-                    string[,] RiskTable = GenerateTableData<Risk>(risk);
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Risk Analysis", RiskTable, $"Gate {Gate} Review");
                 }
 
                 if (ip != null)
                 {
-                    string[,] InvestmentPlanTable = GenerateTableData<InvestmentPlan>(ip);
+                    pageIndex++;
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Investment Plan", InvestmentPlanTable, $"Gate {Gate} Review");
                 }
                 if (bc != null)
                 {
-                    pageIndex++;
-                    string[,] BusinessCaseTableSimple = GenerateTableData<BusinessCase>(bc,BusinessCaseTableType.Simple);
+                    pageIndex++;                    
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Business Case", BusinessCaseTableSimple, $"Gate {Gate} Review");
 
                     pageIndex++;
-                    string[,] BusinessCaseTableCost = GenerateTableData<BusinessCase>(bc, BusinessCaseTableType.FinancialsCalculationsCost);
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Project GPA", BusinessCaseTableCost, $"Gate {Gate} Review");
 
                     pageIndex++;
-                    string[,] BusinessCaseTableExpenses = GenerateTableData<BusinessCase>(bc, BusinessCaseTableType.FinancialsCalculationsExpenses);
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Project Expenses", BusinessCaseTableExpenses, $"Gate {Gate} Review");
                 }
                 if (plr != null)
                 {
                     pageIndex++;
-                    string[,] PLRTable = GenerateTableData<PostLaunchReview>(plr);
                     CreateTableSlide(pptPresentation, slides, pageIndex, "Post Launch Review", PLRTable, $"Gate {Gate} Review");
                 }
 

@@ -34,10 +34,7 @@ namespace pmo.Controllers.VBPD.Application
                .OrderByDescending(o => o.CreateDate).FirstOrDefault();
         }
 
-        //Gate 2 Slides requirement: Title Page, Business Case.
-        //Gate 3 Slides requirement: Title Page, Schedule, Product Infringement & Patentability (if exists), Risk Analysis, Investment Plan (if exists), Business Case.
-        //Gate 4 Slides requirement:  Title Page, Risk Analysis, Business Case.
-        //Gate PLR Slides requirement: Title Page, Financial Review, Post Launch Review.
+        
         [Route("download")]
         public IActionResult Download()
         {
@@ -56,32 +53,60 @@ namespace pmo.Controllers.VBPD.Application
             string GateDescription = "";
 
             string FilePath = "";
-
-            if (_currentGate.GateConfig.GateNumber == 1)
-            {
-                GateDescription = "1";
-            }
-            else if(_currentGate.GateConfig.GateNumber == 2)
+            //Gate 2 Slides requirement: Title Page, Business Case.           
+            if (_currentGate.GateConfig.GateNumber == 2)
             {
                 GateDescription = "2";
-
+                bc = _context.BusinessCases.IncludeAll().GetLatestVersion(_projectId);
             }
+            //Gate 3 Slides requirement: Title Page, Schedule, Product Infringement & Patentability (if exists), 
+            //Risk Analysis, Investment Plan (if exists), Business Case.
             else if (_currentGate.GateConfig.GateNumber == 3)
             {
                 GateDescription = "3";
 
+                schedules = _context.Schedules
+                .Include(x => x.Stage)
+                .Where(n => n.Stage.Id == _stageId && n.Stage.ProjectId == _projectId)
+                .Include(x => x.ScheduleType).AsNoTracking().ToList();
+
+                pip = _context.ProductInfrigmentPatentabilities.IncludeAll().GetLatestVersion(_projectId);
+
+                risk = _context.Risks.Include(x => x.Stage)
+               .Include(x => x.RiskImpact)
+               .Include(x => x.RiskType)
+               .Where(x => x.StageId == _stageId && x.Stage.ProjectId==_projectId).FirstOrDefault();
+
+                ip = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
+
+                bc = _context.BusinessCases.IncludeAll().GetLatestVersion(_projectId);
+
             }
+            //Gate 4 Slides requirement:  Title Page, Risk Analysis, Business Case.
             else if (_currentGate.GateConfig.GateNumber == 4)
             {
                 GateDescription = "4";
 
+                risk = _context.Risks.Include(x => x.Stage)
+               .Include(x => x.RiskImpact)
+               .Include(x => x.RiskType)
+               .Where(x => x.StageId == _stageId && x.Stage.ProjectId == _projectId).FirstOrDefault();
+
+                bc = _context.BusinessCases.IncludeAll().GetLatestVersion(_projectId);
             }
+            //Gate PLR Slides requirement: Title Page, Financial Review, Post Launch Review.
             else if (_currentGate.GateConfig.GateNumber == 5)
             {
                 GateDescription = "PLR";
 
+                bc = _context.BusinessCases.IncludeAll().GetLatestVersion(_projectId);
+
+                plr = _context.PostLaunchReviews.AsNoTracking().GetLatestVersion(_projectId);
             }
-            FilePath = _powerpointService.CreatePowerPointGateReview(GateDescription, p.ProjectDetails.OrderByDescending(x=>x.CreateDate).FirstOrDefault(), u, schedules, pip, risk, ip, bc, plr);
+            FilePath = _powerpointService.CreatePowerPointGateReview(GateDescription, 
+                p.ProjectDetails.OrderByDescending(x=>x.CreateDate).FirstOrDefault(), 
+                u, schedules, pip, risk, ip, bc, plr);
+
             if (FilePath!="")
             {
                 byte[] FileData = GetFile(FilePath);
