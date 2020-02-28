@@ -4,6 +4,14 @@
     Layout = "_VbpdProjectDetailLayout";
 }
 
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
+
 <form class="form-component" method="post">
     @Html.AntiForgeryToken()
     <div class="wrapper">

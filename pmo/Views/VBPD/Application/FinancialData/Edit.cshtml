@@ -1,13 +1,21 @@
 ﻿@model List<FinancialDataForm>
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Insert Financial Data";
     Layout = "_VbpdProjectDetailLayout";
     var projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
     var stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
     var businessCaseId = int.Parse(Helpers.GetRouteValue(Context.Request, "businessCaseId"));
     var isRefreshed = Context.Request.Path.Value.Contains("refresh");
 }
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
 
 <form class="input-table-component" method="post">
     <div class="wrapper">

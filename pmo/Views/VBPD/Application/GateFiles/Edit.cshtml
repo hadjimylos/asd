@@ -1,7 +1,7 @@
 ﻿@model List<GateFileForm>
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Insert Gate Files";
     Layout = "_VbpdProjectDetailLayout";
     int projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
     int stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
@@ -11,14 +11,7 @@
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            @if (Model.Count == 0)
-            {
-                <h1 class="text-black"><i class='fas fa-check-circle'></i> All Gate Files Uploaded</h1>
-            }
-            else
-            {
-                <h1 class="text-red"><i class='fas fa-exclamation-circle'></i> @Model.Count Gate Files Remaining</h1>
-            }
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
         </div>
     </div>
 </div>

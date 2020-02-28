@@ -2,13 +2,22 @@
 @model dbModels.ProjectJustification
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Technical Feasibility & Scope";
     Layout = "_VbpdProjectDetailLayout";
 }
-    <div class="detail-component">
-        <div class="wrapper">
-            <div class="header">
-                <h1>Technical Feasibility &amp; Scope</h1>
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1><i class="icon fas fa-info-circle"></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
+
+<div class="detail-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1>Technical Feasibility &amp; Scope</h1>
         </div>
         <div class="details">
             <div class="detail">

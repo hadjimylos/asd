@@ -1,9 +1,17 @@
 ﻿@model forms.KeyCharacteristicForm
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Key Characteristic";
     Layout = "_VbpdProjectDetailLayout";
 }
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
 
 <form class="historyform-component" method="post">
     @Html.AntiForgeryToken()
@@ -59,16 +67,14 @@
                     <select class="select-history select2">
                         <option value="clear">CLEAR</option>
                         <option value="all">VIEW ALL</option>
-                        @foreach (var version in Model.Versions)
-                        {
+                        @foreach (var version in Model.Versions) {
                             <option value="@version.Id">Version: @version.Version , Last Update By: @version.ModifiedByUser</option>
                         }
                     </select>
                 </div>
             </div>
             <div class="versions">
-                @foreach (var version in Model.Versions)
-                {
+                @foreach (var version in Model.Versions) {
                     <div showversion="@version.Id" class="version">
                         <div class="values">
                             <div class="select-single-field">

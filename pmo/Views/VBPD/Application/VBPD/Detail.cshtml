@@ -1,16 +1,17 @@
 ﻿@model VbpdProjectDetail
 
 @{
-    ViewData["Title"] = "PROJECT DETAIL";
+    ViewData["Title"] = "Project Info";
     Layout = "_VbpdProjectDetailLayout";
 }
+
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            <h1>Project Information</h1>
+            <h1><i class="icon fas fa-info-circle"></i> @ViewData["Title"]</h1>
         </div>
         <div class="actions">
-            <div class="action"><a class="btn" href="/vbpd-projects/@Model.ProjectDetail.ProjectId/project-detail/edit">Edit</a></div>
+            <div class="action"><a class="btn" href="@Context.Request.RouteValues.First(f => f.Key == "projectId").Value/project-detail/edit">Edit</a></div>
         </div>
     </div>
 </div>

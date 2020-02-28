@@ -11,8 +11,8 @@ namespace pmo.Controllers.VBPD.Application {
         public ProjectDetailController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
         }
 
-        public IActionResult Detail(int projectId) {
-            VbpdProjectDetail model = new VbpdProjectDetail(_context, projectId);
+        public IActionResult Detail() {
+            VbpdProjectDetail model = new VbpdProjectDetail(_context, _projectId);
             return View($"{path}/Detail.cshtml", model);
         }
     }

@@ -1,9 +1,15 @@
 ﻿@model forms.RiskForm
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Risk";
     Layout = "_VbpdProjectDetailLayout";
 }
 
-<h1>Edit</h1>
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
 
 @Html.Partial("_RiskForm.cshtml", Model)
