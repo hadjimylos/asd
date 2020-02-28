@@ -18,7 +18,7 @@ namespace forms {
         public List<int> Lead_Engineer { get; set; }
         public List<SelectListItem> LeadEngineerList { get; set; }
 
-        [Required(ErrorMessage = ErrorMessages.Required)]
+        
         public List<int> Program_Management { get; set; }
         public List<SelectListItem> ProgramManagementList { get; set; }
 

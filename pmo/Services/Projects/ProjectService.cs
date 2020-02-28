@@ -64,7 +64,7 @@ namespace pmo.Services.Projects
                     var teamMember = new Project_User()
                     {
                         ProjectId = project.Id,
-                        JobDescriptionKey = ViewModels.Helpers.JobDescripKeys.ProgramManagement,
+                        JobDescriptionKey = ViewModels.Helpers.JobDescripKeys.ProgramManager,
                         UserId = _userService.GetCurrentUserId()
                     };
                     _context.Project_User.Add(teamMember);
