@@ -7,39 +7,40 @@
     <div class="wrapper">
         <div class="fields">
             <div class="field">
-                <div class="label">NAME</div>
+                <div class="label">Name</div>
                 <input asp-for="Name" class="data" type="text" />
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "Name")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">RISK PROBABILITY (%)</div>
+                <div class="label">Risk Probability (%)</div>
                 <input asp-for="RiskPropability" class="data" type="number" step="10" />
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "RiskPropability")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">RISK TYPE</div>
+                <div class="label">Risk Type</div>
                 <select asp-for="RiskTypeTagId" asp-items="Model.RiskTypeList" class="select2 data">
-                    <option hidden disabled selected>-- Select Role--</option>
+                    <option hidden disabled selected>-- Select --</option>
                 </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "RiskTypeTagId")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">RISK IMPACT</div>
+                <div class="label">Risk Impact</div>
                 <select asp-for="RiskImpactTagId" asp-items="Model.RiskImpactList" class="select2 data">
-                    <option hidden disabled selected>-- Select Role--</option>
+                    <option hidden disabled selected>-- Select --</option>
                 </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "RiskImpactTagId")
                 </ul>
             </div>
             <div class="field">
-                <input type="submit" class="data btn" value="SUBMIT" />
+                <button type="submit" class="data btn green"><i class="fas fa-save"></i> Submit</button>
+                <a class="btn grey" href="#" onclick="location.href = document.referrer; return false;"><i class="fas fa-chevron-circle-left"></i> Return</a>
             </div>
         </div>
     </div>

@@ -10,20 +10,19 @@
             <h1><i class="fas fa-list-alt"></i> @ViewData["Title"]</h1>
         </div>
         <div class="actions">
-            <a class="btn" href="risk/create">CREATE</a>
+            <a class="btn" href="risk/create"><i class="fas fa-plus"></i> Create new Risk</a>
         </div>
     </div>
 </div>
-
 
 @if (Model.Count > 0) {
     <div class="list-component">
         <div class="wrapper">
             <div class="title">
-                <div>NAME</div>
-                <div>RISK PROBABILITY (%)</div>
-                <div>RISK TYPE</div>
-                <div>RISK IMPACT</div>
+                <div>Name</div>
+                <div>Risk Probability (%)</div>
+                <div>Risk Impact</div>
+                <div>Risk Type</div>
             </div>
             <div class="items">
                 @foreach (var risk in Model) {
@@ -39,7 +38,157 @@
             </div>
         </div>
     </div>
+
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                animationDuration: 2000,
+                exportEnabled: true,
+                axisY: {
+                    title: "Risk Probability (%)",
+                    titleFontFamily: "Roboto-Light",
+                    titleFontSize: 24,
+                    titleFontColor: "#677078",
+                    labelFontFamily: "Roboto-Light",
+                    labelFontSize: 16,
+                    labelFontColor: "#677078",
+                    lineColor: "#677078",
+                    tickColor: "#677078",
+                    tickLength: 4,
+                    margin: 0,
+                    interval: 10,
+                    minimum: 0,
+                    maximum: 100,
+                    gridColor: "#dee2e6"
+                },
+                axisY2: {
+                    title: "Risk Impact",
+                    titleFontFamily: "Roboto-Light",
+                    titleFontSize: 24,
+                    titleFontColor: "#77212E",
+                    labelFontFamily: "Roboto-Light",
+                    labelFontSize: 16,
+                    labelFontColor: "#850101",
+                    lineColor: "#77212E",
+                    tickColor: "#77212E",
+                    tickLength: 4,
+                    margin: 0,
+                    interval: 1,
+                    minimum: 0,
+                    maximum: 5
+                },
+                axisX: {
+                    labelFontFamily: "Roboto-Light",
+                    labelFontSize: 16,
+                    labelFontColor: "#677078",
+                    lineColor: "#677078",
+                    tickColor: "#ffffff",
+                    tickLength: 8,
+                    margin: 40
+                },
+                legend: {
+                    fontFamily: "Roboto-Black",
+                    fontSize: 16,
+                    fontColor: "#677078",
+                    verticalAlign: "top",
+                    horizontalAlign: "left",
+                    markerMargin: 4,
+                    cursor: "pointer",
+                    itemclick: toggleDataSeries
+                },
+                toolTip: {
+                    enabled: true,
+                    shared: true,
+                    fontFamily: "Roboto-Light",
+                    fontSize: 16,
+                    fontColor: "#677078",
+                    borderThickness: 2,
+                    cornerRadius: 5,
+                    contentFormatter: function (e) {
+                        return "<div class='chartTooltip'>"
+                            + "<div class='title'>Information</div>"
+                            + "<div class='risk-name'>Risk: <strong>" + e.entries[0].dataPoint.label + "</strong></div>"
+                            + "<div class='risk-type'>Type: <strong>" + e.entries[0].dataPoint.category + "</strong></div>"
+                            + "Probability: " + e.entries[0].dataPoint.y + "%<br>"
+                            + "Impact:" + e.entries[1].dataPoint.y
+                            + "</div>"
+                    }
+                },
+                data: [{
+                    type: "column",
+                    cursor: "pointer",
+                    name: "Risk Probability (%)",
+                    showInLegend: true,
+                    legendText: "Risk Probability",
+                    legendMarkerType: "circle",
+                    legendMarkerColor: "#dee2e6",
+                    indexLabel: "{y}",
+                    indexLabelFontFamily: "Roboto-Light",
+                    indexLabelFontSize: 14,
+                    indexLabelFontColor: "#677078",
+                    indexLabelPlacement: "outside",
+                    dataPoints: @Html.Raw(ViewBag.DataPointsProbability)
+	        },
+                {
+                    type: "column",
+                    cursor: "pointer",
+                    name: "Risk Impact",
+                    showInLegend: true,
+                    legendText: "Risk Impact",
+                    legendMarkerType: "circle",
+                    legendMarkerColor: "#77212E",
+                    axisYType: "secondary",
+                    dataPoints: @Html.Raw(ViewBag.DataPointsImpact)
+                    }
+                ]
+            });
+
+            chart.render();
+
+            function toggleDataSeries(e) {
+	            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		            e.dataSeries.visible = false;
+	            }
+	            else {
+		            e.dataSeries.visible = true;
+	            }
+	            chart.render();
+            }
+        }
+    </script>
+    <style>
+        #indexlabel {
+            position: absolute;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            user-select: none;
+            max-width: 150px;
+        }
+
+        .chartTooltip {
+            padding: 4px 8px;
+        }
+
+            .chartTooltip .title {
+                font-family: "Roboto-Black";
+                font-weight: 900;
+                padding-bottom: 4px;
+                margin-bottom: 8px;
+                border-bottom: 1px solid #677078;
+            }
+
+                .chartTooltip .title:before {
+                    font-family: 'Font Awesome 5 Free';
+                    content: '\f05a';
+                    margin-right: 8px;
+                }
+    </style>
+    <div id="chartContainer" style="height: 600px; width: 100%; margin-top: 48px; position: relative;"></div>
 }
-else {
+else
+{
     @Html.Partial("_NoData")
 }
