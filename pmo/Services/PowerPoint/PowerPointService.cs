@@ -102,9 +102,43 @@ namespace pmo.Services.PowerPoint
         /// <typeparam name="T">Object Type</typeparam>
         /// <param name="TableData">Table Data</param>
         /// <returns></returns>
-        public string[,] GenerateTableData<T>(T TableData)
+        public string[,] GenerateTableData<T>(T TableData, BusinessCaseTableType type = BusinessCaseTableType.None)
         {
-            
+            if (TableData.GetType() == typeof(BusinessCase))
+            {
+                switch (type)
+                {
+                     case BusinessCaseTableType.Simple:
+                        BusinessCase bc = TableData as BusinessCase;
+                        string[,] Data = new string[22, 2]{{ "Description", "Value"},
+                            { "Will Customer Fund Qual?", bc.WillCustomerFundQual?"Yes":"No"},
+                            { "Will Customer Fund Tooling?", bc.WillCustomerFundTooling?"Yes":"No"},
+                            { "Probabilty Of Win", bc.ProbabiltyOfWin.ToString()+"%"},
+                            { "Target First Year Gross Margin", bc.TargetFirstYearGrossMargin.ToString()},
+                            { "Financial Start Year", bc.FinancialStartYear.ToString()},
+                            { "Discount Rate", bc.DiscountRate.ToString()},
+                            { "TaxRate", bc.TaxRate.ToString()},
+                            { "Labor Rate", bc.LaborRate.ToString()},
+                            { "Gpa Requirements", bc.GpaRequirements},
+                            { "Multiple Fields Generated Table", bc.MultipleFieldsGeneratedTable.ToString()},
+                            { "Project Scope", bc.ProjectScope},
+                            { "Work Requirement Amount", bc.WorkRequirementAmount.ToString()},
+                            { "Strategic Alignment", bc.StrategicAlignment.ToString()},
+                            { "Add To Tecnical Abilities", bc.AddToTecnicalAbilities},
+                            { "Project Completion", bc.ProjectCompletion.ToString("MM/dd/yyyy")},
+                            { "Time From Project Completion To Revenue Generation", bc.TimeFromProjectCompletionToRevenueGeneration.ToString()},
+                            { "Customer Market Analysis", bc.CustomerMarketAnalysis},
+                            { "Changes", bc.Changes.ToString()},
+                            { "NPV", bc.GetNPV().ToString()},
+                            { "ROI", bc.GetROI().ToString()},
+                            { "Get Payback Period", bc.GetPaybackPeriod().ToString()}
+                            };
+                        return Data;
+                        break;                   
+                    default:
+                        throw new ArgumentNullException("Business Case Table Type is not specified");                        
+                }  
+            }
             if (TableData.GetType() == typeof(PostLaunchReview))
             {
                 PostLaunchReview plr = TableData as PostLaunchReview;
@@ -173,16 +207,40 @@ namespace pmo.Services.PowerPoint
         /// <typeparam name="T">Object Type</typeparam>
         /// <param name="TableData"> Table Data</param>
         /// <returns></returns>
-        public string[,] GenerateTableData<T>(List<T> TableData)
+        public string[,] GenerateTableData<T>(List<T> TableData, BusinessCaseTableType type = BusinessCaseTableType.None)
         {
             var TableObjectType = TableData.FirstOrDefault();
-            //if (TableData.FirstOrDefault().GetType() == typeof(BusinessCaseViewModel))
-            //{
+            if (TableData.FirstOrDefault().GetType() == typeof(BusinessCase))
+            {
+                switch (type)
+                {
+                    case BusinessCaseTableType.None:
+                        throw new ArgumentNullException("Business Case Table Type is not specified");                        
+                    case BusinessCaseTableType.Simple:
+                        List<BusinessCase> bc = TableData as List<BusinessCase>;
+                        int Count = bc.Count;
+                        string[,] Data = new string[Count, 2];
+                        Data[0, 0] = "Milestone";
+                        Data[0, 1] = "Date";
 
-            //}
+                        //for (int i = 1; i < Count; i++)
+                        //{
+                        //    Data[i, 0] = bc[i - 1].ScheduleType.Name;
+                        //    Data[i, 1] = bc[i - 1].Date.ToString("MM/dd/yyyy");
+                        //}
+                        break;
+                    case BusinessCaseTableType.BusinessCaseCalulations:
+                        break;
+                    case BusinessCaseTableType.FinancialsCalculationsCost:
+                        break;
+                    case BusinessCaseTableType.FinancialsCalculationsExpenses:
+                        break;
+                    default:
+                        break;
+                }
 
-            //else 
-            if (TableData.FirstOrDefault().GetType() == typeof(Schedule))
+            }
+            else if (TableData.FirstOrDefault().GetType() == typeof(Schedule))
             {
                 List<Schedule> schedule = TableData as List<Schedule>;
                 int Count = schedule.Count;
@@ -198,7 +256,6 @@ namespace pmo.Services.PowerPoint
 
                 return Data;
             }
-
             else
             if (TableData.FirstOrDefault() == null)
             {
@@ -207,7 +264,6 @@ namespace pmo.Services.PowerPoint
             return new string[1, 1];
 
         }
-
 
         /// <summary>
         /// Creates a Table Slide with Title text
@@ -367,10 +423,14 @@ namespace pmo.Services.PowerPoint
 
     }
 
-    public class TableRow 
-    {
-        public string Description { get; set; }
-        public string Value { get; set; }
 
+
+    public enum BusinessCaseTableType 
+    {
+        None=1,
+        Simple=2,
+        BusinessCaseCalulations = 3,
+        FinancialsCalculationsCost = 4,
+        FinancialsCalculationsExpenses = 5
     }
 }
