@@ -59,8 +59,11 @@ namespace dbModels {
             ) /
             FinancialData.Sum(s => s.GetTotalExpenses());
 
-        public decimal GetPaybackPeriod() {
-            var firstPositive = FinancialData.First(f => f.GetCumulativeCashFlow() > 0);
+        public decimal? GetPaybackPeriod() {
+            var firstPositive = FinancialData.FirstOrDefault(f => f.GetCumulativeCashFlow() > 0);
+            
+            if (firstPositive == null)
+                return null;     
 
             return 
                 (
