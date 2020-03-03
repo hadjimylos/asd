@@ -203,43 +203,48 @@
                                 </div>
                             </div>
 
+                            <div class="detail-component">
 
-                            <div class="select-single-field">
-                                <div class="label">Project Scope</div>
-                                <div class="data">@version.ProjectScope</div>
+                                <div class="select-single-field">
+                                    <div class="label">Project Scope</div>
+                                    <div class="data">@version.ProjectScope</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Work Requirement Amount</div>
+                                    <div class="data">@version.WorkRequirementAmount</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Strategic Alignment</div>
+                                    <div class="data">@version.StrategicAlignment</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Add To Tecnical Abilities</div>
+                                    <div class="data">@version.AddToTecnicalAbilities</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Project Completion</div>
+                                    <div class="data">@version.ProjectCompletion</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Time From Project Completion To RevenueGeneration</div>
+                                    <div class="data">@version.TimeFromProjectCompletionToRevenueGeneration</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">ManufacturingLocations</div>
+                                    <div class="data">@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.ManufacturingLocations.Name).ToList())</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Customer Market Analysis</div>
+                                    <div class="data">@version.CustomerMarketAnalysis</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Changes</div>
+                                    <div class="data">@version.Changes</div>
+                                </div>
+
+
                             </div>
-                            <div class="select-single-field">
-                                <div class="label">Work Requirement Amount</div>
-                                <div class="data">@version.WorkRequirementAmount</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Strategic Alignment</div>
-                                <div class="data">@version.StrategicAlignment</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Add To Tecnical Abilities</div>
-                                <div class="data">@version.AddToTecnicalAbilities</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Project Completion</div>
-                                <div class="data">@version.ProjectCompletion</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Time From Project Completion To RevenueGeneration</div>
-                                <div class="data">@version.TimeFromProjectCompletionToRevenueGeneration</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">ManufacturingLocations</div>
-                                <div class="value">@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.ManufacturingLocations.Name).ToList())</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Customer Market Analysis</div>
-                                <div class="data">@version.CustomerMarketAnalysis</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Changes</div>
-                                <div class="data">@version.Changes</div>
-                            </div>
+                           
 
 
                             @*Quick and dirty solution*@
@@ -250,39 +255,41 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="select-single-field">
-                                <div class="label">Will Customer Fund Qual</div>
-                                <div class="data">@version.WillCustomerFundQual</div>
+                            <div class="detail-component">
+                                <div class="select-single-field">
+                                    <div class="label">Will Customer Fund Qual</div>
+                                    <div class="data">@version.WillCustomerFundQual</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Will Customer Fund Tooling</div>
+                                    <div class="data">@version.WillCustomerFundTooling</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Probabilty Of Win</div>
+                                    <div class="data">@version.ProbabiltyOfWin</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Target First Year Gross Margin</div>
+                                    <div class="data">@version.TargetFirstYearGrossMargin</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Financials Start Year</div>
+                                    <div class="data">@version.FinancialStartYear</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Discount Rate</div>
+                                    <div class="data">@version.DiscountRate</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Tax Rate</div>
+                                    <div class="data">@version.TaxRate</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">GPA Requirements</div>
+                                    <div class="data">@version.GpaRequirements</div>
+                                </div>
                             </div>
-                            <div class="select-single-field">
-                                <div class="label">Will Customer Fund Tooling</div>
-                                <div class="data">@version.WillCustomerFundTooling</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Probabilty Of Win</div>
-                                <div class="data">@version.ProbabiltyOfWin</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Target First Year Gross Margin</div>
-                                <div class="data">@version.TargetFirstYearGrossMargin</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Financials Start Year</div>
-                                <div class="data">@version.FinancialStartYear</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Discount Rate</div>
-                                <div class="data">@version.DiscountRate</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Tax Rate</div>
-                                <div class="data">@version.TaxRate</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">GPA Requirements</div>
-                                <div class="data">@version.GpaRequirements</div>
-                            </div>
+                          
 
 
 
