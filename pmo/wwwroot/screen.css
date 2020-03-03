@@ -491,18 +491,33 @@ body h2 {
 body h3 {
   font-size: 18px;
 }
+body .text-black {
+  color: #2A363B;
+}
+body .text-blue {
+  color: #00859b;
+}
+body .text-green {
+  color: #008264;
+}
+body .text-red {
+  color: #c82333;
+}
 .list-component .wrapper {
   border: 1px solid #dee2e6;
 }
 .list-component .wrapper .title,
-.list-component .wrapper .item-wrapper {
+.list-component .wrapper .item-wrapper,
+.list-component .wrapper .sub-title,
+.list-component .wrapper .sub-item-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  text-align: center;
+  text-align: left;
   letter-spacing: 1.1;
 }
-.list-component .wrapper .title {
+.list-component .wrapper .title,
+.list-component .wrapper .sub-title {
   font-family: Roboto-Black;
   font-size: 16px;
   font-weight: 900;
@@ -511,27 +526,80 @@ body h3 {
   border-bottom: 1px solid #dee2e6;
   user-select: none;
 }
-.list-component .wrapper .items .item {
+.list-component .wrapper .items .item,
+.list-component .wrapper .sub-items .item,
+.list-component .wrapper .items .sub-item,
+.list-component .wrapper .sub-items .sub-item {
   display: block;
 }
-.list-component .wrapper .items .item .item-wrapper {
+.list-component .wrapper .items .item .item-wrapper,
+.list-component .wrapper .sub-items .item .item-wrapper,
+.list-component .wrapper .items .sub-item .item-wrapper,
+.list-component .wrapper .sub-items .sub-item .item-wrapper,
+.list-component .wrapper .items .item .sub-item-wrapper,
+.list-component .wrapper .sub-items .item .sub-item-wrapper,
+.list-component .wrapper .items .sub-item .sub-item-wrapper,
+.list-component .wrapper .sub-items .sub-item .sub-item-wrapper {
   font-size: 14px;
   color: #6c757d;
   text-decoration: none;
   padding: 10px;
 }
-.list-component .wrapper .items .item .item-wrapper:hover {
+.list-component .wrapper .items .item .item-wrapper:hover,
+.list-component .wrapper .sub-items .item .item-wrapper:hover,
+.list-component .wrapper .items .sub-item .item-wrapper:hover,
+.list-component .wrapper .sub-items .sub-item .item-wrapper:hover,
+.list-component .wrapper .items .item .sub-item-wrapper:hover,
+.list-component .wrapper .sub-items .item .sub-item-wrapper:hover,
+.list-component .wrapper .items .sub-item .sub-item-wrapper:hover,
+.list-component .wrapper .sub-items .sub-item .sub-item-wrapper:hover {
   background: #00000013;
   transition-duration: 0.1s;
 }
-.list-component .wrapper .items .item:not(:first-child) {
+.list-component .wrapper .items .item:not(:first-child),
+.list-component .wrapper .sub-items .item:not(:first-child),
+.list-component .wrapper .items .sub-item:not(:first-child),
+.list-component .wrapper .sub-items .sub-item:not(:first-child) {
   border-top: 1px solid #dee2e6;
 }
-.list-component .wrapper .items .item:nth-of-type(even) {
+.list-component .wrapper .items .item:nth-of-type(even),
+.list-component .wrapper .sub-items .item:nth-of-type(even),
+.list-component .wrapper .items .sub-item:nth-of-type(even),
+.list-component .wrapper .sub-items .sub-item:nth-of-type(even) {
   background: #ffffff;
 }
-.list-component .wrapper .items .item:nth-of-type(odd) {
+.list-component .wrapper .items .item:nth-of-type(odd),
+.list-component .wrapper .sub-items .item:nth-of-type(odd),
+.list-component .wrapper .items .sub-item:nth-of-type(odd),
+.list-component .wrapper .sub-items .sub-item:nth-of-type(odd) {
   background: #f5f6f7;
+}
+.list-component .wrapper .sub-list {
+  padding: 4px 8px 9px 36px;
+  box-sizing: border-box;
+  position: relative;
+}
+.list-component .wrapper .sub-list:before {
+  font-family: 'Font Awesome 5 Free';
+  font-size: 12px;
+  font-weight: 600;
+  content: '\F03A';
+  position: absolute;
+  left: 12px;
+  top: 12px;
+}
+.list-component .wrapper .sub-list .wrapper .sub-title {
+  font-size: 14px;
+  background: #00859b;
+  color: #e7e9ec;
+  padding: 6px 8px;
+  box-sizing: border-box;
+}
+.list-component .wrapper .sub-list .wrapper .sub-items .sub-item .sub-item-wrapper {
+  padding: 4px 8px;
+}
+.list-component .wrapper .sub-list .wrapper .sub-items .sub-item:nth-of-type(even) {
+  background: rgba(0, 133, 155, 0.08);
 }
 .form-component .wrapper {
   padding: 12px 20px;
@@ -677,6 +745,26 @@ body h3 {
 }
 .historyform-component .wrapper .versioning-section .versions .version .values .select-single-field .list-values .id,
 .historyform-component .wrapper .versioning-section .versions .version .values .select-single-field .single-list-value .id {
+  display: none;
+}
+.historyform-component .wrapper .versioning-section .versions .version .values .detail-component {
+  background: #f5f6f7;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+}
+.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field:not(:first-child) {
+  margin-top: 20px;
+}
+.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .label {
+  font-weight: 600;
+  font-size: 15px;
+  margin: 5px 0px 0px 5px;
+}
+.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .data {
+  margin: 0px 0px 5px 10px;
+}
+.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .list-values .id,
+.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .single-list-value .id {
   display: none;
 }
 .nav-left-component {
