@@ -40,7 +40,7 @@ namespace pmo.Services.PowerPoint
         /// <param name="ProjectName">Project Name</param>
         /// <param name="GateNumber">Gate Number</param>
         /// <param name="ProgramManager">Program Manager</param>
-        public void CreateTitleSlide(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string ProjectId, string ProjectName, int GateNumber, string ProgramManager)
+        public void CreateTitleSlide(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string ProjectId, string ProjectName, string GateNumber, string ProgramManager)
         {
             Microsoft.Office.Interop.PowerPoint.CustomLayout customLayoutTitle = pptPresentation.SlideMaster.CustomLayouts[4];
             Microsoft.Office.Interop.PowerPoint._Slide slide;
@@ -137,7 +137,7 @@ namespace pmo.Services.PowerPoint
                     case BusinessCaseTableType.FinancialsCalculationsCost:
                         List<FinancialData> fd = (TableData as BusinessCase).FinancialData as List<FinancialData>;
                         int Count = fd.Count+2;
-                        string[,] Data2 = new string[Count, 2];
+                        string[,] Data2 = new string[Count, 8];
                         Data2[0, 0] = "Year";
                         Data2[0, 1] = "Quantity";
                         Data2[0, 2] = "Standard Cost Estimated";
@@ -147,7 +147,7 @@ namespace pmo.Services.PowerPoint
                         Data2[0, 6] = "Standard Margin Price";
                         Data2[0, 7] = "Standard Margin Price %";
 
-                        for (int i = 1; i < Count; i++)
+                        for (int i = 1; i <= Count-2; i++)
                         {
                             Data2[i, 0] = fd[i - 1].Year.ToString();
                             Data2[i, 1] = fd[i - 1].Quantity.ToString();
@@ -171,7 +171,7 @@ namespace pmo.Services.PowerPoint
                     case BusinessCaseTableType.FinancialsCalculationsExpenses:
                         List<FinancialData> fd2 = (TableData as BusinessCase).FinancialData as List<FinancialData>;
                         int Count2 = fd2.Count + 2;
-                        string[,] Data3 = new string[Count2, 2];
+                        string[,] Data3 = new string[Count2, 6];
                         Data3[0, 0] = "Year";
                         Data3[0, 1] = "GPA Capital";
                         Data3[0, 2] = "GPA Expense";
@@ -179,7 +179,7 @@ namespace pmo.Services.PowerPoint
                         Data3[0, 4] = "Other Development Expenses";
                         Data3[0, 5] = "Total Expenses";
 
-                        for (int i = 1; i < Count2; i++)
+                        for (int i = 1; i <= Count2-2; i++)
                         {
                             Data3[i, 0] = fd2[i - 1].Year.ToString();
                             Data3[i, 1] = fd2[i - 1].GPACapital.ToString();
@@ -195,7 +195,7 @@ namespace pmo.Services.PowerPoint
                         Data3[Count2 - 1, 3] = fd2.Sum(x => x.QualCosts).ToString();
                         Data3[Count2 - 1, 4] = fd2.Sum(x => x.OtherDevelopmentExpenses).ToString();
                         Data3[Count2 - 1, 5] = fd2.Sum(x => x.GetTotalExpenses()).ToString();
-                        break;
+                        return Data3;
                     default:
                         throw new ArgumentNullException("Business Case Table Type is not specified");                        
                 }  
@@ -204,12 +204,12 @@ namespace pmo.Services.PowerPoint
             {
                 PostLaunchReview plr = TableData as PostLaunchReview;
                 string[,] Data = new string[7, 2]{{ "Description", "Value"},
-                    { "Done Well", plr.DoneWell},
-                    { "Done Poorly", plr.DonePoorly},
-                    { "Bottlenecks", plr.Bottlenecks},
-                    { "Actual VS Expected", plr.ActualVSExpected},
-                    { "Commercial", plr.Commercial},
-                    { "Lessons Learned", plr.LessonsLearned},
+                    { "Whas was done well", plr.DoneWell},
+                    { "Whas was done poorly", plr.DonePoorly},
+                    { "Bottlenecks or obstacles encountered", plr.Bottlenecks},
+                    { "Actual VS Expected Results comparison", plr.ActualVSExpected},
+                    { "Commercial success or failure", plr.Commercial},
+                    { "Lessons learned", plr.LessonsLearned},
                     };
 
                 return Data;
@@ -259,7 +259,7 @@ namespace pmo.Services.PowerPoint
             {
                 throw new ArgumentNullException("Data is null");
             }
-            return null;
+            throw new ArgumentNullException("Data is null");
         }
 
         /// <summary>
@@ -271,6 +271,7 @@ namespace pmo.Services.PowerPoint
         public string[,] GenerateTableData<T>(List<T> TableData, BusinessCaseTableType type = BusinessCaseTableType.None)
         {
             var TableObjectType = TableData.FirstOrDefault();
+
            if (TableData.FirstOrDefault().GetType() == typeof(Schedule))
             {
                 List<Schedule> schedule = TableData as List<Schedule>;
@@ -287,8 +288,28 @@ namespace pmo.Services.PowerPoint
 
                 return Data;
             }
-            else
-            if (TableData.FirstOrDefault() == null)
+            else if (TableData.FirstOrDefault().GetType() == typeof(Risk))
+            {                
+
+                List<Risk> risk = TableData as List<Risk>;
+                int Count = risk.Count + 1;
+                string[,] Data = new string[Count, 4];
+                Data[0, 0] = "Name";
+                Data[0, 1] = "Risk Probability";
+                Data[0, 2] = "Risk Type";
+                Data[0, 3] = "Risk Impact";
+
+                for (int i = 1; i < Count; i++)
+                {
+                    Data[i, 0] = risk[i - 1].Name;
+                    Data[i, 1] = risk[i - 1].RiskPropability.ToString();
+                    Data[i, 2] = risk[i - 1].RiskType.Name;
+                    Data[i, 3] = risk[i - 1].RiskImpact.Name;
+
+                }
+                return Data;
+            }
+            else  if (TableData.FirstOrDefault() == null)
             {
                 throw new ArgumentNullException("Data is null");
             }
@@ -350,6 +371,58 @@ namespace pmo.Services.PowerPoint
 
         }
 
+        public int CreateTableSlides(Presentation pptPresentation, Microsoft.Office.Interop.PowerPoint.Slides slides, int SlideId, string Title, string[,] DataTable, string FooterText = "")
+        {
+            int maxRowCount = 11;
+
+            int totalRows = DataTable.GetLength(0); 
+            int howManyLists = (int)(Math.Ceiling((totalRows / (decimal)maxRowCount)));
+
+            var results = new List<string[,]>();
+            for (int i = 1; i < howManyLists + 1; i++) {
+                var newTable = new string[maxRowCount, DataTable.GetLength(1)];
+                
+                for (int k = 0; k < DataTable.GetLength(1); k++) {
+                    newTable[0, k] = DataTable[0, k];
+                }
+
+                for (int j = 1; j < maxRowCount; j++) {
+                    for (int k = 0; k < DataTable.GetLength(1); k++) {
+                        try {
+                            newTable[j, k] = DataTable[j * i, k];
+                        } catch (IndexOutOfRangeException ex) {
+                            var tmpNewTable = new string[j, DataTable.GetLength(1)];
+                            for (int a = 0; a < j; a++) {
+                                for (int b = 0; b < newTable.GetLength(1); b++) {
+                                    tmpNewTable[a, b] = newTable[a, b];
+                                }
+                            }
+
+                            newTable = tmpNewTable;
+                            break;
+                        } catch (Exception ex)
+                        {
+                            throw;
+                        }
+                    }
+
+                    var currentCount = newTable.GetLength(0);
+                    if (currentCount != maxRowCount)
+                        break;
+                }
+                results.Add(newTable);    
+            }
+
+            int currentSlide = 0;
+            results.ForEach(splitTable => {
+                currentSlide++;
+                string title = results.Count > 0 ? $"{Title} (Page {currentSlide})" : Title;
+                CreateTableSlide(pptPresentation, slides, (SlideId + currentSlide), title, splitTable, FooterText);
+            });
+            
+            return SlideId + currentSlide;
+        }
+
         public string CreatePowerPointTestData()
         {
 
@@ -363,7 +436,7 @@ namespace pmo.Services.PowerPoint
 
                 Microsoft.Office.Interop.PowerPoint.Slides slides;
                 slides = pptPresentation.Slides;
-                CreateTitleSlide(pptPresentation, slides, 1, "TESTID#54834", "Test Name for Test and Test and Test for Test", 2, "Georgia Nombre de Oliveira Kalyva");
+                CreateTitleSlide(pptPresentation, slides, 1, "TESTID#54834", "Test Name for Test and Test and Test for Test", "2", "Georgia Nombre de Oliveira Kalyva");
                 CreateTableSlide(pptPresentation, slides, 2, "Business Cases", new string[2, 10] {{"1","2","3","4","5","6","7","8","9","10" },
                                                                                                 {"11","12","13","14","15","16","17","18","19","20" }}, "Gate 2 Review");
                 string SaveAs = _hostingEnvironment.WebRootPath + @"\PowerPointExports\ppt" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".pptx";
@@ -383,7 +456,7 @@ namespace pmo.Services.PowerPoint
         }
 
         public string CreatePowerPointGateReview(string Gate, ProjectDetail project, Project_User user, List<Schedule> schedules, 
-            ProductInfrigmentPatentability pip, Risk risk, InvestmentPlan ip, BusinessCase bc, PostLaunchReview plr)
+            ProductInfrigmentPatentability pip, List<Risk> risk, InvestmentPlan ip, BusinessCase bc, PostLaunchReview plr)
         {
             string[,] SchedulesTable = null;
             string[,] ProductInfrigmentPatentabilityTable = null;
@@ -444,45 +517,41 @@ namespace pmo.Services.PowerPoint
                 int pageIndex = 1;
                 Microsoft.Office.Interop.PowerPoint.Slides slides;
                 slides = pptPresentation.Slides;
-                CreateTitleSlide(pptPresentation, slides, 1, project.Project.Id.ToString(), project.Project.Name, 2, user.User.NetworkUsername);
-
+                CreateTitleSlide(pptPresentation, slides, 1, project.Project.Id.ToString(), project.Project.Name,  Gate, user.User.NetworkUsername);
                 if (schedules!=null)
                 {
-                    pageIndex++;
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Schedules", SchedulesTable, $"Gate {Gate} Review");
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Schedules", SchedulesTable, $"Gate {Gate} Review");
                 }
                 if (pip != null)
                 {
-                    pageIndex++;
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Product Infringement Patentability", ProductInfrigmentPatentabilityTable, $"Gate {Gate} Review");
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Product Infringement Patentability", ProductInfrigmentPatentabilityTable, $"Gate {Gate} Review");
                 }
 
                 if (risk != null)
                 {
-                    pageIndex++;
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Risk Analysis", RiskTable, $"Gate {Gate} Review");
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Risk Analysis", RiskTable, $"Gate {Gate} Review");
+
                 }
 
                 if (ip != null)
                 {
-                    pageIndex++;
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Investment Plan", InvestmentPlanTable, $"Gate {Gate} Review");
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Investment Plan", InvestmentPlanTable, $"Gate {Gate} Review");
+
                 }
                 if (bc != null)
                 {
-                    pageIndex++;                    
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Business Case", BusinessCaseTableSimple, $"Gate {Gate} Review");
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Business Case", BusinessCaseTableSimple, $"Gate {Gate} Review");
 
-                    pageIndex++;
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Project GPA", BusinessCaseTableCost, $"Gate {Gate} Review");
 
-                    pageIndex++;
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Project Expenses", BusinessCaseTableExpenses, $"Gate {Gate} Review");
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Project GPA", BusinessCaseTableCost, $"Gate {Gate} Review");
+
+
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Project Expenses", BusinessCaseTableExpenses, $"Gate {Gate} Review");
                 }
                 if (plr != null)
                 {
-                    pageIndex++;
-                    CreateTableSlide(pptPresentation, slides, pageIndex, "Post Launch Review", PLRTable, $"Gate {Gate} Review");
+                    pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Post Launch Review", PLRTable, $"Gate {Gate} Review"); ;
+
                 }
 
                 string SaveAs = _ExportPath + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".pptx";
