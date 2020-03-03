@@ -20,60 +20,16 @@
                 <div class="detail-component">
                     <div class="wrapper">
                         <div class="details">
-                            <div class="detail">
-                                <div class="label">Manufacturing Locations</div>
-                                <div class="value">@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.ManufacturingLocations.Name).ToList())</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Customer Market Analysis</div>
-                                <div class="value">@Model.CustomerMarketAnalysis</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Changes</div>
-                                <div class="value">@Model.Changes</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Data Starting Year</div>
-                                <div class="value">@Model.FinancialStartYear</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Number of Years</div>
-                                <div class="value">@Model.FinancialData.Count</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Discount Rate (%)</div>
-                                <div class="value">@Model.DiscountRate</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Tax Rate (%)</div>
-                                <div class="value">@Model.TaxRate</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Labor Rate ($/hr)</div>
-                                <div class="value">@Model.LaborRate</div>
-                            </div>
-                            @if (Model.FinancialData.Count > 0) {
-                                <div class="detail">
-                                    <div class="label">NPV</div>
-                                    <div class="value">$ @Model.GetNPV().ToString("N2")</div>
+
+                            @*Quick and dirty solution*@
+                            <div class="actions-component" style="margin-bottom: 12px">
+                                <div class="wrapper" style="padding: 0;">
+                                    <div class="header" style="width: 100%;">
+                                        <h3 class="text-black" style="text-align: left; margin-left: 12px; padding: 0;">Financial Related Data</h3>
+                                    </div>
                                 </div>
-                                <div class="detail">
-                                    <div class="label">ROI</div>
-                                    <div class="value">@(Model.GetROI() == null ? "--" : $"{Model.GetROI()?.ToString("N2")} %")</div>
-                                </div>
-                                <div class="detail">
-                                    <div class="label">Payback Period (Years)</div>
-                                    <div class="value">@(Model.GetPaybackPeriod() == null ? "--" : $"$ {Model.GetPaybackPeriod()?.ToString("N2")}")</div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="detail-component">
-                    <div class="wrapper">
-                        <div class="details">
+                            </div>
+
                             <div class="detail">
                                 <div class="label">Will Customer Fund Qual</div>
                                 <div class="value">@Model.WillCustomerFundQual</div>
@@ -89,7 +45,61 @@
                             <div class="detail">
                                 <div class="label">Target First Year Gross Margin</div>
                                 <div class="value">@Model.TargetFirstYearGrossMargin</div>
+
                             </div>
+                            <div class="detail">
+                                <div class="label">Financials Start Year</div>
+                                <div class="value">@Model.FinancialStartYear</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Discount Rate</div>
+                                <div class="value">@Model.DiscountRate</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Tax Rate</div>
+                                <div class="value">@Model.TaxRate</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Labor Rate</div>
+                                <div class="value">@Model.LaborRate</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">GPA Requirements</div>
+                                <div class="value">@Model.GpaRequirements</div>
+                            </div>
+                            @if (Model.FinancialData.Count > 0)
+                            {
+                                <div class="detail">
+                                    <div class="label">NPV</div>
+                                    <div class="value">$ @Model.GetNPV().ToString("N2")</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="label">ROI</div>
+                                    <div class="value">@(Model.GetROI() == null ? "--" : $"{Model.GetROI()?.ToString("N2")} %")</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="label">Payback Period (Years)</div>
+                                    <div class="value">@(Model.GetPaybackPeriod() == null ? "--" : $"$ {Model.GetPaybackPeriod()?.ToString("N2")}")</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                                </div>
+                            </div>
+            <div class="section">
+                <div class="detail-component">
+                    <div class="wrapper">
+                        <div class="details">
+
+                            @*Quick and dirty solution*@
+                            <div class="actions-component" style="margin-bottom: 12px">
+                                <div class="wrapper" style="padding: 0;">
+                                    <div class="header" style="width: 100%;">
+                                        <h3 class="text-black" style="text-align: left; margin-left: 12px; padding: 0;">Project Related Data</h3>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="detail">
                                 <div class="label">Project Scope</div>
                                 <div class="value">@Model.ProjectScope</div>
@@ -113,6 +123,18 @@
                             <div class="detail">
                                 <div class="label">Time From Project Completion To RevenueGeneration</div>
                                 <div class="value">@Model.TimeFromProjectCompletionToRevenueGeneration</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Manufactoring Locations</div>
+                                <div class="value">@Helpers.GetDelimited(Model.ManufacturingLocations.Select(s => s.ManufacturingLocations.Name).ToList())</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Customer Market Analysis</div>
+                                <div class="value">@Model.CustomerMarketAnalysis</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Changes</div>
+                                <div class="value">@Model.Changes</div>
                             </div>
                         </div>
                     </div>
