@@ -469,7 +469,7 @@ namespace pmo.Services.PowerPoint
 
             try // Try Running all calculations & data tables
             {
-                if (schedules != null)
+                if (schedules != null && schedules.Count > 0)
                 {
                     SchedulesTable = GenerateTableData<Schedule>(schedules);
                 }
@@ -477,7 +477,7 @@ namespace pmo.Services.PowerPoint
                 {
                     ProductInfrigmentPatentabilityTable = GenerateTableData<ProductInfrigmentPatentability>(pip); }
 
-                if (risk != null)
+                if (risk != null && risk.Count > 0)
                 {
                     RiskTable = GenerateTableData<Risk>(risk);
                 }
@@ -518,7 +518,7 @@ namespace pmo.Services.PowerPoint
                 Microsoft.Office.Interop.PowerPoint.Slides slides;
                 slides = pptPresentation.Slides;
                 CreateTitleSlide(pptPresentation, slides, 1, project.Project.Id.ToString(), project.Project.Name,  Gate, user.User.NetworkUsername);
-                if (schedules!=null)
+                if (schedules!=null && schedules.Count > 0)
                 {
                     pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Schedules", SchedulesTable, $"Gate {Gate} Review");
                 }
@@ -527,7 +527,7 @@ namespace pmo.Services.PowerPoint
                     pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Product Infringement Patentability", ProductInfrigmentPatentabilityTable, $"Gate {Gate} Review");
                 }
 
-                if (risk != null)
+                if (risk != null && risk.Count > 0)
                 {
                     pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Risk Analysis", RiskTable, $"Gate {Gate} Review");
 
