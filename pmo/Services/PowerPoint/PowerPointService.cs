@@ -443,7 +443,7 @@ namespace pmo.Services.PowerPoint
             // Create the Presentation File
             Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoFalse);
             pptPresentation.PageSetup.SlideSize = Microsoft.Office.Interop.PowerPoint.PpSlideSizeType.ppSlideSizeOnScreen;
-            pptPresentation.ApplyTheme(_Theme);
+            //pptPresentation.ApplyTheme(_Theme);
             try
             {
 
