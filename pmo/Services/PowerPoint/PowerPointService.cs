@@ -25,16 +25,12 @@ namespace pmo.Services.PowerPoint
         private readonly string _ExportPath;
         private readonly string _whiteSpace = "                                                  ";
         private readonly string _orangeTableStyleGUID = "FABFCF23-3B69-468F-B69F-88F6DE6A72F2";
-        private readonly string _projectRoot = $"{Config.AppSettings["WebRoot"]}";
+
         public PowerPointService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment hostingEnvironment) : base(context, mapper, httpContextAccessor)
         {
             _hostingEnvironment = hostingEnvironment;
-            //_Theme = _hostingEnvironment.WebRootPath + @"\PowerPointAssets\ThemeITT\Theme.thmx";
-            //_ExportPath = _hostingEnvironment.WebRootPath + @"\PowerPointExports\ppt";
-            _ExportPath = _projectRoot + @"PowerPointExports//ppt";
-            _Theme = _projectRoot + @"PowerPointAssets//ThemeITT//Theme.thmx";
-
-
+            _ExportPath = _hostingEnvironment.WebRootPath + @"\PowerPointExports\ppt";
+            _Theme = _hostingEnvironment.WebRootPath + @"\PowerPointAssets\ThemeITT\Theme.thmx";
         }
         /// <summary>
         /// Creates the Title Slide
@@ -533,7 +529,7 @@ namespace pmo.Services.PowerPoint
             // Create the Presentation File
             Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoFalse);
             pptPresentation.PageSetup.SlideSize = Microsoft.Office.Interop.PowerPoint.PpSlideSizeType.ppSlideSizeOnScreen;
-            //pptPresentation.ApplyTheme(_Theme);
+            pptPresentation.ApplyTheme(_Theme);
 
             try
             {

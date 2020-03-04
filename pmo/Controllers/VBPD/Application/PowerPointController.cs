@@ -39,8 +39,14 @@ namespace pmo.Controllers.VBPD.Application
             ViewBag.stageNumber = _stageNumber;
             //ViewBag.currentGate = _currentGate;
 
-            var p = _context.Projects.Where(w => w.Id == _projectId).OrderByDescending(x => x.CreateDate).IncludeAll().FirstOrDefault();
-            var u = _context.Project_User.Where(x => x.ProjectId == _projectId && x.JobDescriptionKey == "program-manager").First();
+            var p = _context.Projects
+                .Include(i => i.ProjectDetails)
+                .First(w => w.Id == _projectId);
+
+            var u = _context.Project_User
+                .Where(x => x.ProjectId == _projectId && x.JobDescriptionKey == "program-manager")
+                .Include(i => i.User)
+                .First();
             List<Schedule> schedules = schedules = _context.Schedules
                 .Include(x => x.Stage)
                 .Where(n => n.Stage.Id == _stageId && n.Stage.ProjectId == _projectId)
