@@ -30,36 +30,6 @@ namespace pmo.Controllers.Application {
                 .Include(x => x.RiskType)
                 .Where(x => x.StageId == _stageId).ToList());
 
-            string color = "";
-
-            List<CanvasJSDataPoint> dataPointsProbability = new List<CanvasJSDataPoint>();
-            List<CanvasJSDataPoint> dataPointsImpact = new List<CanvasJSDataPoint>();
-
-            vm.ForEach(f =>
-            {
-                switch (f.RiskPropability)
-                {
-                    case decimal x when (f.RiskPropability >= 0 && f.RiskPropability <= 25):
-                        color = "#88B04B"; //"#6ead70";
-                        break;
-                    case decimal x when (f.RiskPropability >= 26 && f.RiskPropability <= 50):
-                        color = "#FFD662"; //"#ffe78b";
-                        break;
-                    case decimal x when (f.RiskPropability >= 51 && f.RiskPropability <= 75):
-                        color = "#E08119"; //"#ffa569";
-                        break;
-                    case decimal x when (f.RiskPropability > 75):
-                        color = "#BC243C"; //"#C0504E";
-                        break;
-                }
-
-                dataPointsProbability.Add(new CanvasJSDataPoint(f.Name, f.RiskType.Name, f.RiskPropability, color));
-                dataPointsImpact.Add(new CanvasJSDataPoint(f.Name, f.RiskType.Name, Convert.ToDecimal(f.RiskImpact.Name), "#77212E"));
-            });
-
-            ViewBag.DataPointsProbability = JsonConvert.SerializeObject(dataPointsProbability);
-            ViewBag.DataPointsImpact = JsonConvert.SerializeObject(dataPointsImpact);
-
             return View($"{path}/Index.cshtml", vm);
         }
 

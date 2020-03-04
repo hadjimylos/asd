@@ -1,7 +1,6 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace pmo.Models.Helpers
+namespace ViewModels
 {
     [DataContract]
     public class CanvasJSDataPoint
