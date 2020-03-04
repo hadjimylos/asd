@@ -55,11 +55,13 @@ namespace pmo.Controllers.VBPD.Application
             PostLaunchReview plr = _context.PostLaunchReviews.AsNoTracking().GetLatestVersion(_projectId);
             string GateDescription = _stageNumber == 5?"PLR": _stageNumber.ToString();
             
-            string FilePath = "";   
+            string FilePath = "";
 
-            FilePath = _powerpointService.CreatePowerPointGateReview(GateDescription, 
-                p.ProjectDetails.OrderByDescending(x=>x.CreateDate).FirstOrDefault(), 
+            FilePath = _powerpointService.CreatePowerPointGateReview(GateDescription,
+                p.ProjectDetails.OrderByDescending(x => x.CreateDate).FirstOrDefault(),
                 u, schedules, pip, risk, ip, bc, plr);
+
+            //FilePath = _powerpointService.CreatePowerPointTestData();
 
             if (FilePath!="")
             {
@@ -69,6 +71,7 @@ namespace pmo.Controllers.VBPD.Application
                 var contentType = "APPLICATION/octet-stream";
                 var fileName = $"{p.Name} - Gate {GateDescription} Review.pptx";
                 return File(content, contentType, fileName);
+                
             }
             return BadRequest();
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AutoMapper;
 using dbModels;
@@ -64,6 +65,10 @@ namespace pmo.Services.PowerPoint
             objText = objframe.TextRange;
             objText.Text = $"Review: Gate {GateNumber} {Environment.NewLine}Date: {DateTime.Now.ToString("MM/dd/yyyy")} {Environment.NewLine}Program Manager: {ProgramManager.Replace("global\\", "")}";
             //objframe.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            Marshal.FinalReleaseComObject(slide);
+            Marshal.FinalReleaseComObject(objText);
+            Marshal.FinalReleaseComObject(objframe);
+
 
         }
         /// <summary>
@@ -313,7 +318,7 @@ namespace pmo.Services.PowerPoint
             {
                 throw new ArgumentNullException("Data is null");
             }
-            return new string[1, 1];
+            throw new ArgumentNullException("Data is null");
 
         }
 
@@ -333,41 +338,49 @@ namespace pmo.Services.PowerPoint
             Microsoft.Office.Interop.PowerPoint.TextRange objText;
             Microsoft.Office.Interop.PowerPoint.Shape objShape;
             Microsoft.Office.Interop.PowerPoint.Table objtable;
+            
 
-            //slide.NotesPage.Shapes[2].TextFrame.TextRange.Text = "This demo is created using C# for PMO Project";
-            //slides = pptPresentation.Slides;
-            slide = slides.AddSlide(SlideId, customLayoutContent);
-            AddFooterToSlide(slide, FooterText);
+                //slide.NotesPage.Shapes[2].TextFrame.TextRange.Text = "This demo is created using C# for PMO Project";
+                //slides = pptPresentation.Slides;
+                slide = slides.AddSlide(SlideId, customLayoutContent);
+                AddFooterToSlide(slide, FooterText);
 
-            objText = slide.Shapes[1].TextFrame.TextRange;
-            objText.Text = Title;
+                objText = slide.Shapes[1].TextFrame.TextRange;
+                objText.Text = Title;
 
-            int Rows = DataTable.GetLength(0);
-            int Columns = DataTable.GetLength(1);
-            objShape = slide.Shapes.AddTable(Rows, Columns);
-            objtable = objShape.Table;
-            objtable.ApplyStyle(_orangeTableStyleGUID, true);
+                int Rows = DataTable.GetLength(0);
+                int Columns = DataTable.GetLength(1);
+                objShape = slide.Shapes.AddTable(Rows, Columns);
+                objtable = objShape.Table;
+                objtable.ApplyStyle(_orangeTableStyleGUID, true);
 
 
-            for (int i = 1; i <= Rows; i++)
-            {
-                for (int j = 1; j <= Columns; j++)
+                for (int i = 1; i <= Rows; i++)
                 {
-                    //objtable.Cell(i, j).Shape.Fill.Solid(.SolidFill.BackColor.RGB = 0xffffff;
-                    objtable.Cell(i, j).Shape.TextFrame.TextRange.Font.Size = 12;
-                    // objtable.Cell(i, j).Shape.Line.Style.BackColor.RGB = 0xFF3300;
-                    objtable.Cell(i, j).Shape.TextFrame.TextRange.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
-                    objtable.Cell(i, j).Shape.TextFrame.VerticalAnchor = MsoVerticalAnchor.msoAnchorMiddle;
-                    objtable.Cell(i, j).Shape.TextFrame.TextRange.Text = DataTable[i - 1, j - 1];//string.Format("[{0},{1}]", i, j);
+                    for (int j = 1; j <= Columns; j++)
+                    {
+                        //objtable.Cell(i, j).Shape.Fill.Solid(.SolidFill.BackColor.RGB = 0xffffff;
+                        objtable.Cell(i, j).Shape.TextFrame.TextRange.Font.Size = 12;
+                        // objtable.Cell(i, j).Shape.Line.Style.BackColor.RGB = 0xFF3300;
+                        objtable.Cell(i, j).Shape.TextFrame.TextRange.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
+                        objtable.Cell(i, j).Shape.TextFrame.VerticalAnchor = MsoVerticalAnchor.msoAnchorMiddle;
+                        objtable.Cell(i, j).Shape.TextFrame.TextRange.Text = DataTable[i - 1, j - 1];//string.Format("[{0},{1}]", i, j);
+                    }
+
                 }
 
-            }
+                /*
+                 * table.Cell(i, j).Borders[Microsoft.Office.Interop.PowerPoint.PpBorderType.ppBorderLeft].DashStyle = MsoLineDashStyle.msoLineLongDashDot;
+                 * table.Cell(i, j).Borders[Microsoft.Office.Interop.PowerPoint.PpBorderType.ppBorderLeft].ForeColor.RGB = 0xff00ff;
+                 * table.Cell(i, j).Borders[Microsoft.Office.Interop.PowerPoint.PpBorderType.ppBorderLeft].Weight = 1.0f;
+                 */
+           
+                Marshal.FinalReleaseComObject(slide);
+            Marshal.FinalReleaseComObject(objText);
+            Marshal.FinalReleaseComObject(objShape);
+            Marshal.FinalReleaseComObject(objtable);
 
-            /*
-             * table.Cell(i, j).Borders[Microsoft.Office.Interop.PowerPoint.PpBorderType.ppBorderLeft].DashStyle = MsoLineDashStyle.msoLineLongDashDot;
-             * table.Cell(i, j).Borders[Microsoft.Office.Interop.PowerPoint.PpBorderType.ppBorderLeft].ForeColor.RGB = 0xff00ff;
-             * table.Cell(i, j).Borders[Microsoft.Office.Interop.PowerPoint.PpBorderType.ppBorderLeft].Weight = 1.0f;
-             */
+
 
         }
 
@@ -428,7 +441,7 @@ namespace pmo.Services.PowerPoint
 
             Microsoft.Office.Interop.PowerPoint.Application pptApplication = new Microsoft.Office.Interop.PowerPoint.Application();
             // Create the Presentation File
-            Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoTrue);
+            Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoFalse);
             pptPresentation.PageSetup.SlideSize = Microsoft.Office.Interop.PowerPoint.PpSlideSizeType.ppSlideSizeOnScreen;
             pptPresentation.ApplyTheme(_Theme);
             try
@@ -452,6 +465,13 @@ namespace pmo.Services.PowerPoint
             {
                 pptPresentation.Close();
                 pptApplication.Quit();
+                Marshal.FinalReleaseComObject(pptPresentation);
+                Marshal.FinalReleaseComObject(pptApplication);
+                //if (Marshal.AreComObjectsAvailableForCleanup())
+                //{
+                //    Marshal.CleanupUnusedObjectsInCurrentContext();
+                //}
+                Marshal.CleanupUnusedObjectsInCurrentContext();
             }
         }
 
@@ -501,19 +521,17 @@ namespace pmo.Services.PowerPoint
             }
             catch (Exception ex)
             {
-
                 throw;
             }
 
             Microsoft.Office.Interop.PowerPoint.Application pptApplication = new Microsoft.Office.Interop.PowerPoint.Application();
             // Create the Presentation File
-            Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoTrue);
+            Presentation pptPresentation = pptApplication.Presentations.Add(MsoTriState.msoFalse);
             pptPresentation.PageSetup.SlideSize = Microsoft.Office.Interop.PowerPoint.PpSlideSizeType.ppSlideSizeOnScreen;
             pptPresentation.ApplyTheme(_Theme);
 
             try
             {
-
                 int pageIndex = 1;
                 Microsoft.Office.Interop.PowerPoint.Slides slides;
                 slides = pptPresentation.Slides;
@@ -530,7 +548,6 @@ namespace pmo.Services.PowerPoint
                 if (risk != null && risk.Count > 0)
                 {
                     pageIndex = CreateTableSlides(pptPresentation, slides, pageIndex, "Risk Analysis", RiskTable, $"Gate {Gate} Review");
-
                 }
 
                 if (ip != null)
@@ -567,10 +584,26 @@ namespace pmo.Services.PowerPoint
             {
                 pptPresentation.Close();
                 pptApplication.Quit();
+                Marshal.FinalReleaseComObject(pptPresentation);
+                Marshal.FinalReleaseComObject(pptApplication);
+                Marshal.FinalReleaseComObject(pptPresentation);
+                Marshal.FinalReleaseComObject(pptApplication);
+                //if (Marshal.AreComObjectsAvailableForCleanup())
+                //{
+                //    Marshal.CleanupUnusedObjectsInCurrentContext();
+                //}
+                Marshal.CleanupUnusedObjectsInCurrentContext();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
             }
         }
 
+
     }
+
 
 
 
