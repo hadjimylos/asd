@@ -3,7 +3,6 @@ using dbModels;
 using forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using pmo.Services.SharePoint;
@@ -25,7 +24,7 @@ namespace pmo.Controllers {
 
         [Route("edit")]
         public IActionResult Edit() {
-            StageFileForm model = new StageFileForm();
+            List<FileForm> model = new List<FileForm>();
 
             var uploadedFiles = _context.StageFiles.Where(
                 w =>
@@ -41,16 +40,13 @@ namespace pmo.Controllers {
                     !uploadedFiles.Contains(w.RequiredFileTagId)
             ).ToList();
 
-            model.FileUploadDropdown = new List<SelectListItem>();
-            requiredFiles.ForEach(requiredFile =>
-            {
-                var option = new SelectListItem
-                {
-                    Value = requiredFile.RequiredFile.Id.ToString(),
-                    Text = requiredFile.RequiredFile.Name,
-                    
-                };
-                model.FileUploadDropdown.Add(option);
+
+            requiredFiles.ForEach(requiredFile => {
+                model.Add(
+                    new FileForm {
+                        TagDescription = requiredFile.RequiredFile.Name,
+                        TagId = requiredFile.RequiredFileTagId,
+                    });
             });
 
             // list of uploaded files
@@ -67,49 +63,21 @@ namespace pmo.Controllers {
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public IActionResult Edit(StageFileForm files)
-        {
-             if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState;
-                  var uploadedFiles = _context.StageFiles.Where(w => w.StageId == _stageId).Select(s => s.FileTagId).ToList();
-                  var requiredFiles = _context.StageFileConfigs.IncludeAll().Where(w =>w.StageConfigId == _stageConfigId &&!uploadedFiles.Contains(w.RequiredFileTagId)).ToList();
-                  files.FileUploadDropdown = new List<SelectListItem>();
-                    requiredFiles.ForEach(requiredFile =>
-                    {
-                            var option = new SelectListItem
-                            {
-                                Value = requiredFile.RequiredFile.Id.ToString(),
-                                Text = requiredFile.RequiredFile.Name,
-
-                            };
-                            files.FileUploadDropdown.Add(option);
-                            ViewBag.Uploaded = _context.StageFiles
-                           .IncludeAll()
-                           .Where(
-                               w =>
-                                   w.StageId == _stageId
-                           ).ToList();
-                    });
-                    return View($"{path}/Edit.cshtml", files);
-            }
-
-            var saveFiles = files.stageFiles.Where(w => w.FileName != null).ToList();
+        public IActionResult Edit(List<FileForm> files) {
+            var saveFiles = files.Where(w => w.File != null).ToList();
             var projectName = _context.Projects.Find(_projectId).Name;
 
-            saveFiles.ForEach(f =>
-            {
-                var upload = _SharePointService.Upload(f, projectName);
+            saveFiles.ForEach(f => {
+                var upload = _SharePointService.Upload(f.File, projectName);
                 var result = JObject.Parse(upload.Result);
                 string relative = result["d"]["ServerRelativeUrl"].ToString();
                 string name = result["d"]["Name"].ToString();
                 string savePath = $"{Config.AppSettings["Sharepoint:SPFarm"]}{relative}";
-                _context.StageFiles.Add(new StageFile
-                {
+                _context.StageFiles.Add(new StageFile {
                     Url = savePath,
-                    Description = files.Description,
+                    Description = f.Description,
                     StageId = _stageId,
-                    FileTagId = files.TagId,
+                    FileTagId = f.TagId,
                 });
             });
 

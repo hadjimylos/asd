@@ -24,8 +24,8 @@ namespace pmo.Controllers {
 
         [Route("edit")]
         public IActionResult Edit() {
-            List<GateFileForm> model = new List<GateFileForm>();
-            model.Add(new GateFileForm {
+            List<FileForm> model = new List<FileForm>();
+            model.Add(new FileForm {
                 TagDescription = "Upload any pertinent documentation"
             });
 
@@ -44,7 +44,7 @@ namespace pmo.Controllers {
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public IActionResult Edit(List<GateFileForm> files) {
+        public IActionResult Edit(List<FileForm> files) {
             var saveFiles = files.Where(w => w.File != null).ToList();
             var projectName = _context.Projects.Find(_projectId).Name;
 
