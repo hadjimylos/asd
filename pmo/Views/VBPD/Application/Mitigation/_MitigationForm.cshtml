@@ -1,0 +1,36 @@
+﻿@model forms.MitigationForm
+
+<form class="form-component" method="post">
+    <input asp-for="Id" type="hidden" />
+    <input asp-for="RiskId" type="hidden" />
+
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            <div class="field">
+                <div class="label">Target Date</div>
+                <input asp-for="TargetDate" class="data" type="date" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "TargetDate")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Responsibility</div>
+                <input asp-for="Responsibility" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Responsibility")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Mitigation Plan</div>
+                <textarea asp-for="MitigationPlan"></textarea>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "MitigationPlan")
+                </ul>
+            </div>
+            <div class="field">
+                <button type="submit" class="data btn green"><i class="fas fa-save"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,16 @@
+﻿@model forms.MitigationForm
+
+@{
+    ViewData["Title"] = "Edit Mitigation";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("/Views/VBPD/Application/Mitigation/_MitigationForm.cshtml", Model)

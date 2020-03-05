@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
@@ -9,10 +10,13 @@ namespace dbModels {
         
         public virtual Risk Risk { get; set; }
         
+        [Required]
         public string MitigationPlan { get; set; }
-        
+
+        [Required]
         public string Responsibility { get; set; }
-        
+
+        [Required]
         public DateTime TargetDate { get; set; }
     }
 }
