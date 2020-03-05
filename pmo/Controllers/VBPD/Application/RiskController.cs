@@ -23,12 +23,12 @@ namespace pmo.Controllers.Application {
 
         [Route("")]
         public IActionResult Index() {
-            var vm = _mapper.Map<List<forms.RiskForm>>(
-                _context.Risks
+            var vm = _context.Risks
                 .Include(x => x.Stage)
                 .Include(x => x.RiskImpact)
                 .Include(x => x.RiskType)
-                .Where(x => x.StageId == _stageId).ToList());
+                .Include(i => i.Mitigations)
+                .Where(x => x.StageId == _stageId).ToList();
 
             return View($"{path}/Index.cshtml", vm);
         }
