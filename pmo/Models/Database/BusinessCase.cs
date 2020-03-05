@@ -23,8 +23,6 @@ namespace dbModels {
 
         public string GpaRequirements { get; set; }
 
-        public decimal MultipleFieldsGeneratedTable { get; set; }
-
         public string ProjectScope { get; set; }
 
         public decimal WorkRequirementAmount { get; set; }

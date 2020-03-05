@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200303115320_AddDataForOldDBMigration")]
+    partial class AddDataForOldDBMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,6 +57,9 @@ namespace pmo.Migrations
 
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("MultipleFieldsGeneratedTable")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ProbabiltyOfWin")
                         .HasColumnType("decimal(18,2)");
@@ -642,14 +647,12 @@ namespace pmo.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MitigationPlan")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Responsibility")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RiskId")
@@ -839,6 +842,10 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("EndUseDestinationCountry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EngineeringChecklistUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

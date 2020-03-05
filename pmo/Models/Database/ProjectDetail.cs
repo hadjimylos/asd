@@ -9,8 +9,6 @@ namespace dbModels {
         [Required]
         public string Salesforce { get; set; }
         [Required]
-        public string EngineeringChecklistUrl { get; set; }
-        [Required]
         public int ProjectCategoryTagId { get; set; }
         [Required]
         public int ProductLineTagId { get; set; }

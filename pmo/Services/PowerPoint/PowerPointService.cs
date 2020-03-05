@@ -116,7 +116,7 @@ namespace pmo.Services.PowerPoint
                 {
                      case BusinessCaseTableType.Simple:
                         BusinessCase bc = TableData as BusinessCase;
-                        string[,] Data = new string[22, 2]{{ "Description", "Value"},
+                        string[,] Data = new string[21, 2]{{ "Description", "Value"},
                             { "Will Customer Fund Qual?", bc.WillCustomerFundQual?"Yes":"No"},
                             { "Will Customer Fund Tooling?", bc.WillCustomerFundTooling?"Yes":"No"},
                             { "Probabilty Of Win", bc.ProbabiltyOfWin.ToString()+"%"},
@@ -126,7 +126,6 @@ namespace pmo.Services.PowerPoint
                             { "TaxRate", bc.TaxRate.ToString()},
                             { "Labor Rate", bc.LaborRate.ToString()},
                             { "Gpa Requirements", bc.GpaRequirements},
-                            { "Multiple Fields Generated Table", bc.MultipleFieldsGeneratedTable.ToString()},
                             { "Project Scope", bc.ProjectScope},
                             { "Work Requirement Amount", bc.WorkRequirementAmount.ToString()},
                             { "Strategic Alignment", bc.StrategicAlignment.ToString()},

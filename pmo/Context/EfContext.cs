@@ -1021,6 +1021,11 @@ namespace pmo
                     new Tag { Id = 764, Name = "Customer Design Approval - Upload any pertinent documentation", TagCategoryId = 15 },
                     new Tag { Id = 765, Name = "Ramp and Resource Plan - Field Name?", TagCategoryId = 15 },
                     new Tag { Id = 766, Name = "Qualification Testing - Field Name?", TagCategoryId = 15 },
+
+                    new Tag { Id = 767,  Name = "Customer Specific", TagCategoryId = 5 },
+                    new Tag { Id =  768  , Name ="Santa Ana", TagCategoryId =  13},
+
+
             });
             #endregion
             #region  Gate Seed Data
