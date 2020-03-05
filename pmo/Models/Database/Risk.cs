@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace dbModels {
     public class Risk: DatabaseModel
@@ -21,5 +22,7 @@ namespace dbModels {
 
         [ForeignKey("StageId")]
         public virtual Stage Stage { get; set; }
+
+        public virtual List<Mitigation> Mitigations { get; set; }
     }
 }
