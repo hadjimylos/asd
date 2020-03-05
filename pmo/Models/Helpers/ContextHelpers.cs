@@ -88,6 +88,34 @@ namespace ViewModels.Helpers
             context.SaveChanges();
         }
 
+        public static void PrepForUpdate<T1, T2>(this T1 copyTo, T2 copyFrom)
+            where T1 : class
+            where T2 : class {
+            
+            var typeFrom = typeof(T2);
+            var typeTo = typeof(T1);
+
+            if (typeFrom != typeTo)
+                throw new Exception("You may not use CopyToTrackedMemory on two objects that are different");
+
+            var fromProps = typeFrom.GetProperties().OrderBy(o => o.Name).ToList();
+            var toProps = typeTo.GetProperties().OrderBy(o => o.Name).ToList();
+
+            fromProps.ForEach(from => {
+                var to = toProps.First(f => f.Name == from.Name);
+                var fromValue = from.GetValue(copyFrom);
+                var toValue = to.GetValue(copyTo);
+
+                var isNotNullObject =
+                    Type.GetTypeCode(fromValue?.GetType()) == TypeCode.Object ||
+                    Type.GetTypeCode(toValue?.GetType()) == TypeCode.Object;
+
+                // don't override if not null object (entity framework will crash if overwriting object with null on save)
+                if(!isNotNullObject && to.Name.ToLower() != "id")
+                    to.SetValue(copyTo, fromValue);
+            });
+        }
+
         public static T GetLatestVersion<T>(this IQueryable<T> queryable, int projectId) where T : StageHistoryModel {
             return  queryable
                  .Include(p => p.Stage)
