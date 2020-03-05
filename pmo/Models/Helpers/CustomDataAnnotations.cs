@@ -26,15 +26,22 @@
     }
 
     public class MinValue : ValidationAttribute {
-        private readonly long _minValue;
+        private readonly long? _minValue;
+        private readonly DateTime? _minDate;
 
         public MinValue(long minValue) {
             _minValue = minValue - 1;
         }
 
+        public MinValue(string minValue) {
+            var val = DateTime.Parse(minValue);
+            _minDate = val.AddDays(-1);
+        }
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
             var success = ValidationResult.Success;
-            string error = this.ErrorMessage ?? $"Please insert a value greater than {_minValue}.";
+            var errorType = _minValue?.ToString() ?? _minDate?.ToString("MM/dd/yyyy");
+            string error = this.ErrorMessage ?? $"Please insert a value greater than {errorType}.";
             var fail = new ValidationResult(error);
 
             return Type.GetTypeCode(value.GetType()) switch {
@@ -44,6 +51,7 @@
                 TypeCode.Decimal => (decimal)value > _minValue ? success : fail,
                 TypeCode.UInt16 => (ushort)value > _minValue ? success : fail,
                 TypeCode.UInt32 => (uint)value > _minValue ? success : fail,
+                TypeCode.DateTime => (DateTime)value > _minDate ? success : fail,
                 _ => fail, // unsupported type
             };
         }
