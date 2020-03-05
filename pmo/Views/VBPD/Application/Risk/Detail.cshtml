@@ -1,16 +1,14 @@
 ﻿@model List<dbModels.Risk>
 @{
-    ViewData["Title"] = "List Risks";
+    ViewData["Title"] = "Risk Detail";
     Layout = "_VbpdProjectDetailLayout";
+
 }
 
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
             <h1><i class="fas fa-list-alt"></i> @ViewData["Title"]</h1>
-        </div>
-        <div class="actions">
-            <a class="btn" href="risk/create"><i class="fas fa-plus"></i> Create new Risk</a>
         </div>
     </div>
 </div>
@@ -23,19 +21,15 @@
                 <div>Risk Probability (%)</div>
                 <div>Risk Impact</div>
                 <div>Risk Type</div>
-                <div><!-- placeholder edit --></div>
-                <div><!-- placeholder create mitigation --></div>
             </div>
             <div class="items">
                 @foreach (var risk in Model) {
                     <div class="item">
-                        <div class="item-wrapper">
+                        <div class="item-wrapper bold-text">
                             <div>@risk.Name</div>
                             <div>@risk.RiskPropability %</div>
                             <div>@risk.RiskImpact.Name</div>
                             <div>@risk.RiskType.Name</div>
-                            <a href="risk/@risk.Id"><i class='icon fas fa-edit'></i> Edit Risk</a>
-                            <a href="risk/@risk.Id/mitigations/create"><i class='icon fas fa-plus'></i> Add Mitigation</a>
                         </div>
                         @if (risk.Mitigations.Count > 0) {
                             <div class="sub-list">
@@ -44,24 +38,15 @@
                                         <div>Target Date</div>
                                         <div>Responsibility</div>
                                         <div>Mitigation Plan</div>
-                                        <div><!-- placeholder edit --></div>
-                                        <div><!-- placeholder delete --></div>
                                     </div>
 
                                     <div class="sub-items">
                                         @foreach (var mitigation in risk.Mitigations) {
-                                            var previewPlan = mitigation.MitigationPlan.Length <= 20 ? mitigation.MitigationPlan : mitigation.MitigationPlan.Substring(0, 20);
-
                                             <div class="sub-item">
                                                 <div class="sub-item-wrapper">
                                                     <div>@mitigation.TargetDate.ToString("MM/dd/yyyy")</div>
                                                     <div>@mitigation.Responsibility</div>
-                                                    <div>@previewPlan <a href="risk/@risk.Id/mitigations/@mitigation.Id">...</a></div>
-                                                    <a href="risk/@risk.Id/mitigations/@mitigation.Id"><i class='icon fas fa-edit'></i> Edit Mitigation</a>
-                                                    <form method="post" action="risk/@risk.Id/mitigations/@mitigation.Id/delete">
-                                                        @Html.AntiForgeryToken()
-                                                        <button type="submit" class="btn red"><i class="fas fa-trash-alt"></i> Delete</button>
-                                                    </form>
+                                                    <div>@mitigation.MitigationPlan</div>
                                                 </div>
                                             </div>
                                         }

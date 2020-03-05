@@ -16,7 +16,7 @@ namespace pmo.Controllers.Application {
     public class RiskController : BaseStageComponentController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Risk";
-        
+
         public RiskController(EfContext context, IMapper mapper, IListService listService, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             _listService = listService;
         }
@@ -33,6 +33,16 @@ namespace pmo.Controllers.Application {
             return View($"{path}/Index.cshtml", vm);
         }
 
+        [Route("detail")]
+        public IActionResult Detail() {
+            var risk = _context.Risks
+                .Where(w => w.StageId == _stageId)
+                .IncludeAll()
+                .ToList();
+
+            return View($"{path}/Detail.cshtml", risk);
+
+        }
 
         [Route("create")]
         public IActionResult Create() {
@@ -82,23 +92,20 @@ namespace pmo.Controllers.Application {
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(forms.RiskForm model) {
+        public IActionResult Edit(forms.RiskForm model, int id) {
             if (!ModelState.IsValid) {
                 model.RiskTypeList = _listService.Tags_SelectList(TagCategoryHelper.RiskType);
                 model.RiskImpactList = _listService.Tags_SelectList(TagCategoryHelper.RiskImpact);
                 ViewBag.Errors = ModelState;
                 return View($"{path}/Edit.cshtml", model);
             }
-            var domainModel = _mapper.Map<Risk>(model);
 
-            var riskRecord = _context.Risks.First(r => r.Id == domainModel.Id);
-            riskRecord.Name = domainModel.Name;
-            riskRecord.RiskPropability = domainModel.RiskPropability;
-            riskRecord.RiskImpactTagId = domainModel.RiskImpactTagId;
-            riskRecord.RiskTypeTagId = domainModel.RiskTypeTagId;
-            riskRecord.StageId = _stageId;
+            var notTracked = _mapper.Map<Risk>(model);
+            notTracked.StageId = _stageId;
+            var tracked = _context.Risks.Find(id);
+            tracked.PrepForUpdate(notTracked);
 
-            _context.Risks.Update(riskRecord);
+            _context.Risks.Update(tracked);
             _context.SaveChanges();
 
             return RedirectToAction("Index");

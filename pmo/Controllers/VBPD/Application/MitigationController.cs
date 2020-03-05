@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using pmo.Services.Lists;
+    using ViewModels.Helpers;
 
     [Route("vbpd-projects/{projectId}/stages/{stageNumber}/risk/{riskId}/mitigations")]
     public class MitigationController : BaseStageComponentController {
@@ -40,8 +41,8 @@
         }
 
         [Route("{id}")]
-        public IActionResult Edit() {
-            var dbMitigation = _context.Mitigations.First(f => f.RiskId == this._riskId);
+        public IActionResult Edit(int id) {
+            var dbMitigation = _context.Mitigations.First(f => f.Id == id);
             var model = _mapper.Map<MitigationForm>(dbMitigation);
             return View($"{path}/Edit.cshtml", model);
         }
@@ -49,14 +50,17 @@
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Route("{id}")]
-        public IActionResult Edit(MitigationForm form) {
+        public IActionResult Edit(MitigationForm form, int id) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
                 return View($"{path}/Edit.cshtml", form);
             }
 
-            var newForm = _mapper.Map<Mitigation>(form);
-            _context.Mitigations.Update(newForm);
+            var notTracked = _mapper.Map<Mitigation>(form);
+            var tracked = _context.Mitigations.Find(id);
+            tracked.PrepForUpdate(notTracked);
+
+            _context.Mitigations.Update(tracked);
             _context.SaveChanges();
             return RedirectToAction("Index", "Risk", new { projectId = _projectId, stageNumber = _stageNumber });
         }
