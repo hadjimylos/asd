@@ -52,6 +52,9 @@ namespace pmo
         public DbSet<FinancialData> FinancialData { get; set; }
         public DbSet<PostLaunchReview> PostLaunchReviews { get; set; }
         public DbSet<GateFile> GateFiles { get; set; }
+        public DbSet<LiteStageConfig> LiteStageConfigs { get; set; }
+        public DbSet<LiteRequiredSchedule> LiteRequiredSchedules { get; set; }
+        public DbSet<LiteStageFileConfig> LiteStageFileConfigs { get; set; }
 
 
         public EfContext(DbContextOptions<EfContext> options)
