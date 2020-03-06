@@ -87,12 +87,7 @@ namespace pmo.Controllers {
             return _context.ProjectDetails
                 .IncludeAll()
                 .Include(i => i.Project)
-                    .ThenInclude(i => i.ProjectStateHistory)
-                .Include(i => i.Project)
-                    .ThenInclude(i => i.TeamMembers).Where(
-                    w =>
-                        w.Project.TeamMembers.Select(s => s.UserId).Contains(myId)
-               );
+                    .ThenInclude(i => i.ProjectStateHistory);
         }
 
         private List<ProjectDetail> GetProjectDetails(ProjectState state) {
