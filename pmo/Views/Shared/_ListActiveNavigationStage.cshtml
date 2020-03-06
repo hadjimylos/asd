@@ -83,7 +83,6 @@
                 @foreach (var nav in activeGateNavs.Where(w => w.Visible).ToList()) {
                     var activeClass = nav.IsComplete == null ? string.Empty : (bool)nav.IsComplete ? "completed" : "pending";
                     var iconClass = nav.IsComplete == null ? string.Empty : (bool)nav.IsComplete ? "icon fas fa-check-circle" : "icon fas fa-exclamation-circle";
-                    var version = nav.Version == null ? string.Empty : $"V{nav.Version}";
                     var isActiveClass = Context.Request.Path.Value.ToLower() == nav.Url.ToLower() ? "active" : string.Empty;
 
                     <div class="nav @activeClass @isActiveClass">
@@ -92,7 +91,6 @@
                                 <i class="@iconClass"></i>
                                 <div class="descrip">@nav.Component</div>
                             </div>
-                            <div class="version">@version</div>
                         </a>
                     </div>
                 }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace dto {
+    using System.Collections.Generic;
 
-namespace dto {
     public class ActiveNav {
         public ActiveNav() {
             this.ChildNavs = new List<ActiveNav>();
@@ -10,7 +10,6 @@ namespace dto {
         public bool? IsComplete { get; set; }
         public string Url { get; set; }
         public string Component { get; set; }
-        public int? Version { get; set; }
         public bool Visible { get; set; }
     }
 }
