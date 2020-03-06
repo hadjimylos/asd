@@ -20,11 +20,8 @@ namespace dbModels {
 
         public int MinProductIntroChecklist { get; set; }
 
-        public int MinRampResourcePlans { get; set; }
 
-        public int MinQualificationTesting { get; set; }
 
-        public int MinDesignConcepts { get; set; }
 
         public int MinPostLaunchReviews { get; set; }
 
