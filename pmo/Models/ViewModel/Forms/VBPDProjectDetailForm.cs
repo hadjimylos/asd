@@ -19,7 +19,21 @@ namespace forms {
         public new string EngineeringChecklistUrl { get; set; }
         
         [Required(ErrorMessage = ErrorMessages.Required)]
-        public new string ProjectProcessType { set; get; }
+        public new string ProjectProcessType
+        {
+            get
+            {
+                if (this.ProjectCategoryTagId == 220)
+                {
+                    return "VBPD";
+                }
+                else
+                {
+                    return "VBPD -Lite";
+                }
+            }
+            set { ProjectProcessType = value; }
+        }
         
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ExportControlCode { set; get; }

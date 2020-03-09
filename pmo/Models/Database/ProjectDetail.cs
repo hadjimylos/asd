@@ -22,10 +22,10 @@ namespace dbModels {
         public string ProjectProcessType { set; get; }
         [Required]
         public string ExportControlCode { set; get; }
+
+       // public string ExportRestrictedUsers { set; get; }
         [Required]
         public string EndUseDestinationCountry { set; get; }
-
-
         [ForeignKey("ProjectId")]
         public virtual Project Project { get; set; }
         [ForeignKey("ProductLineTagId")]
@@ -38,8 +38,6 @@ namespace dbModels {
         public virtual Tag DesignAuthority { get; set; }
         [ForeignKey("ExportApplicationTypeTagId")]
         public virtual Tag ExportApplicationType { get; set; }
-
-
         public virtual List<ProjectDetail_Customer> Customers { get; set; }
         public virtual List<ProjectDetail_SalesRegion> SalesRegions { get; set; }
         public virtual List<ProjectDetail_EndUserCountry> EndUseCountries { get; set; }
