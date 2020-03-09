@@ -73,7 +73,7 @@ namespace pmo {
             services.AddTransient<IProjectService, ProjectService>();
             services.AddScoped<ISharePointService, SharePointService>();
             services.AddScoped<IPowerPointService, PowerPointService>();
-
+            services.AddControllers().AddNewtonsoftJson();
 
 
             services.AddMvc(options => {
