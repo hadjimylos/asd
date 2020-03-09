@@ -5,16 +5,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace bModels.Report
+namespace dbModels.Report
 {
     public class Report_Project: Report_DatabaseModel
     {
         [Required]
         public int ProjectId { get; set; }
         [Required]
-        public int CurrentStageNumber { set; get; }
-        [Required]
         public string Name { get; set; }
+        [Required]
+        public int CurrentStageNumber { set; get; }
         [Required]
         public string Salesforce { get; set; }
         [Required]
@@ -45,12 +45,11 @@ namespace bModels.Report
         [ForeignKey("ExportApplicationTypeTagId")]
         public virtual Tag ExportApplicationType { get; set; }
 
-
         [ForeignKey("ProjectId")]
         public virtual Project Project { get; set; }
 
         public virtual List<Report_ProjectCustomers> Report_Customers { get; set; }
         public virtual List<Report_ProjectSalesRegion> Report_SalesRegions { get; set; }
-        public virtual List<Report_ProjectSalesRegion> Report_EndUseCountries { get; set; }
+        public virtual List<Report_ProjectEndUserCountries> Report_EndUseCountries { get; set; }
     }
 }

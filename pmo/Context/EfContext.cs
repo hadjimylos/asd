@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System;
+using dbModels.Report;
 
 namespace pmo
 {
@@ -57,6 +58,13 @@ namespace pmo
         public DbSet<LiteGateKeeperConfig> LiteGateKeeperConfigs { get; set; }
         public DbSet<GateKeeperLite> GateKeeperLites { get; set; }
         public DbSet<OptionalFile> OptionalFiles { get; set; }
+        public DbSet<Report_Project> Report_Project { get; set; }
+        public DbSet<Report_ProjectCustomers> Report_ProjectCustomers { get; set; }
+        public DbSet<Report_ProjectEndUserCountries> Report_ProjectEndUserCountries { get; set; }
+        public DbSet<Report_ProjectSalesRegion> Report_ProjectSalesRegion { get; set; }
+        public DbSet<Report_BusinessCase> Report_BusinessCase { get; set; }
+        public DbSet<Report_BusinessCase_ManufacturingLocations> Report_BusinessCase_ManufacturingLocations { get; set; }
+        public DbSet<Report_FinancialData> Report_FinancialData { get; set; }
 
         public EfContext(DbContextOptions<EfContext> options)
             : base(options)

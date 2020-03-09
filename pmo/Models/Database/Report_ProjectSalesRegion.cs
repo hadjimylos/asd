@@ -1,5 +1,4 @@
-﻿using bModels.Report;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels.Report
 {

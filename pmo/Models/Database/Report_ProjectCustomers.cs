@@ -1,9 +1,4 @@
-﻿using bModels.Report;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels.Report
 {
@@ -18,5 +13,6 @@ namespace dbModels.Report
 
         [ForeignKey("ProjectId")]
         public virtual Report_Project Report_Project { get; set; }
+
     }
 }
