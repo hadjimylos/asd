@@ -1169,6 +1169,24 @@ namespace pmo
                  new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=14, Id=14, ModifiedByUser="system"},
                  new StageConfig_RequiredSchedule(){ StageConfigId=3, RequiredScheduleTagId=15, Id=15, ModifiedByUser="system"},
                 });
+
+            builder.Entity<LiteRequiredSchedule>().HasData(new List<LiteRequiredSchedule>() {
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=1, Id=1, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=2, Id=2, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=3, Id=3, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=4, Id=4, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=5, Id=5, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=6, Id=6, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=7, Id=7, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=8, Id=8, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=9, Id=9, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=10, Id=10, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=11, Id=11, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=12, Id=12, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=13, Id=13, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=14, Id=14, ModifiedByUser="system"},
+                 new LiteRequiredSchedule(){ StageConfigId=2, RequiredScheduleTagId=15, Id=15, ModifiedByUser="system"},
+            });
         }
     }
 }
