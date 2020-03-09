@@ -153,7 +153,7 @@
 
 
         private List<ActiveNav> GetActiveGateNavs (Gate activeGate) {
-            var stageNumber = activeGate.GateConfig.GateNumber;
+            var stageNumber = activeGate.StageConfig.StageNumber;
 
             // single edit page for time being
             return new List<ActiveNav>() {

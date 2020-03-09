@@ -45,7 +45,6 @@ namespace pmo.Controllers {
             }
 
             var domainModel = _mapper.Map<StageConfig>(model);
-            _context.GateConfigs.Add(new GateConfig { GateNumber = model.StageNumber });
             _context.StageConfigs.Add(domainModel);
             _context.SaveChanges();
 
@@ -54,17 +53,15 @@ namespace pmo.Controllers {
 
         [Route("{id}")]
         public IActionResult Edit(int id) {
-            var config = _context.StageConfigs.Find(id);
+            var config = _context.StageConfigs
+                .Include(i => i.GateKeeperConfigs).First(f => f.Id == id);
 
             if (config == null)
                 return NotFound();
 
             var vm = _mapper.Map<StageConfigForm>(config);
             vm.isCreate = false;
-            vm.GateKeepers = _context.GateConfigs
-                .Include(i => i.GateKeeperConfigs)
-                .First(w => w.GateNumber == config.StageNumber)
-                .GateKeeperConfigs
+            vm.GateKeepers = config.GateKeeperConfigs
                 .Select(s => s.Keeper)
                 .ToList();
 
@@ -129,8 +126,8 @@ namespace pmo.Controllers {
         public IActionResult NewGateKeeper(string keeper, int gateNumber, int stageId) {
             _context.GateKeeperConfigs.Add(new GateKeeperConfig {
                 Keeper = keeper,
-                GateConfigId = _context.GateConfigs
-                    .First(f => f.GateNumber == gateNumber)
+                StageConfigId = _context.StageConfigs
+                    .First(f => f.StageNumber == gateNumber)
                     .Id,
             });
             _context.SaveChanges();

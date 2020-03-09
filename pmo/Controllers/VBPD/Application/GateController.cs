@@ -7,8 +7,6 @@
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Linq;
-    using System.Threading.Tasks;
-    using ViewModels;
 
     [Route("vbpd-projects/{projectId}/gates")]
     public class GateController : BaseProjectDetailController {
@@ -16,15 +14,17 @@
         private Gate _currentGate;
 
         public GateController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
-            this._currentGate = _context.Gates.Include(s=>s.GateConfig).Where(g=>g.ProjectId==_projectId)
+            this._currentGate = _context.Gates.Where(g=>g.ProjectId==_projectId)
+                .Include(i => i.StageConfig)
                 .OrderByDescending(o => o.CreateDate).FirstOrDefault();
         }
 
         [Route("edit")]
         public IActionResult Edit() {
-            var gateKeeperConfigs = _context.GateKeeperConfigs
-                .Where(w => w.GateConfigId == _currentGate.GateConfigId)
-                .ToList();
+            var gateKeeperConfigs = _context.StageConfigs
+                .Include(i => i.GateKeeperConfigs)
+                .First(f => f.StageNumber == _currentGate.StageConfig.StageNumber)
+                .GateKeeperConfigs;
 
             var gateKeepers = _context.GateKeepers
                 .Where(w => w.GateId == _currentGate.Id)
@@ -63,17 +63,19 @@
             // set all stages to complete
             var closingStage = _context.Stages.First(w => w.ProjectId == projectId && !w.IsComplete);
             closingStage.IsComplete = true;
-            var openingGateConfig = _context.GateConfigs
+
+            // create gate for this closing stage
+            var currentStageConfigId = _context.StageConfigs
                 .First (
                     f =>
-                        f.GateNumber == closingStage.StageNumber
-                );
+                        f.StageNumber == closingStage.StageNumber
+                ).Id;
 
             // create new open gate
             _context.Gates.Add(new Gate {
                 Decision =  GateDecisionType.Open,
                 ProjectId = projectId,
-                GateConfigId = openingGateConfig.Id,
+                StageConfigId = currentStageConfigId,
             });
             
             _context.SaveChanges();
@@ -120,7 +122,7 @@
             // create new stage
             _context.Stages.Add(new Stage {
                 ProjectId = _projectId,
-                StageNumber = _currentGate.GateConfig.GateNumber + 1,
+                StageNumber = _currentGate.StageConfig.StageNumber + 1,
             });
 
             // add project state history

@@ -22,7 +22,6 @@ namespace pmo
         public DbSet<CustomerDesignApproval> CustomerDesignApprovals { get; set; }
         public DbSet<Gate> Gates { get; set; }
         public DbSet<GateKeeper> GateKeepers { get; set; }
-        public DbSet<GateConfig> GateConfigs { get; set; }
         public DbSet<InvestmentPlan> InvestmentPlans { get; set; }
         public DbSet<KeyCharacteristic> KeyCharacteristics { get; set; }
         public DbSet<Mitigation> Mitigations { get; set; }
@@ -1018,33 +1017,25 @@ namespace pmo
             #endregion
             #region  Gate Seed Data
 
-            builder.Entity<GateConfig>().HasData(new List<GateConfig>() {
-                new GateConfig() { Id=1, GateNumber=1, ModifiedByUser="system", },
-                new GateConfig() { Id=2, GateNumber=2, ModifiedByUser="system", },
-                new GateConfig() { Id=3, GateNumber=3, ModifiedByUser="system", },
-                new GateConfig() { Id=4, GateNumber=4, ModifiedByUser="system", },
-                new GateConfig() { Id=5, GateNumber=5, ModifiedByUser="system", },
-            });
-
             builder.Entity<GateKeeperConfig>().HasData(new List<GateKeeperConfig>()
             {
-                new GateKeeperConfig(){GateConfigId=1, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
-                new GateKeeperConfig(){GateConfigId=1, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" },
-                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 3, Keeper="BU Director Product Management/Marketing" },
-                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 4, Keeper="BU Director Engineering" },
-                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 5, Keeper="BU GM" },
-                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 6, Keeper="BU Controller" },
-                new GateKeeperConfig(){GateConfigId=4, ModifiedByUser="system", Id= 7, Keeper="BU Director Manufacturing Site" },
-                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 8, Keeper="BU Director Product Management/Marketing" },
-                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 9, Keeper="BU Director Engineering" },
-                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 10, Keeper="BU GM" },
-                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 11, Keeper="BU Controller" },
-                new GateKeeperConfig(){GateConfigId=3, ModifiedByUser="system", Id= 12, Keeper="BU Director Manufacturing Site" },
-                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 13, Keeper="BU Director Product Management/Marketing" },
-                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 14, Keeper="BU Director Engineering" },
-                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 15, Keeper="BU GM" },
-                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 16, Keeper="BU Controller" },
-                new GateKeeperConfig(){GateConfigId=2, ModifiedByUser="system", Id= 17, Keeper="BU Director Manufacturing Site" }
+                new GateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){StageConfigId=4, ModifiedByUser="system", Id= 3, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){StageConfigId=4, ModifiedByUser="system", Id= 4, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){StageConfigId=4, ModifiedByUser="system", Id= 5, Keeper="BU GM" },
+                new GateKeeperConfig(){StageConfigId=4, ModifiedByUser="system", Id= 6, Keeper="BU Controller" },
+                new GateKeeperConfig(){StageConfigId=4, ModifiedByUser="system", Id= 7, Keeper="BU Director Manufacturing Site" },
+                new GateKeeperConfig(){StageConfigId=3, ModifiedByUser="system", Id= 8, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){StageConfigId=3, ModifiedByUser="system", Id= 9, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){StageConfigId=3, ModifiedByUser="system", Id= 10, Keeper="BU GM" },
+                new GateKeeperConfig(){StageConfigId=3, ModifiedByUser="system", Id= 11, Keeper="BU Controller" },
+                new GateKeeperConfig(){StageConfigId=3, ModifiedByUser="system", Id= 12, Keeper="BU Director Manufacturing Site" },
+                new GateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 13, Keeper="BU Director Product Management/Marketing" },
+                new GateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 14, Keeper="BU Director Engineering" },
+                new GateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 15, Keeper="BU GM" },
+                new GateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 16, Keeper="BU Controller" },
+                new GateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 17, Keeper="BU Director Manufacturing Site" }
             });
             #endregion
             #region Role Seed Data
@@ -1144,6 +1135,18 @@ namespace pmo
                 new StageFileConfig { Id = 24, StageConfigId = 4, RequiredFileTagId = 744 },
                 new StageFileConfig { Id = 25, StageConfigId = 4, RequiredFileTagId = 759 },
                 new StageFileConfig { Id = 26, StageConfigId = 4, RequiredFileTagId = 760 },
+            });
+
+
+            builder.Entity<LiteStageConfig>().HasData(new List<LiteStageConfig>() {
+                new LiteStageConfig { Id = 1, MinProjectJustifications = 1, MinBusinessCases = 1, },
+                new LiteStageConfig { Id = 2, AllowInsertRiskAssesments = true, MinInvestmentPlans = 1, MinProductIntroChecklist = 1, MinBusinessCases = 1,  },
+            });
+
+            builder.Entity<LiteStageFileConfig>().HasData(new List<LiteStageFileConfig>() { 
+                new LiteStageFileConfig { Id = 1, RequiredFileTagId = 761, StageConfigId = 2 },
+                new LiteStageFileConfig { Id = 2, RequiredFileTagId = 762, StageConfigId = 2 },
+                new LiteStageFileConfig { Id = 3, RequiredFileTagId = 765, StageConfigId = 2 },
             });
         }
 
