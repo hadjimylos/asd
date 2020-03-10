@@ -2,7 +2,6 @@
 
 namespace dbModels {
     public class LiteRequiredSchedule : DatabaseModel {
-
         public int RequiredScheduleTagId { get; set; }
 
         [ForeignKey("RequiredScheduleTagId")]

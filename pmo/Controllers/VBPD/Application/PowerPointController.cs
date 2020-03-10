@@ -58,7 +58,7 @@ namespace pmo.Controllers.VBPD.Application
             var p = _context.Projects
                 .Include(i => i.ProjectDetails)
                 .First(w => w.Id == _projectId);
-
+             
             var u = _context.Project_User
                 .Where(x => x.ProjectId == _projectId && x.JobDescriptionKey == "program-manager")
                 .Include(i => i.User)

@@ -20,14 +20,33 @@
         }
 
         [Route("edit")]
-        public IActionResult Edit() {
-            var gateKeeperConfigs = _context.StageConfigs
-                .Include(i => i.GateKeeperConfigs)
-                .First(f => f.StageNumber == _currentGate.StageConfig.StageNumber)
-                .GateKeeperConfigs;
+        public IActionResult Edit() { 
+            var gateKeeperConfigs = !_isLite ? 
+                _context.StageConfigs
+                    .Include(i => i.GateKeeperConfigs)
+                    .First(f => f.StageNumber == _currentGate.StageConfig.StageNumber)
+                    .GateKeeperConfigs.Select(s => new { s.Id, s.Keeper }).ToList() :
+                _context.LiteStageConfigs
+                    .Include(i => i.GateKeeperConfigs)
+                    .First(f => f.StageNumber == _currentGate.StageConfig.StageNumber)
+                    .GateKeeperConfigs.Select(s => new { s.Id, s.Keeper }).ToList();
 
-            var gateKeepers = _context.GateKeepers
+            var gateKeepers = !_isLite ?
+                _context.GateKeepers
                 .Where(w => w.GateId == _currentGate.Id)
+                .Select(s => new {
+                    GateKeeperLabel = s.GateKeeperConfig.Keeper,
+                    s.GateKeeperConfigId,
+                    s.GateKeeperName,
+                })
+                .ToList() :
+                _context.GateKeeperLites
+                .Where(w => w.GateId == _currentGate.Id)
+                .Select(s => new {
+                    GateKeeperLabel = s.GateKeeperConfig.Keeper,
+                    s.GateKeeperConfigId,
+                    s.GateKeeperName,
+                })
                 .ToList();
 
             var model = _mapper.Map<GateForm>(_currentGate);
@@ -37,11 +56,24 @@
                 gateKeepers.ForEach(
                     f =>
                         model.GateKeepersNew.Add(new GateKeeperForm {
-                            Label = f.GateKeeperConfig.Keeper,
+                            Label = f.GateKeeperLabel,
                             GateKeeperConfigId = f.GateKeeperConfigId,
                             GateKeeperName = f.GateKeeperName,
                         })
                 );
+
+                // append any missing new configs
+                var newlyAddedConfigs = gateKeeperConfigs.Where ( 
+                    w => !gateKeepers.Select(s => s.GateKeeperConfigId).ToList().Contains(w.Id)
+                ).ToList();
+
+                newlyAddedConfigs.ForEach (
+                    f =>
+                        model.GateKeepersNew.Add(new GateKeeperForm {
+                            Label = f.Keeper,
+                            GateKeeperConfigId = f.Id
+                        })
+                    );
             } else {
                 // initialize as empty  
                 gateKeeperConfigs.ForEach(
@@ -91,18 +123,33 @@
                 return View($"{path}/Edit.cshtml", model);
             }
 
-            // remove all references
-            _context.RemoveRange(_context.GateKeepers.Where(w => w.GateId == _currentGate.Id).ToList());
+            if(!_isLite) {
+                // remove all references
+                _context.RemoveRange(_context.GateKeepers.Where(w => w.GateId == _currentGate.Id).ToList());
 
-            // insert all new references
-            model.GateKeepersNew.ForEach (
-                f =>
-                    _context.GateKeepers.Add(new GateKeeper {
-                        GateKeeperName = f.GateKeeperName,
-                        GateId = _currentGate.Id,
-                        GateKeeperConfigId = f.GateKeeperConfigId,
-                    })
-            );
+                // insert all new references
+                model.GateKeepersNew.ForEach(
+                    f =>
+                        _context.GateKeepers.Add(new GateKeeper {
+                            GateKeeperName = f.GateKeeperName,
+                            GateId = _currentGate.Id,
+                            GateKeeperConfigId = f.GateKeeperConfigId,
+                        })
+                );
+            } else {
+                // remove all references
+                _context.RemoveRange(_context.GateKeeperLites.Where(w => w.GateId == _currentGate.Id).ToList());
+
+                // insert all new references
+                model.GateKeepersNew.ForEach(
+                    f =>
+                        _context.GateKeeperLites.Add(new GateKeeperLite {
+                            GateKeeperName = f.GateKeeperName,
+                            GateId = _currentGate.Id,
+                            GateKeeperConfigId = f.GateKeeperConfigId,
+                        })
+                );
+            }
 
             _currentGate.ActualReviewDate = (DateTime)model.ActualReviewDate;
             _currentGate.Comments = model.Comments;

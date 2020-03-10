@@ -12,6 +12,10 @@ using System.Linq;
 namespace ViewModels.Helpers
 {
     public static class Helpers {
+        public static List<Tag> GetRequiredFiles<T>(this IQueryable<T> queryable) where T : BaseStageFileConfig {
+            return queryable.Select(s => s.RequiredFile).ToList();
+        }
+
         // extend IQueryable to Include all virtual objects
         public static IQueryable<T> IncludeAll<T>(this IQueryable<T> queryable) where T : class {
             var type = typeof(T);

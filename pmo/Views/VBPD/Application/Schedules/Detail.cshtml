@@ -1,4 +1,4 @@
-﻿@model List<ScheduleForm>
+﻿@model List<dbModels.Schedule>
 @{
     ViewData["Title"] = "Schedules";
     Layout = "_VbpdProjectDetailLayout";
@@ -14,9 +14,6 @@
 
 <div class="detail-component">
     <div class="wrapper">
-        <div class="header">
-            <h1>Schedules </h1>
-        </div>
         <div class="details">
             @foreach (var schedule in Model) {
                 <div class="detail">

@@ -34,18 +34,23 @@ namespace pmo.Controllers {
                     s.FileTagId
             ).ToList();
 
-            var requiredFiles = _context.StageFileConfigs.IncludeAll().Where(
-                w =>
-                    w.StageConfigId == _stageConfigId &&
-                    !uploadedFiles.Contains(w.RequiredFileTagId)
-            ).ToList();
-
+            var requiredFiles = !_isLite ?
+                _context.StageFileConfigs.IncludeAll().Where(
+                    w =>
+                        w.StageConfigId == _stageConfigId &&
+                        !uploadedFiles.Contains(w.RequiredFileTagId)
+                ).GetRequiredFiles() :
+                _context.LiteStageFileConfigs.IncludeAll().Where(
+                    w =>
+                        w.StageConfigId == _stageConfigId &&
+                        !uploadedFiles.Contains(w.RequiredFileTagId)
+                ).GetRequiredFiles();
 
             requiredFiles.ForEach(requiredFile => {
                 model.Add(
                     new FileForm {
-                        TagDescription = requiredFile.RequiredFile.Name,
-                        TagId = requiredFile.RequiredFileTagId,
+                        TagDescription = requiredFile.Name,
+                        TagId = requiredFile.Id,
                     });
             });
 

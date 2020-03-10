@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200309153514_AddGateKeeperLiteTable")]
+    partial class AddGateKeeperLiteTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -634,104 +636,6 @@ namespace pmo.Migrations
                     b.HasIndex("StageConfigId");
 
                     b.ToTable("LiteGateKeeperConfigs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Director Product Management/Marketing",
-                            ModifiedByUser = "system",
-                            StageConfigId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Director Engineering",
-                            ModifiedByUser = "system",
-                            StageConfigId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU GM",
-                            ModifiedByUser = "system",
-                            StageConfigId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Controller",
-                            ModifiedByUser = "system",
-                            StageConfigId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Director Manufacturing Site",
-                            ModifiedByUser = "system",
-                            StageConfigId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU VBPD Champion / Facilitator",
-                            ModifiedByUser = "system",
-                            StageConfigId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Director Product Management/Marketing",
-                            ModifiedByUser = "system",
-                            StageConfigId = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Director Engineering",
-                            ModifiedByUser = "system",
-                            StageConfigId = 2
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU GM",
-                            ModifiedByUser = "system",
-                            StageConfigId = 2
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Controller",
-                            ModifiedByUser = "system",
-                            StageConfigId = 2
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU Director Manufacturing Site",
-                            ModifiedByUser = "system",
-                            StageConfigId = 2
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Keeper = "BU VBPD Champion / Facilitator",
-                            ModifiedByUser = "system",
-                            StageConfigId = 2
-                        });
                 });
 
             modelBuilder.Entity("dbModels.LiteRequiredSchedule", b =>

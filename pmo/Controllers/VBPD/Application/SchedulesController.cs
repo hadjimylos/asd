@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pmo.Services.Lists;
+using ViewModels.Helpers;
 
 namespace pmo.Controllers {
     [Route("vbpd-projects/{projectId}/stages/{stageNumber}/schedules")]
@@ -20,93 +21,68 @@ namespace pmo.Controllers {
         }
 
         [Route("detail")]
-        public IActionResult Detail(int projectId, int stageNumber) {
-            List<ScheduleForm> viewModel = new List<ScheduleForm>();
-            //TODO: Fix possible error
-            var model = _context.Schedules.Include(x => x.Stage).Include(x => x.ScheduleType).Where(x => x.StageId == _stageId).ToList();
-            var stage = _context.Stages.Find(_stageId);
-            var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stage.StageNumber).ToList();
+        public IActionResult Detail() {
+            var model = _context.Schedules.IncludeAll()
+                .Where(w => w.StageId == _stageId).ToList();
 
-            if (model.Count > 0 && settings.Count == model.Count) {
-                viewModel = _mapper.Map<List<ScheduleForm>>(model);
-            }
-            else if (model.Count > 0 && settings.Count != model.Count) {
-                viewModel = _mapper.Map<List<ScheduleForm>>(model);
-
-                List<int> SettingsList = settings.OrderBy(x => x.RequiredScheduleTagId).Select(x => x.RequiredScheduleTagId).ToList();
-                List<int> ScheduleList = viewModel.OrderBy(x => x.TagId).Select(x => x.TagId).ToList();
-                if (!SettingsList.SequenceEqual(ScheduleList)) {
-                    List<int> AddedTags = new List<int>();
-                    if (SettingsList.Count > ScheduleList.Count) {
-                        AddedTags = SettingsList.Except(ScheduleList).ToList();
-                    }
-                    else {
-                        AddedTags = ScheduleList.Except(SettingsList).ToList();
-                    }
-                    foreach (var tag in AddedTags) {
-                        viewModel.Add(new ScheduleForm() { Id = 0, Date = DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag, ScheduleType = settings.Where(x => x.RequiredScheduleTagId == tag).First().RequiredSchedule });
-                    }
-                }
-
-            }
-            else {
-                foreach (var tag in settings) {
-                    viewModel.Add(new ScheduleForm() { Id = 0, Date = DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag.RequiredScheduleTagId, ScheduleType = tag.RequiredSchedule });
-                }
-            }
-            return View($"{path}/Detail.cshtml", viewModel);
+            return View($"{path}/Detail.cshtml", model);
         }
 
         [Route("edit")]
-        public IActionResult Edit(int projectId, int stageNumber) {
-            var stage = _context.Stages.Where(n => n.StageNumber == stageNumber && n.ProjectId == projectId).First();
-            List<ScheduleForm> viewModel = new List<ScheduleForm>();
-            var model = _context.Schedules
-                .Include(x => x.Stage)
-                .Where(n => n.Stage.StageNumber == stageNumber && n.Stage.ProjectId == projectId)
-                .Include(x => x.ScheduleType).AsNoTracking().ToList();
-            var settings = _context.StageConfig_RequiredSchedules.Include(x => x.StageConfig).Include(x => x.RequiredSchedule).Where(x => x.StageConfig.StageNumber == stageNumber).ToList();
+        public IActionResult Edit() {
+            var schedules = _context.Schedules
+                .Where(w => w.StageId == _stageId).ToList();
+            
+            var configs = !_isLite ?
+                _context.StageConfig_RequiredSchedules.Where(
+                    w =>
+                        w.StageConfigId == _context.StageConfigs
+                            .First(f => f.StageNumber == _stageNumber).Id
+                    )
+                .Include(i => i.RequiredSchedule)
+                .Select (
+                        s => new {
+                            name = s.RequiredSchedule,
+                            tagid = s.RequiredScheduleTagId
+                        })
+                    .ToList() :
+                _context.LiteRequiredSchedules.Where(
+                    w =>
+                        w.StageConfigId == _context.LiteStageConfigs
+                            .First(f => f.StageNumber == _stageNumber).Id
+                    )
+                .Include(i => i.RequiredSchedule)
+                .Select(
+                        s => new {
+                            name = s.RequiredSchedule,
+                            tagid = s.RequiredScheduleTagId
+                        })
+                    .ToList();
 
-            if (model.Count > 0 && settings.Count == model.Count) {
-                viewModel = _mapper.Map<List<ScheduleForm>>(model);
-            }
-            else if (model.Count > 0 && settings.Count != model.Count) {
-                viewModel = _mapper.Map<List<ScheduleForm>>(model);
+            var model = _mapper.Map<List<ScheduleForm>>(schedules);
+            var missing = configs.Where(w => !schedules.Select(s => s.TagId).Contains(w.tagid)).ToList();
+            missing.ForEach(
+                f =>
+                    model.Add(new ScheduleForm {
+                        TagId = f.tagid,
+                        ScheduleType = f.name,
+                        StageId = _stageId,
+                    })
+            );
 
-                List<int> SettingsList = settings.OrderBy(x => x.RequiredScheduleTagId).Select(x => x.RequiredScheduleTagId).ToList();
-                List<int> ScheduleList = viewModel.OrderBy(x => x.TagId).Select(x => x.TagId).ToList();
-                if (!SettingsList.SequenceEqual(ScheduleList)) {
-                    List<int> AddedTags = new List<int>();
-                    if (SettingsList.Count > ScheduleList.Count) {
-                        AddedTags = SettingsList.Except(ScheduleList).ToList();
-                    }
-                    else {
-                        AddedTags = ScheduleList.Except(SettingsList).ToList();
-                    }
-                    foreach (var tag in AddedTags) {
-                        viewModel.Add(new ScheduleForm() { Id = 0, Date = DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag, ScheduleType = settings.Where(x => x.RequiredScheduleTagId == tag).First().RequiredSchedule });
-                    }
-                }
-
-            }
-            else {
-                foreach (var tag in settings) {
-                    viewModel.Add(new ScheduleForm() { Id = 0, Date = DateTime.Now, StageId = stage.Id, Stage = stage, TagId = tag.RequiredScheduleTagId, ScheduleType = tag.RequiredSchedule });
-                }
-            }
-            return View($"{path}/Edit.cshtml", viewModel);
+            return View($"{path}/Edit.cshtml", model);
         }
 
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public IActionResult Edit(int projectId, int stageNumber, List<ScheduleForm> viewModel) {
+        public IActionResult Edit(List<ScheduleForm> viewModel) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
                 return View(viewModel);
             }
 
-            var model = _context.Schedules.Include(x => x.Stage).Where(x => x.Stage.StageNumber == stageNumber && x.Stage.ProjectId == projectId).ToList();
+            var model = _context.Schedules.Include(x => x.Stage).Where(x => x.Stage.StageNumber == _stageNumber && x.Stage.ProjectId == _projectId).ToList();
 
             if (model.Count > 0) {
                 foreach (var item in viewModel) {

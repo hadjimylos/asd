@@ -4,9 +4,9 @@
     using dto;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
-    using ViewModels;
     using ViewModels.Helpers;
 
     public class BaseProjectDetailController : BaseController {
@@ -16,10 +16,20 @@
         private readonly bool _displayGateDecisions;
         protected readonly int _projectId;
         protected readonly int _projectState;
+        protected readonly bool _isLite;
+        protected readonly string _displayNum;
 
         public BaseProjectDetailController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             // set nav component for all of these pages here
             this._projectId = int.Parse(Helpers.GetRouteValue(httpContextAccessor.HttpContext.Request, "projectId"));
+
+            this._isLite = _context.ProjectDetails
+                .Include(i => i.ProjectCategory)
+                .Where(w => w.ProjectId == _projectId)
+                .RemoveTransactions()
+                .OrderByDescending(c => c.CreateDate)
+                .First()
+                .ProjectCategory.Id == 219; // minor modification
 
             var activeStage = _context.Stages.IncludeAll()
                .Where(
@@ -31,7 +41,10 @@
                        o.CreateDate
                ).FirstOrDefault();
 
-            var gate = _context.Gates.IncludeAll()
+            var gate =
+                activeStage != null ? // only run query if necessary
+                null :
+                _context.Gates.IncludeAll()
                 .Where(w =>
                     w.ProjectId == _projectId
                 ).OrderByDescending(
@@ -39,18 +52,25 @@
                         o.CreateDate
                 ).FirstOrDefault();
 
+
+            this._displayNum = !this._isLite ?
+                activeStage.StageNumber.ToString() :
+                    activeStage == null ?
+                        ((char)(gate.StageConfig.StageNumber + 64)).ToString() :
+                        ((char)(activeStage.StageNumber + 64)).ToString();
             this._displayGateDecisions = gate?.Decision == GateDecisionType.PendingDecision || gate?.Decision == GateDecisionType.OnHold || gate?.Decision == GateDecisionType.Closed;
-            this._activeStageNavs = activeStage == null ? new List<ActiveNav>() : GetActiveStageNavs(activeStage);
+            this._activeStageNavs = activeStage == null ? new List<ActiveNav>() : _isLite ? GetLiteActiveStageNavs(activeStage) : GetActiveStageNavs(activeStage);
             this._activeGateNavs = gate == null ? new List<ActiveNav>() : GetActiveGateNavs(gate);
             this._projectState = (int)_context.ProjectStateHistories.Where(p => p.ProjectId == _projectId).OrderByDescending(d => d.CreateDate).First().ProjectState;
             this._nav = new ProjectDetailNav(_context, _mapper, _projectId);
         }
 
         private List<ActiveNav> GetActiveStageNavs(Stage activeStage) {
-            var activeStageConfig = _context.StageConfigs.First(
-                   w =>
-                       w.StageNumber == activeStage.StageNumber
-               );
+            var activeStageConfig =
+                _context.StageConfigs.First(
+                    w =>
+                        w.StageNumber == activeStage.StageNumber
+                );
 
             var countScheduleConfigs = _context.StageConfig_RequiredSchedules
                 .Where(
@@ -66,6 +86,34 @@
                 .Distinct()
                 .Count();
 
+            return GetActiveNavs(activeStageConfig, activeStage, countScheduleConfigs, countStageFileConfigs);
+        }
+
+        private List<ActiveNav> GetLiteActiveStageNavs(Stage activeStage) {
+            var activeStageConfig =
+                _context.LiteStageConfigs.First(
+                    w =>
+                        w.StageNumber == activeStage.StageNumber
+                );
+
+            var countScheduleConfigs = _context.LiteRequiredSchedules
+                .Where(
+                    w =>
+                        w.StageConfigId == activeStageConfig.Id
+                ).Count();
+
+            var countStageFileConfigs = _context.LiteStageFileConfigs
+                .Where(
+                    w =>
+                        w.StageConfigId == activeStageConfig.Id
+                ).Select(s => s.RequiredFileTagId)
+                .Distinct()
+                .Count();
+
+            return GetActiveNavs(activeStageConfig, activeStage, countScheduleConfigs, countStageFileConfigs);
+        }
+
+        private List<ActiveNav> GetActiveNavs<T>(T activeStageConfig, Stage activeStage, int countScheduleConfigs, int countStageFileConfigs) where T : BaseStageConfig {
             var activeBusinessCase = activeStage
                 .BusinessCaseHistory
                 .OrderByDescending(o => o.CreateDate)
@@ -132,13 +180,13 @@
                     },
                     new ActiveNav {
                         Component = "Schedules",
-                        IsComplete = activeStage.Schedules.Count == countScheduleConfigs,
+                        IsComplete = activeStage.Schedules.Count >= countScheduleConfigs,
                         Url = $"{commonPath}/schedules/edit",
                         Visible = countScheduleConfigs > 0,
                     },
                     new ActiveNav {
                         Component = "Files",
-                        IsComplete = activeStage.Files.Count == countStageFileConfigs,
+                        IsComplete = activeStage.Files.Select(s => s.FileTagId).Distinct().Count() == countStageFileConfigs,
                         Url = $"{commonPath}/files/edit",
                         Visible = countStageFileConfigs > 0,
                     },
@@ -150,7 +198,6 @@
                     },
                 };
         }
-
 
         private List<ActiveNav> GetActiveGateNavs (Gate activeGate) {
             var stageNumber = activeGate.StageConfig.StageNumber;
@@ -177,6 +224,7 @@
             ViewData["ActiveGateNavs"] = _activeGateNavs;
             ViewData["DisplayGateDecisions"] = this._displayGateDecisions;
             ViewData["ProjectState"] = _projectState;
+            ViewData["DisplayNumber"] = this._displayNum;
             base.OnActionExecuting(filterContext);
         }
     }

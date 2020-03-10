@@ -20,7 +20,7 @@
 <div class="nav-section">
     @if (activeStageNavs.Count > 0) {
         <div class="item-wrapper">
-            <div class="descrip">Current Tasks - Stage @Model.ActiveStageNumber</div>
+            <div class="descrip">Current Tasks - Stage @ViewBag.DisplayNumber</div>
         </div>
         <div class="nav-section-items">
             <div class="nav-section-items">
@@ -76,7 +76,7 @@
     }
     else {
         <div class="item-wrapper">
-            <div class="descrip">Gate @Model.ActiveStageNumber</div>
+            <div class="descrip">Gate @ViewBag.DisplayNumber</div>
         </div>
         <div class="nav-section-items">
             <div class="nav-section-items">

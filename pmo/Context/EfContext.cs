@@ -54,6 +54,8 @@ namespace pmo
         public DbSet<LiteStageConfig> LiteStageConfigs { get; set; }
         public DbSet<LiteRequiredSchedule> LiteRequiredSchedules { get; set; }
         public DbSet<LiteStageFileConfig> LiteStageFileConfigs { get; set; }
+        public DbSet<LiteGateKeeperConfig> LiteGateKeeperConfigs { get; set; }
+        public DbSet<GateKeeperLite> GateKeeperLites { get; set; }
 
 
         public EfContext(DbContextOptions<EfContext> options)
@@ -1037,6 +1039,25 @@ namespace pmo
                 new GateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 16, Keeper="BU Controller" },
                 new GateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 17, Keeper="BU Director Manufacturing Site" }
             });
+
+            builder.Entity<LiteGateKeeperConfig>().HasData(new List<LiteGateKeeperConfig>() {
+                // gate A
+                new LiteGateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 1, Keeper="BU Director Product Management/Marketing" },
+                new LiteGateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 2, Keeper="BU Director Engineering" },
+                new LiteGateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 3, Keeper="BU GM" },
+                new LiteGateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 4, Keeper="BU Controller" },
+                new LiteGateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 5, Keeper="BU Director Manufacturing Site" },
+                new LiteGateKeeperConfig(){StageConfigId=1, ModifiedByUser="system", Id= 6, Keeper="BU VBPD Champion / Facilitator" },
+
+                // gate B
+                new LiteGateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 7, Keeper="BU Director Product Management/Marketing" },
+                new LiteGateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 8, Keeper="BU Director Engineering" },
+                new LiteGateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 9, Keeper="BU GM" },
+                new LiteGateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 10, Keeper="BU Controller" },
+                new LiteGateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 11, Keeper="BU Director Manufacturing Site" },
+                new LiteGateKeeperConfig(){StageConfigId=2, ModifiedByUser="system", Id= 12, Keeper="BU VBPD Champion / Facilitator" },
+            });
+
             #endregion
             #region Role Seed Data
             builder.Entity<Role>().HasData(new List<Role>()
@@ -1139,8 +1160,8 @@ namespace pmo
 
 
             builder.Entity<LiteStageConfig>().HasData(new List<LiteStageConfig>() {
-                new LiteStageConfig { Id = 1, MinProjectJustifications = 1, MinBusinessCases = 1, },
-                new LiteStageConfig { Id = 2, AllowInsertRiskAssesments = true, MinInvestmentPlans = 1, MinProductIntroChecklist = 1, MinBusinessCases = 1,  },
+                new LiteStageConfig { Id = 1, StageNumber = 1, ModifiedByUser = "system", MinProjectJustifications = 1, MinBusinessCases = 1, },
+                new LiteStageConfig { Id = 2, StageNumber = 2, ModifiedByUser = "system", AllowInsertRiskAssesments = true, MinInvestmentPlans = 1, MinProductIntroChecklist = 1, MinBusinessCases = 1,  },
             });
 
             builder.Entity<LiteStageFileConfig>().HasData(new List<LiteStageFileConfig>() { 
