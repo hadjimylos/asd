@@ -49,6 +49,7 @@ namespace forms
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int ExportApplicationTypeTagId { get; set; }
 
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public new string EndUseDestinationCountry { get; set; }
  
         public SelectList ProjectCategoryTagDropDown { set; get; }
