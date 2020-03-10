@@ -13,7 +13,7 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers
 {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/key-characteristic")]
+    [Route("projects/{projectid}/stages/{stageNumber}/key-characteristic")]
     public class KeyCharacteristicController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
 

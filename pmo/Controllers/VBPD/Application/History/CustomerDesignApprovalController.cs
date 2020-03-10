@@ -13,7 +13,7 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers.Application.History
 {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/customer-design-approval")]
+    [Route("projects/{projectid}/stages/{stageNumber}/customer-design-approval")]
     public class CustomerDesignApprovalController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/CustomerDesignApproval";
 

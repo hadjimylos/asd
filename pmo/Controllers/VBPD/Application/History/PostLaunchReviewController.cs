@@ -12,7 +12,7 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers
 {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/post-launch-review")]
+    [Route("projects/{projectid}/stages/{stageNumber}/post-launch-review")]
     public class PostLaunchReviewController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/PostLaunchReview";
         public PostLaunchReviewController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)

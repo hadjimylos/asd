@@ -62,18 +62,18 @@
                 stage.PostLaunchReviewNavs = _mapper.Map<List<PostLaunchReviewNav>>(stage.PostLaunchReviewHistory);
 
                 // set URLs for each nav component list
-                stage.ProjectJustificationNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/project-justification/{item.Version}");
-                stage.BusinessCaseNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/business-case/{item.Version}");
-                stage.ProductInfrigmentPatentabilityNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/product-infrigment-patentability/{item.Version}");
-                stage.KeyCharacteristicNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/key-characteristic/{item.Version}");
-                stage.CustomerDesignApprovalNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/customer-design-approval/{item.Version}");
-                stage.InvestmentPlanNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/investment-plan/{item.Version}");
-                stage.ProductIntroChecklistNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/product-intro-checklist/{item.Version}");
-                stage.PostLaunchReviewNavs.ForEach(item => item.Url = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/post-launch-review/{item.Version}");
+                stage.ProjectJustificationNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/project-justification/{item.Version}");
+                stage.BusinessCaseNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/business-case/{item.Version}");
+                stage.ProductInfrigmentPatentabilityNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/product-infrigment-patentability/{item.Version}");
+                stage.KeyCharacteristicNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/key-characteristic/{item.Version}");
+                stage.CustomerDesignApprovalNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/customer-design-approval/{item.Version}");
+                stage.InvestmentPlanNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/investment-plan/{item.Version}");
+                stage.ProductIntroChecklistNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/product-intro-checklist/{item.Version}");
+                stage.PostLaunchReviewNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/post-launch-review/{item.Version}");
                 // add flat navigations
-                stage.SchedulesUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/schedules/detail";
+                stage.SchedulesUrl = $"/projects/{projectId}/stages/{stage.StageNumber}/schedules/detail";
                 stage.DisplaySchedules = stage.Schedules.Count > 0;
-                stage.RisksUrl = $"/vbpd-projects/{projectId}/stages/{stage.StageNumber}/risk";
+                stage.RisksUrl = $"/projects/{projectId}/stages/{stage.StageNumber}/risk";
                 stage.DisplayRisks = stage.Risks.Count > 0;
             });
 

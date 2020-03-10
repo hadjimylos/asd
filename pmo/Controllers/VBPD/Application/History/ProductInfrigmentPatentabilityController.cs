@@ -10,7 +10,7 @@ using ViewModels.Helpers;
 
 
 namespace pmo.Controllers {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/product-infrigment-patentability")]
+    [Route("projects/{projectid}/stages/{stageNumber}/product-infrigment-patentability")]
     public class ProductInfrigmentPatentabilityController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/ProductInfrigmentPatentability";
 

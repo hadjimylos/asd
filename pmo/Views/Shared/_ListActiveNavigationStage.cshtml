@@ -66,7 +66,7 @@
                     </div>
                 }
                 @if (showMoveToGateBtn) {
-                    <form method="post" class="actions" action="/vbpd-projects/@Model.ProjectId/gates/move-to-gate">
+                    <form method="post" class="actions" action="/projects/@Model.ProjectId/gates/move-to-gate">
                         @Html.AntiForgeryToken()
                         <input type="submit" class="btn green" value="Move to Gate" />
                     </form>
@@ -97,28 +97,28 @@
                 <div class="actions">
                     @if ((bool)ViewBag.DisplayGateDecisions) {
                         if (ViewData["ProjectState"].ToString() == "1") {
-                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/go">
+                            <form method="post" action="/projects/@Model.ProjectId/gates/go">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Go" />
                             </form>
-                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/on-hold">
+                            <form method="post" action="/projects/@Model.ProjectId/gates/on-hold">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn yellow" value="On Hold" />
                             </form>
-                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/close">
+                            <form method="post" action="/projects/@Model.ProjectId/gates/close">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn red" value="Close" />
                             </form>
                         }
 
                         else if (ViewData["ProjectState"].ToString() == "2") {
-                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/on-hold">
+                            <form method="post" action="/projects/@Model.ProjectId/gates/on-hold">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Remove Hold" />
                             </form>
                         }
                         else {
-                            <form method="post" action="/vbpd-projects/@Model.ProjectId/gates/close">
+                            <form method="post" action="/projects/@Model.ProjectId/gates/close">
                                 @Html.AntiForgeryToken()
                                 <input type="submit" class="btn green" value="Open" />
                             </form>
@@ -127,7 +127,7 @@
                 </div>
                 <div class="actions">
                     <div class="off-to-see-the-wizard">
-                        <div class="route" style="display: none">/vbpd-projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/powerpoint/download</div>
+                        <div class="route" style="display: none">/projects/@Model.ProjectId/stages/@Model.ActiveStageNumber/powerpoint/download</div>
                         <buton class="btn green present">Download Powerpoint</buton>
                     </div>
                 </div>

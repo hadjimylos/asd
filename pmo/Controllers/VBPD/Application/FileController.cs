@@ -12,7 +12,7 @@ using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers {
-    [Route("vbpd-projects/{projectId}/stages/{stageNumber}/files")]
+    [Route("projects/{projectId}/stages/{stageNumber}/files")]
     public class FileController : BaseStageComponentController {
         private readonly string documentLibraryToSharepointPath = $"{Config.AppSettings["Sharepoint:documentLibraryToSharepointPath"]}";
         private readonly ISharePointService _SharePointService;

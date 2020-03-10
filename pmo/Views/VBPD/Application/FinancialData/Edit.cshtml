@@ -21,8 +21,8 @@
     <div class="wrapper">
         <div class="postback-field">
             <div class="post-paths">
-                <div class="post-refresh">/vbpd-projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/refresh</div>
-                <div class="post-save">/vbpd-projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/edit</div>
+                <div class="post-refresh">/projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/refresh</div>
+                <div class="post-save">/projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/edit</div>
             </div>
             <div class="postback-wrapper">
                 <div class="label">How Many Years</div>
@@ -33,7 +33,7 @@
             </div>
             <div class="save">
                 @if (isRefreshed) {
-                    <a href="/vbpd-projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/edit" class="btn grey">Cancel</a>
+                    <a href="/projects/@projectId/stages/@stageNumber/business-case/@businessCaseId/financial-data/edit" class="btn grey">Cancel</a>
                 }
                 <button type="button" class="btn green save-submit"><i class="far fa-save"></i> Save</button>
             </div>

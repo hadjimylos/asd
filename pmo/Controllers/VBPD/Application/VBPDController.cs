@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace pmo.Controllers {
-    [Route("vbpd-projects")]
+    [Route("")]
     public class VBPDController : BaseController {
         private readonly IProjectService _projectService;
         private readonly IListService _listService;

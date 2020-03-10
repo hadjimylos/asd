@@ -8,7 +8,7 @@
     using System;
     using System.Linq;
 
-    [Route("vbpd-projects/{projectId}/gates")]
+    [Route("projects/{projectId}/gates")]
     public class GateController : BaseProjectDetailController {
         private readonly string path = "~/Views/VBPD/Application/Gate";
         private Gate _currentGate;
@@ -177,7 +177,7 @@
 
             _context.SaveChanges();
 
-            return Redirect($"/vbpd-projects/{_projectId}");
+            return Redirect($"/projects/{_projectId}");
         }
 
         [Route("close")]
@@ -197,7 +197,7 @@
                 this.ChangeProjectState(ProjectState.Closed);
                 _context.SaveChanges();
             }
-            return Redirect($"/vbpd-projects/{_projectId}");
+            return Redirect($"/projects/{_projectId}");
         }
 
         [Route("on-hold")]
@@ -217,7 +217,7 @@
                 this.ChangeProjectState(ProjectState.OnHold);
                 _context.SaveChanges();
             }
-            return Redirect($"/vbpd-projects/{_projectId}");
+            return Redirect($"/projects/{_projectId}");
         }
 
         private void ChangeProjectState(ProjectState projectState) {

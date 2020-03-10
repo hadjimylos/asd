@@ -9,7 +9,7 @@
     using pmo.Services.Lists;
     using ViewModels.Helpers;
 
-    [Route("vbpd-projects/{projectId}/stages/{stageNumber}/risk/{riskId}/mitigations")]
+    [Route("projects/{projectId}/stages/{stageNumber}/risk/{riskId}/mitigations")]
     public class MitigationController : BaseStageComponentController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Mitigation";

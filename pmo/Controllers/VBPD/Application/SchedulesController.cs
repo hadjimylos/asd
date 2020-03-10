@@ -11,7 +11,7 @@ using pmo.Services.Lists;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers {
-    [Route("vbpd-projects/{projectId}/stages/{stageNumber}/schedules")]
+    [Route("projects/{projectId}/stages/{stageNumber}/schedules")]
     public class SchedulesController : BaseStageComponentController {
         private readonly IListService _listService;
         private readonly string path = "~/Views/VBPD/Application/Schedules";

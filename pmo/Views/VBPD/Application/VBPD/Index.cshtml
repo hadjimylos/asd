@@ -11,7 +11,7 @@
             <h1><i class="fas fa-list-alt"></i> @ViewData["Title"]</h1>
         </div>
         <div class="actions">
-            <div class="action"><a class="btn green" href="vbpd-projects/create">CREATE NEW VBPD PROJECT</a></div>
+            <div class="action"><a class="btn green" href="projects/create">CREATE NEW VBPD PROJECT</a></div>
             <div class="action"><a class="btn grey" href="/admin">ADMIN</a></div>
         </div>
     </div>
@@ -32,7 +32,7 @@
             <div class="items">
                 @foreach (var modelItem in Model)
                 {
-                    <a class="item" href="vbpd-projects/@modelItem.ProjectId">
+                    <a class="item" href="projects/@modelItem.ProjectId">
                         <div class="item-wrapper">
                             <div>@modelItem.Project.Name</div>
                             <div>@modelItem.Salesforce</div>

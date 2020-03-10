@@ -13,7 +13,7 @@ using ViewModels.Helpers;
 
 namespace pmo.Controllers.VBPD.Application
 {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/powerpoint")]
+    [Route("projects/{projectid}/stages/{stageNumber}/powerpoint")]
     public class PowerPointController : BaseStageComponentController
     {
         private readonly string path = "~/Views/VBPD/Application/PowerPoint";

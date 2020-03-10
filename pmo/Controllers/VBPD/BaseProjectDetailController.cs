@@ -119,7 +119,7 @@
                 .OrderByDescending(o => o.CreateDate)
                 .FirstOrDefault();
 
-            var commonPath = $"/vbpd-projects/{this._projectId}/stages/{activeStage.StageNumber}";
+            var commonPath = $"/projects/{this._projectId}/stages/{activeStage.StageNumber}";
             return new List<ActiveNav>() {
                     new ActiveNav {
                         Component = "Technical Feasibility & Scope",
@@ -207,12 +207,12 @@
                 new ActiveNav {
                     IsComplete = activeGate.Decision == GateDecisionType.PendingDecision,
                     Component = "Edit Gate",
-                    Url = $"/vbpd-projects/{this._projectId}/gates/edit",
+                    Url = $"/projects/{this._projectId}/gates/edit",
                     Visible = true,
                 },
                 new ActiveNav {
                     Component = "Gate Files",
-                    Url = $"/vbpd-projects/{this._projectId}/stages/{stageNumber}/gate-files/edit",
+                    Url = $"/projects/{this._projectId}/stages/{stageNumber}/gate-files/edit",
                     Visible = true,
                 }
             };

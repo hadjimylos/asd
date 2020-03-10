@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ViewModels;
 
 namespace pmo.Controllers.VBPD.Application {
-    [Route("vbpd-projects/{projectId}")]
+    [Route("projects/{projectId}")]
     public class ProjectDetailController : BaseProjectDetailController {
         private readonly string path = "~/Views/VBPD/Application/VBPD";
 

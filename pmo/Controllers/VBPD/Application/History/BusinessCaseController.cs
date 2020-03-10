@@ -13,7 +13,7 @@ using ViewModels;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers.VBPD.Application.History {
-    [Route("vbpd-projects/{projectid}/stages/{stageNumber}/business-case")]
+    [Route("projects/{projectid}/stages/{stageNumber}/business-case")]
     public class BusinessCaseController : BaseStageComponentController {
         private readonly string viewPath = "~/Views/VBPD/Application/BusinessCase";
         private readonly IListService _listService;

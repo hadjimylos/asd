@@ -10,7 +10,7 @@ using System.Linq;
 using ViewModels.Helpers;
 
 namespace pmo.Controllers.VBPD.Application {
-    [Route("vbpd-projects/{projectId}/stages/{stageNumber}/business-case/{businessCaseId}/financial-data")]
+    [Route("projects/{projectId}/stages/{stageNumber}/business-case/{businessCaseId}/financial-data")]
     public class FinancialDataController : BaseStageComponentController {
         private readonly string path = "~/Views/VBPD/Application/FinancialData";
         private readonly int _businessCaseId;
