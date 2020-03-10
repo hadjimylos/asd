@@ -16,24 +16,7 @@ namespace forms {
         public new string Salesforce { get; set; }
         
         [Required(ErrorMessage = ErrorMessages.Required)]
-        public new string EngineeringChecklistUrl { get; set; }
-        
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new string ProjectProcessType
-        {
-            get
-            {
-                if (this.ProjectCategoryTagId == 220)
-                {
-                    return "VBPD";
-                }
-                else
-                {
-                    return "VBPD -Lite";
-                }
-            }
-            set { ProjectProcessType = value; }
-        }
+        public new string EngineeringChecklistUrl { get; set; }           
         
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ExportControlCode { set; get; }

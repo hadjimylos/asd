@@ -18,12 +18,12 @@ namespace dbModels {
         public int ExportApplicationTypeTagId { get; set; }
         [Required]
         public int DesignAuthorityTagId { get; set; }
+       // [Required] //TODO: Migration To be Removed
+       // public string ProjectProcessType { set; get; }
+        //TODO: Migration to be added
+        // public string ExportRestrictedUsers { set; get; } 
         [Required]
-        public string ProjectProcessType { set; get; }
-        [Required]
-        public string ExportControlCode { set; get; }
-
-       // public string ExportRestrictedUsers { set; get; }
+        public string ExportControlCode { set; get; }       
         [Required]
         public string EndUseDestinationCountry { set; get; }
         [ForeignKey("ProjectId")]
@@ -41,5 +41,17 @@ namespace dbModels {
         public virtual List<ProjectDetail_Customer> Customers { get; set; }
         public virtual List<ProjectDetail_SalesRegion> SalesRegions { get; set; }
         public virtual List<ProjectDetail_EndUserCountry> EndUseCountries { get; set; }
+        public string GetProjectProcessType()
+        {
+
+            if (this.ProjectCategoryTagId == 220)
+            {
+                return "VBPD";
+            }
+            else
+            {
+                return "VBPD - Lite";
+            }
+        }
     }
 }

@@ -53,15 +53,7 @@
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
                     </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Process</div>
-                    <input asp-for="ProjectProcessType" class="data" readonly />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProjectProcessType")
-                    </ul>
-                </div>
-
+                </div>   
                 <div class="field">
                     <div class="label">Export/Application Type</div>
                     <select asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2"></select>
@@ -153,7 +145,7 @@
                             </div>
                             <div class="select-single-field">
                                 <div class="label">ProjectProcessType</div>
-                                <div class="data">@Model.ProjectProcessType</div>
+                                <div class="data">@Model.GetProjectProcessType()</div>
                             </div>
                             <div class="select-single-field">
                                 <div class="label">ExportControlCode</div>
