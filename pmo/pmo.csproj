@@ -28,6 +28,8 @@
     <Compile Remove="Migrations\20200224134911_RenameColumn.Designer.cs" />
     <Compile Remove="Migrations\20200309141934_AddLiteGateKeeperConfig.cs" />
     <Compile Remove="Migrations\20200309141934_AddLiteGateKeeperConfig.Designer.cs" />
+    <Compile Remove="Migrations\20200310134047_ExportUsers.cs" />
+    <Compile Remove="Migrations\20200310134047_ExportUsers.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

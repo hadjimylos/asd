@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200310134416_ExportUsers")]
+    partial class ExportUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1375,8 +1377,8 @@ namespace pmo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AddToInhouseTechnicalAbilitiesTagId")
-                        .HasColumnType("int");
+                    b.Property<bool>("AddToInhouseTechnicalAbilities")
+                        .HasColumnType("bit");
 
                     b.Property<string>("AdvantagesWeOffer")
                         .HasColumnType("nvarchar(max)");
@@ -1408,8 +1410,8 @@ namespace pmo.Migrations
                     b.Property<string>("OtherRequirements")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Product")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ProductTagId")
+                        .HasColumnType("int");
 
                     b.Property<string>("RegulatoryRequirements")
                         .HasColumnType("nvarchar(max)");
@@ -1434,7 +1436,7 @@ namespace pmo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddToInhouseTechnicalAbilitiesTagId");
+                    b.HasIndex("ProductTagId");
 
                     b.HasIndex("StageId");
 
@@ -1846,7 +1848,7 @@ namespace pmo.Migrations
                             Id = 5,
                             AllowInsertRiskAssesments = false,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MinBusinessCases = 1,
+                            MinBusinessCases = 0,
                             MinCustomerDesignApprovals = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
@@ -7633,14 +7635,14 @@ namespace pmo.Migrations
                         {
                             Id = 765,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ramp and Resource Plan",
+                            Name = "Ramp and Resource Plan - Field Name?",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 766,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Qualification Testing",
+                            Name = "Qualification Testing - Field Name?",
                             TagCategoryId = 15
                         },
                         new
@@ -7656,62 +7658,6 @@ namespace pmo.Migrations
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Santa Ana",
                             TagCategoryId = 13
-                        },
-                        new
-                        {
-                            Id = 769,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "None",
-                            TagCategoryId = 16
-                        },
-                        new
-                        {
-                            Id = 770,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Some",
-                            TagCategoryId = 16
-                        },
-                        new
-                        {
-                            Id = 771,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Significant",
-                            TagCategoryId = 16
-                        },
-                        new
-                        {
-                            Id = 772,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - Parts List",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 773,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - CAS Scoping Document",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 774,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - DFMEA",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 775,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - Control Plan",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 776,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - FAI Approval",
-                            TagCategoryId = 15
                         });
                 });
 
@@ -7861,14 +7807,6 @@ namespace pmo.Migrations
                             FriendlyName = "Stage Files",
                             IsFixed = false,
                             Key = "stage-files"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FriendlyName = "Technical Capabilities",
-                            IsFixed = false,
-                            Key = "technical-capabilities"
                         });
                 });
 
@@ -8278,11 +8216,10 @@ namespace pmo.Migrations
 
             modelBuilder.Entity("dbModels.ProjectJustification", b =>
                 {
-                    b.HasOne("dbModels.Tag", "AddToInhouseTechnicalAbilities")
+                    b.HasOne("dbModels.Tag", "Product")
                         .WithMany()
-                        .HasForeignKey("AddToInhouseTechnicalAbilitiesTagId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("ProductTagId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("dbModels.Stage", "Stage")
                         .WithMany("ProjectJustificationHistory")
