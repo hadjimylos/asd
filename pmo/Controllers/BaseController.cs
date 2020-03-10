@@ -12,24 +12,8 @@ namespace pmo.Controllers {
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            PopulateSession();
         }
 
-        private void PopulateSession() {
-            var asd = _httpContextAccessor.HttpContext.User.Identity.Name;
-
-        }
-
-
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            base.OnActionExecuted(context);
-        }
-
-        public override RedirectToActionResult RedirectToAction(string actionName, string controllerName, object routeValues)
-        {
-
-            return base.RedirectToAction(actionName, controllerName, routeValues);
-        }
+        
     }
 }
