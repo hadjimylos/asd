@@ -5,7 +5,8 @@ namespace dbModels {
     public enum ProjectState {
         Go = 1,
         OnHold = 2,
-        Closed = 3
+        Closed = 3,
+        Complete=4,
     }
 
     public class ProjectStateHistory : DatabaseModel {

@@ -5,9 +5,9 @@
 
     var incompleteParents = activeStageNavs.Where(w => w.IsComplete != null && !(bool)w.IsComplete && w.Visible).ToList();
     var parentsWithIncompleteChildren = activeStageNavs
-        .Where (
+        .Where(
             parent =>
-                parent.ChildNavs.Count (
+                parent.ChildNavs.Count(
                     child =>
                         child.IsComplete != null &&
                         !(bool)child.IsComplete &&
@@ -95,7 +95,7 @@
                     </div>
                 }
                 <div class="actions">
-                    @if ((bool)ViewBag.DisplayGateDecisions) {
+                    @if ((bool)ViewBag.DisplayGateDecisions && !(bool)ViewBag.IsFinalGate) {
                         if (ViewData["ProjectState"].ToString() == "1") {
                             <form method="post" action="/projects/@Model.ProjectId/gates/go">
                                 @Html.AntiForgeryToken()
@@ -123,6 +123,12 @@
                                 <input type="submit" class="btn green" value="Open" />
                             </form>
                         }
+                    }
+                    else if ((bool)ViewBag.IsFinalGate) {
+                        <form method="post" action="/projects/@Model.ProjectId/gates/complete">
+                            @Html.AntiForgeryToken()
+                            <input type="submit" class="btn green" value="Close" />
+                        </form>
                     }
                 </div>
                 <div class="actions">

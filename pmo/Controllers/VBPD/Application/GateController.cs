@@ -200,6 +200,19 @@
             return Redirect($"/projects/{_projectId}");
         }
 
+        [Route("complete")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        //Remove Close && add Close  --> both handle here
+        public IActionResult Complete() {
+            //close project
+            _currentGate.Decision = GateDecisionType.Complete;
+            this.ChangeProjectState(ProjectState.Complete);
+            _context.SaveChanges();
+            
+            return Redirect($"/projects/{_projectId}");
+        }
+
         [Route("on-hold")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]

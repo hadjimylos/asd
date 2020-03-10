@@ -14,15 +14,18 @@
         private readonly List<ActiveNav> _activeStageNavs;
         private readonly List<ActiveNav> _activeGateNavs;
         private readonly bool _displayGateDecisions;
+        private readonly bool _isFinalGate;
+        private readonly string _displayNum;
         protected readonly int _projectId;
         protected readonly int _projectState;
         protected readonly bool _isLite;
-        protected readonly string _displayNum;
+        
+        
 
         public BaseProjectDetailController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
-            // set nav component for all of these pages here
             this._projectId = int.Parse(Helpers.GetRouteValue(httpContextAccessor.HttpContext.Request, "projectId"));
-
+            this._projectState = (int)_context.ProjectStateHistories.Where(p => p.ProjectId == _projectId).OrderByDescending(d => d.CreateDate).First().ProjectState;
+            // set nav component for all of these pages here
             this._isLite = _context.ProjectDetails
                 .Include(i => i.ProjectCategory)
                 .Where(w => w.ProjectId == _projectId)
@@ -30,6 +33,11 @@
                 .OrderByDescending(c => c.CreateDate)
                 .First()
                 .ProjectCategory.Id == 219; // minor modification
+            this._nav = new ProjectDetailNav(_context, _mapper, _projectId);
+
+            // don't run code if project is complete to determine active navs
+            if (_projectState == (int)ProjectState.Complete)
+                return;
 
             var activeStage = _context.Stages.IncludeAll()
                .Where(
@@ -52,17 +60,18 @@
                         o.CreateDate
                 ).FirstOrDefault();
 
-
-            this._displayNum = !this._isLite ?
-                activeStage.StageNumber.ToString() :
-                    activeStage == null ?
-                        ((char)(gate.StageConfig.StageNumber + 64)).ToString() :
-                        ((char)(activeStage.StageNumber + 64)).ToString();
             this._displayGateDecisions = gate?.Decision == GateDecisionType.PendingDecision || gate?.Decision == GateDecisionType.OnHold || gate?.Decision == GateDecisionType.Closed;
             this._activeStageNavs = activeStage == null ? new List<ActiveNav>() : _isLite ? GetLiteActiveStageNavs(activeStage) : GetActiveStageNavs(activeStage);
             this._activeGateNavs = gate == null ? new List<ActiveNav>() : GetActiveGateNavs(gate);
-            this._projectState = (int)_context.ProjectStateHistories.Where(p => p.ProjectId == _projectId).OrderByDescending(d => d.CreateDate).First().ProjectState;
-            this._nav = new ProjectDetailNav(_context, _mapper, _projectId);
+            this._isFinalGate = !_isLite?
+                 gate?.StageConfig.StageNumber == _context.StageConfigs.Count() :
+                 gate?.StageConfig.StageNumber == _context.LiteStageConfigs.Count();
+            this._displayNum = !this._isLite ?
+                activeStage?.StageNumber.ToString() ?? gate?.StageConfig.StageNumber.ToString() :
+                activeStage == null ?
+                    ((char)(activeStage.StageNumber + 64)).ToString() :
+                    ((char)(gate.StageConfig.StageNumber + 64)).ToString();
+                        
         }
 
         private List<ActiveNav> GetActiveStageNavs(Stage activeStage) {
@@ -225,6 +234,7 @@
             ViewData["DisplayGateDecisions"] = this._displayGateDecisions;
             ViewData["ProjectState"] = _projectState;
             ViewData["DisplayNumber"] = this._displayNum;
+            ViewData["IsFinalGate"] = this._isFinalGate;
             base.OnActionExecuting(filterContext);
         }
     }

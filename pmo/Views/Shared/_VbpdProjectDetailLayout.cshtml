@@ -32,14 +32,6 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="nav">
-                                <a target="_blank" class="item-wrapper" href="/projects">
-                                    <div class="icon-descrip">
-                                        <i class="icon fas fa-clipboard-list"></i>
-                                        <div class="descrip">VBPD Projects List</div>
-                                    </div>
-                                </a>
-                            </div>
 
                             @{
                                 var href = $"/projects/{projectId}";
@@ -63,7 +55,9 @@
                                 @Html.Partial("_ListNavigationStage", navmodel.Stages)
                             </div>
                         </div>
-                        @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))
+                        @if ((dbModels.ProjectState)ViewBag.ProjectState != dbModels.ProjectState.Complete) {
+                            @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))
+                        }
                     </div>
                 </div>
             </div>

@@ -11,7 +11,8 @@
         // decisons
         Go = 2,
         OnHold = 3,
-        Closed = 4
+        Closed = 4,
+        Complete=5,
     }
 
     public class Gate : DatabaseModel
