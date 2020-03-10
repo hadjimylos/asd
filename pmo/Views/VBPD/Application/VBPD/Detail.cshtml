@@ -24,33 +24,35 @@
                     <div class="wrapper">
                         <div class="details">
                             <div class="detail">
-                                <div class="label">Project Classification</div>
-                                <div class="value">@Model.ProjectDetail.ProjectClassification.Name</div>
+                                <div class="label">Project</div>
+                                <div class="value">@Model.ProjectDetail.Project.Name</div>
                             </div>
+                            <div class="detail">
+                                <div class="label">Salesforce.com #</div>
+                                <div class="value">@Model.ProjectDetail.Salesforce</div>
+                            </div>
+
                             <div class="detail">
                                 <div class="label">Project Category</div>
                                 <div class="value">@Model.ProjectDetail.ProjectCategory.Name</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Product Line</div>
+                                <div class="value">@Model.ProjectDetail.ProductLine.Name</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Project Classification</div>
+                                <div class="value">@Model.ProjectDetail.ProjectClassification.Name</div>
                             </div>
                             <div class="detail">
                                 <div class="label">Design Authority</div>
                                 <div class="value">@Model.ProjectDetail.DesignAuthority.Name</div>
                             </div>
                             <div class="detail">
-                                <div class="label">Export Application Type</div>
-                                <div class="value">@Model.ProjectDetail.ExportApplicationType.Name</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Customers</div>
-                                <div class="value">@Helpers.GetDelimited(Model.ProjectDetail.Customers.Select(s => s.Customers.Name).ToList())</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Sales Regions</div>
-                                <div class="value">@Helpers.GetDelimited(Model.ProjectDetail.SalesRegions.Select(s => s.SalesRegion.Name).ToList())</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">End Use Countries</div>
-                                <div class="value">@Helpers.GetDelimited(Model.ProjectDetail.EndUseCountries.Select(s => s.EndUserCountries.Name).ToList())</div>
-                            </div>
+                                <div class="label">Project Process Type</div>
+                                <div class="value">@Model.ProjectDetail.ProjectProcessType</div>
+                            </div>                         
+
                         </div>
                     </div>
                 </div>
@@ -60,28 +62,30 @@
                     <div class="wrapper">
                         <div class="details">
                             <div class="detail">
-                                <div class="label">Salesforce</div>
-                                <div class="value">@Model.ProjectDetail.Salesforce</div>
+                                <div class="label">Export/Application Type</div>
+                                <div class="value">@Model.ProjectDetail.ExportApplicationType.Name</div>
                             </div>
                             <div class="detail">
-                                <div class="label">Project Process Type</div>
-                                <div class="value">@Model.ProjectDetail.GetProjectProcessType()</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">Export Control Code</div>
-                                <div class="value">@Model.ProjectDetail.ExportControlCode</div>
-                            </div>
-                            <div class="detail">
-                                <div class="label">End Use Destination Country</div>
+                                <div class="label">End-Use Destination Country</div>
                                 <div class="value">@Model.ProjectDetail.EndUseDestinationCountry</div>
                             </div>
                             <div class="detail">
-                                <div class="label">Project</div>
-                                <div class="value">@Model.ProjectDetail.Project.Name</div>
+                                <div class="label">Export Control Code(s)</div>
+                                <div class="value">@Model.ProjectDetail.ExportControlCode</div>
                             </div>
                             <div class="detail">
-                                <div class="label">Product Line</div>
-                                <div class="value">@Model.ProjectDetail.ProductLine.Name</div>
+                                <div class="label">Export Restricted Users</div>
+                                <div class="value">
+                                    @Model.ProjectDetail.ExportRestrictedUsers
+                                </div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Sales Regions</div>
+                                <div class="value">@Helpers.GetDelimited(Model.ProjectDetail.SalesRegions.Select(s => s.SalesRegion.Name).ToList())</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Customers</div>
+                                <div class="value">@Helpers.GetDelimited(Model.ProjectDetail.Customers.Select(s => s.Customers.Name).ToList())</div>
                             </div>
                         </div>
                     </div>

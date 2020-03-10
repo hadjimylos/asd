@@ -34,7 +34,7 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Salesforce</div>
+                <div class="label">Salesforce.com #</div>
                 <input asp-for="Salesforce" class="data" />
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "Salesforce")
@@ -50,7 +50,7 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Classification</div>
+                <div class="label">Project Classification</div>
                 <select asp-for="ProjectClassificationTagId" asp-items="Model.ProjectClassificationDropDown" class="data select2">
                     <option hidden disabled selected>-- Select --</option>
                 </select>
@@ -68,7 +68,14 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Export Application Type</div>
+                <div class="label">Process</div>
+                <input asp-for="ProjectProcessType" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ProjectProcessType")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Export/Application Type</div>
                 <select asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2">
                     <option hidden disabled selected>-- Select --</option>
                 </select>
@@ -77,32 +84,24 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Customers</div>
-                <select asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="data select2">
-                </select>
+                <div class="label">End-Use Destination Country</div>
+                <input class="data" asp-for="EndUseDestinationCountry" />
                 <ul class="errors">
-                    @Html.Partial("_FieldErrors", "CustomersIds")
+                    @Html.Partial("_FieldErrors", "EndUseDestinationCountry")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Attachment Engineering Checklist Url</div>
-                <input asp-for="EngineeringChecklistUrl" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "EngineeringChecklistUrl")
-                </ul>
-            </div>            
-            <div class="field">
-                <div class="label">Export Control Code</div>
+                <div class="label">Export Control Code(s)</div>
                 <input asp-for="ExportControlCode" class="data" />
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "ExportControlCode")
                 </ul>
             </div>
             <div class="field">
-                <div class="label">End Use Countries</div>
-                <input class="data" asp-for="EndUseDestinationCountry" />
+                <div class="label">Export Restricted Users</div>
+                <input asp-for="ExportRestrictedUsers" class="data" />
                 <ul class="errors">
-                    @Html.Partial("_FieldErrors", "EndUseDestinationCountry")
+                    @Html.Partial("_FieldErrors", "ExportRestrictedUsers")
                 </ul>
             </div>
             <div class="field">
@@ -113,6 +112,22 @@
                     @Html.Partial("_FieldErrors", "SalesRegionIds")
                 </ul>
             </div>
+            <div class="field">
+                <div class="label">Customer</div>
+                <select asp-for="CustomerIds" asp-items="Model.CustomerDropDown" class="data select2">
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "CustomersIds")
+                </ul>
+            </div>
+
+            @*<div class="field">
+            <div class="label">Attachment Engineering Checklist Url</div>
+            <input asp-for="EngineeringChecklistUrl" class="data" />
+            <ul class="errors">
+                @Html.Partial("_FieldErrors", "EngineeringChecklistUrl")
+            </ul>
+        </div>*@
             <div class="field">
                 <input type="submit" class="data btn" value="SUBMIT" />
             </div>

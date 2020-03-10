@@ -35,15 +35,12 @@ namespace forms
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int ProjectId { get; set; }
 
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new string EngineeringChecklistUrl { get; set; }
+        //[Required(ErrorMessage = ErrorMessages.Required)]
+        //public new string EngineeringChecklistUrl { get; set; }
         
         [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int DesignAuthorityTagId { get; set; }
-
-        //[Required(ErrorMessage = ErrorMessages.Required)]
-        //public new string ProjectProcessType { set; get; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ExportControlCode { set; get; }

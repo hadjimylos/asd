@@ -15,8 +15,8 @@ namespace forms {
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string Salesforce { get; set; }
         
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new string EngineeringChecklistUrl { get; set; }           
+        //[Required(ErrorMessage = ErrorMessages.Required)]
+        //public new string EngineeringChecklistUrl { get; set; }           
         
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ExportControlCode { set; get; }

@@ -56,6 +56,9 @@ namespace pmo.Migrations
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("MultipleFieldsGeneratedTable")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("ProbabiltyOfWin")
                         .HasColumnType("decimal(18,2)");
 
@@ -1225,6 +1228,10 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("EndUseDestinationCountry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EngineeringChecklistUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
