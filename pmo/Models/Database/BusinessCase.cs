@@ -51,12 +51,12 @@ namespace dbModels {
                 ((decimal?)
                     (    
                         (
-                FinancialData.Sum(s => s.GetStandardMarginPrice()) *
-                (1 -
-                    (this.TaxRate / 100)
-                ) /
-                FinancialData.Count
-            ) /
+                            FinancialData.Sum(s => s.GetStandardMarginPrice()) *
+                            (1 -
+                                (this.TaxRate / 100)
+                            ) /
+                            FinancialData.Count
+                        ) /
                         FinancialData.Sum(s => s.GetTotalExpenses())
                     ) * 100
             );
