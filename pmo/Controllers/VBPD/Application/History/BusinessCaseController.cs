@@ -39,7 +39,8 @@ namespace pmo.Controllers.VBPD.Application.History {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
                     Stage = currentStage,
-                    ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations)
+                    ManufacturingLocationsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.ManufacturingLocations),
+                    LaborRate = 100, // default value
                 };
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
