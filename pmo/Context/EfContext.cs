@@ -217,6 +217,7 @@ namespace pmo
                 new TagCategory { Id = 13, IsFixed = true, FriendlyName = "Design Authority", Key = "design-authority" },
                 new TagCategory { Id = 14, IsFixed = true, FriendlyName = "Export Application Type", Key = "export-application-type" },
                 new TagCategory { Id = 15, IsFixed = false, FriendlyName = "Stage Files", Key = "stage-files" },
+                new TagCategory { Id = 16, IsFixed = false, FriendlyName = "Technical Capabilities", Key = "technical-capabilities" },
             });
 
             builder.Entity<Tag>().HasData(new List<Tag>() {               
@@ -1013,6 +1014,12 @@ namespace pmo
 
                     new Tag { Id = 767,  Name = "Customer Specific", TagCategoryId = 5 },
                     new Tag { Id =  768  , Name ="Santa Ana", TagCategoryId =  13},
+
+                    //Technical Capabilities
+                    new Tag { Id =  769  , Name ="None", TagCategoryId =  16},
+                    new Tag { Id =  770  , Name ="Some", TagCategoryId =  16},
+                    new Tag { Id =  771  , Name ="Significant", TagCategoryId =  16},
+
 
 
             });

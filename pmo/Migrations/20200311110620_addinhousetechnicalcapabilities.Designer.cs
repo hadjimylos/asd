@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200311110620_addinhousetechnicalcapabilities")]
+    partial class addinhousetechnicalcapabilities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1405,8 +1407,8 @@ namespace pmo.Migrations
                     b.Property<string>("OtherRequirements")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Product")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ProductTagId")
+                        .HasColumnType("int");
 
                     b.Property<string>("RegulatoryRequirements")
                         .HasColumnType("nvarchar(max)");
@@ -1432,6 +1434,8 @@ namespace pmo.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddToInhouseTechnicalAbilitiesTagId");
+
+                    b.HasIndex("ProductTagId");
 
                     b.HasIndex("StageId");
 
@@ -1843,7 +1847,7 @@ namespace pmo.Migrations
                             Id = 5,
                             AllowInsertRiskAssesments = false,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MinBusinessCases = 1,
+                            MinBusinessCases = 0,
                             MinCustomerDesignApprovals = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
@@ -8245,6 +8249,11 @@ namespace pmo.Migrations
                         .HasForeignKey("AddToInhouseTechnicalAbilitiesTagId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("dbModels.Tag", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductTagId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("dbModels.Stage", "Stage")
                         .WithMany("ProjectJustificationHistory")
