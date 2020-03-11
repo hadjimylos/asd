@@ -90,7 +90,6 @@ namespace pmo
 
         public override int SaveChanges()
         {
-            AddOrUpdateReports();
             //----------------Database Model Add new records----------------//
             var databaseModel_NewRecords = ChangeTracker.Entries<DatabaseModel>().Where(E => E.State == EntityState.Added).ToList();
             databaseModel_NewRecords.ForEach(E =>
@@ -138,6 +137,9 @@ namespace pmo
                 }
                 model.Property(prop => prop.ModifiedByUser).IsModified = true;
             });
+            //Add Reports if specific entities values changed.
+            UpdateReports();
+
             return base.SaveChanges();
         }
 
@@ -1213,7 +1215,7 @@ namespace pmo
                 new LiteStageConfig { Id = 2, StageNumber = 2, ModifiedByUser = "system", AllowInsertRiskAssesments = true, MinInvestmentPlans = 1, MinProductIntroChecklist = 1, MinBusinessCases = 1,  },
             });
 
-            builder.Entity<LiteStageFileConfig>().HasData(new List<LiteStageFileConfig>() { 
+            builder.Entity<LiteStageFileConfig>().HasData(new List<LiteStageFileConfig>() {
                 new LiteStageFileConfig { Id = 1, RequiredFileTagId = 761, StageConfigId = 2 },
                 new LiteStageFileConfig { Id = 2, RequiredFileTagId = 762, StageConfigId = 2 },
                 new LiteStageFileConfig { Id = 3, RequiredFileTagId = 765, StageConfigId = 2 },
@@ -1260,7 +1262,7 @@ namespace pmo
             });
         }
 
-        private void AddOrUpdateReports()
+        private void UpdateReports()
         {
             //update reports
             var updateProjectDetails = ChangeTracker.Entries<ProjectDetail>().Where(E => E.State == EntityState.Modified).ToList();
@@ -1278,32 +1280,34 @@ namespace pmo
 
             updateBusinessCases.ForEach(bc =>
             {
-                var stage = bc.Property(x => x.Stage).CurrentValue;
-                var projectId = Stages.Include(i => i.Project).FirstOrDefault(f => f.Id == stage.Id).ProjectId;
+                var stageId = bc.Property(x => x.StageId).CurrentValue;
+                var stage = Stages.Include(i => i.Project).FirstOrDefault(f => f.Id == stageId);
+                var projectId = stage.ProjectId;
                 var rpt_BusinessCase = _mapper.Map<Report_BusinessCase>(bc.Entity);
                 rpt_BusinessCase.StageNumber = stage.StageNumber;
-                ChangeTracker.Context.Add(rpt_BusinessCase); // add custom mapper for calculations 
+                rpt_BusinessCase.ReportProjectId = Report_Project.Where(w => w.ProjectId == projectId).FirstOrDefault().Id;
+
+                ChangeTracker.Context.Update(rpt_BusinessCase); // add custom mapper for calculations  
+
             });
 
             updateFinancials.ForEach(f =>
             {
                 var projectId = BusinessCases.Include(i => i.Stage).Where(i => i.Id == f.Entity.BusinessCaseId).GetLatestVersion().Stage.ProjectId;//First get projectId
-                var rpt_BusinessCaseId = Report_BusinessCase.Include(i => i.Report_Project).FirstOrDefault(w => w.Report_Project.ProjectId == projectId).Id; // Then Get Report BusinessCaseId based on projectID
+                var rpt_BusinessCaseId = Report_BusinessCase.Include(i => i.Report_Project).OrderByDescending(o => o.StageNumber).FirstOrDefault(w => w.Report_Project.ProjectId == projectId).Id; // Then Get Report BusinessCaseId based on projectID
                 var rpt_Financials = _mapper.Map<Report_FinancialData>(f.Entity);
                 rpt_Financials.ReportBusinessCaseId = rpt_BusinessCaseId;
                 ChangeTracker.Context.Update(rpt_Financials); // add custom mapper for calculations 
             });
 
-
             // add reports
             var newProjectDetails = ChangeTracker.Entries<ProjectDetail>().Where(E => E.State == EntityState.Added).ToList();
             var newBusinessCases = ChangeTracker.Entries<BusinessCase>().Where(E => E.State == EntityState.Added).ToList();
             var newFinancials = ChangeTracker.Entries<FinancialData>().Where(E => E.State == EntityState.Added).ToList();
-            var newStage = ChangeTracker.Entries<Stage>().Where(E => E.State == EntityState.Added).ToList();
-
+         
             newProjectDetails.ForEach(pd =>
             {
-                var projectName = Projects.Where(w => w.Id == pd.Entity.ProjectId).FirstOrDefault().Name; 
+                var projectName = Projects.Where(w => w.Id == pd.Entity.ProjectId).FirstOrDefault().Name;
                 var rpt_Project = _mapper.Map<Report_Project>(pd.Entity);
                 rpt_Project.Id = 0;
                 rpt_Project.ProjectId = pd.Entity.ProjectId;
@@ -1313,7 +1317,6 @@ namespace pmo
 
             newBusinessCases.ForEach(bc =>
             {
-
                 var stageId = bc.Property(x => x.StageId).CurrentValue;
                 var stage = Stages.Include(i => i.Project).FirstOrDefault(f => f.Id == stageId);
                 var rpt_projectId = Report_Project.FirstOrDefault(f => f.ProjectId == stage.ProjectId).Id;
@@ -1328,46 +1331,28 @@ namespace pmo
             {
 
                 var projectId = BusinessCases.Include(i => i.Stage).Where(i => i.Id == f.Entity.BusinessCaseId).GetLatestVersion().Stage.ProjectId;//First get projectId
-                var rpt_BusinessCaseId = Report_BusinessCase.Include(i => i.Report_Project).FirstOrDefault(w => w.Report_Project.ProjectId == projectId).Id; // Then Get Report BusinessCaseId based on projectID
+                var rpt_BusinessCaseId = Report_BusinessCase.Include(i => i.Report_Project).OrderByDescending(o => o.StageNumber).FirstOrDefault(w => w.Report_Project.ProjectId == projectId).Id; // Then Get Report BusinessCaseId based on projectID
                 var rpt_Financials = _mapper.Map<Report_FinancialData>(f.Entity);
                 rpt_Financials.Id = 0;
                 rpt_Financials.ReportBusinessCaseId = rpt_BusinessCaseId;
                 ChangeTracker.Context.Add(rpt_Financials); // add custom mapper for calculations 
             });
 
-            //newStage.ForEach(s =>
-            //{
-            //    var projectId = s.Property(x => x.ProjectId).CurrentValue;
-            //    var newStageNumber = s.Property(x => x.StageNumber).CurrentValue;
-            //    var report = Report_Project.Where(w => w.ProjectId == projectId).FirstOrDefault();// Get latest project Report based on stage Number 
-            //    if (report != null && newStageNumber !=1)//if not first stageNumber
-            //    {
-            //        //Dublicate latest Reports with the new stage number 
-            //        var latestReportProjectId = report.Id;
-            //        //Add Project Report
-            //        var latestReportProject = report;
-            //        latestReportProject.Id = 0;
-            //        ChangeTracker.Context.Add(latestReportProject);
+            //Delete Records
+            var deleteFinancials = ChangeTracker.Entries<FinancialData>().Where(E => E.State == EntityState.Deleted).ToList();
 
-            //        //Add BusinessCase Report
-            //        var rpt_businessCase = Report_BusinessCase.Include(i => i.ReportProjectId == latestReportProject.Id).FirstOrDefault();
-            //        if (rpt_businessCase != null)
-            //        {
-            //            rpt_businessCase.Id = 0;
-            //            rpt_businessCase.ReportProjectId = latestReportProject.Id;
-            //            ChangeTracker.Context.Add(rpt_businessCase);
-            //        }
-            //        //Add Finance Report
-            //        var rpt_finance = Report_FinancialData.Include(i => i.Report_BusinessCase).ThenInclude(i => i.ReportProjectId == latestReportProject.Id).FirstOrDefault();
-            //        if (rpt_finance != null)
-            //        {
-            //            rpt_finance.Id = 0;
-            //            rpt_businessCase.ReportProjectId = latestReportProject.Id;
-            //            ChangeTracker.Context.Add(rpt_businessCase);
-            //        }
-            //    }
-            //});
-
+            deleteFinancials.ForEach(f =>
+            {
+                var financeId = f.Property(x => x.Id).CurrentValue;
+                var financeDataToBeDeleted = FinancialData.Include(i => i.BusinessCase).ThenInclude(i => i.Stage).Where(w => w.Id == financeId).FirstOrDefault();
+                var rpt_FinanceDataToBeDeleted = Report_FinancialData.Include(i => i.Report_BusinessCase)
+                                                                      .ThenInclude(i => i.Report_Project)
+                                                                      .Where(w => w.Report_BusinessCase.Report_Project.ProjectId == financeDataToBeDeleted.BusinessCase.Stage.ProjectId)
+                                                                      .Where(w => w.Year == financeDataToBeDeleted.Year)
+                                                                      .OrderByDescending(o => o.Report_BusinessCase.StageNumber)
+                                                                      .FirstOrDefault();
+                ChangeTracker.Context.Remove(rpt_FinanceDataToBeDeleted); // add custom mapper for calculations 
+            });
         }
     }
 }
