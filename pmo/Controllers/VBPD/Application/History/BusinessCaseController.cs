@@ -55,7 +55,7 @@ namespace pmo.Controllers.VBPD.Application.History {
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(BusinessCaseForm vm) {
             int currentVersion = 0;
-            var latestBusinessCase = _context.BusinessCases.GetLatestVersion(_projectId);
+            var latestBusinessCase = _context.BusinessCases.Include(i => i.FinancialData).GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s => s.Id == _stageId);
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
@@ -116,6 +116,11 @@ namespace pmo.Controllers.VBPD.Application.History {
                             latestBusinessCase.CustomerMarketAnalysis = businessCase.CustomerMarketAnalysis;
                             latestBusinessCase.Changes = businessCase.Changes;
                             latestBusinessCase.GpaRequirements = businessCase.GpaRequirements;
+
+                            // update financial record years
+                            for (int i = 0; i < latestBusinessCase.FinancialData.Count; i++)
+                                latestBusinessCase.FinancialData[i].Year = businessCase.FinancialStartYear + i;
+
                             _context.BusinessCases.Update(latestBusinessCase);
                             _context.SaveChanges();
 

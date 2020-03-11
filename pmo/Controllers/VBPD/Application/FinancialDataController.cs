@@ -44,6 +44,10 @@ namespace pmo.Controllers.VBPD.Application {
                     f.BusinessCaseId = _businessCaseId;
                 });
 
+                // populate years based on active record always (especially if new records)
+                for (int i = 0; i < model.Count; i++)
+                    model[i].Year = currentBusinessCase.FinancialStartYear + i;
+
                 return View($"{path}/Edit.cshtml", model);
             }
 
