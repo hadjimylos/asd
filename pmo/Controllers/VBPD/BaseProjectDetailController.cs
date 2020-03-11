@@ -68,7 +68,7 @@
                  gate?.StageConfig.StageNumber == _context.LiteStageConfigs.Count();
             this._displayNum = !this._isLite ?
                 activeStage?.StageNumber.ToString() ?? gate?.StageConfig.StageNumber.ToString() :
-                activeStage == null ?
+                activeStage != null ?
                     ((char)(activeStage.StageNumber + 64)).ToString() :
                     ((char)(gate.StageConfig.StageNumber + 64)).ToString();
                         
