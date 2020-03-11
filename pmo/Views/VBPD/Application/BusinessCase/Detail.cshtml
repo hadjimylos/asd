@@ -189,7 +189,7 @@
                         <div>$ @Model.FinancialData.Sum(s => s.GetCostExtended()).ToString("N2")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetRevenueExtended()).ToString("N2")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetStandardMarginPrice()).ToString("N2")</div>
-                        <div>@Model.FinancialData.Sum(s => s.GetStandardMarginPercent()).ToString("N2") %</div>
+                        <div>@Model.FinancialData.Average(s => s.GetStandardMarginPercent()).ToString("N2") %</div>
                     </div>
                 </div>
             </div>
