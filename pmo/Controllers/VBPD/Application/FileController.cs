@@ -22,6 +22,11 @@ namespace pmo.Controllers {
             _SharePointService = SharePointService;
         }
 
+        public IActionResult Detail() {
+            var model = _context.StageFiles.Where(w => w.StageId == _stageId).ToList();
+            return View($"{path}/Detail.cshtml", model);
+        }
+
         [Route("edit")]
         public IActionResult Edit() {
             List<FileForm> model = new List<FileForm>();

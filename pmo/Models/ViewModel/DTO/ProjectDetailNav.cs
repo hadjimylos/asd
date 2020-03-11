@@ -75,6 +75,8 @@
                 stage.DisplaySchedules = stage.Schedules.Count > 0;
                 stage.RisksUrl = $"/projects/{projectId}/stages/{stage.StageNumber}/risk";
                 stage.DisplayRisks = stage.Risks.Count > 0;
+                stage.StageFilesUrl = $"/projects/{projectId}/stages/{stage.StageNumber}/files";
+                stage.DisplayStageFiles = stage.Files.Count > 0;
             });
 
             var gates = _context.Gates
@@ -100,7 +102,9 @@
         public bool DisplaySchedules { get; set; }
         public string RisksUrl { get; set; }
         public bool DisplayRisks { get; set; }
-}
+        public string StageFilesUrl { get; set; }
+        public bool DisplayStageFiles { get; set; }
+    }
 
     public class NavigationGate : Gate {
         public string Url { get; set; }
