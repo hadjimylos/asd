@@ -2,65 +2,62 @@
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using pmo.Services.Lists;
 using System.Collections.Generic;
 using System.Linq;
 using ViewModels;
 using ViewModels.Helpers;
 
-namespace pmo.Controllers
-{
+namespace pmo.Controllers {
     [Route("projects/{projectid}/stages/{stageNumber}/project-justification")]
-    public class ProjectJustificationController : BaseStageComponentController
-    {
+    public class ProjectJustificationController : BaseStageComponentController {
+       
         private readonly string viewPath = "~/Views/VBPD/Application/ProjectJustification";
 
-        public ProjectJustificationController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
-        {
-            //  _listService = listService;
+        public ProjectJustificationController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             //   _httpContextAccessor = httpContextAccessor;
         }
 
         [Route("{version}")]
-        public IActionResult Detail(int version)
-        {
+        public IActionResult Detail(int version) {
             var model = GetDBModel(version);
             return View($"{viewPath}/Detail.cshtml", model);
         }
 
         [Route("edit")]
-        public IActionResult Edit()
-        {
+        public IActionResult Edit() {
             var currentVersion = _context.ProjectJustifications.AsNoTracking().GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
             ViewBag.CurrentStageNumber = currentStage.StageNumber;
-            if (currentVersion == null)
-            {
-                var vm = new forms.ProjectJustificationForm()
-                {
+            if (currentVersion == null) {
+                var vm = new forms.ProjectJustificationForm() {
                     StageId = currentStage.Id,
                     Stage = currentStage,
-                    Versions = GetVersionHistory()
-            };
+                    Versions = GetVersionHistory(),
+                };
+                SetDropdowns(vm);
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
 
             var model = GetViewModel(currentVersion.Version);
+            SetDropdowns(model);
             model.Versions = GetVersionHistory();
+         
             return View($"{viewPath}/Edit.cshtml", model);
         }
 
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(forms.ProjectJustificationForm vm)
-        {
+        public IActionResult Edit(forms.ProjectJustificationForm vm) {
             int currentVersion = 0;
             var lastProjectJustification = _context.ProjectJustifications.GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s => s.Id == _stageId);
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
+                SetDropdowns(vm);
                 vm.Stage = currentStage;
                 vm.Versions = GetVersionHistory();
                 vm.Version = lastProjectJustification == null ? 0 : lastProjectJustification.Version;
@@ -82,7 +79,7 @@ namespace pmo.Controllers
                 var isUpdate = lastProjectJustification.ModifiedByUser.ToLower() == currentUser.ToLower();
                 if (isUpdate && currentStage.StageNumber == lastProjectJustification.Stage.StageNumber)//if same user and sameStage then update
                 {
-                    lastProjectJustification.AddToInhouseTechnicalAbilities = projectJust.AddToInhouseTechnicalAbilities;
+                    lastProjectJustification.AddToInhouseTechnicalAbilitiesTagId = projectJust.AddToInhouseTechnicalAbilitiesTagId;
                     lastProjectJustification.AdvantagesWeOffer = projectJust.AdvantagesWeOffer;
                     lastProjectJustification.Application = projectJust.Application;
                     lastProjectJustification.BenchmarkSamples = projectJust.BenchmarkSamples;
@@ -99,8 +96,7 @@ namespace pmo.Controllers
                     _context.ProjectJustifications.Update(lastProjectJustification);
                     _context.SaveChanges();
                 }
-                else
-                {//if not then new record 
+                else {//if not then new record 
                     projectJust.Version = currentVersion += 1;
                     _context.ProjectJustifications.Add(projectJust);
                     _context.SaveChanges();
@@ -110,17 +106,15 @@ namespace pmo.Controllers
             return this._editAction;
         }
 
-        private List<forms.ProjectJustificationForm> GetVersionHistory()
-        {
-            var grouped = _context.ProjectJustifications.Include(k => k.Product)
+        private List<forms.ProjectJustificationForm> GetVersionHistory() {
+            var grouped = _context.ProjectJustifications.Include(s=>s.AddToInhouseTechnicalAbilities)
                 .Include(s => s.Stage)
                 .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
                 .ToList();
 
-            if (grouped.Count == 0)
-            {
+            if (grouped.Count == 0) {
                 return new List<forms.ProjectJustificationForm>();
             }
 
@@ -129,16 +123,31 @@ namespace pmo.Controllers
             var vm = _mapper.Map<List<forms.ProjectJustificationForm>>(versions);
             return vm;
         }
-        private forms.ProjectJustificationForm GetViewModel( int version)
-        {
-            var model = _context.ProjectJustifications.Where(s => s.Version == version).Include(i => i.Product).GetLatestVersion(_projectId);
+        private forms.ProjectJustificationForm GetViewModel(int version) {
+            var model = _context.ProjectJustifications.Where(s => s.Version == version).Include(s => s.AddToInhouseTechnicalAbilities).GetLatestVersion(_projectId);
             var vm = _mapper.Map<forms.ProjectJustificationForm>(model);
             return vm;
         }
 
-        private ProjectJustification GetDBModel(int version)
-        {
+        private ProjectJustification GetDBModel(int version) {
             return _context.ProjectJustifications.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
+        private void SetDropdowns(forms.ProjectJustificationForm model) {
+            // get all tags
+            List<string> tagDropdowns = new List<string>() {
+                TagCategoryHelper.AddToInHouseTechnicalCapabilities
+            };
+
+            var tagCategories = _context.TagCategories
+                .Include(i => i.Tags)
+                .Where(w => tagDropdowns.Contains(w.Key))
+                .ToList();
+
+            model.AddToInhouseTechnicalAbilitiesDropDown = GetDropdown(tagCategories, TagCategoryHelper.AddToInHouseTechnicalCapabilities);
+        }
+
+        private List<SelectListItem> GetDropdown(List<dbModels.TagCategory> categories, string key) =>
+            categories.First(f => f.Key == key).GetListItems();
     }
 }
+

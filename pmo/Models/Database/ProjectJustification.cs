@@ -17,12 +17,11 @@ namespace dbModels {
 
         public string Scope { get; set; }
 
-        public bool AddToInhouseTechnicalAbilities { get; set; }
+        public int AddToInhouseTechnicalAbilitiesTagId { get; set; }
+        [ForeignKey("AddToInhouseTechnicalAbilitiesTagId")]
+        public virtual Tag AddToInhouseTechnicalAbilities { get; set; }
 
-        public int? ProductTagId { get; set; }
-
-        [ForeignKey("ProductTagId")]
-        public virtual Tag Product { get; set; }
+       public string Product { get; set; }
         
         public string Competetion { get; set; }
         

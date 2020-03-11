@@ -209,7 +209,9 @@ namespace ViewModels.Helpers
         public const string DesignAuthority = "design-authority";
         public const string ExportApplicationType = "export-application-type";
         public const string StageFiles = "stage-files";
-        
+        public const string AddToInHouseTechnicalCapabilities = "technical-capabilities";
+
+
     }
 
     public static class JobDescripKeys {
