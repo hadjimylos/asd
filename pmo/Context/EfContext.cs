@@ -187,7 +187,7 @@ namespace pmo
                 new StageConfig(){ Id=5,
                     StageNumber = 5,
                     AllowInsertRiskAssesments = false,
-                    MinBusinessCases = 0,
+                    MinBusinessCases = 1,
                     MinCustomerDesignApprovals = 0,
                     MinInvestmentPlans=0,
                     MinKeyCharacteristics=0,
