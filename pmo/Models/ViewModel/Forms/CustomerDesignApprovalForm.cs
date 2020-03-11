@@ -10,14 +10,12 @@ namespace forms {
 
         public List<CustomerDesignApprovalForm> Versions { get; set; }
 
-        [UserExistsActiveDirectory(ErrorMessages.MissingUserActiveDirectory)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string SentForApprovalBy { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime DateSentForApprove { get; set; }
 
-        [UserExistsActiveDirectory(ErrorMessages.MissingUserActiveDirectory)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string ApprovedBy { get; set; }
 

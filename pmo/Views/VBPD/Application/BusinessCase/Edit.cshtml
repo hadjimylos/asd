@@ -36,7 +36,7 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Work Requirement Amount</div>
+                    <div class="label">Work Required</div>
                     <input asp-for="WorkRequirementAmount" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "WorkRequirementAmount")
@@ -50,14 +50,14 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Add To Tecnical Abilities</div>
+                    <div class="label">Adding to Technical Capabilities</div>
                     <input asp-for="AddToTecnicalAbilities" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "AddToTecnicalAbilities")
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Project Completion</div>
+                    <div class="label">Project Completion Date</div>
                     <input asp-for="ProjectCompletion" type="date" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "ProjectCompletion")
@@ -80,7 +80,7 @@
                 </div>
                 <div class="field">
                     <div class="label">Customer Market Analysis</div>
-                    <input asp-for="CustomerMarketAnalysis" class="data" />
+                    <textarea asp-for="CustomerMarketAnalysis" class="data"></textarea>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "CustomerMarketAnalysis")
                     </ul>
@@ -134,7 +134,7 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Financials Start Year</div>
+                    <div class="label">Data Starting Year</div>
                     <input asp-for="FinancialStartYear" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "FinancialStartYear")
@@ -210,7 +210,7 @@
                                     <div class="data">@version.ProjectScope</div>
                                 </div>
                                 <div class="select-single-field">
-                                    <div class="label">Work Requirement Amount</div>
+                                    <div class="label">Work Required</div>
                                     <div class="data">@version.WorkRequirementAmount</div>
                                 </div>
                                 <div class="select-single-field">
@@ -218,11 +218,11 @@
                                     <div class="data">@version.StrategicAlignment</div>
                                 </div>
                                 <div class="select-single-field">
-                                    <div class="label">Add To Tecnical Abilities</div>
+                                    <div class="label">Adding to Technical Capabilities</div>
                                     <div class="data">@version.AddToTecnicalAbilities</div>
                                 </div>
                                 <div class="select-single-field">
-                                    <div class="label">Project Completion</div>
+                                    <div class="label">Project Completion Date</div>
                                     <div class="data">@version.ProjectCompletion</div>
                                 </div>
                                 <div class="select-single-field">
@@ -273,7 +273,7 @@
                                     <div class="data">@version.TargetFirstYearGrossMargin</div>
                                 </div>
                                 <div class="select-single-field">
-                                    <div class="label">Financials Start Year</div>
+                                    <div class="label">Data Starting Year</div>
                                     <div class="data">@version.FinancialStartYear</div>
                                 </div>
                                 <div class="select-single-field">

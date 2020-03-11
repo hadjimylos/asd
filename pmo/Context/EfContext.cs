@@ -1009,8 +1009,8 @@ namespace pmo
                     new Tag { Id = 762, Name = "Deliverable Regiser - FAI", TagCategoryId = 15 },
                     new Tag { Id = 763, Name = "Product Infrigment Patentability - Upload any pertinent documentation", TagCategoryId = 15 },
                     new Tag { Id = 764, Name = "Customer Design Approval - Upload any pertinent documentation", TagCategoryId = 15 },
-                    new Tag { Id = 765, Name = "Ramp and Resource Plan - Field Name?", TagCategoryId = 15 },
-                    new Tag { Id = 766, Name = "Qualification Testing - Field Name?", TagCategoryId = 15 },
+                    new Tag { Id = 765, Name = "Ramp and Resource Plan", TagCategoryId = 15 },
+                    new Tag { Id = 766, Name = "Qualification Testing", TagCategoryId = 15 },
 
                     new Tag { Id = 767,  Name = "Customer Specific", TagCategoryId = 5 },
                     new Tag { Id =  768  , Name ="Santa Ana", TagCategoryId =  13},
@@ -1019,6 +1019,11 @@ namespace pmo
                     new Tag { Id =  769  , Name ="None", TagCategoryId =  16},
                     new Tag { Id =  770  , Name ="Some", TagCategoryId =  16},
                     new Tag { Id =  771  , Name ="Significant", TagCategoryId =  16},
+
+                    new Tag { Id =  772  , Name ="Deliverable Register - Parts List", TagCategoryId =  15},
+                    new Tag { Id =  773  , Name ="Deliverable Register - CAS Scoping Document", TagCategoryId =  15},
+                    new Tag { Id =  774  , Name ="Deliverable Register - DFMEA", TagCategoryId =  15},
+                    new Tag { Id =  775  , Name ="Deliverable Register - Control Plan", TagCategoryId =  15},
 
 
 
