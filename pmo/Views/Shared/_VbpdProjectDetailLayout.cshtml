@@ -55,7 +55,8 @@
                                 @Html.Partial("_ListNavigationStage", navmodel.Stages)
                             </div>
                         </div>
-                        @if ((dbModels.ProjectState)ViewBag.ProjectState != dbModels.ProjectState.Complete) {
+                        @if ((dbModels.ProjectState)ViewBag.ProjectState != dbModels.ProjectState.Complete)
+                        {
                             @Html.Partial("_ListActiveNavigationStage", (activeStageNumber, projectId))
                         }
                     </div>
@@ -68,5 +69,6 @@
     </div>
     <script src="~/bundle.js"></script>
     <script src="~/canvasjs.min.js"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

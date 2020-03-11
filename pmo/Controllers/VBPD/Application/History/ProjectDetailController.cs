@@ -39,6 +39,7 @@ namespace pmo.Controllers {
 
             var model = GetViewModel(projectId, currentVersion);
             model.Versions = GetVersionHistory(projectId);
+            model.ProcessDropDown = _listService.ProjectProcess();
 
             return View($"{viewPath}/Edit.cshtml", model);
         }
@@ -57,6 +58,8 @@ namespace pmo.Controllers {
                 SetDropdowns(model);
                 model.Versions = GetVersionHistory(projectId);
                 model.Version = latestProjectDetail.Version;
+                model.ProcessDropDown = _listService.ProjectProcess();
+
                 return View($"{viewPath}/Edit.cshtml", model);
             }
 

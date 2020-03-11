@@ -38,6 +38,8 @@ namespace pmo.Controllers {
             project.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer);
             project.SalesRegionsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion);
             project.ExportApplicationTypeDropDown = _listService.Tags_SelectList(TagCategoryHelper.ExportApplicationType);
+            project.ProcessDropDown = _listService.ProjectProcess();
+
 
             return View($"{path}/Create.cshtml", project);
         }
@@ -56,6 +58,7 @@ namespace pmo.Controllers {
                 model.CustomerDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.Customer, model.Customers);
                 model.SalesRegionsDropDown = _listService.Tags_MultiSelectList(TagCategoryHelper.SalesRegion, model.SalesRegions);
                 model.ExportApplicationTypeDropDown = _listService.Tags_SelectList(TagCategoryHelper.ExportApplicationType, model.ExportApplicationTypeTagId.ToString());
+                model.ProcessDropDown = _listService.ProjectProcess();
 
                 return View($"{path}/Create.cshtml", model);
             }

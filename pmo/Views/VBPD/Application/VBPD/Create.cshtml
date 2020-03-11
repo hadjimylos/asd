@@ -26,11 +26,19 @@
             </div>
             <div class="field">
                 <div class="label">Project Category</div>
-                <select asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2">
+                <select asp-for="ProjectCategoryTagId" onchange="ChangeProcess()" asp-items="Model.ProjectCategoryTagDropDown" class="data select2 projectcategory">
                     <option hidden disabled selected>-- Select --</option>
                 </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "ProjectCategoryTagId")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Process</div>
+                <input type="hidden" asp-for="ProjectProcessType" class="processtype" />
+                <select asp-for="ProjectProcessTypeSelect" asp-items="Model.ProcessDropDown" class="data process"></select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ProjectProcessType")
                 </ul>
             </div>
             <div class="field">
@@ -58,6 +66,7 @@
                     @Html.Partial("_FieldErrors", "ProjectClassificationTagId")
                 </ul>
             </div>
+
             <div class="field">
                 <div class="label">Design Authority</div>
                 <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2">
@@ -65,13 +74,6 @@
                 </select>
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
-                </ul>
-            </div>
-            <div class="field">
-                <div class="label">Process</div>
-                <input asp-for="ProjectProcessType" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "ProjectProcessType")
                 </ul>
             </div>
             <div class="field">
@@ -135,3 +137,31 @@
     </div>
 </form>
 
+@section Scripts
+{
+    <script type="text/javascript">
+        var projectcategory = document.querySelector("projectcategory");
+        var process = document.querySelector(".process");
+        document.querySelector(".process").value = 'VBPD-Lite';
+        document.querySelector(".processtype").value = 'VBPD-Lite';
+
+        document.querySelector(".process").setAttribute("disabled", "disabled");
+        function ChangeProcess() {
+            var projectcategory = document.querySelector(".projectcategory").value;
+            document.querySelector(".process").removeAttribute("disabled");
+
+            if (projectcategory != '219') {
+                document.querySelector(".process").value = 'VBPD';
+                document.querySelector(".processtype").value = 'VBPD';
+
+            } else {
+                document.querySelector(".process").value = 'VBPD-Lite';
+                document.querySelector(".processtype").value = 'VBPD-Lite';
+
+            }
+            document.querySelector(".process").setAttribute("disabled", "disabled");
+
+            return true;
+        };
+    </script>
+}

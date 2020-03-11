@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ViewModels.Helpers;
 
 namespace dbModels {
     public class ProjectDetail: HistoryModel
@@ -39,19 +40,8 @@ namespace dbModels {
         public virtual List<ProjectDetail_SalesRegion> SalesRegions { get; set; }
         public virtual List<ProjectDetail_EndUserCountry> EndUseCountries { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public string ProjectProcessType { set; get; }
-        public string GetProjectProcessType()
-        {
-
-            if (this.ProjectCategoryTagId == 220)
-            {
-                return "VBPD";
-            }
-            else
-            {
-                return "VBPD - Lite";
-            }
-        }
+        
     }
 }

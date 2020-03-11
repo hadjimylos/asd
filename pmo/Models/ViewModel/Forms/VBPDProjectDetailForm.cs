@@ -26,6 +26,7 @@ namespace forms {
         public new int ProjectCategoryTagId { get; set; }
         public List<SelectListItem> ProjectCategoryTagDropDown { set; get; }
 
+
         [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int ProjectClassificationTagId { get; set; }
@@ -53,5 +54,10 @@ namespace forms {
         [Required(ErrorMessage = ErrorMessages.Required)]
         public List<int> CustomerIds { get; set; }
         public List<SelectListItem> CustomerDropDown { set; get; }
+        public SelectList ProcessDropDown { set; get; }
+        public string ProjectProcessTypeSelect { set; get; }
+
+
+
     }
 }

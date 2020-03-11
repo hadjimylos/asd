@@ -63,6 +63,9 @@ namespace forms
         public MultiSelectList CustomerDropDown { set; get; }
         public List<int> SalesRegionIds { get; set; }
         public List<int> CustomerIds { get; set; }
+        public SelectList ProcessDropDown { set; get; }
+        public string ProjectProcessTypeSelect { set; get; }
+
 
     }
 }

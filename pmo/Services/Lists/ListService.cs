@@ -25,6 +25,15 @@ namespace pmo.Services.Lists
            return new SelectList(_context.Roles.ToList(), "Id", "FriendlyName");
         }
 
+        public SelectList ProjectProcess()
+        {
+            return new SelectList(
+                new List<SimpleSelectItem>() { 
+                    new SimpleSelectItem() { Id = "VBPD", Value = "VBPD" }, 
+                    new SimpleSelectItem() { Id = "VBPD-Lite", Value = "VBPD-Lite" } }
+                , "Id", "Value");
+        }
+
         public SelectList Roles(string id)
         {
             return new SelectList(_context.Roles.ToList(), "Id", "FriendlyName", id);
@@ -65,5 +74,11 @@ namespace pmo.Services.Lists
                 Selected = selected.Contains(s.Id)
             }).ToList();
         }
+    }
+    public class SimpleSelectItem
+    {
+       public string Id {get;set;}
+       public string Value { get; set; }
+
     }
 }

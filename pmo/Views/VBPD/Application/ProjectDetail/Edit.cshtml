@@ -28,9 +28,17 @@
                 </div>
                 <div class="field">
                     <div class="label">Project Category</div>
-                    <select asp-for="ProjectCategoryTagId" asp-items="Model.ProjectCategoryTagDropDown" class="data select2"></select>
+                    <select asp-for="ProjectCategoryTagId" onchange="ChangeProcess()" asp-items="Model.ProjectCategoryTagDropDown" class="data projectcategory select2"></select>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "ProjectCategoryTagId")
+                    </ul>
+                </div>
+                <div class="field">
+                    <div class="label">Process</div>
+                    <input type="hidden" asp-for="ProjectProcessType" class="processtype" />
+                    <select asp-for="ProjectProcessTypeSelect" asp-items="Model.ProcessDropDown" class="data process"></select>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "ProjectProcessType")
                     </ul>
                 </div>
                 <div class="field">
@@ -47,20 +55,14 @@
                         @Html.Partial("_FieldErrors", "ProjectClassificationTagId")
                     </ul>
                 </div>
+
                 <div class="field">
                     <div class="label">Design Authority</div>
                     <select asp-for="DesignAuthorityTagId" asp-items="Model.DesignAuthorityDropDown" class="data select2"></select>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "DesignAuthorityTagId")
                     </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Process</div>
-                    <input asp-for="ProjectProcessType" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ProjectProcessType")
-                    </ul>
-                </div>
+                </div>                
                 <div class="field">
                     <div class="label">Export/Application Type</div>
                     <select asp-for="ExportApplicationTypeTagId" asp-items="Model.ExportApplicationTypeDropDown" class="data select2"></select>
@@ -128,14 +130,16 @@
                     <select class="select-history select2">
                         <option value="clear">CLEAR</option>
                         <option value="all">VIEW ALL</option>
-                        @foreach (var version in Model.Versions) {
+                        @foreach (var version in Model.Versions)
+                        {
                             <option value="@version.Id">Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
                         }
                     </select>
                 </div>
             </div>
             <div class="versions">
-                @foreach (var version in Model.Versions) {
+                @foreach (var version in Model.Versions)
+                {
                     <div showversion="@version.Id" class="version">
                         <div class="values">
                             <div class="select-single-field">
@@ -147,6 +151,10 @@
                                 <div class="single-list-value">
                                     @Html.Partial("HistoryPartials/_SingleListValue", (Model.ProjectCategoryTagId, Model.ProjectCategoryTagDropDown))
                                 </div>
+                            </div>
+                            <div class="select-single-field">
+                                <div class="label">Process</div>
+                                <div class="data">@Model.ProjectProcessType</div>
                             </div>
                             <div class="select-single-field">
                                 <div class="label">Product Line</div>
@@ -165,10 +173,6 @@
                                 <div class="single-list-value">
                                     @Html.Partial("HistoryPartials/_SingleListValue", (Model.DesignAuthorityTagId, Model.DesignAuthorityDropDown))
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Process</div>
-                                <div class="data">@Model.GetProjectProcessType()</div>
                             </div>
                             <div class="select-single-field">
                                 <div class="label">Export/Application Type</div>
@@ -201,10 +205,6 @@
                                     @Html.Partial("HistoryPartials/_MultipleListValues", (Model.CustomerIds, Model.CustomerDropDown))
                                 </div>
                             </div>
-                            @*<div class="select-single-field">
-                                <div class="label">EngineeringChecklistUrl</div>
-                                <div class="data">@Model.EngineeringChecklistUrl</div>
-                            </div>*@
                         </div>
                     </div>
                 }
@@ -212,3 +212,31 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        var projectcategory = document.querySelector("projectcategory");
+        var process = document.querySelector(".processtype");
+        document.querySelector(".process").value = document.querySelector(".processtype").value;
+        document.querySelector(".process").setAttribute("disabled", "disabled");
+
+        function ChangeProcess() {
+            var projectcategory = document.querySelector(".projectcategory").value;
+                document.querySelector(".process").removeAttribute("disabled");
+
+            if (projectcategory != '219') {
+                document.querySelector(".process").value = 'VBPD';
+                document.querySelector(".processtype").value = 'VBPD';
+
+            } else {
+                document.querySelector(".process").value = 'VBPD-Lite';
+                document.querySelector(".processtype").value = 'VBPD-Lite';
+
+            }
+           document.querySelector(".process").setAttribute("disabled", "disabled");
+
+            return true;
+        };
+    </script>
+}
