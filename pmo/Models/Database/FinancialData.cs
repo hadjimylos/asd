@@ -30,8 +30,10 @@ namespace dbModels {
             this.GetCostExtended();
 
         public decimal GetStandardMarginPercent() =>
-            this.GetStandardMarginPrice() /
-            this.GetRevenueExtended();
+            (
+                this.GetStandardMarginPrice() /
+                this.GetRevenueExtended()
+            ) * 100;
 
         public decimal GetTotalExpenses() =>
             (this.GPACapital ?? 0) +
