@@ -14,8 +14,5 @@
         
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime? ActualReviewDate { get; set; }
-
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new string Comments { get; set; }
     }
 }
