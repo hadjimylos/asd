@@ -56,6 +56,18 @@ namespace ViewModels.Helpers
             return queryable;
         }
 
+        public static void SaveReport(List<FinancialData> model) {
+
+        }
+
+        public static void SaveReport(BusinessCase model) {
+
+        }
+
+        public static void SaveReport(Project model) {
+            
+        }
+
         public static void UpdateRelated<T, T2>(this List<T> manyTable, IQueryable<T2> allCurrentRecordsBasedOnParentTable, EfContext context)
             where T : DatabaseModel
             where T2 : DatabaseModel {
@@ -140,6 +152,10 @@ namespace ViewModels.Helpers
                 .ToList();
             var latestTransactionsOnly = groupedByVersion.Select(s => s.Last()).ToList();
             return latestTransactionsOnly.ToList();
+        }
+        public static T GetLatestVersion<T>(this IEnumerable<T> listItems) where T : HistoryModel
+        {
+            return listItems.RemoveTransactions().OrderByDescending(o => o.Version).FirstOrDefault();
         }
 
         public static List<T> DistinctProjectDetail<T>(this IQueryable<T> listDetails) where T : ProjectDetail {

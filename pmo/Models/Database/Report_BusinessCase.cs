@@ -6,7 +6,11 @@ namespace dbModels.Report
 {
     public class Report_BusinessCase : Report_DatabaseModel
     {
-        public int ProjectId { get; set; }
+        public int ReportProjectId { get; set; }
+        [ForeignKey("ReportProjectId")]
+        public virtual Report_Project Report_Project { get; set; }
+
+        public int StageNumber { set; get; }
 
         public bool WillCustomerFundQual { get; set; }
 
@@ -48,8 +52,7 @@ namespace dbModels.Report
 
         public decimal GetPaybackPeriod { set;get; }
 
-        [ForeignKey("ProjectId")]
-        public virtual Report_Project Report_Project { get; set; }
+    
         public virtual List<Report_BusinessCase_ManufacturingLocations> Report_BusinessCase_ManufacturingLocations { get; set; }
         public virtual List<Report_FinancialData> Report_FinancialData { get; set; }
     }

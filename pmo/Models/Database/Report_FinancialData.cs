@@ -6,7 +6,10 @@ namespace dbModels.Report
     public class Report_FinancialData : Report_DatabaseModel
     {
 
-        public int BusinessCaseId { get; set; }
+        public int ReportBusinessCaseId { get; set; }
+        [ForeignKey("ReportBusinessCaseId")]
+        public virtual Report_BusinessCase Report_BusinessCase { get; set; }
+
         public int Year { get; set; }
         public int Quantity { get; set; }
         public decimal StdCostEstimated { get; set; }
@@ -26,8 +29,5 @@ namespace dbModels.Report
         public decimal GetFreeCashFlow { set; get; }
         public decimal GetPresentValue { set; get; }
         public decimal GetCumulativeCashFlow { set; get; }
-
-        [ForeignKey("BusinessCaseId")]
-        public virtual Report_BusinessCase Report_BusinessCase { get; set; }
     }
 }

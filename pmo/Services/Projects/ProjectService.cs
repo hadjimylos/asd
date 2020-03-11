@@ -9,6 +9,7 @@ using ViewModels;
 using ViewModels.Helpers;
 using pmo.Services.Users;
 using System;
+using dbModels.Report;
 
 namespace pmo.Services.Projects
 {
@@ -17,9 +18,9 @@ namespace pmo.Services.Projects
         private readonly IUserService _userService;
         public ProjectService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserService userService) : base(context, mapper, httpContextAccessor)
         {
-            _userService =  userService ;
+            _userService = userService;
         }
-        
+
         public void AddNewVBPDProject(forms.VBPDForm model)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -34,7 +35,8 @@ namespace pmo.Services.Projects
                     _context.SaveChanges();
 
                     // save project state
-                    _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                    _context.ProjectStateHistories.Add(new ProjectStateHistory
+                    {
                         ProjectState = ProjectState.Go,
                         ProjectId = project.Id,
                     });

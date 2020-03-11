@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using dbModels.Report;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace dbModels {
@@ -15,5 +16,7 @@ namespace dbModels {
         public virtual List<Project_User> TeamMembers { get; set; }
 
         public virtual List<ProjectStateHistory> ProjectStateHistory { get; set; }
+        
+        public virtual Report_Project Report_Project { set; get; } 
     }
 }

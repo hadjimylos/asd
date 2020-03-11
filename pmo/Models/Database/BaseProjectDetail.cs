@@ -1,23 +1,8 @@
-﻿using dbModels;
-using dbModels.Report;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
-namespace dbModels.Report
-{
-    public class Report_Project: Report_DatabaseModel
-    {
-
-        [Required]
-        public int ProjectId { get; set; }
-        [ForeignKey("ProjectId")]
-        public virtual Project Project { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
+namespace dbModels {
+    public class BaseProjectDetail : DatabaseModel {
         [Required]
         public string Salesforce { get; set; }
         [Required]
@@ -47,11 +32,5 @@ namespace dbModels.Report
         public virtual Tag DesignAuthority { get; set; }
         [ForeignKey("ExportApplicationTypeTagId")]
         public virtual Tag ExportApplicationType { get; set; }
-
-
-
-        public virtual List<Report_ProjectCustomers> Report_Customers { get; set; }
-        public virtual List<Report_ProjectSalesRegion> Report_SalesRegions { get; set; }
-        public virtual List<Report_ProjectEndUserCountries> Report_EndUseCountries { get; set; }
     }
 }
