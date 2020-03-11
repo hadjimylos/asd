@@ -48,14 +48,18 @@ namespace dbModels {
         public decimal? GetROI() =>
             FinancialData.Sum(s => s.GetTotalExpenses()) == 0 ?
             null :
-            (decimal?)(
+                ((decimal?)
+                    (    
+                        (
                 FinancialData.Sum(s => s.GetStandardMarginPrice()) *
                 (1 -
                     (this.TaxRate / 100)
                 ) /
                 FinancialData.Count
             ) /
-            FinancialData.Sum(s => s.GetTotalExpenses());
+                        FinancialData.Sum(s => s.GetTotalExpenses())
+                    ) * 100
+            );
 
         public decimal? GetPaybackPeriod() {
             var firstPositive = FinancialData.FirstOrDefault(f => f.GetCumulativeCashFlow() > 0);
