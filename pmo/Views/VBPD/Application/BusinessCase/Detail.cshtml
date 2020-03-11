@@ -78,8 +78,8 @@
                                     <div class="value">@(Model.GetROI() == null ? "--" : $"{Model.GetROI()?.ToString("N0")} %")</div>
                                 </div>
                                 <div class="detail">
-                                    <div class="label">Payback Period (Years)</div>
-                                    <div class="value">@(Model.GetPaybackPeriod() == null ? "--" : $"$ {Model.GetPaybackPeriod()?.ToString("N0")}")</div>
+                                    <div class="label">Payback Period</div>
+                                    <div class="value">@(Model.GetPaybackPeriod() == null ? "--" : $"{Model.GetPaybackPeriod()?.ToString("N1")} Years")</div>
                                 </div>
                             }
                         </div>
