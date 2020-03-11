@@ -45,6 +45,18 @@
                 </div>
             }
 
+            @foreach (var child in item.PostLaunchReviewNavs) {
+                var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
+                <div class="nav @activeClass">
+                    <a class="item-wrapper" href="@child.Url">
+                        <div class="icon-descrip">
+                            <i class="icon fas fa-square"></i>
+                            <div class="descrip">Post Launch Review</div>
+                        </div>
+                    </a>
+                </div>
+            }
+
             @foreach (var child in item.ProjectJustificationNavs) {
                 var activeClass = Context.Request.Path.Value == child.Url ? "active" : string.Empty;
                 <div class="nav @activeClass">
