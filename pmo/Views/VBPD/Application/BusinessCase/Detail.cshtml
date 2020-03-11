@@ -184,8 +184,8 @@
                     <div class="item-wrapper bold-text">
                         <div>Total</div>
                         <div>@Model.FinancialData.Sum(s => s.Quantity).ToString("N0")</div>
-                        <div>$ @Model.FinancialData.Sum(s => s.StdCostEstimated).ToString("N2")</div>
-                        <div>$ @Model.FinancialData.Sum(s => s.SalesPriceEstimated).ToString("N2")</div>
+                        <div>--</div>
+                        <div>--</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetCostExtended()).ToString("N2")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetRevenueExtended()).ToString("N2")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetStandardMarginPrice()).ToString("N2")</div>
