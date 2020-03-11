@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200311155753_ExportUser")]
+    partial class ExportUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7633,14 +7635,14 @@ namespace pmo.Migrations
                         {
                             Id = 765,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ramp and Resource Plan",
+                            Name = "Ramp and Resource Plan - Field Name?",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 766,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Qualification Testing",
+                            Name = "Qualification Testing - Field Name?",
                             TagCategoryId = 15
                         },
                         new
@@ -7677,41 +7679,6 @@ namespace pmo.Migrations
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Significant",
                             TagCategoryId = 16
-                        },
-                        new
-                        {
-                            Id = 772,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - Parts List",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 773,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - CAS Scoping Document",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 774,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - DFMEA",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 775,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Register - Control Plan",
-                            TagCategoryId = 15
-                        },
-                        new
-                        {
-                            Id = 776,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - FAI Approval",
-                            TagCategoryId = 15
                         });
                 });
 
