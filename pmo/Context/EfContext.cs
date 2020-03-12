@@ -56,7 +56,7 @@ namespace pmo
         public DbSet<LiteStageFileConfig> LiteStageFileConfigs { get; set; }
         public DbSet<LiteGateKeeperConfig> LiteGateKeeperConfigs { get; set; }
         public DbSet<GateKeeperLite> GateKeeperLites { get; set; }
-
+        public DbSet<OptionalFile> OptionalFiles { get; set; }
 
         public EfContext(DbContextOptions<EfContext> options)
             : base(options)
@@ -218,6 +218,8 @@ namespace pmo
                 new TagCategory { Id = 14, IsFixed = true, FriendlyName = "Export Application Type", Key = "export-application-type" },
                 new TagCategory { Id = 15, IsFixed = false, FriendlyName = "Stage Files", Key = "stage-files" },
                 new TagCategory { Id = 16, IsFixed = false, FriendlyName = "Technical Capabilities", Key = "technical-capabilities" },
+                new TagCategory { Id = 17, IsFixed = true, FriendlyName = "Application Components", Key = "application-components" },
+
             });
 
             builder.Entity<Tag>().HasData(new List<Tag>() {               
@@ -1027,6 +1029,24 @@ namespace pmo
                     new Tag { Id =  776  , Name = "Deliverable Register - FAI Approval", TagCategoryId = 15 },
 
                     new Tag { Id = 777, Name = "Εngineering Checklist", TagCategoryId = 15 },
+
+                    //Components
+                    new Tag { Id = 778, Name = "Risk assessment", TagCategoryId = 17 },
+                    new Tag { Id = 779, Name = "Business Case", TagCategoryId = 17 },
+                    new Tag { Id = 780, Name = "Schedules", TagCategoryId = 17 },
+                    new Tag { Id = 781, Name = "Customer Design Approval", TagCategoryId = 17 },
+                    new Tag { Id = 782, Name = "Investment Plan", TagCategoryId = 17 },
+                    new Tag { Id = 783, Name = "Key Characteristics", TagCategoryId = 17 },
+                    new Tag { Id = 784, Name = "Post Launch Review", TagCategoryId = 17 },
+                    new Tag { Id = 785, Name = "Production Infringement Patentability", TagCategoryId = 17 },
+                    new Tag { Id = 786, Name = "Product Intro Checklist", TagCategoryId = 17 },
+                    new Tag { Id = 787, Name = "Project Justification", TagCategoryId = 17 },
+                    new Tag { Id = 788, Name = "Ramp Resource Plan", TagCategoryId = 17 },
+                    new Tag { Id = 789, Name = "Qualification Testing", TagCategoryId = 17 },
+                    new Tag { Id = 790, Name = "Design Concept", TagCategoryId = 17 },
+
+
+
             });
             #endregion
             #region  Gate Seed Data

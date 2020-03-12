@@ -1,0 +1,100 @@
+﻿@model List<OptionalFileForm>
+
+@{
+    ViewData["Title"] = "Insert Files";
+    Layout = "_VbpdProjectDetailLayout";
+    int projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
+    int stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
+    var uploads = (List<dbModels.OptionalFile>)ViewBag.Uploaded;
+}
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
+
+@if (Model.Count > 0)
+{
+    <form class="form-component" enctype="multipart/form-data" method="post" action="/projects/@projectId/stages/@stageNumber/optional-files/edit">
+        @Html.AntiForgeryToken()
+        <div class="wrapper">
+            <div class="fields">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="field">
+                        <div class="label">Category</div>
+                        <select asp-for="@Model[i].FileTagId" asp-items="@ViewBag.CategoryDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Model["+@i+"].FileTagId")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Upload any pertinent documentation</div>
+                        <input class="file-upload" asp-for="@Model[i].File" />
+                        <label asp-for="@Model[i].File" class="data">
+                            <span></span>
+                            <strong><i class="fas fa-upload"></i> Choose a file...</strong>
+                        </label>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", Model[i].File)
+                        </ul>
+                    </div>
+
+                }
+            </div>
+            <input type="submit" class="data btn" value="Submit" />
+        </div>
+    </form>
+}
+
+@if (uploads.Count > 0)
+{
+    @if (Model.Count != 0)
+    {
+        <div class="actions-component">
+            <div class="wrapper">
+                <div class="header">
+                    <h1><i class="fas fa-clipboard-list"></i> Files Uploaded (@uploads.Count)</h1>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Download</div>
+                <div>Description</div>
+                <div>Created</div>
+                <div>Uploaded By</div>
+                <div><!-- placeholder for delete actions --></div>
+            </div>
+            <div class="items">
+                @foreach (var upload in uploads)
+                {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <a href="@upload.Url" target="_blank">
+                                <i class="fas fa-download fa-lg"></i>
+                            </a>
+                            <div>@upload.FileTag.Name</div>
+                            <div>@upload.CreateDate</div>
+                            <div>@upload.ModifiedByUser</div>
+                            <div class="actions">
+                                <form method="post" action="/projects/@projectId/stages/@stageNumber/optional-files/delete">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="fileid" value="@upload.Id" />
+                                    <input type="hidden" name="url" value="@upload.Url" />
+                                    <button type="submit" class="btn red"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200312105835_AddComponentTag")]
+    partial class AddComponentTag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1052,37 +1054,6 @@ namespace pmo.Migrations
                     b.HasIndex("RiskId");
 
                     b.ToTable("Mitigations");
-                });
-
-            modelBuilder.Entity("dbModels.OptionalFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FileTagId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModifiedByUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FileTagId");
-
-                    b.HasIndex("StageId");
-
-                    b.ToTable("OptionalFiles");
                 });
 
             modelBuilder.Entity("dbModels.PostLaunchReview", b =>
@@ -8308,21 +8279,6 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.Risk", "Risk")
                         .WithMany("Mitigations")
                         .HasForeignKey("RiskId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("dbModels.OptionalFile", b =>
-                {
-                    b.HasOne("dbModels.Tag", "FileTag")
-                        .WithMany()
-                        .HasForeignKey("FileTagId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("dbModels.Stage", "Stage")
-                        .WithMany()
-                        .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
