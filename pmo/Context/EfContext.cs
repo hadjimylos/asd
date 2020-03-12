@@ -1024,6 +1024,7 @@ namespace pmo
                     new Tag { Id =  773  , Name ="Deliverable Register - CAS Scoping Document", TagCategoryId =  15},
                     new Tag { Id =  774  , Name ="Deliverable Register - DFMEA", TagCategoryId =  15},
                     new Tag { Id =  775  , Name ="Deliverable Register - Control Plan", TagCategoryId =  15},
+                    new Tag { Id = 776, Name = "Deliverable Regiser - FAI Approval", TagCategoryId = 15 },
 
 
 
