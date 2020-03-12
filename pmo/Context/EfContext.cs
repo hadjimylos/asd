@@ -1269,7 +1269,6 @@ namespace pmo
             var newProjectDetails = ChangeTracker.Entries<ProjectDetail>().Where(E => E.State == EntityState.Added).ToList();
             var newBusinessCases = ChangeTracker.Entries<BusinessCase>().Where(E => E.State == EntityState.Added).ToList();
             var newFinancials = ChangeTracker.Entries<FinancialData>().Where(E => E.State == EntityState.Added).ToList();
-
             var newCustomers = ChangeTracker.Entries<ProjectDetail_Customer>().Where(E => E.State == EntityState.Added).ToList();
             var newSalesRegion = ChangeTracker.Entries<ProjectDetail_SalesRegion>().Where(E => E.State == EntityState.Added).ToList();
             var newEndUseCountries = ChangeTracker.Entries<ProjectDetail_EndUserCountry>().Where(E => E.State == EntityState.Added).ToList();
@@ -1307,7 +1306,8 @@ namespace pmo
             });
             newManufacturingLocation.ForEach(m =>
             {
-                var projectId = BusinessCases.Include(i => i.Stage).FirstOrDefault(f => f.Id == m.Property(x => x.BusinessCaseId).CurrentValue).Stage.ProjectId;
+                var bCaseId = m.Property(x => x.BusinessCaseId).CurrentValue;
+                var projectId = BusinessCases.Include(i => i.Stage).FirstOrDefault(f => f.Id == bCaseId).Stage.ProjectId;
                 var reportBusinessCaseId = Report_BusinessCase.Include(i => i.Report_Project).OrderByDescending(o => o.StageNumber).FirstOrDefault(f => f.Report_Project.ProjectId == projectId).Id;
                 var rptManufacturers = new Report_BusinessCase_ManufacturingLocations()
                 {
@@ -1318,17 +1318,19 @@ namespace pmo
             });
             newSalesRegion.ForEach(s =>
             {
-                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == s.Property(x => x.ProjectDetailId).CurrentValue).Id;
+                var projectdetailId = s.Property(x => x.ProjectDetailId).CurrentValue; 
+                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == projectdetailId).Id;
                 var reportProjectId = Report_Project.FirstOrDefault(f => f.ProjectId == projectId).Id;
                 var reportSalesRegion = new Report_ProjectSalesRegion() {
                     ReportProjectId = reportProjectId,
                     SalesRegionTagId = s.Property(x => x.SalesRegionTagId).CurrentValue
                 };
-                ChangeTracker.Context.Remove(reportSalesRegion); // add custom mapper for calculations 
+                ChangeTracker.Context.Add(reportSalesRegion); // add custom mapper for calculations 
 
             });
             newEndUseCountries.ForEach(e => {
-                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == e.Property(x => x.ProjectDetailId).CurrentValue).Id;
+                var projectdetailId = e.Property(x => x.ProjectDetailId).CurrentValue;
+                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == projectdetailId).Id;
                 var reportProjectId = Report_Project.FirstOrDefault(f => f.ProjectId == projectId).Id;
                 var reportEndUseCountries = new Report_ProjectEndUserCountries()
                 {
@@ -1338,14 +1340,15 @@ namespace pmo
                 ChangeTracker.Context.Add(reportEndUseCountries); // add custom mapper for calculations 
             });
             newCustomers.ForEach(c => {
-                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == c.Property(x => x.ProjectDetailId).CurrentValue).Id;
+                var projectdetailId = c.Property(x => x.ProjectDetailId).CurrentValue;
+                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == projectdetailId).Id;
                 var reportProjectId = Report_Project.FirstOrDefault(f => f.ProjectId == projectId).Id;
                 var reportCustomer = new Report_ProjectCustomers()
                 {
                     ReportProjectId = reportProjectId,
                     CustomersTagId = c.Property(x => x.CustomersTagId).CurrentValue
                 };
-                ChangeTracker.Context.Remove(reportCustomer); // add custom mapper for calculations 
+                ChangeTracker.Context.Add(reportCustomer); // add custom mapper for calculations 
             });
 
             //update reports
@@ -1361,7 +1364,6 @@ namespace pmo
                 rpt_Project.Name = projectName;
                 ChangeTracker.Context.Update(rpt_Project);
             });
-
             updateBusinessCases.ForEach(bc =>
             {
                 var stageId = bc.Property(x => x.StageId).CurrentValue;
@@ -1374,7 +1376,6 @@ namespace pmo
                 ChangeTracker.Context.Update(rpt_BusinessCase); // add custom mapper for calculations  
 
             });
-
             updateFinancials.ForEach(f =>
             {
                 var projectId = BusinessCases.Include(i => i.Stage).Where(i => i.Id == f.Entity.BusinessCaseId).GetLatestVersion().Stage.ProjectId;//First get projectId
@@ -1389,7 +1390,7 @@ namespace pmo
             var deleteCustomers = ChangeTracker.Entries<ProjectDetail_Customer>().Where(E => E.State == EntityState.Deleted).ToList();
             var deleteSalesRegion = ChangeTracker.Entries<ProjectDetail_SalesRegion>().Where(E => E.State == EntityState.Deleted).ToList();
             var deleteEndUseCountries = ChangeTracker.Entries<ProjectDetail_EndUserCountry>().Where(E => E.State == EntityState.Deleted).ToList();
-            //      var deleteUsers = ChangeTracker.Entries<Project_User>().Where(E => E.State == EntityState.Deleted).ToList();
+            var deleteUsers = ChangeTracker.Entries<Project_User>().Where(E => E.State == EntityState.Deleted).ToList();
             var deleteManufacturingLocation = ChangeTracker.Entries<BusinessCase_ManufacturingLocation>().Where(E => E.State == EntityState.Deleted).ToList();
 
             deleteFinancials.ForEach(f =>
@@ -1402,38 +1403,41 @@ namespace pmo
                                                                       .Where(w => w.Year == financeDataToBeDeleted.Year)
                                                                       .OrderByDescending(o => o.Report_BusinessCase.StageNumber)
                                                                       .FirstOrDefault();
-                ChangeTracker.Context.Remove(rpt_FinanceDataToBeDeleted); // add custom mapper for calculations 
+                ChangeTracker.Context.Remove(rpt_FinanceDataToBeDeleted); 
             });
-
             deleteCustomers.ForEach(c => {
-                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == c.Property(x => x.ProjectDetailId).CurrentValue).Id;
+                var projectDetailId = c.Property(x => x.ProjectDetailId).CurrentValue;
+                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == projectDetailId).Id;
                 var reportProjectId = Report_Project.FirstOrDefault(f => f.ProjectId == projectId).Id;
                 var reportCustomerToBeDeleted = Report_ProjectCustomers.FirstOrDefault(f => f.ReportProjectId == reportProjectId && f.CustomersTagId == c.Property(x => x.CustomersTagId).CurrentValue);
-                ChangeTracker.Context.Remove(reportCustomerToBeDeleted); // add custom mapper for calculations 
+                ChangeTracker.Context.Remove(reportCustomerToBeDeleted); 
 
             });
-
             deleteSalesRegion.ForEach(s => {
-                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == s.Property(x => x.ProjectDetailId).CurrentValue).Id;
+                var projectDetailId = s.Property(x => x.ProjectDetailId).CurrentValue;
+
+                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == projectDetailId).Id;
                 var reportProjectId = Report_Project.FirstOrDefault(f => f.ProjectId == projectId).Id;
                 var reportSalesRegioToBeDeleted = Report_ProjectSalesRegion.FirstOrDefault(f => f.ReportProjectId == reportProjectId && f.SalesRegionTagId == s.Property(x => x.SalesRegionTagId).CurrentValue);
-                ChangeTracker.Context.Remove(reportSalesRegioToBeDeleted); // add custom mapper for calculations 
+                ChangeTracker.Context.Remove(reportSalesRegioToBeDeleted);
 
             });
-
             deleteEndUseCountries.ForEach(e => {
-                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == e.Property(x => x.ProjectDetailId).CurrentValue).Id;
+                var projectDetailId = e.Property(x => x.ProjectDetailId).CurrentValue;
+
+                var projectId = ProjectDetails.FirstOrDefault(f => f.Id == projectDetailId).Id;
                 var reportProjectId = Report_Project.FirstOrDefault(f => f.ProjectId == projectId).Id;
                 var reportEndUseCountriesToBeDeleted = Report_ProjectEndUserCountries.FirstOrDefault(f => f.ReportProjectId == reportProjectId && f.EndUserCountriesTagId == e.Property(x => x.EndUserCountriesTagId).CurrentValue);
-                ChangeTracker.Context.Remove(reportEndUseCountriesToBeDeleted); // add custom mapper for calculations 
+                ChangeTracker.Context.Remove(reportEndUseCountriesToBeDeleted); 
 
             });
-
             deleteManufacturingLocation.ForEach(m => {
-                var projectId = BusinessCases.Include(i => i.Stage).FirstOrDefault(f => f.Id == m.Property(x => x.BusinessCaseId).CurrentValue).Stage.ProjectId;
+                var bCaseId = m.Property(x => x.BusinessCaseId).CurrentValue;
+
+                var projectId = BusinessCases.Include(i => i.Stage).FirstOrDefault(f => f.Id == bCaseId).Stage.ProjectId;
                 var reportBusinessCaseId = Report_BusinessCase.Include(i => i.Report_Project).OrderByDescending(o => o.StageNumber).FirstOrDefault(f => f.Report_Project.ProjectId == projectId).Id;
                 var rptManufacturersToBeDeleted = Report_BusinessCase_ManufacturingLocations.FirstOrDefault(f => f.ReportBusinessCaseId == reportBusinessCaseId && f.ManufacturingLocationsTagId == m.Property(x => x.ManufacturingLocationsTagId).CurrentValue);
-                ChangeTracker.Context.Remove(rptManufacturersToBeDeleted); // add custom mapper for calculations 
+                ChangeTracker.Context.Remove(rptManufacturersToBeDeleted); 
             });
         }
     }
