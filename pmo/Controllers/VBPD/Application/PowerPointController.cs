@@ -82,27 +82,28 @@ namespace pmo.Controllers.VBPD.Application
                .Where(x => x.StageId == _stageId && x.Stage.ProjectId == _projectId).ToList();
             InvestmentPlan ip = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
             BusinessCase bc = _context.BusinessCases.IncludeAll().GetLatestVersion(_projectId);
-            BusinessCase businessCase = new BusinessCase();
             decimal ROI = bc?.GetROI() ?? 0M;
             decimal NPV = bc?.GetNPV() ?? 0M;
             decimal PaybackPeriod = bc?.GetPaybackPeriod() ?? 0M;
             List<FinancialDataforPPT> financialDatafotPPTs = new List<FinancialDataforPPT>();
-            for (var i = 0; i < bc.FinancialData.Count; i++) {
-                FinancialDataforPPT financials = new FinancialDataforPPT();
-                financials.Year=bc.FinancialData[i].Year;
-                financials.Quantity = bc.FinancialData[i].Quantity;
-                financials.StdCostEstimated = bc.FinancialData[i].StdCostEstimated;
-                financials.SalesPriceEstimated = bc.FinancialData[i].SalesPriceEstimated;
-                financials.CostExtended = bc.FinancialData[i].GetCostExtended();
-                financials.RevenueExtended=bc.FinancialData[i].GetRevenueExtended();
-                financials.StandardMarginPrice= bc.FinancialData[i].GetStandardMarginPrice();
-                financials.StandardMarginPercent= bc.FinancialData[i].GetStandardMarginPercent();
-                financials.GPACapital = bc.FinancialData[i].GPACapital ?? 0M;
-                financials.GPAExpense = bc.FinancialData[i].GPAExpense ?? 0M;
-                financials.QualCosts = bc.FinancialData[i].QualCosts ?? 0M;
-                financials.OtherDevelopmentExpenses = bc.FinancialData[i].OtherDevelopmentExpenses ?? 0M;
-                financials.TotalExpenses=bc.FinancialData[i].GetTotalExpenses();
-                financialDatafotPPTs.Add(financials);
+            if (bc != null) {
+                for (var i = 0; i < bc.FinancialData.Count; i++) {
+                    FinancialDataforPPT financials = new FinancialDataforPPT();
+                    financials.Year = bc.FinancialData[i].Year;
+                    financials.Quantity = bc.FinancialData[i].Quantity;
+                    financials.StdCostEstimated = bc.FinancialData[i].StdCostEstimated;
+                    financials.SalesPriceEstimated = bc.FinancialData[i].SalesPriceEstimated;
+                    financials.CostExtended = bc.FinancialData[i].GetCostExtended();
+                    financials.RevenueExtended = bc.FinancialData[i].GetRevenueExtended();
+                    financials.StandardMarginPrice = bc.FinancialData[i].GetStandardMarginPrice();
+                    financials.StandardMarginPercent = bc.FinancialData[i].GetStandardMarginPercent();
+                    financials.GPACapital = bc.FinancialData[i].GPACapital ?? 0M;
+                    financials.GPAExpense = bc.FinancialData[i].GPAExpense ?? 0M;
+                    financials.QualCosts = bc.FinancialData[i].QualCosts ?? 0M;
+                    financials.OtherDevelopmentExpenses = bc.FinancialData[i].OtherDevelopmentExpenses ?? 0M;
+                    financials.TotalExpenses = bc.FinancialData[i].GetTotalExpenses();
+                    financialDatafotPPTs.Add(financials);
+                }
             }
             
 
