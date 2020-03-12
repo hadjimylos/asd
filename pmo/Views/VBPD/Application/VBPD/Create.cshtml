@@ -1,7 +1,7 @@
 ﻿@model forms.VBPDForm
 
 @{
-    ViewData["Title"] = "Create VBPD Project";
+    ViewData["Title"] = "Create Project";
     Layout = "_VbpdProjectLayout";
 }
 
@@ -122,14 +122,6 @@
                     @Html.Partial("_FieldErrors", "CustomersIds")
                 </ul>
             </div>
-
-            @*<div class="field">
-            <div class="label">Attachment Engineering Checklist Url</div>
-            <input asp-for="EngineeringChecklistUrl" class="data" />
-            <ul class="errors">
-                @Html.Partial("_FieldErrors", "EngineeringChecklistUrl")
-            </ul>
-        </div>*@
             <div class="field">
                 <input type="submit" class="data btn" value="SUBMIT" />
             </div>

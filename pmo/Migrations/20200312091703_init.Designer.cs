@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200309142140_AddLiteGateKeeperConfig")]
-    partial class AddLiteGateKeeperConfig
+    [Migration("20200312091703_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -487,6 +487,37 @@ namespace pmo.Migrations
                         });
                 });
 
+            modelBuilder.Entity("dbModels.GateKeeperLite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GateKeeperConfigId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GateKeeperName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GateId");
+
+                    b.HasIndex("GateKeeperConfigId");
+
+                    b.ToTable("GateKeeperLites");
+                });
+
             modelBuilder.Entity("dbModels.InvestmentPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -605,6 +636,104 @@ namespace pmo.Migrations
                     b.HasIndex("StageConfigId");
 
                     b.ToTable("LiteGateKeeperConfigs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Director Product Management/Marketing",
+                            ModifiedByUser = "system",
+                            StageConfigId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Director Engineering",
+                            ModifiedByUser = "system",
+                            StageConfigId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU GM",
+                            ModifiedByUser = "system",
+                            StageConfigId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Controller",
+                            ModifiedByUser = "system",
+                            StageConfigId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Director Manufacturing Site",
+                            ModifiedByUser = "system",
+                            StageConfigId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU VBPD Champion / Facilitator",
+                            ModifiedByUser = "system",
+                            StageConfigId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Director Product Management/Marketing",
+                            ModifiedByUser = "system",
+                            StageConfigId = 2
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Director Engineering",
+                            ModifiedByUser = "system",
+                            StageConfigId = 2
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU GM",
+                            ModifiedByUser = "system",
+                            StageConfigId = 2
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Controller",
+                            ModifiedByUser = "system",
+                            StageConfigId = 2
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU Director Manufacturing Site",
+                            ModifiedByUser = "system",
+                            StageConfigId = 2
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Keeper = "BU VBPD Champion / Facilitator",
+                            ModifiedByUser = "system",
+                            StageConfigId = 2
+                        });
                 });
 
             modelBuilder.Entity("dbModels.LiteRequiredSchedule", b =>
@@ -1108,6 +1237,9 @@ namespace pmo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ExportRestrictedUsers")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -1245,8 +1377,8 @@ namespace pmo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AddToInhouseTechnicalAbilities")
-                        .HasColumnType("bit");
+                    b.Property<int>("AddToInhouseTechnicalAbilitiesTagId")
+                        .HasColumnType("int");
 
                     b.Property<string>("AdvantagesWeOffer")
                         .HasColumnType("nvarchar(max)");
@@ -1278,8 +1410,8 @@ namespace pmo.Migrations
                     b.Property<string>("OtherRequirements")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductTagId")
-                        .HasColumnType("int");
+                    b.Property<string>("Product")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegulatoryRequirements")
                         .HasColumnType("nvarchar(max)");
@@ -1304,7 +1436,7 @@ namespace pmo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductTagId");
+                    b.HasIndex("AddToInhouseTechnicalAbilitiesTagId");
 
                     b.HasIndex("StageId");
 
@@ -1716,7 +1848,7 @@ namespace pmo.Migrations
                             Id = 5,
                             AllowInsertRiskAssesments = false,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MinBusinessCases = 0,
+                            MinBusinessCases = 1,
                             MinCustomerDesignApprovals = 0,
                             MinInvestmentPlans = 0,
                             MinKeyCharacteristics = 0,
@@ -2122,6 +2254,13 @@ namespace pmo.Migrations
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RequiredFileTagId = 760,
                             StageConfigId = 4
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RequiredFileTagId = 777,
+                            StageConfigId = 1
                         });
                 });
 
@@ -7503,14 +7642,14 @@ namespace pmo.Migrations
                         {
                             Id = 765,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ramp and Resource Plan - Field Name?",
+                            Name = "Ramp and Resource Plan",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 766,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Qualification Testing - Field Name?",
+                            Name = "Qualification Testing",
                             TagCategoryId = 15
                         },
                         new
@@ -7526,6 +7665,69 @@ namespace pmo.Migrations
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Santa Ana",
                             TagCategoryId = 13
+                        },
+                        new
+                        {
+                            Id = 769,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "None",
+                            TagCategoryId = 16
+                        },
+                        new
+                        {
+                            Id = 770,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Some",
+                            TagCategoryId = 16
+                        },
+                        new
+                        {
+                            Id = 771,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Significant",
+                            TagCategoryId = 16
+                        },
+                        new
+                        {
+                            Id = 772,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Deliverable Register - Parts List",
+                            TagCategoryId = 15
+                        },
+                        new
+                        {
+                            Id = 773,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Deliverable Register - CAS Scoping Document",
+                            TagCategoryId = 15
+                        },
+                        new
+                        {
+                            Id = 774,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Deliverable Register - DFMEA",
+                            TagCategoryId = 15
+                        },
+                        new
+                        {
+                            Id = 775,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Deliverable Register - Control Plan",
+                            TagCategoryId = 15
+                        },
+                        new
+                        {
+                            Id = 776,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Deliverable Register - FAI Approval",
+                            TagCategoryId = 15
+                        },
+                        new
+                        {
+                            Id = 777,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Εngineering Checklist",
+                            TagCategoryId = 15
                         });
                 });
 
@@ -7675,6 +7877,14 @@ namespace pmo.Migrations
                             FriendlyName = "Stage Files",
                             IsFixed = false,
                             Key = "stage-files"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FriendlyName = "Technical Capabilities",
+                            IsFixed = false,
+                            Key = "technical-capabilities"
                         });
                 });
 
@@ -7884,6 +8094,21 @@ namespace pmo.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("dbModels.GateKeeperLite", b =>
+                {
+                    b.HasOne("dbModels.Gate", "Gate")
+                        .WithMany("LiteGateKeepers")
+                        .HasForeignKey("GateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("dbModels.LiteGateKeeperConfig", "GateKeeperConfig")
+                        .WithMany()
+                        .HasForeignKey("GateKeeperConfigId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("dbModels.InvestmentPlan", b =>
                 {
                     b.HasOne("dbModels.Stage", "Stage")
@@ -7911,7 +8136,7 @@ namespace pmo.Migrations
             modelBuilder.Entity("dbModels.LiteGateKeeperConfig", b =>
                 {
                     b.HasOne("dbModels.LiteStageConfig", "StageConfig")
-                        .WithMany()
+                        .WithMany("GateKeeperConfigs")
                         .HasForeignKey("StageConfigId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -8069,10 +8294,11 @@ namespace pmo.Migrations
 
             modelBuilder.Entity("dbModels.ProjectJustification", b =>
                 {
-                    b.HasOne("dbModels.Tag", "Product")
+                    b.HasOne("dbModels.Tag", "AddToInhouseTechnicalAbilities")
                         .WithMany()
-                        .HasForeignKey("ProductTagId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("AddToInhouseTechnicalAbilitiesTagId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("dbModels.Stage", "Stage")
                         .WithMany("ProjectJustificationHistory")

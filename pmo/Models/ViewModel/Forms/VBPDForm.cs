@@ -7,8 +7,7 @@ using ViewModels.Helpers;
 
 namespace forms
 {
-    public class VBPDForm : ProjectDetail
-    {
+    public class VBPDForm : ProjectDetail {
         public VBPDForm() {
             CustomerIds = new List<int>();
             SalesRegionIds = new List<int>();
@@ -34,9 +33,6 @@ namespace forms
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new int ProjectId { get; set; }
-
-        //[Required(ErrorMessage = ErrorMessages.Required)]
-        //public new string EngineeringChecklistUrl { get; set; }
         
         [MinValue(1)]
         [Required(ErrorMessage = ErrorMessages.Required)]

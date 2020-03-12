@@ -1024,10 +1024,9 @@ namespace pmo
                     new Tag { Id =  773  , Name ="Deliverable Register - CAS Scoping Document", TagCategoryId =  15},
                     new Tag { Id =  774  , Name ="Deliverable Register - DFMEA", TagCategoryId =  15},
                     new Tag { Id =  775  , Name ="Deliverable Register - Control Plan", TagCategoryId =  15},
-                    new Tag { Id = 776, Name = "Deliverable Regiser - FAI Approval", TagCategoryId = 15 },
+                    new Tag { Id =  776  , Name = "Deliverable Register - FAI Approval", TagCategoryId = 15 },
 
-
-
+                    new Tag { Id = 777, Name = "Εngineering Checklist", TagCategoryId = 15 },
             });
             #endregion
             #region  Gate Seed Data
@@ -1169,6 +1168,9 @@ namespace pmo
                 new StageFileConfig { Id = 24, StageConfigId = 4, RequiredFileTagId = 744 },
                 new StageFileConfig { Id = 25, StageConfigId = 4, RequiredFileTagId = 759 },
                 new StageFileConfig { Id = 26, StageConfigId = 4, RequiredFileTagId = 760 },
+
+                // Stage 1
+                new StageFileConfig { Id = 27, StageConfigId = 1, RequiredFileTagId = 777 },
             });
 
 

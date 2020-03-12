@@ -2252,6 +2252,13 @@ namespace pmo.Migrations
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RequiredFileTagId = 760,
                             StageConfigId = 4
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RequiredFileTagId = 777,
+                            StageConfigId = 1
                         });
                 });
 
@@ -7710,7 +7717,14 @@ namespace pmo.Migrations
                         {
                             Id = 776,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - FAI Approval",
+                            Name = "Deliverable Register - FAI Approval",
+                            TagCategoryId = 15
+                        },
+                        new
+                        {
+                            Id = 777,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Εngineering Checklist",
                             TagCategoryId = 15
                         });
                 });
