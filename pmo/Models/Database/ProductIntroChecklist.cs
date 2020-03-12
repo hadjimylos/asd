@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
     public class ProductIntroChecklist : StageHistoryModel { 
-        public bool IsMarketingRequired { get; set; }
+        public bool IsRequired { get; set; }
 
         public string Filename { get; set; }
         

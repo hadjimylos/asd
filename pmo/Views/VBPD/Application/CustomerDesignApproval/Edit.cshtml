@@ -19,32 +19,41 @@
         <div class="form-section">
             <div class="fields">
                 <div class="field">
-                    <div class="label">Who sent for Approval </div>
-                    <input asp-for="SentForApprovalBy" class="data" />
+                    <input asp-for="IsRequired" class="data checkbox-toggle" targetCssSelector=".show-hide-section" />
+                    <label asp-for="IsRequired">Is Customer Design Approval Required</label>
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "SentForApprovalBy")
                     </ul>
                 </div>
-                <div class="field">
-                    <div class="label">Date Sent to Customer for Approval</div>
-                    <input asp-for="DateSentForApprove" type="date" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "DateSentForApprove")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Approved By</div>
-                    <input asp-for="ApprovedBy" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ApprovedBy")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Approved Date</div>
-                    <input asp-for="ApprovedDate" type="date" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ApprovedDate")
-                    </ul>
+                <div class="show-hide-section">
+                    <div class="field">
+                        <div class="label">Who sent for Approval </div>
+                        <input asp-for="SentForApprovalBy" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "SentForApprovalBy")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Date Sent to Customer for Approval</div>
+                        <input asp-for="DateSentForApprove" type="date" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "DateSentForApprove")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Approved By</div>
+                        <input asp-for="ApprovedBy" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ApprovedBy")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Approved Date</div>
+                        <input asp-for="ApprovedDate" type="date" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "ApprovedDate")
+                        </ul>
+                    </div>
                 </div>
                 <div class="field">
                     <div class="field">
@@ -70,6 +79,10 @@
                 @foreach (var version in Model.Versions) {
                     <div showversion="@version.Id" class="version">
                         <div class="values">
+                            <div class="select-single-field">
+                                <div class="label">Is Customer Design Approval Required</div>
+                                <div class="data">@Model.IsRequired</div>
+                            </div>
                             <div class="select-single-field">
                                 <div class="label">Who sent for approval</div>
                                 <div class="data">@Model.SentForApprovalBy</div>

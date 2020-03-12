@@ -104,7 +104,7 @@ namespace pmo.Controllers.VBPD.Application.History
                             latestProductIntoChecklist.ApprovedBy = productIntroChecklist.ApprovedBy;
                             latestProductIntoChecklist.ApprovedByDate = productIntroChecklist.ApprovedByDate;
                             latestProductIntoChecklist.Filename = productIntroChecklist.Filename;
-                            latestProductIntoChecklist.IsMarketingRequired = productIntroChecklist.IsMarketingRequired;
+                            latestProductIntoChecklist.IsRequired = productIntroChecklist.IsRequired;
                             _context.ProductIntroChecklists.Update(latestProductIntoChecklist);
                             _context.SaveChanges();
                             transaction.Commit();

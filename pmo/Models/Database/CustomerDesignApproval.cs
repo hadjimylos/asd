@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dbModels {
     public class CustomerDesignApproval: StageHistoryModel {
-       
+        public bool IsRequired { get; set; }
+
         public string SentForApprovalBy { get; set; }
 
         public DateTime DateSentForApprove { get; set; }
