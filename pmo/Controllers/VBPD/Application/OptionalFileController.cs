@@ -58,7 +58,8 @@ namespace pmo.Controllers {
                 _context.OptionalFiles.Add(new OptionalFile {
                     Url = savePath,
                     StageId = _stageId,
-                    FileTagId = f.FileTagId
+                    FileTagId = f.FileTagId,
+                    Description = f.Description
                 });
             });
 

@@ -24,11 +24,12 @@
             <div class="fields">
                 @for (int i = 0; i < Model.Count; i++)
                 {
+
                     <div class="field">
-                        <div class="label">Category</div>
+                        <div class="label">Choose Category</div>
                         <select asp-for="@Model[i].FileTagId" asp-items="@ViewBag.CategoryDropDown" class="data select2"></select>
                         <ul class="errors">
-                            @Html.Partial("_FieldErrors", "Model["+@i+"].FileTagId")
+                            @Html.Partial("_FieldErrors", "Model[" + @i + "].FileTagId")
                         </ul>
                     </div>
                     <div class="field">
@@ -40,6 +41,13 @@
                         </label>
                         <ul class="errors">
                             @Html.Partial("_FieldErrors", Model[i].File)
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Description</div>
+                        <input class="data" asp-for="@Model[i].Description" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", Model[i].Description)
                         </ul>
                     </div>
 
@@ -67,6 +75,7 @@
         <div class="wrapper">
             <div class="title">
                 <div>Download</div>
+                <div>Category</div>
                 <div>Description</div>
                 <div>Created</div>
                 <div>Uploaded By</div>
@@ -81,6 +90,8 @@
                                 <i class="fas fa-download fa-lg"></i>
                             </a>
                             <div>@upload.FileTag.Name</div>
+                            <div>@upload.Description</div>
+
                             <div>@upload.CreateDate</div>
                             <div>@upload.ModifiedByUser</div>
                             <div class="actions">

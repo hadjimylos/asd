@@ -4,11 +4,14 @@
     using System.ComponentModel.DataAnnotations;
     using ViewModels.Helpers;
 
-    public class OptionalFileForm : OptionalFile
-    {
+    public class OptionalFileForm { 
         public IFormFile File { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
-        public new int FileTagId { get; set; }
+        public int FileTagId { get; set; }
+
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        public string Description { get; set; }
+        public string Url { get; set; }
     }
 }

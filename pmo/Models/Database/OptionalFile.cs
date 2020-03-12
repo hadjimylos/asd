@@ -17,6 +17,8 @@
         public virtual Stage Stage { get; set; }
         // form fields
         public string Url { get; set; }
+        public string Description { get; set; }
+
 
 
 
