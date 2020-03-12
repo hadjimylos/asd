@@ -25,6 +25,10 @@ namespace pmo.Controllers {
 
         public IActionResult Index() {
             var model = GetProjectDetails();
+            ViewBag.History = _context.ProjectStateHistories.ToList();
+            var projects = _context.Projects.Include(i => i.StageHistory).ToList();
+            var activeStages = projects.Select(s => s.StageHistory.OrderByDescending(o => o.CreateDate).First()).ToList();
+            ViewBag.ActiveStages = activeStages;
             return View($"{path}/Index.cshtml", model);
         }
 

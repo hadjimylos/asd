@@ -1,0 +1,104 @@
+﻿@{
+    var history = (List<dbModels.ProjectStateHistory>)ViewBag.History;
+    List<CanvasJSDataPoint> dataPoints = new List<CanvasJSDataPoint>();
+
+    var result = history.GroupBy(
+        r => r.ProjectId).ToList();
+
+    result.ForEach(f => f.OrderBy(o => o.CreateDate));
+
+    var countOpen = result.Where(w => w.Last().ProjectState == dbModels.ProjectState.Go).Count();
+    var countOnHold = result.Where(w => w.Last().ProjectState == dbModels.ProjectState.OnHold).Count();
+    var countClosed = result.Where(w => w.Last().ProjectState == dbModels.ProjectState.Closed).Count();
+    var countComplete = result.Where(w => w.Last().ProjectState == dbModels.ProjectState.Complete).Count();
+
+    if (countOpen > 0)
+        dataPoints.Add(new CanvasJSDataPoint("Open", "", countOpen, "#88B04B"));
+
+    if (countOnHold > 0)
+        dataPoints.Add(new CanvasJSDataPoint("On Hold", "", countOnHold, "#FFD662"));
+
+    if (countClosed > 0)
+        dataPoints.Add(new CanvasJSDataPoint("Closed", "", countClosed, "#BC243C"));
+
+    if (countComplete > 0)
+        dataPoints.Add(new CanvasJSDataPoint("Complete", "", countComplete, "#f5f6f7"));
+
+    <script>
+        if (typeof whenDocReady === "function") {
+            // already declared, do nothing
+        } else {
+            function whenDocReady(fn) {
+                // see if DOM is already available
+                if (document.readyState === "complete" || document.readyState === "interactive") {
+                    // call on next available tick
+                    setTimeout(fn, 1);
+                } else {
+                    document.addEventListener("DOMContentLoaded", fn);
+                }
+            }
+        }
+
+        whenDocReady(function () {
+            var chartProjectStatus = new CanvasJS.Chart("projectStatus", {
+                animationEnabled: true,
+                animationDuration: 2000,
+                exportEnabled: true,
+                toolTip: {
+                    enabled: true,
+                    shared: true,
+                    fontFamily: "Roboto-Light",
+                    fontSize: 16,
+                    fontColor: "#677078",
+                    borderThickness: 2,
+                    cornerRadius: 5,
+                    contentFormatter: function (e) {
+                        return "<div class='chartTooltip'>"
+                            + "<div class='title'>Information</div>"
+                            + "<div>Status: <strong>" + e.entries[0].dataPoint.label + "</strong></div>"
+                            + "<div>Count: <strong>" + e.entries[0].dataPoint.y + "</strong></div>"
+                            + "</div>"
+                    }
+                },
+                data: [{
+                    type: "pie",
+                    cursor: "pointer",
+                    click: explodePie,
+                    indexLabel: "{label} - {y}",
+                    indexLabelFontFamily: "Roboto-Light",
+                    indexLabelFontSize: 24,
+                    indexLabelFontColor: "#677078",
+                    indexLabelPlacement: "outside",
+                    dataPoints: @Html.Raw(JsonConvert.SerializeObject(dataPoints))
+                }]
+            });
+
+            chartProjectStatus.render();
+
+            function explodePie(e) {
+                for (var i = 0; i < e.dataSeries.dataPoints.length; i++) {
+                    if (i !== e.dataPointIndex)
+                        e.dataSeries.dataPoints[i].exploded = false;
+                }
+            }
+        });
+    </script>
+    <style>
+        .chartTooltip {
+            padding: 4px 8px;
+        }
+        .chartTooltip .title {
+            font-family: "Roboto-Black";
+            font-weight: 900;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #677078;
+        }
+        .chartTooltip .title:before {
+            font-family: 'Font Awesome 5 Free';
+            content: '\f05a';
+            margin-right: 8px;
+        }
+    </style>
+    <div id="projectStatus" style="height: 600px; width: 100%; margin-top: 48px;"></div>
+}

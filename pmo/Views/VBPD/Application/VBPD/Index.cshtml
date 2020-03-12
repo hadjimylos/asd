@@ -8,11 +8,11 @@
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            <h1><i class="fas fa-list-alt"></i> @ViewData["Title"]</h1>
+            <h1><i class="fas fa-home"></i> @ViewData["Title"]</h1>
         </div>
         <div class="actions">
-            <div class="action"><a class="btn green" href="create">CREATE NEW VBPD PROJECT</a></div>
-            <div class="action"><a class="btn grey" href="/admin">ADMIN</a></div>
+            <div class="action"><a class="btn green" href="create"><i class="fas fa-plus"></i> Create new VBPD Project</a></div>
+            <div class="action"><a class="btn grey" href="/admin"><i class="fas fa-user-cog"></i> Administration</a></div>
         </div>
     </div>
 </div>
@@ -22,27 +22,62 @@
     <div class="list-component">
         <div class="wrapper">
             <div class="title">
-                <div>Name</div>
-                <div>Sales Force</div>
-                <div>Category</div>
+                <div>Project Name</div>
                 <div>Classification</div>
                 <div>Design Authority</div>
-                <div>ProductLine</div>
+                <div>Project Process Type</div>
+                <div>Export Control Code</div>
+                <div>Sales Regions</div>
+                <div>Sales Force</div>
+                <div>Category</div>
+                <div>Product Line</div>
+                <div>Create Date</div>
             </div>
-            <div class="items">
+            <div class="items" style="max-height: 200px; overflow: auto;">
                 @foreach (var modelItem in Model)
                 {
                     <a class="item" href="projects/@modelItem.ProjectId">
                         <div class="item-wrapper">
                             <div>@modelItem.Project.Name</div>
-                            <div>@modelItem.Salesforce</div>
-                            <div>@modelItem.ProjectCategory.Name</div>
                             <div>@modelItem.ProjectClassification.Name</div>
                             <div>@modelItem.DesignAuthority.Name</div>
+                            <div>@modelItem.ProjectProcessType</div>
+                            <div>@modelItem.ExportControlCode</div>
+                            <div>@Helpers.GetDelimited(modelItem.SalesRegions.Select(s => s.SalesRegion.Name).ToList())</div>
+                            <div>@modelItem.Salesforce</div>
+                            <div>@modelItem.ProjectCategory.Name</div>
                             <div>@modelItem.ProductLine.Name</div>
+                            <div>@modelItem.CreateDate</div>
                         </div>
                     </a>
                 }
+            </div>
+        </div>
+    </div>
+    <div class="layout-horrizontal-component">
+        <div class="wrapper">
+            <div class="sections">
+                <div class="section">
+                    <div class="actions-component">
+                        <div class="wrapper">
+                            <div class="header">
+                                <h1><i class="fas fa-chart-pie"></i> Project Statuses</h1>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <partial name="_ProjectStatus" />
+                </div>
+                <div class="section">
+                    <div class="actions-component">
+                        <div class="wrapper">
+                            <div class="header">
+                                <h1><i class="fas fa-signal"></i> Project Stages</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <partial name="_ProjectStages" />
+                </div>
             </div>
         </div>
     </div>
@@ -51,4 +86,3 @@ else
 {
     @Html.Partial("_NoData")
 }
-
