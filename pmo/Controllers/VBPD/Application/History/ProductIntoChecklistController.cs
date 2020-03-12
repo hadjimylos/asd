@@ -61,7 +61,7 @@ namespace pmo.Controllers.VBPD.Application.History
             int currentVersion = 0;
             var latestProductIntoChecklist = _context.ProductIntroChecklists.GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(s=>s.Id == _stageId);
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && vm.IsRequired)
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = _context.Stages.Where(s => s.Id == currentStage.Id).FirstOrDefault();
@@ -71,6 +71,7 @@ namespace pmo.Controllers.VBPD.Application.History
             }
             var productIntroChecklist = _mapper.Map<ProductIntroChecklist>(vm);
             productIntroChecklist.StageId = currentStage.Id;
+            productIntroChecklist.RemoveUnnecessaryValues(f => f.IsRequired);
             if (latestProductIntoChecklist == null)//first version
             {
                 using (var transaction = _context.Database.BeginTransaction())

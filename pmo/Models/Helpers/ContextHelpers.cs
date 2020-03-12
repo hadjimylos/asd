@@ -1,13 +1,16 @@
 ﻿using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using pmo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace ViewModels.Helpers
 {
@@ -162,6 +165,34 @@ namespace ViewModels.Helpers
             string keyName = key.Replace("-", " ");
             var textInfo = new CultureInfo("en-US", false).TextInfo;
             return textInfo.ToTitleCase(keyName);
+        }
+
+        public static T RemoveUnnecessaryValues<T, TProperty>(this T obj, Expression<Func<T, TProperty>> expression) {
+            var propName = ((MemberExpression)expression.Body).Member.Name;
+            var properties = typeof(T)
+                .GetProperties()
+                .ToList();
+
+            var runme = !(bool)properties.First(f => f.Name == propName).GetValue(obj);
+
+            if (!runme)
+                return obj;
+
+            // get all virtual properties of this db object
+            var skipFields = properties.Where(
+                w =>
+                    w.GetGetMethod().IsVirtual &&
+                    w.GetCustomAttributes(typeof(ForeignKeyAttribute), true).FirstOrDefault() != null
+                ).Select(
+                    s =>  (
+                                (ForeignKeyAttribute)s.GetCustomAttributes(typeof(ForeignKeyAttribute), true).First()
+                        ).Name
+                ).ToList();
+            skipFields.Add(propName);
+
+            var updateMe = properties.Where(w => !skipFields.Contains(w.Name)).ToList();
+            updateMe.ForEach(f => f.SetValue(obj, null));
+            return obj;
         }
     }
 

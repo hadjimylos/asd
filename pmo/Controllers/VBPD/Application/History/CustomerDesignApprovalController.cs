@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ViewModels;
 using ViewModels.Helpers;
 
 
@@ -62,7 +61,7 @@ namespace pmo.Controllers.Application.History
             int currentVersion = 0;
             var currentStage = _context.Stages.Where(s=>s.Id==_stageId).First();
             var latestCustomerDesignApproval = _context.CustomerDesignApprovals.GetLatestVersion(_projectId);
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && vm.IsRequired)
             {
                 ViewBag.Errors = ModelState;
                 vm.Stage = currentStage;
@@ -70,9 +69,12 @@ namespace pmo.Controllers.Application.History
                 vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-
+          
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
             customerDesignApproval.StageId = currentStage.Id;
+
+            customerDesignApproval.RemoveUnnecessaryValues(f => f.IsRequired);
+            
             if (latestCustomerDesignApproval == null)
             {
                 using (var transaction = _context.Database.BeginTransaction())
