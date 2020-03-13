@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace dbModels {
+    using System;
 
-namespace dbModels
-{
-    public class ProductInfrigmentPatentability: StageHistoryModel {
-        public bool ContainsInfingmentIssues { get; set; }
-
+    public class ProductInfrigmentPatentability : StageHistoryModel {
         public string PatentNumber { get; set; }
 
         public string Issue { get; set; }

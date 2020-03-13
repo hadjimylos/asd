@@ -9,9 +9,6 @@ namespace forms
     public class ProductInfrigmentPatentabilityForm : ProductInfrigmentPatentability {
         public List<ProductInfrigmentPatentabilityForm> Versions { get; set; }
 
-        [Display(Name = "Are there potential infringement issues?")]
-        public new bool ContainsInfingmentIssues { get; set; }
-
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new string PatentNumber { get; set; }
         [Required(ErrorMessage = ErrorMessages.Required)]
