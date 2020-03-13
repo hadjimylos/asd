@@ -13,7 +13,6 @@ namespace pmo {
     using Microsoft.Extensions.Logging;
     using pmo.Services.Projects;
     using pmo.Services.SharePoint;
-    using pmo.Services.PowerPoint;
 
     public static class Config {
         public static IConfiguration SystemConfig { get; set; }
@@ -72,9 +71,7 @@ namespace pmo {
             services.AddTransient<IListService, ListService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddScoped<ISharePointService, SharePointService>();
-            services.AddScoped<IPowerPointService, PowerPointService>();
             services.AddControllers().AddNewtonsoftJson();
-
 
             services.AddMvc(options => {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());

@@ -3,31 +3,19 @@ using System.Linq;
 using Newtonsoft.Json;
 using AutoMapper;
 using dbModels;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using pmo.Services.Lists;
-using pmo.Services.PowerPoint;
 using ViewModels.Helpers;
 using dto;
-namespace pmo.Controllers.VBPD.Application
-{
+
+namespace pmo.Controllers.VBPD.Application {
     [Route("projects/{projectid}/stages/{stageNumber}/powerpoint")]
-    public class PowerPointController : BaseStageComponentController
-    {
-        private readonly string path = "~/Views/VBPD/Application/PowerPoint";
-        private readonly IListService _listService;
-        private readonly IPowerPointService _powerpointService;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        public PowerPointController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IListService listService, IPowerPointService powerpointService, IWebHostEnvironment hostingEnvironment) : base(context, mapper, httpContextAccessor)
-        {
-            _listService = listService;
-            _powerpointService = powerpointService;
-            _hostingEnvironment = hostingEnvironment;
+    public class PowerPointController : BaseStageComponentController {
+        public PowerPointController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
         }
 
-       struct Project_Data {
+        struct Project_Data {
 
             public Project _p { get; set; }
             public Project_User _u { get; set; }
@@ -66,7 +54,7 @@ namespace pmo.Controllers.VBPD.Application
             var p = _context.Projects
                 .Include(i => i.ProjectDetails)
                 .First(w => w.Id == _projectId);
-             
+
             var u = _context.Project_User
                 .Where(x => x.ProjectId == _projectId && x.JobDescriptionKey == "program-manager")
                 .Include(i => i.User)
@@ -105,29 +93,13 @@ namespace pmo.Controllers.VBPD.Application
                     financialDatafotPPTs.Add(financials);
                 }
             }
-            
 
-           PostLaunchReview plr = _context.PostLaunchReviews.AsNoTracking().GetLatestVersion(_projectId);
+
+            PostLaunchReview plr = _context.PostLaunchReviews.AsNoTracking().GetLatestVersion(_projectId);
             string GateDescription = _stageNumber == 5 ? "PLR" : _stageNumber.ToString();
             Project_Data project_data = new Project_Data(p, u, schedules, pip, risk, ip, bc, plr, GateDescription, ROI, NPV, PaybackPeriod, financialDatafotPPTs);
-            var dataObj = JsonConvert.SerializeObject(project_data, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
+            var dataObj = JsonConvert.SerializeObject(project_data, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
             return new JsonResult(dataObj);
-            
         }
-
-        byte[] GetFile(string s)
-        {
-            using (System.IO.FileStream fs = System.IO.File.OpenRead(s))
-            {
-                byte[] data = new byte[fs.Length];
-                int br = fs.Read(data, 0, data.Length);
-                if (br != fs.Length)
-                    throw new System.IO.IOException(s);
-                return data;
-            }
-        }
-       
-
-       
     }
 }
