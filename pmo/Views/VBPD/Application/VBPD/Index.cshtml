@@ -38,30 +38,37 @@
         <div class="wrapper">
             <div class="title">
                 <div>Project Name</div>
-                <div>Classification</div>
+                <div>Status</div>
+                <div>State</div>
                 <div>Design Authority</div>
                 <div>Project Process Type</div>
                 <div>Export Control Code</div>
                 <div>Sales Regions</div>
                 <div>Sales Force</div>
                 <div>Category</div>
-                <div>Product Line</div>
                 <div>Create Date</div>
             </div>
             <div class="items" style="max-height: 200px; overflow: auto;">
                 @foreach (var modelItem in Model)
                 {
+                    var countGates = modelItem.Project.GateHistory.Count();
+                    var stages = modelItem.Project.StageHistory.Select(s => s.StageNumber);
+                    var maxNum = stages.Max();
+                    var isLite = modelItem.ProjectCategoryTagId == 219;
+                    var displayNum = isLite ? ((char)(maxNum + 64)).ToString() : maxNum.ToString();
+                    var currentState = countGates == stages.Count() ? $"Gate { displayNum }" : $"Stage { displayNum }";
+
                     <a class="item" href="projects/@modelItem.ProjectId">
                         <div class="item-wrapper">
                             <div>@modelItem.Project.Name</div>
-                            <div>@modelItem.ProjectClassification.Name</div>
+                            <div>@modelItem.Project.ProjectStateHistory.OrderByDescending(o => o.CreateDate).First().ProjectState.ToString()</div>
+                            <div>@currentState</div>
                             <div>@modelItem.DesignAuthority.Name</div>
                             <div>@modelItem.ProjectProcessType</div>
                             <div>@modelItem.ExportControlCode</div>
                             <div>@Helpers.GetDelimited(modelItem.SalesRegions.Select(s => s.SalesRegion.Name).ToList())</div>
                             <div>@modelItem.Salesforce</div>
                             <div>@modelItem.ProjectCategory.Name</div>
-                            <div>@modelItem.ProductLine.Name</div>
                             <div>@modelItem.CreateDate</div>
                         </div>
                     </a>

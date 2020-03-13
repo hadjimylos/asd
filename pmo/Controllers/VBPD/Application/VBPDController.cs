@@ -94,7 +94,9 @@ namespace pmo.Controllers {
             return _context.ProjectDetails
                 .IncludeAll()
                 .Include(i => i.Project)
-                    .ThenInclude(i => i.ProjectStateHistory);
+                    .ThenInclude(i => i.ProjectStateHistory)
+                .Include(i => i.Project)
+                        .ThenInclude(i => i.GateHistory);
         }
 
         private List<ProjectDetail> GetProjectDetails(ProjectState state) {
