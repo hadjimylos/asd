@@ -25,7 +25,6 @@ namespace forms
         [MinValue(1)]
         public new int RequirementSourceId { get; set; }
         public List<SelectListItem> RequirementSourceDropDown { set; get; }
-        public string RequirementSourceText { get; set; }
     }
 }
 

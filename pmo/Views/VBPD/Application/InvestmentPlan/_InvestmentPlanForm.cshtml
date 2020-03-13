@@ -1,0 +1,57 @@
+﻿@model forms.InvestmentPlanForm
+
+<form class="form-component" method="post" action="@Context.Request.Path.Value">
+    <input asp-for="Id" type="hidden" />
+
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            <div class="field">
+                <div class="label">Item #</div>
+                <input asp-for="ItemNumber" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ItemNumber")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Item</div>
+                <input asp-for="Item" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Item")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Purchased From</div>
+                <input asp-for="PurchasedFrom" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "PurchasedFrom")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Ship to Location</div>
+                <input asp-for="ShipToLocation" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ShipToLocation")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Cost</div>
+                <input asp-for="Cost" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Cost")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Terms</div>
+                <input asp-for="Terms" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Terms")
+                </ul>
+            </div>
+            <div class="field">
+                <button type="submit" class="data btn green"><i class="fas fa-save"></i> Submit</button>
+                <a class="btn grey" href="#" onclick="location.href = document.referrer; return false;"><i class="fas fa-chevron-circle-left"></i> Return</a>
+            </div>
+        </div>
+    </div>
+</form>

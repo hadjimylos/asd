@@ -98,6 +98,9 @@
                 <div class="field">
                     <input asp-for="SingleUseProduct" class="data" />
                     <label asp-for="SingleUseProduct"></label>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "WillCustomerFundTooling")
+                    </ul>
                 </div>
                 <div class="field">
                     <div class="label">Advantages We Offer</div>

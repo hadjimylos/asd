@@ -1,0 +1,52 @@
+﻿@model forms.KeyCharacteristicForm
+
+<form class="form-component" method="post" action="@Context.Request.Path.Value">
+    <input asp-for="Id" type="hidden" />
+
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            <div class="field">
+                <div class="label">Item #</div>
+                <input asp-for="ItemNumber" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ItemNumber")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Requirement</div>
+                <input asp-for="Requirement" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "Requirement")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Requirement Source</div>
+                <select asp-for="RequirementSourceId" asp-items="Model.RequirementSourceDropDown" class="data select2">
+                    <option hidden disabled selected>-- Select Requirement Source--</option>
+                </select>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "RequirementSourceId")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Measured Value</div>
+                <input asp-for="MeasuredValue" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "MeasuredValue")
+                </ul>
+            </div>
+            <div class="field">
+                <div class="label">Expected Outcome / Risk</div>
+                <input asp-for="ExpectedOutcomeRisk" class="data" />
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "ExpectedOutcomeRisk")
+                </ul>
+            </div>
+            <div class="field">
+                <button type="submit" class="data btn green"><i class="fas fa-save"></i> Submit</button>
+                <a class="btn grey" href="#" onclick="location.href = document.referrer; return false;"><i class="fas fa-chevron-circle-left"></i> Return</a>
+            </div>
+        </div>
+    </div>
+</form>

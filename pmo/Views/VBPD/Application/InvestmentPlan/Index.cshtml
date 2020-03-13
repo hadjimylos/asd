@@ -1,0 +1,53 @@
+﻿@model List<dbModels.InvestmentPlan>
+@{
+    ViewData["Title"] = "List Investment Plans";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1><i class="fas fa-list-alt"></i> @ViewData["Title"]</h1>
+        </div>
+        <div class="actions">
+            <a class="btn" href="investment-plan/create"><i class="fas fa-plus"></i> Create new Investment Plan</a>
+        </div>
+    </div>
+</div>
+
+@if (Model.Count > 0) {
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Item Number</div>
+                <div>Item</div>
+                <div>Purchased From</div>
+                <div>Ship to Location</div>
+                <div>Cost</div>
+                <div>Terms</div>
+                <div><!-- placeholder edit --></div>
+                <div><!--placeholder create--></div>
+
+            </div>
+            <div class="items">
+                @foreach (var ip in Model) {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <div>@ip.ItemNumber</div>
+                            <div>@ip.Item</div>
+                            <div>@ip.PurchasedFrom</div>
+                            <div>@ip.ShipToLocation</div>
+                            <div>@ip.Cost</div>
+                            <div>@ip.Terms</div>
+                            <div><!--placeholder--></div>
+                            <a href="investment-plan/@ip.Id"><i class='icon fas fa-edit'></i> Edit</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else {
+    @Html.Partial("_NoData")
+}

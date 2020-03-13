@@ -14,160 +14,72 @@ namespace pmo.Controllers.Application.History
 {
     [Route("projects/{projectid}/stages/{stageNumber}/investment-plan")]
     public class InvestmentPlanController : BaseStageComponentController {
-        private readonly string viewPath = "~/Views/VBPD/Application/InvestmentPlan";
+        private readonly string path = "~/Views/VBPD/Application/InvestmentPlan";
         public InvestmentPlanController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
         }
 
-        [Route("{version}")]
-        public IActionResult Detail(int version)
-        {
-            var model = GetDBModel(version);
-            return View($"{viewPath}/Detail.cshtml", model);
+        [Route("")]
+        public IActionResult Index() {
+            var vm = _context.InvestmentPlans.IncludeAll()
+                .Where(x => x.StageId == _stageId)
+                .ToList();
+
+            return View($"{path}/Index.cshtml", vm);
+        }
+
+        [Route("create")]
+        public IActionResult Create() {
+            var ip = new forms.InvestmentPlanForm() {
+                StageId = _stageId
+            };
+            return View($"{path}/Create.cshtml", ip);
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [Route("create")]
+        public IActionResult Create(forms.InvestmentPlanForm ipform) {
+            if (!ModelState.IsValid) {
+                ViewBag.Errors = ModelState;
+                return View($"{path}/Create.cshtml", ipform);
+            }
+            var domainModel = _mapper.Map<InvestmentPlan>(ipform);
+            domainModel.StageId = _stageId;
+            _context.InvestmentPlans.Add(domainModel);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+
         }
 
 
-        [Route("edit")]
-        public IActionResult Edit()
-        {
-            // always populate latest version in edit
-            var latestSavedVersion = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
-            var currentStage = _context.Stages.First(n => n.Id == _stageId);
-            ViewBag.CurrentStageNumber = currentStage.StageNumber;
-            if (latestSavedVersion == null)
-            {
-                var vm = new forms.InvestmentPlanForm()
-                {
-                    StageId = currentStage.Id,
-                    Versions = GetVersionHistory(),
-                    Stage = currentStage
-                };
+        [Route("{id}")]
+        public IActionResult Edit(int id) {
+            var ip = _context.InvestmentPlans
+                .Include(s => s.Stage)
+                .Where(s => s.Id == id)
+                .FirstOrDefault();
+            if (ip == null)
+                return NotFound();
 
-                return View($"{viewPath}/Edit.cshtml", vm);
-            }
-            var model = GetViewModel(latestSavedVersion.Version);
-            model.Versions = GetVersionHistory();
-            return View($"{viewPath}/Edit.cshtml", model);
+            var vm = _mapper.Map<forms.InvestmentPlanForm>(ip);
+            return View($"{path}/Edit.cshtml", vm);
         }
 
         [HttpPost]
-        [Route("edit")]
+        [Route("{id}")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(forms.InvestmentPlanForm vm)
-        {
-            int currentVersion = 0;
-            var currentStage = _context.Stages.Where(n => n.Id == _stageId).First();
-            var latestInvestmentPlan = _context.InvestmentPlans.GetLatestVersion(_projectId);
-            if (!ModelState.IsValid)
-            {
+        public IActionResult Edit(forms.InvestmentPlanForm vm, int id) {
+            if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
-                vm.Stage = currentStage;
-                vm.Versions = GetVersionHistory();
-                vm.Version = latestInvestmentPlan == null ? 0 : latestInvestmentPlan.Version;
-                return View($"{viewPath}/Edit.cshtml", vm);
+                return View($"{path}/Edit.cshtml", vm);
             }
 
-            var investmentPlan = _mapper.Map<InvestmentPlan>(vm);
-            investmentPlan.StageId = currentStage.Id;
-            //first version
-            if (latestInvestmentPlan == null)
-            {
-                using (var transaction = _context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        currentVersion = 1;
-                        investmentPlan.Version = 1;
-                        _context.InvestmentPlans.Add(investmentPlan);
-                        _context.SaveChanges();
-                        transaction.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                        throw e;
-                    }
-                }
-            }
-            else
-            { //There is already a previous version
-                currentVersion = latestInvestmentPlan.Version;
-                string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
-                var isUpdate = latestInvestmentPlan.ModifiedByUser.ToLower() == currentUser.ToLower();
-                if (isUpdate && currentStage.StageNumber == latestInvestmentPlan.Stage.StageNumber)//if same user and sameStage then update
-                {
-                    using (var transaction = _context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            latestInvestmentPlan.Item = investmentPlan.Item;
-                            latestInvestmentPlan.ItemNumber = investmentPlan.ItemNumber;
-                            latestInvestmentPlan.PurchasedFrom = investmentPlan.PurchasedFrom;
-                            latestInvestmentPlan.ShipToLocation = investmentPlan.ShipToLocation;
-                            latestInvestmentPlan.Terms = investmentPlan.Terms;
-                            latestInvestmentPlan.Cost = investmentPlan.Cost;
-                            //TODO Upload Documentation as well
-                            _context.InvestmentPlans.Update(latestInvestmentPlan);
-                            _context.SaveChanges();
-                            transaction.Commit();
-                        }
-                        catch (Exception e)
-                        {
-                            transaction.Rollback();
-                            throw e;
-                        }
-                    }
-                }
-                else// if not same user then add a new record to DB(transactions functionality)
-                {
-                    using (var transaction = _context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            investmentPlan.Version = currentVersion+=1;
-                            _context.InvestmentPlans.Add(investmentPlan);
-                            _context.SaveChanges();
-                            transaction.Commit();
-                        }
-                        catch (Exception e)
-                        {
-                            transaction.Rollback();
-                            throw e;
-                        }
-                    }
-                }
-            }
-
-            return this._editAction;
+            var domainModel = _mapper.Map<InvestmentPlan>(vm);
+            domainModel.StageId = _stageId;
+            _context.InvestmentPlans.Update(domainModel);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        private forms.InvestmentPlanForm GetViewModel(int version)
-        {
-            var model = _context.InvestmentPlans.Where(s => s.Version == version).GetLatestVersion(_projectId);
-            var vm = _mapper.Map<forms.InvestmentPlanForm>(model);
-
-            return vm;
-        }
-
-        private List<forms.InvestmentPlanForm> GetVersionHistory()
-        {
-            var grouped = _context.InvestmentPlans
-                .Include(s => s.Stage)
-                .Where(i => i.Stage.ProjectId == _projectId)
-                .ToList()
-                .GroupBy(g => g.Version)
-                .ToList();
-
-            if (grouped.Count == 0) { return new List<forms.InvestmentPlanForm>(); }
-
-            List<InvestmentPlan> versions = new List<InvestmentPlan>();
-            grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            return _mapper.Map<List<forms.InvestmentPlanForm>>(versions);
-        }
-
-        private InvestmentPlan GetDBModel(int version)
-        {
-            return _context.InvestmentPlans.Where(s => s.Version == version).GetLatestVersion(_projectId);
-        }
     }
 }

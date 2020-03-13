@@ -130,7 +130,7 @@ namespace ViewModels.Helpers
                     Type.GetTypeCode(toValue?.GetType()) == TypeCode.Object;
 
                 // don't override if not null object (entity framework will crash if overwriting object with null on save)
-                if(!isNotNullObject && to.Name.ToLower() != "id")
+                if(!isNotNullObject && !to.Name.ToLower().Contains("id"))
                     to.SetValue(copyTo, fromValue);
             });
         }

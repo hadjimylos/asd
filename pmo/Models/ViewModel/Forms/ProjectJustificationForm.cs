@@ -40,6 +40,7 @@ namespace forms
         public new string Scope { get; set; }
 
         //Non-required
+        [Display(Name = "Single Use Product")]
         public new bool SingleUseProduct { get; set; }
 
     }

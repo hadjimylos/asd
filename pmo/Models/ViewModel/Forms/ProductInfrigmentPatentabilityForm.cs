@@ -6,8 +6,7 @@ using ViewModels.Helpers;
 
 namespace forms
 {
-    public class ProductInfrigmentPatentabilityForm:ProductInfrigmentPatentability
-    {
+    public class ProductInfrigmentPatentabilityForm : ProductInfrigmentPatentability {
         public List<ProductInfrigmentPatentabilityForm> Versions { get; set; }
 
         [Display(Name = "Are there potential infringement issues?")]
@@ -25,6 +24,7 @@ namespace forms
 
         [Display(Name = "Has an invention disclosure been submitted?")]
         public new bool InventionDisclosureSubmitted { get; set; }
+
 
         public new DateTime ProductFirstTimeOfferedForSale { get; set; }
     }

@@ -31,7 +31,7 @@ namespace pmo.Controllers.VBPD.Application.History {
         public IActionResult Edit() {
 
             // always populate latest version in edit if not just an empty form
-            var latestSavedVersion = _context.BusinessCases.AsNoTracking().GetLatestVersion(_projectId);
+            var latestSavedVersion = _context.BusinessCases.GetLatestVersion(_projectId);
             var currentStage = _context.Stages.First(n => n.Id == _stageId);
             ViewBag.CurrentStageNumber = currentStage.StageNumber;
             if (latestSavedVersion == null) {
@@ -181,8 +181,7 @@ namespace pmo.Controllers.VBPD.Application.History {
             return vm;
         }
         private BusinessCaseForm GetViewModel(int version) {
-            var model = _context.BusinessCases.Where(s => s.Version == version)
-                .Include(m => m.ManufacturingLocations)
+            var model = _context.BusinessCases.IncludeAll()
                 .GetLatestVersion(_projectId);
 
             var vm = _mapper.Map<BusinessCaseForm>(model);

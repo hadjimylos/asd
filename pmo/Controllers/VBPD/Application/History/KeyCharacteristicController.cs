@@ -11,160 +11,94 @@ using System.Linq;
 using ViewModels;
 using ViewModels.Helpers;
 
-namespace pmo.Controllers
-{
+namespace pmo.Controllers {
     [Route("projects/{projectid}/stages/{stageNumber}/key-characteristic")]
     public class KeyCharacteristicController : BaseStageComponentController {
-        private readonly string viewPath = "~/Views/VBPD/Application/KeyCharacteristic";
+        private readonly string path = "~/Views/VBPD/Application/KeyCharacteristic";
 
-        public KeyCharacteristicController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
-        {
+        public KeyCharacteristicController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
             //  _listService = listService;
             //   _httpContextAccessor = httpContextAccessor;
         }
 
-        [Route("{version}")]
-        public IActionResult Detail(int version)
-        {
-            var model = GetDBModel(version);
-            return View($"{viewPath}/Detail.cshtml", model);
+        [Route("")]
+        public IActionResult Index() {
+            var vm = _context.KeyCharacteristics.IncludeAll()
+                .Where(x => x.StageId == _stageId)
+                .ToList();
+
+            return View($"{path}/Index.cshtml", vm);
         }
 
-        [Route("edit")]
-        public IActionResult Edit()
-        {
-            // always populate latest version in edit if not just an empty form
-            var latestSavedVersion = _context.KeyCharacteristics.AsNoTracking().GetLatestVersion(_projectId);
-            var currentStage = _context.Stages.First(n => n.Id == _stageId);
-            ViewBag.CurrentStageNumber= currentStage.StageNumber;
-            if (latestSavedVersion == null)
-            {
-                var vm = new forms.KeyCharacteristicForm()
-                {
-                    StageId = currentStage.Id,
-                    Versions = GetVersionHistory(),
-                    Stage = currentStage,
-                    RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
-                        .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                        .ToList().Select(s => new SelectListItem
-                        {
-                            Value = s.Id.ToString(),
-                            Text = s.Name,
-                        }).ToList()
-                };
-                return View($"{viewPath}/Edit.cshtml", vm);
-            }
-
-            var model = GetViewModel(latestSavedVersion.Version);
-            model.Versions = GetVersionHistory();
-            model.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
-                .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                .ToList().Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.Name,
-                    Selected = s.Id == model.RequirementSourceId
-                }).ToList();
-            return View($"{viewPath}/Edit.cshtml", model);
+        [Route("create")]
+        public IActionResult Create() {
+            var kc = new forms.KeyCharacteristicForm() {
+                StageId = _stageId
+            };
+            SetDropdowns(kc);
+            return View($"{path}/Create.cshtml", kc);
         }
 
         [HttpPost]
-        [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(forms.KeyCharacteristicForm vm)
-        {
-            int currentVersion = 0;
-            var latestKeyCharacteristics = _context.KeyCharacteristics.GetLatestVersion(_projectId);
-            var currentStage = _context.Stages.First(s => s.Id == _stageId);
-            if (!ModelState.IsValid)
-            {
+        [Route("create")]
+        public IActionResult Create(forms.KeyCharacteristicForm kcform) {
+            if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
-                vm.Stage = currentStage;
-                vm.Versions = GetVersionHistory();
-                vm.Version = latestKeyCharacteristics == null ? 0 : latestKeyCharacteristics.Version;
-                vm.RequirementSourceDropDown = _context.Tags.Include(C => C.TagCategory)
-                    .Where(t => t.TagCategory.Key == TagCategoryHelper.RequirementSource)
-                    .ToList().Select(s => new SelectListItem
-                    {
-                        Value = s.Id.ToString(),
-                        Text = s.Name,
-                        Selected = s.Id == vm.RequirementSourceId
-                    }).ToList();
-                return View($"{viewPath}/Edit.cshtml", vm);
+                SetDropdowns(kcform);
+                return View($"{path}/Create.cshtml", kcform);
             }
-            var keyCharacteristic = _mapper.Map<KeyCharacteristic>(vm);
-            keyCharacteristic.StageId = currentStage.Id;
-            if (latestKeyCharacteristics == null)  //first version
-            {
-                keyCharacteristic.Version = 1;
-                currentVersion = 1;
-                _context.KeyCharacteristics.Add(keyCharacteristic);
-                _context.SaveChanges();
-            }
-            else //There is already a previous version
-            {
-                currentVersion = latestKeyCharacteristics.Version;
-                string currentUser = _httpContextAccessor.HttpContext.User.Identity.Name;
-                var isUpdate = latestKeyCharacteristics.ModifiedByUser.ToLower() == currentUser.ToLower();
+            var domainModel = _mapper.Map<KeyCharacteristic>(kcform);
+            domainModel.StageId = _stageId;
+            _context.KeyCharacteristics.Add(domainModel);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
 
-                if (isUpdate && currentStage.StageNumber == latestKeyCharacteristics.Stage.StageNumber)//if same user and sameStage then update
-                {
-                    latestKeyCharacteristics.ItemNumber = keyCharacteristic.ItemNumber;
-                    latestKeyCharacteristics.MeasuredValue = keyCharacteristic.MeasuredValue;
-                    latestKeyCharacteristics.Requirement = keyCharacteristic.Requirement;
-                    latestKeyCharacteristics.RequirementSourceId = keyCharacteristic.RequirementSourceId;
-                    latestKeyCharacteristics.ExpectedOutcomeRisk = keyCharacteristic.ExpectedOutcomeRisk;
-                    _context.KeyCharacteristics.Update(latestKeyCharacteristics);
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    //if not then new record and new version
-                    //
-                    keyCharacteristic.Version = currentVersion+=1;
-                    _context.KeyCharacteristics.Add(keyCharacteristic);
-                    _context.SaveChanges();
-                }
-            }
-
-            return this._editAction;
         }
 
-        private List<forms.KeyCharacteristicForm> GetVersionHistory()
-        {
-            var grouped = _context.KeyCharacteristics.Include(k=>k.RequirementSource)
+        [Route("{id}")]
+        public IActionResult Edit(int id) {
+            var kc = _context.KeyCharacteristics
                 .Include(s => s.Stage)
-                .Where(i => i.Stage.ProjectId == _projectId)
-                .ToList()
-                .GroupBy(g => g.Version)
+                .Where(s => s.Id == id)
+                .FirstOrDefault();
+            if (kc == null)
+                return NotFound();
+
+            var vm = _mapper.Map<forms.KeyCharacteristicForm>(kc);
+            SetDropdowns(vm);
+            return View($"{path}/Edit.cshtml", vm);
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Edit(forms.KeyCharacteristicForm vm, int id) {
+            if (!ModelState.IsValid) {
+                ViewBag.Errors = ModelState;
+                SetDropdowns(vm);
+                return View($"{path}/Edit.cshtml", vm);
+            }
+
+            var domainModel = _mapper.Map<KeyCharacteristic>(vm);
+            domainModel.StageId = _stageId;
+            _context.KeyCharacteristics.Update(domainModel);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        private void SetDropdowns(forms.KeyCharacteristicForm model) {
+            // get all tags
+            List<string> tagDropdowns = new List<string>() {
+                TagCategoryHelper.RequirementSource,
+            };
+
+            var tagCategories = _context.TagCategories.Include(i => i.Tags).Where(w => tagDropdowns.Contains(w.Key))
                 .ToList();
+            model.RequirementSourceDropDown = GetDropdown(tagCategories, TagCategoryHelper.RequirementSource);
+        }
 
-            if (grouped.Count == 0)
-            {
-                return new List<forms.KeyCharacteristicForm>();
-            }
-
-            List<KeyCharacteristic> versions = new List<KeyCharacteristic>();
-            grouped.ForEach(group => versions.Add(group.OrderByDescending(o => o.CreateDate).First()));
-            var vm  = _mapper.Map<List<forms.KeyCharacteristicForm>>(versions);
-            foreach (var item in vm)
-            {
-                item.RequirementSourceText = item.RequirementSource.Name;
-            }
-            return vm;
-        }
-        private forms.KeyCharacteristicForm GetViewModel(int version)
-        {
-            var model = _context.KeyCharacteristics.Where(s => s.Version == version)
-            .Include(i => i.RequirementSource)
-            .GetLatestVersion(_projectId);
-            var vm = _mapper.Map<forms.KeyCharacteristicForm>(model);
-            vm.RequirementSourceText = model.RequirementSource.Name;
-            return vm;
-        }
-        private KeyCharacteristic GetDBModel(int version)
-        {
-            return _context.KeyCharacteristics.Where(s => s.Version == version).GetLatestVersion(_projectId);
-        }
+        private List<SelectListItem> GetDropdown(List<dbModels.TagCategory> categories, string key) =>
+            categories.First(f => f.Key == key).GetListItems();
     }
 }

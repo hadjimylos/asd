@@ -16,6 +16,7 @@ namespace pmo.Controllers
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _context.ChangeTracker.QueryTrackingBehavior = Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTracking;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {

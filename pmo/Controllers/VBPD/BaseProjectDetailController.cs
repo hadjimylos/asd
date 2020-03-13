@@ -153,14 +153,14 @@
                     },
                     new ActiveNav {
                         Component = "Product Infrigment Patentabilities",
-                        IsComplete = activeStageConfig.MinProductInfringementPatentabilities <= 0 || (activeStage.ProductInfrigmentPatentabilityHistory.Count > 0 && activeStage.ProductInfrigmentPatentabilityHistory.Max(m => m.Version) >= activeStageConfig.MinProductInfringementPatentabilities),
-                        Url = $"{commonPath}/product-infrigment-patentability/edit",
+                        IsComplete = activeStageConfig.MinProductInfringementPatentabilities <= 0 || (activeStage.ProductInfrigmentPatentabilityHistory.Count > 0 && activeStage.ProductInfrigmentPatentabilityHistory.Count >= activeStageConfig.MinProductInfringementPatentabilities),
+                        Url = $"{commonPath}/product-infrigment-patentability",
                         Visible = activeStageConfig.MinProductInfringementPatentabilities > 0,
                     },
                     new ActiveNav {
                         Component = "Key Characteristics",
-                        IsComplete = activeStageConfig.MinKeyCharacteristics <= 0 || (activeStage.KeyCharacteristicHistory.Count > 0 && activeStage.KeyCharacteristicHistory.Max(m => m.Version) >= activeStageConfig.MinKeyCharacteristics),
-                        Url = $"{commonPath}/key-characteristic/edit",
+                        IsComplete = activeStageConfig.MinKeyCharacteristics <= 0 || (activeStage.KeyCharacteristicHistory.Count > 0 && activeStage.KeyCharacteristicHistory.Count >= activeStageConfig.MinKeyCharacteristics),
+                        Url = $"{commonPath}/key-characteristic",
                         Visible = activeStageConfig.MinKeyCharacteristics > 0,
                     },
                     new ActiveNav {
@@ -171,8 +171,8 @@
                     },
                     new ActiveNav {
                         Component = "Investment Plans",
-                        IsComplete = activeStageConfig.MinInvestmentPlans <= 0 || (activeStage.InvestmentPlanHistory.Count > 0 && activeStage.InvestmentPlanHistory.Max(m => m.Version) >= activeStageConfig.MinInvestmentPlans),
-                        Url = $"{commonPath}/investment-plan/edit",
+                        IsComplete = activeStageConfig.MinInvestmentPlans <= 0 || (activeStage.InvestmentPlanHistory.Count > 0 && activeStage.InvestmentPlanHistory.Count >= activeStageConfig.MinInvestmentPlans),
+                        Url = $"{commonPath}/investment-plan",
                         Visible = activeStageConfig.MinInvestmentPlans > 0,
                     },
                     new ActiveNav {
