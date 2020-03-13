@@ -110,6 +110,7 @@ namespace pmo.Controllers.Application.History
                             latestCustomerDesignApproval.DateSentForApprove = customerDesignApproval.DateSentForApprove;
                             latestCustomerDesignApproval.SentForApprovalBy = customerDesignApproval.SentForApprovalBy;
                             //TODO Upload Documentation as well
+                            _context.Entry(latestCustomerDesignApproval).State = EntityState.Modified;
                             _context.CustomerDesignApprovals.Update(latestCustomerDesignApproval);
                             _context.SaveChanges();
 

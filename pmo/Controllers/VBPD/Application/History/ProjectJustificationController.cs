@@ -93,6 +93,7 @@ namespace pmo.Controllers {
                     lastProjectJustification.TechnicalFeasibility = projectJust.TechnicalFeasibility;
                     lastProjectJustification.WhyOurOfferPreferred = projectJust.WhyOurOfferPreferred;
 
+                    _context.Entry(lastProjectJustification).State = EntityState.Modified;
                     _context.ProjectJustifications.Update(lastProjectJustification);
                     _context.SaveChanges();
                 }

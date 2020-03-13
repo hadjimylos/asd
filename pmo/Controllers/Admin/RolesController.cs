@@ -86,6 +86,7 @@ namespace pmo.Controllers {
             }
 
             var domainModel = _mapper.Map<Role>(model);
+            _context.Entry(domainModel).State = EntityState.Modified;
             _context.Update(domainModel);
             _context.SaveChanges();
 

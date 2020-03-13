@@ -107,6 +107,7 @@ namespace pmo.Controllers
                             latestPLR.ActualVSExpected = PLR.ActualVSExpected;
                             latestPLR.Commercial = PLR.Commercial;
                             //TODO Upload Documentation as well
+                            _context.Entry(latestPLR).State = EntityState.Modified;
                             _context.PostLaunchReviews.Update(latestPLR);
                             _context.SaveChanges();
                             transaction.Commit();

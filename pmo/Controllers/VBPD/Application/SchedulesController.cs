@@ -93,6 +93,8 @@ namespace pmo.Controllers {
                         _context.Schedules.Add(item);
                     }
                 }
+
+                _context.Entry(model).State = EntityState.Modified;
                 _context.Schedules.UpdateRange(model);
                 _context.SaveChanges();
 

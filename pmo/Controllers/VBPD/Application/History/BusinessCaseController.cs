@@ -123,6 +123,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                             for (int i = 0; i < latestBusinessCase.FinancialData.Count; i++)
                                 latestBusinessCase.FinancialData[i].Year = businessCase.FinancialStartYear + i;
 
+                            _context.Entry(latestBusinessCase).State = EntityState.Modified;
                             _context.BusinessCases.Update(latestBusinessCase);
                             _context.SaveChanges();
 

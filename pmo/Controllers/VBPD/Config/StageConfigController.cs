@@ -91,6 +91,7 @@ namespace pmo.Controllers {
 
             var domainModel = _mapper.Map<StageConfig>(model);
 
+            _context.Entry(domainModel).State = EntityState.Modified;
             _context.Update(domainModel);
             _context.SaveChanges();
 

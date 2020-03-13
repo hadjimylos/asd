@@ -124,6 +124,7 @@ namespace pmo.Controllers.VBPD.Application.History
                             latestProductIntoChecklist.IsRequired = productIntroChecklist.IsRequired;
                             productIntroChecklist.Filename = savePath;
 
+                            _context.Entry(latestProductIntoChecklist).State = EntityState.Modified;
                             _context.ProductIntroChecklists.Update(latestProductIntoChecklist);
                             _context.SaveChanges();
                             transaction.Commit();
