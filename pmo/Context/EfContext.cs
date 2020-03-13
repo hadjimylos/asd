@@ -1167,8 +1167,8 @@ namespace pmo
                 new User(){ NetworkUsername=@"global\georgia.bogri", Id=4, ModifiedByUser="system", RoleId=1 },
                 new User(){ NetworkUsername=@"global\konstantinos.marolac", Id=5, ModifiedByUser="system", RoleId=1 },
                 new User(){ NetworkUsername=@"global\ioannis.giannakop", Id=6, ModifiedByUser="system", RoleId=1 },
-                new User(){ NetworkUsername=@"global\christos.zaragkidis", Id=7, ModifiedByUser="system", RoleId=1 }
-
+                new User(){ NetworkUsername=@"global\christos.zaragkidis", Id=7, ModifiedByUser="system", RoleId=1 },
+                new User(){ NetworkUsername=@"global\george.karagiannakis", Id=8, ModifiedByUser="system", RoleId=1 },
             });
             #endregion
 
