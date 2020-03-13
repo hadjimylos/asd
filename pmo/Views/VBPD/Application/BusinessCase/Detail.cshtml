@@ -67,8 +67,7 @@
                                 <div class="label">GPA Requirements</div>
                                 <div class="value">@Model.GpaRequirements</div>
                             </div>
-                            @if (Model.FinancialData.Count > 0)
-                            {
+                            @if (Model.FinancialData.Count > 0) {
                                 <div class="detail">
                                     <div class="label">NPV</div>
                                     <div class="value">$ @Model.GetNPV().ToString("N0")</div>
@@ -84,8 +83,8 @@
                             }
                         </div>
                     </div>
-                                </div>
-                            </div>
+                </div>
+            </div>
             <div class="section">
                 <div class="detail-component">
                     <div class="wrapper">
@@ -189,7 +188,14 @@
                         <div>$ @Model.FinancialData.Sum(s => s.GetCostExtended()).ToString("N0")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetRevenueExtended()).ToString("N0")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetStandardMarginPrice()).ToString("N0")</div>
-                        <div>@Model.FinancialData.Where(w => w.GetStandardMarginPercent() != null).Average(s => (decimal)s.GetStandardMarginPercent()).ToString("N0") %</div>
+                        <div>
+                            @if (Model.FinancialData.Where(w => w.GetStandardMarginPercent() != null).Count() > 0) {
+                                @Model.FinancialData.Where(w => w.GetStandardMarginPercent() != null).Average(s => (decimal)s.GetStandardMarginPercent()).ToString("N0") <text>%</text>
+                            } else {
+                                <text>--</text>
+                            }
+
+                        </div>
                     </div>
                 </div>
             </div>
