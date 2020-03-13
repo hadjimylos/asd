@@ -8,7 +8,7 @@
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+            <h1 class="text-black"><i class="fas fa-file-alt"></i> Technical Feasibility & Scope</h1>
         </div>
     </div>
 </div>
@@ -16,183 +16,188 @@
 <form class="historyform-component" method="post">
     @Html.AntiForgeryToken()
     <div class="wrapper">
-        <div class="form-section">
-            <div class="fields">
-                <div class="field">
-                    <div class="label">Customer's Motivation</div>
-                    <input asp-for="CustomerMotivation" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "CustomerMotivation")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Application</div>
-                    <textarea asp-for="Application" class="data"></textarea>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "Application")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Drawings, Specs and Standards</div>
-                    <textarea asp-for="DrawingSpecStandards" class="data"></textarea>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "DrawingSpecStandards")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Regulatory Requirements</div>
-                    <input asp-for="RegulatoryRequirements" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "DrawingSpecStandards")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Other Requirements</div>
-                    <textarea asp-for="OtherRequirements" class="data"></textarea>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "OtherRequirements")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Technical Feasibility</div>
-                    <textarea asp-for="TechnicalFeasibility" class="data"></textarea>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "TechnicalFeasibility")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Scope</div>
-                    <input asp-for="Scope" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "Scope")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Addition to our Technical Capabilities</div>
-                    <select asp-for="AddToInhouseTechnicalAbilitiesTagId" asp-items="Model.AddToInhouseTechnicalAbilitiesDropDown" class="data select2"></select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "AddToInhouseTechnicalAbilitiesTagId")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Product</div>
-                    <input asp-for="Product" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "Product")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Competition</div>
-                    <input asp-for="Competetion" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "Competition")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Benchmark Samples</div>
-                    <input asp-for="BenchmarkSamples" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "BenchmarkSamples")
-                    </ul>
-                </div>
-                <div class="field">
-                    <input asp-for="SingleUseProduct" class="data" />
-                    <label asp-for="SingleUseProduct"></label>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "WillCustomerFundTooling")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Advantages We Offer</div>
-                    <input asp-for="AdvantagesWeOffer" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "AdvantagesWeOffer")
-                    </ul>
-                </div>
-                <div class="field">
-                    <div class="label">Why Our Offer Preferred</div>
-                    <input asp-for="WhyOurOfferPreferred" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "WhyOurOfferPreferred")
-                    </ul>
+        <div class="form-sections">
+            <div class="form-section">
+                <div class="divider">Edit</div>
+                <div class="fields">
                     <div class="field">
-                        <input type="submit" class="data btn" value="Save" />
+                        <div class="label">Customer's Motivation</div>
+                        <input asp-for="CustomerMotivation" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "CustomerMotivation")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Application</div>
+                        <textarea asp-for="Application" class="data"></textarea>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Application")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Drawings, Specs and Standards</div>
+                        <textarea asp-for="DrawingSpecStandards" class="data"></textarea>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "DrawingSpecStandards")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Regulatory Requirements</div>
+                        <input asp-for="RegulatoryRequirements" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "DrawingSpecStandards")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Other Requirements</div>
+                        <textarea asp-for="OtherRequirements" class="data"></textarea>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "OtherRequirements")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Technical Feasibility</div>
+                        <textarea asp-for="TechnicalFeasibility" class="data"></textarea>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "TechnicalFeasibility")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Scope</div>
+                        <input asp-for="Scope" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Scope")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Addition to our Technical Capabilities</div>
+                        <select asp-for="AddToInhouseTechnicalAbilitiesTagId" asp-items="Model.AddToInhouseTechnicalAbilitiesDropDown" class="data select2"></select>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "AddToInhouseTechnicalAbilitiesTagId")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Product</div>
+                        <input asp-for="Product" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Product")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Competition</div>
+                        <input asp-for="Competetion" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "Competition")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Benchmark Samples</div>
+                        <input asp-for="BenchmarkSamples" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "BenchmarkSamples")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <input asp-for="SingleUseProduct" class="data" />
+                        <label asp-for="SingleUseProduct"></label>
+                    </div>
+                    <div class="field">
+                        <div class="label">Advantages We Offer</div>
+                        <input asp-for="AdvantagesWeOffer" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "AdvantagesWeOffer")
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <div class="label">Why Our Offer Preferred</div>
+                        <input asp-for="WhyOurOfferPreferred" class="data" />
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "WhyOurOfferPreferred")
+                        </ul>
+                        <div class="field">
+                            <input type="submit" class="data btn" value="Save" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="versioning-section">
             <div class="choose-history">
+                <div class="divider">History</div>
                 <div class="select-history-wrapper">
+                    <div class="label">Please Select</div>
                     <select class="select-history select2">
                         <option value="clear">CLEAR</option>
                         <option value="all">VIEW ALL</option>
-                        @foreach (var version in Model.Versions) {
+                        @foreach (var version in Model.Versions)
+                        {
                             <option value="@version.Id">Version: @version.Version , Last Update By: @version.ModifiedByUser</option>
                         }
                     </select>
                 </div>
             </div>
             <div class="versions">
-                @foreach (var version in Model.Versions) {
+                @foreach (var version in Model.Versions)
+                {
                     <div showversion="@version.Id" class="version">
-                        <div class="values">
-                            <div class="select-single-field">
-                                <div class="label">Customer's Motivation</div>
-                                <div class="data">@version.CustomerMotivation</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Application</div>
-                                <div class="data">@version.Application</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Drawings, Specs and Standards</div>
-                                <div class="data">@version.DrawingSpecStandards</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Regulatory Requirements</div>
-                                <div class="data">@version.RegulatoryRequirements</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Other Requirements</div>
-                                <div class="data">@version.OtherRequirements</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Technical Feasibility</div>
-                                <div class="data">@version.TechnicalFeasibility</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Scope</div>
-                                <div class="data">@version.Scope</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Add To our Technical Abilities </div>
-                                <div class="data">@version.AddToInhouseTechnicalAbilities.Name</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Product</div>
-                                <div class="data">@version.Product</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Competition</div>
-                                <div class="data">@version.Competetion</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Benchmark Samples</div>
-                                <div class="data">@version.BenchmarkSamples</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Single Use Product</div>
-                                <div class="data">@version.SingleUseProduct</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Advantages We Offer</div>
-                                <div class="data">@version.AdvantagesWeOffer</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">Why Our Offer Preferred</div>
-                                <div class="data">@version.WhyOurOfferPreferred</div>
+                        <div class="version-section">
+                            <div class="values">
+                                <div class="select-single-field">
+                                    <div class="label">Customer's Motivation</div>
+                                    <div class="data">@version.CustomerMotivation</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Application</div>
+                                    <div class="data">@version.Application</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Drawings, Specs and Standards</div>
+                                    <div class="data">@version.DrawingSpecStandards</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Regulatory Requirements</div>
+                                    <div class="data">@version.RegulatoryRequirements</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Other Requirements</div>
+                                    <div class="data">@version.OtherRequirements</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Technical Feasibility</div>
+                                    <div class="data">@version.TechnicalFeasibility</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Scope</div>
+                                    <div class="data">@version.Scope</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Add To our Technical Abilities </div>
+                                    <div class="data">@version.AddToInhouseTechnicalAbilities.Name</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Product</div>
+                                    <div class="data">@version.Product</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Competition</div>
+                                    <div class="data">@version.Competetion</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Benchmark Samples</div>
+                                    <div class="data">@version.BenchmarkSamples</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Single Use Product</div>
+                                    <div class="data">@version.SingleUseProduct</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Advantages We Offer</div>
+                                    <div class="data">@version.AdvantagesWeOffer</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Why Our Offer Preferred</div>
+                                    <div class="data">@version.WhyOurOfferPreferred</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -200,5 +205,4 @@
             </div>
         </div>
     </div>
-
 </form>
