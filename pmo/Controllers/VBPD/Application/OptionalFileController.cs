@@ -25,6 +25,19 @@ namespace pmo.Controllers {
             _listService = listService;
         }
 
+        [Route("")]
+        public IActionResult Details()
+        {
+            var model =  _context.OptionalFiles
+                .IncludeAll()
+                .Where(
+                    w =>
+                        w.StageId == _stageId
+                ).OrderBy(x=>x.FileTagId).ThenBy(x=>x.CreateDate).ToList();
+
+            return View($"{path}/Details.cshtml", model);
+        }
+
         [Route("edit")]
         public IActionResult Edit() {
             List<OptionalFileForm> model = new List<OptionalFileForm>();
@@ -36,7 +49,7 @@ namespace pmo.Controllers {
                 .Where(
                     w =>
                         w.StageId == _stageId
-                ).ToList();
+                ).OrderBy(x => x.FileTagId).ThenBy(x => x.CreateDate).ToList();
 
             return View($"{path}/Edit.cshtml", model);
         }
