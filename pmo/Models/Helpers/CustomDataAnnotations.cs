@@ -73,7 +73,7 @@
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
             var success = ValidationResult.Success;
             var errorType = _minValue?.ToString() ?? _minDate?.ToString("MM/dd/yyyy");
-            string error = this.ErrorMessage ?? $"Please insert a value greater than {errorType}.";
+            string error = this.ErrorMessage ?? $"Please insert a value less than {errorType}.";
             var fail = new ValidationResult(error);
 
             return Type.GetTypeCode(value.GetType()) switch
