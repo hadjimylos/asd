@@ -73,20 +73,24 @@ namespace pmo.Controllers.VBPD.Application.History
                 vm.Version = latestProductIntoChecklist == null ? 0 : latestProductIntoChecklist.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-            //Save Files
-            var upload = _SharePointService.Upload(vm.File, currentStage.Project.Name);
-            var result = JObject.Parse(upload.Result);
-            string relative = result["d"]["ServerRelativeUrl"].ToString();
-            string name = result["d"]["Name"].ToString();
-            string savePath = $"{Config.AppSettings["Sharepoint:SPFarm"]}{relative}";
-            //Save to the database
+            
             var productIntroChecklist = _mapper.Map<ProductIntroChecklist>(vm);
+            
+            string savePath = null;
+
+            //Save Files (only if record is marked as required)
+            if (vm.IsRequired) { 
+                var upload = _SharePointService.Upload(vm.File, currentStage.Project.Name);
+                var result = JObject.Parse(upload.Result);
+                string relative = result["d"]["ServerRelativeUrl"].ToString();
+                string name = result["d"]["Name"].ToString();
+                savePath = $"{Config.AppSettings["Sharepoint:SPFarm"]}{relative}";
+                productIntroChecklist.Filename = savePath;
+            }
+
+            // Save to the database
             productIntroChecklist.StageId = currentStage.Id;
             productIntroChecklist.RemoveUnnecessaryValues(f => f.IsRequired);
-            productIntroChecklist.Filename = savePath;
-            productIntroChecklist.ApprovedBy = vm.ApprovedBy;
-            productIntroChecklist.ApprovedByDate = vm.ApprovedByDate;
-            productIntroChecklist.IsRequired = vm.IsRequired;
 
             if (latestProductIntoChecklist == null)//first version
             {
@@ -122,7 +126,7 @@ namespace pmo.Controllers.VBPD.Application.History
                             latestProductIntoChecklist.ApprovedBy = productIntroChecklist.ApprovedBy;
                             latestProductIntoChecklist.ApprovedByDate = productIntroChecklist.ApprovedByDate;                            
                             latestProductIntoChecklist.IsRequired = productIntroChecklist.IsRequired;
-                            productIntroChecklist.Filename = savePath;
+                            latestProductIntoChecklist.Filename = savePath;
 
                             _context.Entry(latestProductIntoChecklist).State = EntityState.Modified;
                             _context.ProductIntroChecklists.Update(latestProductIntoChecklist);

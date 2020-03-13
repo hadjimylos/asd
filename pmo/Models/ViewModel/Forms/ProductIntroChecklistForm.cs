@@ -13,10 +13,7 @@ namespace forms
         public List<ProductIntroChecklistForm> Versions { get; set; }
 
         [Display(Name = "Is Marketing Required")]
-        public new bool IsMarketingRequired { get; set; }
-
-        //[Required(ErrorMessage = ErrorMessages.Required)]
-        //public new string Filename { get; set; }
+        public new bool IsRequired { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         [UserExistsActiveDirectory(ErrorMessages.MissingUserActiveDirectory)]
