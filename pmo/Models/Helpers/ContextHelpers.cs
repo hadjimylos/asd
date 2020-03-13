@@ -98,7 +98,10 @@ namespace ViewModels.Helpers
                         var newVal = update.GetType().GetProperty(f.Name).GetValue(update);
                         f.SetValue(trackedTable, newVal);
                     });
+
+                context.Entry(trackedTable).State = EntityState.Modified;
             });
+            
 
             // instert missing
             var inserts = manyTable.Where(w => w.Id == 0).ToList();
