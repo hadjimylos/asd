@@ -200,6 +200,11 @@
                         Visible = countStageFileConfigs > 0,
                     },
                     new ActiveNav {
+                        Component = "Other Documents",
+                        Url = $"{commonPath}/optional-files/edit",
+                        Visible = true,
+                    },
+                    new ActiveNav {
                         Component = "Risks",
                         IsComplete = true,
                         Url = $"{commonPath}/risk",

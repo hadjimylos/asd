@@ -28,6 +28,6 @@ namespace dbModels
         public virtual List<ProductIntroChecklist> ProductIntroChecklistHistory { get; set; }
         public virtual List<PostLaunchReview> PostLaunchReviewHistory { get; set; }
         public virtual List<StageFile> Files { get; set; }
-
+        public virtual List<OptionalFile> OptionalFiles { get; set; }
     }
 }
