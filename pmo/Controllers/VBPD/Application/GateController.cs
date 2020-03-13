@@ -95,7 +95,8 @@
             // set all stages to complete
             var closingStage = _context.Stages.First(w => w.ProjectId == projectId && !w.IsComplete);
             closingStage.IsComplete = true;
-
+            _context.Entry(closingStage).State = EntityState.Modified; 
+            
             // create gate for this closing stage
             var currentStageConfigId = _context.StageConfigs
                 .First (
@@ -155,7 +156,8 @@
             _currentGate.Comments = model.Comments;
             _currentGate.Decision = GateDecisionType.PendingDecision;
 
-             _context.SaveChanges();
+            _context.Entry(_currentGate).State = EntityState.Modified;
+            _context.SaveChanges();
             return RedirectToAction("edit");
         }
 
@@ -175,6 +177,7 @@
             // add project state history
             this.ChangeProjectState(ProjectState.Go);
 
+            _context.Entry(_currentGate).State = EntityState.Modified;
             _context.SaveChanges();
 
             return Redirect($"/projects/{_projectId}");
@@ -189,12 +192,16 @@
                 // Reopen project  
                 _currentGate.Decision = GateDecisionType.PendingDecision;
                 this.ChangeProjectState(ProjectState.Go);
+                
+                _context.Entry(_currentGate).State = EntityState.Modified;
                 _context.SaveChanges();
             }
             else {
                 //close project
                 _currentGate.Decision = GateDecisionType.Closed;
                 this.ChangeProjectState(ProjectState.Closed);
+
+                _context.Entry(_currentGate).State = EntityState.Modified;
                 _context.SaveChanges();
             }
             return Redirect($"/projects/{_projectId}");
@@ -208,6 +215,8 @@
             //close project
             _currentGate.Decision = GateDecisionType.Complete;
             this.ChangeProjectState(ProjectState.Complete);
+
+            _context.Entry(_currentGate).State = EntityState.Modified;
             _context.SaveChanges();
             
             return Redirect($"/projects/{_projectId}");
@@ -222,12 +231,16 @@
                 // remove hold from project 
                 _currentGate.Decision = GateDecisionType.PendingDecision;
                 this.ChangeProjectState(ProjectState.Go);
+
+                _context.Entry(_currentGate).State = EntityState.Modified;
                 _context.SaveChanges();
             }
             else  {
                 //add on hold on project
                 _currentGate.Decision = GateDecisionType.OnHold;
                 this.ChangeProjectState(ProjectState.OnHold);
+
+                _context.Entry(_currentGate).State = EntityState.Modified;
                 _context.SaveChanges();
             }
             return Redirect($"/projects/{_projectId}");
