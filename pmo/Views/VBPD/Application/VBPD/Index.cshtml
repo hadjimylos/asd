@@ -98,7 +98,8 @@
                             </div>
                         </div>
                     </div>
-                    <partial name="_ProjectStages" />
+                    <partial name="_ProjectStages" model="(List<dbModels.Stage>)ViewBag.VbpdActiveStages" />
+                    <partial name="_ProjectStages" model="(List<dbModels.Stage>)ViewBag.LiteActiveStages" />
                 </div>
             </div>
         </div>

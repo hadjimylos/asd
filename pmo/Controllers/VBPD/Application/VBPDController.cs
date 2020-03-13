@@ -26,9 +26,31 @@ namespace pmo.Controllers {
         public IActionResult Index() {
             var model = GetProjectDetails();
             ViewBag.History = _context.ProjectStateHistories.ToList();
-            var projects = _context.Projects.Include(i => i.StageHistory).ToList();
-            var activeStages = projects.Select(s => s.StageHistory.OrderByDescending(o => o.CreateDate).First()).ToList();
-            ViewBag.ActiveStages = activeStages;
+
+            var projects = _context.Projects
+                .Include(i => i.StageHistory)
+                .Include(i => i.ProjectStateHistory)
+                .Where(
+                    w =>
+                        w.ProjectStateHistory.OrderByDescending(o => o.CreateDate).First().ProjectState != ProjectState.Complete
+                );
+
+            var vbpdLiteProjects = projects.Where (
+                    w =>
+                        w.ProjectDetails.OrderByDescending(o => o.CreateDate).First().ProjectCategoryTagId == 219 // vbpd lite
+                    ).ToList();
+
+            var vbpdProjects = projects.Where(
+                    w =>
+                        w.ProjectDetails.OrderByDescending(o => o.CreateDate).First().ProjectCategoryTagId != 219 // vbpd
+                    ).ToList();
+
+            var vbpdActiveStages = vbpdProjects.Select(s => s.StageHistory.OrderByDescending(o => o.CreateDate).First()).ToList();
+            var vbpdLiteActiveStages = vbpdLiteProjects.Select(s => s.StageHistory.OrderByDescending(o => o.CreateDate).First()).ToList();
+
+            ViewBag.VbpdActiveStages = vbpdActiveStages;
+            ViewBag.LiteActiveStages = vbpdLiteActiveStages;
+
             return View($"{path}/Index.cshtml", model);
         }
 

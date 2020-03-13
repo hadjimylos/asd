@@ -1,10 +1,12 @@
-﻿@{
-    var activeStages = (List<dbModels.Stage>)ViewBag.ActiveStages;
+﻿@model List<dbModels.Stage>
+
+@{
     List<CanvasJSDataPoint> dataPoints = new List<CanvasJSDataPoint>();
 
-    var groupedByStageNumber = activeStages.GroupBy(g => g.StageNumber).OrderBy(x => x.Key).ToList();
+    var groupedByStageNumber = Model.GroupBy(g => g.StageNumber).OrderBy(x => x.Key).ToList();
 
-    groupedByStageNumber.ForEach(stageNumber => {
+    groupedByStageNumber.ForEach(stageNumber =>
+    {
         var currentStageNumber = stageNumber.Key;
         var numberOfProjects = stageNumber.Count();
 
