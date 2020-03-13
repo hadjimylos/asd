@@ -129,7 +129,8 @@ body input[type='checkbox']:checked + label:after {
 body .fields > .field:not(:first-child) {
   margin-top: 20px;
 }
-body .fields .field .data {
+body .fields .field .data,
+body .fields .field .select2 {
   margin-top: 6px;
 }
 body .errors {
@@ -623,7 +624,7 @@ body .text-red {
   align-items: center;
   padding: 12px 20px;
 }
-.actions-component .wrapper .header h1 {
+.actions-component .wrapper .header > * {
   margin: 0;
   padding: 0;
 }
@@ -703,68 +704,96 @@ body .text-red {
   padding: 20px;
 }
 .historyform-component .wrapper {
-  padding: 40px;
-  padding-bottom: unset;
-  box-sizing: border-box;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-content: flex-start;
 }
 .historyform-component .wrapper > * {
-  width: 50%;
+  width: 49%;
 }
-.historyform-component .wrapper .versioning-section .select-history-wrapper,
-.historyform-component .wrapper .versioning-section .version {
-  padding: 20px;
-  box-sizing: border-box;
+.historyform-component .wrapper .form-sections .form-section:not(:first-child) {
+  margin-top: 40px;
 }
-.historyform-component .wrapper .versioning-section .choose-history .select-history-wrapper {
-  padding-top: 0;
+.historyform-component .wrapper .form-section .divider,
+.historyform-component .wrapper .versioning-section .choose-history .divider {
+  position: relative;
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 2;
+  padding-left: 8px;
+  color: rgba(0, 133, 155, 0.7);
+  background: #f5f6f7;
+  border-top: 1px solid rgba(0, 133, 155, 0.25);
+  border-right: 4px solid rgba(0, 133, 155, 0.25);
+  border-bottom: 1px solid rgba(108, 117, 125, 0.25);
+  border-left: 4px solid rgba(0, 133, 155, 0.25);
+  margin-bottom: 20px;
+  user-select: none;
 }
-.historyform-component .wrapper .versioning-section .versions {
-  max-height: 500px;
-  overflow: auto;
+.historyform-component .wrapper .form-section .divider:before,
+.historyform-component .wrapper .versioning-section .choose-history .divider:before {
+  content: '';
+  display: block;
+  background: rgba(0, 133, 155, 0.25);
+  position: absolute;
+  right: 2px;
+  top: 0;
+  bottom: 8px;
+  width: 4px;
+}
+.historyform-component .wrapper .form-section .divider:after,
+.historyform-component .wrapper .versioning-section .choose-history .divider:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 133, 155, 0.25);
+}
+.historyform-component .wrapper .versioning-section .choose-history .divider {
+  color: rgba(108, 117, 125, 0.8);
+}
+.historyform-component .wrapper .versioning-section .choose-history .select-history-wrapper .select2 {
+  margin-top: 6px;
 }
 .historyform-component .wrapper .versioning-section .versions .version {
   display: none;
+  background-image: radial-gradient(circle at top right, rgba(0, 133, 155, 0.075), #f5f6f7);
+  border: 1px solid #bee5eb;
+  border-radius: 3px;
+  margin-top: 20px;
 }
 .historyform-component .wrapper .versioning-section .versions .version.active {
   display: block;
 }
-.historyform-component .wrapper .versioning-section .versions .version .values {
-  box-shadow: 1px 1px 3px 0px #f5f6f7;
-  padding: 20px;
+.historyform-component .wrapper .versioning-section .versions .version .version-section .divider {
+  padding: 12px 20px 0 20px;
+  box-sizing: border-box;
+  color: rgba(108, 117, 125, 0.8);
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: 1.2;
+}
+.historyform-component .wrapper .versioning-section .versions .version .version-section .values {
+  padding: 12px 20px;
   box-sizing: border-box;
 }
-.historyform-component .wrapper .versioning-section .versions .version .values .select-single-field:not(:first-child) {
-  margin-top: 20px;
+.historyform-component .wrapper .versioning-section .versions .version .version-section .values .select-single-field {
+  padding: 12px 0;
+  color: #1f8fa1;
 }
-.historyform-component .wrapper .versioning-section .versions .version .values .select-single-field .label {
-  font-weight: 600;
-  font-size: 15px;
+.historyform-component .wrapper .versioning-section .versions .version .version-section .values .select-single-field:not(:first-child) {
+  border-top: 1px solid #abdde5;
 }
-.historyform-component .wrapper .versioning-section .versions .version .values .select-single-field .list-values .id,
-.historyform-component .wrapper .versioning-section .versions .version .values .select-single-field .single-list-value .id {
-  display: none;
+.historyform-component .wrapper .versioning-section .versions .version .version-section .values .select-single-field .label {
+  font-family: Roboto;
+  font-weight: 500;
 }
-.historyform-component .wrapper .versioning-section .versions .version .values .detail-component {
-  background: #f5f6f7;
-  border: 1px solid #dee2e6;
-  border-radius: 3px;
-}
-.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field:not(:first-child) {
-  margin-top: 20px;
-}
-.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .label {
-  font-weight: 600;
-  font-size: 15px;
-  margin: 5px 0px 0px 5px;
-}
-.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .data {
-  margin: 0px 0px 5px 10px;
-}
-.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .list-values .id,
-.historyform-component .wrapper .versioning-section .versions .version .values .detail-component .select-single-field .single-list-value .id {
+.historyform-component .wrapper .versioning-section .versions .version .version-section .values .select-single-field .list-values .id,
+.historyform-component .wrapper .versioning-section .versions .version .version-section .values .select-single-field .single-list-value .id {
   display: none;
 }
 .nav-left-component {
@@ -874,9 +903,10 @@ body .text-red {
   transition: max-height 0.25s ease-in;
 }
 .detail-component {
-  background: #f5f6f7;
-  border: 1px solid #dee2e6;
+  background-image: radial-gradient(circle at top right, rgba(0, 133, 155, 0.075), #f5f6f7);
+  border: 1px solid #bee5eb;
   border-radius: 3px;
+  color: #1f8fa1;
 }
 .detail-component .selfs > .detail-component {
   margin-top: 20px;
@@ -893,6 +923,7 @@ body .text-red {
 .detail-component > .wrapper .header-wrapper .header h1 {
   padding: 0;
   margin: 0;
+  color: inherit;
 }
 .detail-component > .wrapper .header-wrapper .actions {
   display: flex;
@@ -905,20 +936,20 @@ body .text-red {
   display: flex;
   box-sizing: border-box;
   padding: 8px 0;
-  color: #00859b;
+  color: inherit;
 }
 .detail-component > .wrapper .details .detail .label {
-  margin-right: 12px;
+  margin-right: 8px;
 }
 .detail-component > .wrapper .details .detail .label:after {
   content: ':';
 }
 .detail-component > .wrapper .details .detail .value {
   font-family: Roboto;
-  font-weight: 600;
+  font-weight: 500;
 }
 .detail-component > .wrapper .details .detail:not(:first-child) {
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid #abdde5;
 }
 .layout-inline-component > .wrapper {
   display: flex;
