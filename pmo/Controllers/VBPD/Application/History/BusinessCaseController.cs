@@ -124,7 +124,10 @@ namespace pmo.Controllers.VBPD.Application.History {
                                 latestBusinessCase.FinancialData[i].Year = businessCase.FinancialStartYear + i;
 
                             _context.Entry(latestBusinessCase).State = EntityState.Modified;
+
                             _context.BusinessCases.Update(latestBusinessCase);
+                            _context.FinancialData.UpdateRange(latestBusinessCase.FinancialData);//update child navigation also
+
                             _context.SaveChanges();
 
                             var manuIds = _context.BusinessCase_ManufacturingLocations.Where(m => m.BusinessCaseId == latestBusinessCase.Id).ToList();
@@ -142,7 +145,7 @@ namespace pmo.Controllers.VBPD.Application.History {
                         }
                         catch (Exception e) {
                             transaction.Rollback();
-                            throw e;
+                             throw e;
                         }
                     }
                 }

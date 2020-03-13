@@ -46,7 +46,6 @@ namespace pmo
         public DbSet<User_CitizenShip> UserCitizenShip { get; set; }
         public DbSet<ProjectDetail_SalesRegion> ProjectDetail_SalesRegions { get; set; }
         public DbSet<ProjectDetail_EndUserCountry> ProjectDetail_EndUserCountries { get; set; }
-
         public DbSet<ProjectDetail_Customer> ProjectDetail_Customers { get; set; }
         public DbSet<StageConfig_RequiredSchedule> StageConfig_RequiredSchedules { get; set; }
         public DbSet<BusinessCase_ManufacturingLocation> BusinessCase_ManufacturingLocations { get; set; }
