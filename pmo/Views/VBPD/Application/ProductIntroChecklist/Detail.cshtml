@@ -23,11 +23,21 @@
                         <div class="details">
                             <div class="detail">
                                 <div class="label">Is Marketing Required</div>
-                                <div class="value">@Model.IsRequired</div>
+                                <div class="value">@(Model.IsRequired?"Yes":"No")</div>
                             </div>
                             <div class="detail">
                                 <div class="label">Filename</div>
-                                <div class="value">@Model.Filename</div>
+                                <div class="value">@if (!String.IsNullOrEmpty(Model.Filename))
+                                {
+                                    <a href="@Model.Filename" target="_blank">
+                                        <i class="fas fa-download fa-lg"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span>No file uploaded</span>
+                                }
+                                </div>
                             </div>
                             <div class="detail">
                                 <div class="label">Approved By</div>

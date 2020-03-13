@@ -60,7 +60,7 @@ namespace pmo.Controllers.VBPD.Application.History
         [HttpPost]
         [Route("edit")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(forms.ProductIntroChecklistForm vm)
+        public IActionResult Edit(forms.ProductIntroChecklistForm vm, IFormFile File)
         {
             int currentVersion = 0;
             var latestProductIntoChecklist = _context.ProductIntroChecklists.GetLatestVersion(_projectId);
@@ -84,9 +84,6 @@ namespace pmo.Controllers.VBPD.Application.History
             productIntroChecklist.StageId = currentStage.Id;
             productIntroChecklist.RemoveUnnecessaryValues(f => f.IsRequired);
             productIntroChecklist.Filename = savePath;
-            productIntroChecklist.ApprovedBy = vm.ApprovedBy;
-            productIntroChecklist.ApprovedByDate = vm.ApprovedByDate;
-            productIntroChecklist.IsRequired = vm.IsRequired;
 
             if (latestProductIntoChecklist == null)//first version
             {
@@ -94,7 +91,6 @@ namespace pmo.Controllers.VBPD.Application.History
                 {
                     try
                     {
-                        
                         productIntroChecklist.Version = 1;
                         currentVersion = 1;
                         _context.ProductIntroChecklists.Add(productIntroChecklist);

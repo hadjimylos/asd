@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<form class="historyform-component" method="post">
+<form class="historyform-component" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
     <div class="wrapper">
         <div class="form-section">
@@ -25,11 +25,22 @@
                         @Html.Partial("_FieldErrors", "IsMarketingRequired")
                     </ul>
                 </div>
-                <div class="field">
+                    @*<div class="field">
                     <div class="label">Filename</div>
                     <input asp-for="Filename" class="data" />
                     <ul class="errors">
                         @Html.Partial("_FieldErrors", "Filename")
+                    </ul>
+                    </div>*@
+                <div class="field">
+                    <div class="label">Upload file</div>
+                    <input class="file-upload" asp-for="File" />
+                    <label asp-for="File" class="data">
+                        <span></span>
+                        <strong><i class="fas fa-upload"></i> Choose a file...</strong>
+                    </label>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "File")
                     </ul>
                 </div>
                 <div class="field">
@@ -70,12 +81,23 @@
                         @*<button class="btn full-prepopulate">IS MARKETING REQUIRED</button>*@
                         <div class="values">
                             <div class="select-single-field">
-                                <div class="label">Item #(Item Number)</div>
-                                <div class="data">@version.IsMarketingRequired</div>
+                                <div class="label">Is Marketing Required</div>
+                                <div class="data">@(version.IsMarketingRequired?"Yes":"No")</div>
                             </div>
                             <div class="select-single-field">
                                 <div class="label">FILENAME</div>
-                                <div class="data">@version.Filename</div>
+                                <div class="data">
+                                    @if (!String.IsNullOrEmpty(Model.Filename))
+                                    {
+                                        <a href="@Model.Filename" target="_blank">
+                                            <i class="fas fa-download fa-lg"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span>No file uploaded</span>
+                                    }
+                                </div>
                             </div>
                             <div class="select-single-field">
                                 <div class="label">APPROVED BY</div>

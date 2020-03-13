@@ -90,6 +90,7 @@ namespace pmo {
                 context.Database.Migrate();
             }
 
+
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();

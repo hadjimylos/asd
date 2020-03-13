@@ -1,5 +1,6 @@
 ﻿using CustomValidators;
 using dbModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,15 +8,15 @@ using ViewModels.Helpers;
 
 namespace forms
 {
-    public class ProductIntroChecklistForm:ProductIntroChecklist
+    public class ProductIntroChecklistForm: ProductIntroChecklist
     {
         public List<ProductIntroChecklistForm> Versions { get; set; }
 
         [Display(Name = "Is Marketing Required")]
         public new bool IsMarketingRequired { get; set; }
 
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        public new string Filename { get; set; }
+        //[Required(ErrorMessage = ErrorMessages.Required)]
+        //public new string Filename { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         [UserExistsActiveDirectory(ErrorMessages.MissingUserActiveDirectory)]
@@ -23,5 +24,9 @@ namespace forms
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime ApprovedByDate { get; set; }
+
+        [Required(ErrorMessage = ErrorMessages.Required)]
+        public IFormFile File { get; set; }
+
     }
 }
