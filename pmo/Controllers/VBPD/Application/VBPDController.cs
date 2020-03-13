@@ -96,6 +96,8 @@ namespace pmo.Controllers {
                 .Include(i => i.Project)
                     .ThenInclude(i => i.ProjectStateHistory)
                 .Include(i => i.Project)
+                    .ThenInclude(i => i.StageHistory)
+                .Include(i => i.Project)
                         .ThenInclude(i => i.GateHistory);
         }
 
