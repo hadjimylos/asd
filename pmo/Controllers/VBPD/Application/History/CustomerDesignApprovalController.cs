@@ -105,6 +105,7 @@ namespace pmo.Controllers.Application.History
                     {
                         try
                         {
+                            latestCustomerDesignApproval.IsRequired= customerDesignApproval.IsRequired;
                             latestCustomerDesignApproval.ApprovedBy = customerDesignApproval.ApprovedBy;
                             latestCustomerDesignApproval.ApprovedDate = customerDesignApproval.ApprovedDate;
                             latestCustomerDesignApproval.DateSentForApprove = customerDesignApproval.DateSentForApprove;
