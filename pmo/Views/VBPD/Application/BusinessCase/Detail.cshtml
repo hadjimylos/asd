@@ -176,7 +176,7 @@
                             <div>$ @financial.GetCostExtended().ToString("N0")</div>
                             <div>$ @financial.GetRevenueExtended().ToString("N0")</div>
                             <div>$ @financial.GetStandardMarginPrice().ToString("N0")</div>
-                            <div>@financial.GetStandardMarginPercent().ToString("N0") %</div>
+                            <div>@(financial.GetStandardMarginPercent() == null ? "--" : $"{financial.GetStandardMarginPercent()?.ToString("N0")} %")</div>
                         </div>
                     </div>
                 }
@@ -189,7 +189,7 @@
                         <div>$ @Model.FinancialData.Sum(s => s.GetCostExtended()).ToString("N0")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetRevenueExtended()).ToString("N0")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetStandardMarginPrice()).ToString("N0")</div>
-                        <div>@Model.FinancialData.Average(s => s.GetStandardMarginPercent()).ToString("N0") %</div>
+                        <div>@Model.FinancialData.Where(w => w.GetStandardMarginPercent() != null).Average(s => (decimal)s.GetStandardMarginPercent()).ToString("N0") %</div>
                     </div>
                 </div>
             </div>
@@ -251,7 +251,7 @@
                             <div>$ @financial.GetNetProfitBeforeTax().ToString("N0")</div>
                             <div>$ @financial.GetNetProfitAfterTax().ToString("N0")</div>
                             <div>$ @financial.GetFreeCashFlow().ToString("N0")</div>
-                            <div>$ @financial.GetPresentValue().ToString("N0")</div>
+                            <div>@(financial.GetPresentValue() == null ? "--" : $"$ {financial.GetPresentValue()?.ToString("N0")}")</div>
                             <div>$ @financial.GetCumulativeCashFlow().ToString("N0")</div>
                         </div>
                     </div>
@@ -262,7 +262,7 @@
                         <div>$ @Model.FinancialData.Sum(s => s.GetNetProfitBeforeTax()).ToString("N0")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetNetProfitAfterTax()).ToString("N0")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetFreeCashFlow()).ToString("N0")</div>
-                        <div>$ @Model.FinancialData.Sum(s => s.GetPresentValue()).ToString("N0")</div>
+                        <div>$ @Model.FinancialData.Sum(s => s.GetPresentValue() ?? 0M).ToString("N0")</div>
                         <div>$ @Model.FinancialData.Sum(s => s.GetCumulativeCashFlow()).ToString("N0")</div>
                     </div>
                 </div>

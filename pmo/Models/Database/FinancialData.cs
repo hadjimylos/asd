@@ -29,8 +29,10 @@ namespace dbModels {
             this.GetRevenueExtended() -
             this.GetCostExtended();
 
-        public decimal GetStandardMarginPercent() =>
-            (
+        public decimal? GetStandardMarginPercent() =>
+            this.GetRevenueExtended() == 0 ?
+            null :
+            (decimal?)(
                 this.GetStandardMarginPrice() /
                 this.GetRevenueExtended()
             ) * 100;
@@ -57,9 +59,19 @@ namespace dbModels {
             this.GetNetProfitAfterTax() -
             (this.GPACapital ?? 0);
 
-        public decimal GetPresentValue() =>
-            this.GetFreeCashFlow() /
-                Convert.ToDecimal
+        public decimal? GetPresentValue() =>
+            GetPresentValueDenominator() == 0 ?
+            null :
+            (decimal?)this.GetFreeCashFlow() / GetPresentValueDenominator();
+
+        public decimal GetCumulativeCashFlow() =>
+            this.Year == this.BusinessCase.FinancialStartYear ?
+                this.GetFreeCashFlow() :
+                    this.BusinessCase.FinancialData.First(f => f.Year == this.Year - 1).GetCumulativeCashFlow() +
+                    this.GetFreeCashFlow();
+
+        private decimal GetPresentValueDenominator() =>
+            Convert.ToDecimal
                 (
                     Math.Pow((double)
                     (1 +
@@ -68,11 +80,5 @@ namespace dbModels {
                         (this.Year - this.BusinessCase.FinancialStartYear)
                     )
                 );
-
-        public decimal GetCumulativeCashFlow() =>
-            this.Year == this.BusinessCase.FinancialStartYear ?
-                this.GetFreeCashFlow() :
-                    this.BusinessCase.FinancialData.First(f => f.Year == this.Year - 1).GetCumulativeCashFlow() +
-                    this.GetFreeCashFlow();
     }
 }

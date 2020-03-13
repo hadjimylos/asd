@@ -22,12 +22,12 @@ namespace dbModels.Report
         public decimal GetCostExtended { set; get; }
         public decimal GetRevenueExtended { set; get; }
         public decimal GetStandardMarginPrice { set; get; }
-        public decimal GetStandardMarginPercent { set; get; }
+        public decimal? GetStandardMarginPercent { set; get; }
         public decimal GetTotalExpenses { set; get; }
         public decimal GetNetProfitBeforeTax { set; get; }
         public decimal GetNetProfitAfterTax { set; get; }
         public decimal GetFreeCashFlow { set; get; }
-        public decimal GetPresentValue { set; get; }
+        public decimal? GetPresentValue { set; get; }
         public decimal GetCumulativeCashFlow { set; get; }
     }
 }

@@ -43,7 +43,7 @@ namespace dbModels {
         public virtual List<FinancialData> FinancialData { get; set; }
 
         public decimal GetNPV() =>
-            FinancialData.Sum(s => s.GetPresentValue());
+            FinancialData.Sum(s => s.GetPresentValue() ?? 0M);
 
         public decimal? GetROI() =>
             FinancialData.Sum(s => s.GetTotalExpenses()) == 0 ?

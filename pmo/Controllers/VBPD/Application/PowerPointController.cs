@@ -84,7 +84,7 @@ namespace pmo.Controllers.VBPD.Application {
                     financials.CostExtended = bc.FinancialData[i].GetCostExtended();
                     financials.RevenueExtended = bc.FinancialData[i].GetRevenueExtended();
                     financials.StandardMarginPrice = bc.FinancialData[i].GetStandardMarginPrice();
-                    financials.StandardMarginPercent = bc.FinancialData[i].GetStandardMarginPercent();
+                    financials.StandardMarginPercent = bc.FinancialData[i].GetStandardMarginPercent() ?? 0M;
                     financials.GPACapital = bc.FinancialData[i].GPACapital ?? 0M;
                     financials.GPAExpense = bc.FinancialData[i].GPAExpense ?? 0M;
                     financials.QualCosts = bc.FinancialData[i].QualCosts ?? 0M;
