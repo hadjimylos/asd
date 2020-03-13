@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200313085818_Squash_BImodel")]
-    partial class Squash_BImodel
+    [Migration("20200313110022_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1065,6 +1065,9 @@ namespace pmo.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FileTagId")
                         .HasColumnType("int");
@@ -8404,6 +8407,14 @@ namespace pmo.Migrations
                             ModifiedByUser = "system",
                             NetworkUsername = "global\\christos.zaragkidis",
                             RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedByUser = "system",
+                            NetworkUsername = "global\\george.karagiannakis",
+                            RoleId = 1
                         });
                 });
 
@@ -8625,7 +8636,7 @@ namespace pmo.Migrations
                         .IsRequired();
 
                     b.HasOne("dbModels.Stage", "Stage")
-                        .WithMany()
+                        .WithMany("OptionalFiles")
                         .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
