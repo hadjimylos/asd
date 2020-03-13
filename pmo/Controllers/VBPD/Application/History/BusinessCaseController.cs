@@ -80,9 +80,10 @@ namespace pmo.Controllers.VBPD.Application.History {
                             _context.BusinessCase_ManufacturingLocations.Add(new BusinessCase_ManufacturingLocation {
                                 ManufacturingLocationsTagId = id,
                                 BusinessCaseId = businessCase.Id,
-                            }); _context.SaveChanges();
+                            });
                         });
 
+                         _context.SaveChanges();
                         transaction.Commit();
                     }
                     catch (Exception e) {

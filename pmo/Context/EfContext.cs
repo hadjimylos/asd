@@ -138,7 +138,7 @@ namespace pmo
                 }
                 model.Property(prop => prop.ModifiedByUser).IsModified = true;
             });
-            //Add Reports if specific entities values changed.
+            //Add Reports if specific entities values changed. 
             UpdateReports();
 
             return base.SaveChanges();
@@ -1327,7 +1327,7 @@ namespace pmo
                     ManufacturingLocationsTagId = m.Property(x => x.ManufacturingLocationsTagId).CurrentValue,
                     ReportBusinessCaseId = reportBusinessCaseId
                 };
-                ChangeTracker.Context.Add(reportBusinessCaseId); // add custom mapper for calculations 
+                ChangeTracker.Context.Add(rptManufacturers); // add custom mapper for calculations 
             });
             newSalesRegion.ForEach(s =>
             {
