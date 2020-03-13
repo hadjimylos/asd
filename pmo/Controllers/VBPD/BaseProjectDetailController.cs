@@ -206,7 +206,6 @@
                     },
                     new ActiveNav {
                         Component = "Risks",
-                        IsComplete = true,
                         Url = $"{commonPath}/risk",
                         Visible = activeStageConfig.AllowInsertRiskAssesments,
                     },
