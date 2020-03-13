@@ -194,7 +194,7 @@
                         Visible = countScheduleConfigs > 0,
                     },
                     new ActiveNav {
-                        Component = "Files",
+                        Component = "Required Documents",
                         IsComplete = activeStage.Files.Select(s => s.FileTagId).Distinct().Count() == countStageFileConfigs,
                         Url = $"{commonPath}/files/edit",
                         Visible = countStageFileConfigs > 0,
