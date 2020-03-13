@@ -153,13 +153,11 @@
                     },
                     new ActiveNav {
                         Component = "Product Infrigment Patentabilities",
-                        IsComplete = activeStageConfig.MinProductInfringementPatentabilities <= 0 || (activeStage.ProductInfrigmentPatentabilityHistory.Count > 0 && activeStage.ProductInfrigmentPatentabilityHistory.Count >= activeStageConfig.MinProductInfringementPatentabilities),
                         Url = $"{commonPath}/product-infrigment-patentability",
                         Visible = activeStageConfig.MinProductInfringementPatentabilities > 0,
                     },
                     new ActiveNav {
                         Component = "Key Characteristics",
-                        IsComplete = activeStageConfig.MinKeyCharacteristics <= 0 || (activeStage.KeyCharacteristicHistory.Count > 0 && activeStage.KeyCharacteristicHistory.Count >= activeStageConfig.MinKeyCharacteristics),
                         Url = $"{commonPath}/key-characteristic",
                         Visible = activeStageConfig.MinKeyCharacteristics > 0,
                     },
@@ -171,7 +169,6 @@
                     },
                     new ActiveNav {
                         Component = "Investment Plans",
-                        IsComplete = activeStageConfig.MinInvestmentPlans <= 0 || (activeStage.InvestmentPlanHistory.Count > 0 && activeStage.InvestmentPlanHistory.Count >= activeStageConfig.MinInvestmentPlans),
                         Url = $"{commonPath}/investment-plan",
                         Visible = activeStageConfig.MinInvestmentPlans > 0,
                     },
