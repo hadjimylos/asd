@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200313161556_RemoveRedundantField")]
-    partial class RemoveRedundantField
+    [Migration("20200316083151_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

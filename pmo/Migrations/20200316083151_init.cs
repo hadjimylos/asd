@@ -422,7 +422,6 @@ namespace pmo.Migrations
                     Version = table.Column<int>(nullable: false),
                     LastModified = table.Column<DateTime>(nullable: false),
                     StageId = table.Column<int>(nullable: false),
-                    ContainsInfingmentIssues = table.Column<bool>(nullable: false),
                     PatentNumber = table.Column<string>(nullable: true),
                     Issue = table.Column<string>(nullable: true),
                     MitigationStrategy = table.Column<string>(nullable: true),
@@ -1378,12 +1377,12 @@ namespace pmo.Migrations
                     GetCostExtended = table.Column<decimal>(nullable: false),
                     GetRevenueExtended = table.Column<decimal>(nullable: false),
                     GetStandardMarginPrice = table.Column<decimal>(nullable: false),
-                    GetStandardMarginPercent = table.Column<decimal>(nullable: false),
+                    GetStandardMarginPercent = table.Column<decimal>(nullable: true),
                     GetTotalExpenses = table.Column<decimal>(nullable: false),
                     GetNetProfitBeforeTax = table.Column<decimal>(nullable: false),
                     GetNetProfitAfterTax = table.Column<decimal>(nullable: false),
                     GetFreeCashFlow = table.Column<decimal>(nullable: false),
-                    GetPresentValue = table.Column<decimal>(nullable: false),
+                    GetPresentValue = table.Column<decimal>(nullable: true),
                     GetCumulativeCashFlow = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
