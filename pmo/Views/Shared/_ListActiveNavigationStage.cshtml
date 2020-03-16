@@ -15,10 +15,13 @@
         ) > 0).ToList();
 
     bool showMoveToGateBtn = (incompleteParents.Count + parentsWithIncompleteChildren.Count) == 0;
+
+    bool isStage = activeStageNavs.Count > 0;
+    string activeIfGate = !isStage ? "active" : string.Empty;
 }
 
-<div class="nav-section">
-    @if (activeStageNavs.Count > 0) {
+<div class="nav-section @activeIfGate">
+    @if (isStage) {
         <div class="item-wrapper">
             <div class="descrip">Current Tasks - Stage @ViewBag.DisplayNumber</div>
         </div>
@@ -100,43 +103,34 @@
                         </a>
                     </div>
                 }
-                <div class="actions">
-                    @if ((bool)ViewBag.DisplayGateDecisions && !(bool)ViewBag.IsFinalGate) {
-                        if (ViewData["ProjectState"].ToString() == "1") {
-                            <form method="post" action="/projects/@Model.ProjectId/gates/go">
-                                @Html.AntiForgeryToken()
-                                <input type="submit" class="btn green" value="Go" />
-                            </form>
-                            <form method="post" action="/projects/@Model.ProjectId/gates/on-hold">
-                                @Html.AntiForgeryToken()
-                                <input type="submit" class="btn yellow" value="On Hold" />
-                            </form>
-                            <form method="post" action="/projects/@Model.ProjectId/gates/close">
-                                @Html.AntiForgeryToken()
-                                <input type="submit" class="btn red" value="Close" />
-                            </form>
-                        }
-
-                        else if (ViewData["ProjectState"].ToString() == "2") {
-                            <form method="post" action="/projects/@Model.ProjectId/gates/on-hold">
-                                @Html.AntiForgeryToken()
-                                <input type="submit" class="btn green" value="Remove Hold" />
-                            </form>
-                        }
-                        else {
-                            <form method="post" action="/projects/@Model.ProjectId/gates/close">
-                                @Html.AntiForgeryToken()
-                                <input type="submit" class="btn green" value="Open" />
-                            </form>
-                        }
+            <div class="actions">
+                @if (!(bool)ViewBag.IsFinalGate) {
+                    if (ViewData["ProjectState"].ToString() == "1") {
+                        <a class="btn green" href="/projects/@Model.ProjectId/gates/go-decision">Go</a>
+                        <a class="btn yellow" href="/projects/@Model.ProjectId/gates/on-hold-decision">On Hold</a>
+                        <a class="btn red" href="/projects/@Model.ProjectId/gates/close-decision">Close</a>
                     }
-                    else if ((bool)ViewBag.IsFinalGate) {
-                        <form method="post" action="/projects/@Model.ProjectId/gates/complete">
+
+                    else if (ViewData["ProjectState"].ToString() == "2") {
+                        <form method="post" action="/projects/@Model.ProjectId/gates/remove-hold">
                             @Html.AntiForgeryToken()
-                            <input type="submit" class="btn green" value="Close" />
+                            <input type="submit" class="btn green" value="Remove Hold" />
                         </form>
                     }
-                </div>
+                    else {
+                        <form method="post" action="/projects/@Model.ProjectId/gates/remove-close">
+                            @Html.AntiForgeryToken()
+                            <input type="submit" class="btn green" value="Open" />
+                        </form>
+                    }
+                }
+                else if ((bool)ViewBag.IsFinalGate) {
+                    <form method="post" action="/projects/@Model.ProjectId/gates/complete">
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn green" value="Close" />
+                    </form>
+                }
+            </div>
             </div>
         </div>
     }

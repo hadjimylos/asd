@@ -16,6 +16,8 @@ namespace ViewModels {
 
         public VbpdProjectDetail() {
         }
+        
+        public List<GateComment> GateComments { get; set; }
 
         public ProjectDetail ProjectDetail { get; set; }
 
@@ -36,6 +38,10 @@ namespace ViewModels {
                 .Where(
                     w => w.ProjectId == projectId
                 ).ToList();
+
+            this.GateComments = _context.GateComments
+                .Where(w => w.Gate.ProjectId == projectId)
+                .OrderByDescending(o => o.CreateDate).ToList();
         }
     }
 }

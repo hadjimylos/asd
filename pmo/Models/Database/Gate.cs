@@ -38,5 +38,7 @@
         public virtual List<GateKeeperLite> LiteGateKeepers { get; set; }
 
         public virtual List<GateFile> GateFiles { get; set; }
+
+        public virtual List<GateComment> GateComments { get; set; }
     }
 }

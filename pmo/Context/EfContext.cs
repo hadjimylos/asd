@@ -70,6 +70,7 @@ namespace pmo
         public DbSet<Report_BusinessCase> Report_BusinessCase { get; set; }
         public DbSet<Report_BusinessCase_ManufacturingLocations> Report_BusinessCase_ManufacturingLocations { get; set; }
         public DbSet<Report_FinancialData> Report_FinancialData { get; set; }
+        public DbSet<GateComment> GateComments { get; set; }
 
         public EfContext(DbContextOptions<EfContext> options)
             : base(options)

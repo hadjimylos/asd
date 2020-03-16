@@ -19,8 +19,35 @@
                 .OrderByDescending(o => o.CreateDate).FirstOrDefault();
         }
 
-        [Route("edit")]
-        public IActionResult Edit() { 
+        [Route("move-to-gate")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        public IActionResult MoveToGate(int projectId) {
+            // set all stages to complete
+            var closingStage = _context.Stages.First(w => w.ProjectId == projectId && !w.IsComplete);
+            closingStage.IsComplete = true;
+            _context.Entry(closingStage).State = EntityState.Modified;
+
+            // create gate for this closing stage
+            var currentStageConfigId = _context.StageConfigs
+                .First(
+                    f =>
+                        f.StageNumber == closingStage.StageNumber
+                ).Id;
+
+            // create new open gate
+            _context.Gates.Add(new Gate {
+                Decision = GateDecisionType.Open,
+                ProjectId = projectId,
+                StageConfigId = currentStageConfigId,
+            });
+
+            _context.SaveChanges();
+            return RedirectToAction("Edit");
+        }
+
+        [Route("go-decision")]
+        public IActionResult GoDecision() {
             var gateKeeperConfigs = !_isLite ? 
                 _context.StageConfigs
                     .Include(i => i.GateKeeperConfigs)
@@ -85,43 +112,16 @@
                 );
             }
 
-            return View($"{path}/Edit.cshtml", model);
+            return View($"{path}/MoveToGo.cshtml", model);
         }
 
-        [Route("move-to-gate")]
+        [Route("go-decision")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        public IActionResult MoveToGate(int projectId) {
-            // set all stages to complete
-            var closingStage = _context.Stages.First(w => w.ProjectId == projectId && !w.IsComplete);
-            closingStage.IsComplete = true;
-            _context.Entry(closingStage).State = EntityState.Modified; 
-            
-            // create gate for this closing stage
-            var currentStageConfigId = _context.StageConfigs
-                .First (
-                    f =>
-                        f.StageNumber == closingStage.StageNumber
-                ).Id;
-
-            // create new open gate
-            _context.Gates.Add(new Gate {
-                Decision =  GateDecisionType.Open,
-                ProjectId = projectId,
-                StageConfigId = currentStageConfigId,
-            });
-            
-            _context.SaveChanges();
-            return RedirectToAction("Edit");
-        }
-
-        [Route("edit")]
-        [AutoValidateAntiforgeryToken]
-        [HttpPost]
-        public  IActionResult Edit(GateForm model) {
+        public  IActionResult GoDecision(GateForm model) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
-                return View($"{path}/Edit.cshtml", model);
+                return View($"{path}/MoveToGo.cshtml", model);
             }
 
             if(!_isLite) {
@@ -158,13 +158,19 @@
 
             _context.Entry(_currentGate).State = EntityState.Modified;
             _context.SaveChanges();
-            return RedirectToAction("edit");
-        }
 
-        [Route("go")]
-        [AutoValidateAntiforgeryToken]
-        [HttpPost]
-        public IActionResult Go() {
+
+            // continue to Go Decision logic:
+
+            // add comment if necessary
+            if (!string.IsNullOrEmpty(model.Comments)) {
+                _context.GateComments.Add(new GateComment {
+                    GateId = _currentGate.Id,
+                    Comment = model.Comments,
+                    DecisionType = GateDecisionType.Go,
+                });
+            }
+
             // alter decision
             _currentGate.Decision = GateDecisionType.Go;
 
@@ -183,38 +189,31 @@
             return Redirect($"/projects/{_projectId}");
         }
 
-        [Route("close")]
-        [AutoValidateAntiforgeryToken]
-        [HttpPost]
-        //Remove Close && add Close  --> both handle here
-        public IActionResult Close() {
-            if (_currentGate.Decision == GateDecisionType.Closed) {
-                // Reopen project  
-                _currentGate.Decision = GateDecisionType.PendingDecision;
-                this.ChangeProjectState(ProjectState.Go);
-                
-                _context.Entry(_currentGate).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
-            else {
-                //close project
-                _currentGate.Decision = GateDecisionType.Closed;
-                this.ChangeProjectState(ProjectState.Closed);
-
-                _context.Entry(_currentGate).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
-            return Redirect($"/projects/{_projectId}");
+        [Route("on-hold-decision")]
+        public IActionResult AddHold() {
+            return View($"{path}/OnHoldDecision.cshtml");
         }
 
-        [Route("complete")]
+        [Route("on-hold-decision")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        //Remove Close && add Close  --> both handle here
-        public IActionResult Complete() {
-            //close project
-            _currentGate.Decision = GateDecisionType.Complete;
-            this.ChangeProjectState(ProjectState.Complete);
+        public IActionResult AddHold(string comment) {
+            if (string.IsNullOrEmpty(comment)) {
+                ModelState.AddModelError("comment", "This is a required field.");
+                ViewBag.Errors = ModelState;
+                return View($"{path}/OnHoldDecision.cshtml");
+            }
+
+            // add comment
+            _context.GateComments.Add(new GateComment {
+                GateId = _currentGate.Id,
+                Comment = comment,
+                DecisionType = GateDecisionType.OnHold,
+            });
+
+            //add on hold on project
+            _currentGate.Decision = GateDecisionType.OnHold;
+            this.ChangeProjectState(ProjectState.OnHold);
 
             _context.Entry(_currentGate).State = EntityState.Modified;
             _context.SaveChanges();
@@ -222,27 +221,76 @@
             return Redirect($"/projects/{_projectId}");
         }
 
-        [Route("on-hold")]
+        [Route("remove-hold")]
         [AutoValidateAntiforgeryToken]
         [HttpPost]
-        //Remove Hold && add On Hold  --> both handle here
-        public IActionResult AddRemoveHold() {
-            if (_currentGate.Decision == GateDecisionType.OnHold) {
-                // remove hold from project 
-                _currentGate.Decision = GateDecisionType.PendingDecision;
-                this.ChangeProjectState(ProjectState.Go);
+        public IActionResult RemoveHold() {
+            // remove hold from project 
+            _currentGate.Decision = GateDecisionType.PendingDecision;
+            this.ChangeProjectState(ProjectState.Go);
 
-                _context.Entry(_currentGate).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
-            else  {
-                //add on hold on project
-                _currentGate.Decision = GateDecisionType.OnHold;
-                this.ChangeProjectState(ProjectState.OnHold);
+            _context.Entry(_currentGate).State = EntityState.Modified;
+            _context.SaveChanges();
 
-                _context.Entry(_currentGate).State = EntityState.Modified;
-                _context.SaveChanges();
+            return Redirect($"/projects/{_projectId}");
+        }
+
+        [Route("close-decision")]
+        public IActionResult AddClose () {
+            return View($"{path}/CloseDecision.cshtml");
+        }
+
+        [Route("close-decision")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        public IActionResult AddClose(string comment) {
+            if (string.IsNullOrEmpty(comment)) {
+                ModelState.AddModelError("comment", "This is a required field.");
+                ViewBag.Errors = ModelState;
+                return View($"{path}/CloseDecision.cshtml");
             }
+
+            // add comment
+            _context.GateComments.Add(new GateComment {
+                GateId = _currentGate.Id,
+                Comment = comment,
+                DecisionType = GateDecisionType.Closed,
+            });
+
+            _currentGate.Decision = GateDecisionType.Closed;
+            this.ChangeProjectState(ProjectState.Closed);
+
+            _context.Entry(_currentGate).State = EntityState.Modified;
+            _context.SaveChanges();
+            
+            return Redirect($"/projects/{_projectId}");
+        }
+
+        [Route("remove-close")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        public IActionResult Close() {
+            // Reopen project  
+            _currentGate.Decision = GateDecisionType.PendingDecision;
+            this.ChangeProjectState(ProjectState.Go);
+                
+            _context.Entry(_currentGate).State = EntityState.Modified;
+            _context.SaveChanges();
+            
+            return Redirect($"/projects/{_projectId}");
+        }
+
+        [Route("complete")]
+        [AutoValidateAntiforgeryToken]
+        [HttpPost]
+        public IActionResult Complete() {
+            //close project
+            _currentGate.Decision = GateDecisionType.Complete;
+            this.ChangeProjectState(ProjectState.Complete);
+
+            _context.Entry(_currentGate).State = EntityState.Modified;
+            _context.SaveChanges();
+
             return Redirect($"/projects/{_projectId}");
         }
 

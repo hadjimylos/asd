@@ -16,6 +16,33 @@
     </div>
 </div>
 
+@if (Model.GateComments.Count > 0) {
+    
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="actions-component">
+                <div class="wrapper">
+                    <div class="header">
+                        <h3><i class="icon fas fa-info-circle"></i> Gate Comments</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="items" style="max-height: 500px; overflow: auto;">
+                @foreach (var comment in Model.GateComments) {
+                    <div class="item">
+                        <div class="item-wrapper by-4">
+                            <div>@comment.ModifiedByUser</div>
+                            <div>@comment.CreateDate.ToString("MM/dd/yyyy")</div>
+                            <div>@comment.DecisionType.ToString()</div>
+                            <div>@comment.Comment</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
 <div class="layout-horrizontal-component">
     <div class="wrapper">
         <div class="sections">

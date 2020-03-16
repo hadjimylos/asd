@@ -215,16 +215,10 @@
             // single edit page for time being
             return new List<ActiveNav>() {
                 new ActiveNav {
-                    IsComplete = activeGate.Decision == GateDecisionType.PendingDecision,
-                    Component = "Edit Gate",
-                    Url = $"/projects/{this._projectId}/gates/edit",
-                    Visible = true,
-                },
-                new ActiveNav {
                     Component = "Gate Files",
                     Url = $"/projects/{this._projectId}/stages/{stageNumber}/gate-files/edit",
                     Visible = true,
-                }
+                },
             };
         }
 

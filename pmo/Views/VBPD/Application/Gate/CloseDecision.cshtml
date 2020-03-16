@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Gate - Move to Close";
+    Layout = "_VbpdProjectDetailLayout";
+}
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
+
+<form class="form-component" method="post">
+    @Html.AntiForgeryToken()
+    <div class="wrapper">
+        <div class="fields">
+            <div class="field">
+                <div class="label">Comments</div>
+                <textarea name="comment" type="text" class="data"></textarea>
+                <ul class="errors">
+                    @Html.Partial("_FieldErrors", "comment")
+                </ul>
+            </div>
+            <div class="field">
+                <input type="submit" class="btn red" value="Close Project" />
+            </div>
+        </div>
+    </div>
+</form>
