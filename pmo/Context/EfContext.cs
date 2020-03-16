@@ -1001,8 +1001,8 @@ namespace pmo
                     new Tag { Id =  741  , Name ="Irvine", TagCategoryId =  13},
 
                     //End-Use Destination
-                    new Tag { Id =  742  , Name ="dummy Data", TagCategoryId =  14},
-                    new Tag { Id =  743  , Name ="dummy Data2", TagCategoryId =  14},
+                    new Tag { Id =  742  , Name ="Space Application", TagCategoryId =  14},
+                    new Tag { Id =  743  , Name ="Military Application", TagCategoryId =  14},
 
                     // Stage Files
                     new Tag { Id = 744, Name = "Business Case - Work Required", TagCategoryId = 15 },
@@ -1060,8 +1060,10 @@ namespace pmo
                     new Tag { Id = 789, Name = "Qualification Testing", TagCategoryId = 17 },
                     new Tag { Id = 790, Name = "Design Concept", TagCategoryId = 17 },
 
-
-
+                    new Tag { Id =  791  , Name ="Nuclear Application", TagCategoryId =  14},
+                    new Tag { Id =  792  , Name ="Commercial Aerospace Application", TagCategoryId =  14},
+                    new Tag { Id =  793  , Name ="Commercial Items in Defense Application", TagCategoryId =  14},
+                    new Tag { Id =  794  , Name ="None of the Above", TagCategoryId =  14},
             });
             #endregion
             #region  Gate Seed Data
@@ -1218,6 +1220,8 @@ namespace pmo
                 new LiteStageFileConfig { Id = 1, RequiredFileTagId = 761, StageConfigId = 2 },
                 new LiteStageFileConfig { Id = 2, RequiredFileTagId = 762, StageConfigId = 2 },
                 new LiteStageFileConfig { Id = 3, RequiredFileTagId = 765, StageConfigId = 2 },
+                
+                new LiteStageFileConfig { Id = 4, RequiredFileTagId = 744, StageConfigId = 1 },
             });
         }
 
