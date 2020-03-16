@@ -43,7 +43,7 @@
             });
 
             _context.SaveChanges();
-            return RedirectToAction("Edit");
+            return Redirect($"/projects/{_projectId}");
         }
 
         [Route("go-decision")]
