@@ -79,7 +79,7 @@
     <div class="layout-horrizontal-component">
         <div class="wrapper">
             <div class="sections">
-                <div class="section">
+                <div class="section-statuses" style="width: 33%">
                     <div class="actions-component">
                         <div class="wrapper">
                             <div class="header">
@@ -87,10 +87,9 @@
                             </div>
                         </div>
                     </div>
- 
                     <partial name="_ProjectStatus" />
                 </div>
-                <div class="section">
+                <div class="section-stages" style="width: 66%">
                     <div class="actions-component">
                         <div class="wrapper">
                             <div class="header">
@@ -98,8 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    <partial name="_ProjectStages" model="(List<dbModels.Stage>)ViewBag.VbpdActiveStages" />
-                    <partial name="_ProjectStages" model="(List<dbModels.Stage>)ViewBag.LiteActiveStages" />
+                    <partial name="_ProjectStages" />
                 </div>
             </div>
         </div>
