@@ -19,6 +19,7 @@ namespace dbModels {
         public int ExportApplicationTypeTagId { get; set; }
         [Required]
         public int DesignAuthorityTagId { get; set; }
+        [Required]
         public string ExportRestrictedUsers { set; get; }
         [Required]
         public string ExportControlCode { set; get; }       

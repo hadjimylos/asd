@@ -8,11 +8,6 @@ using ViewModels.Helpers;
 namespace forms
 {
     public class VBPDForm : ProjectDetail {
-        public VBPDForm() {
-            CustomerIds = new List<int>();
-            SalesRegionIds = new List<int>();
-
-        }
         [Required(ErrorMessage = ErrorMessages.Required)]
         public string Name { set; get; }
 
@@ -57,11 +52,14 @@ namespace forms
 
         public MultiSelectList SalesRegionsDropDown { set; get; }
         public MultiSelectList CustomerDropDown { set; get; }
+        
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public List<int> SalesRegionIds { get; set; }
+        
+        [Required(ErrorMessage = ErrorMessages.Required)]
         public List<int> CustomerIds { get; set; }
+        
         public SelectList ProcessDropDown { set; get; }
         public string ProjectProcessTypeSelect { set; get; }
-
-
     }
 }
