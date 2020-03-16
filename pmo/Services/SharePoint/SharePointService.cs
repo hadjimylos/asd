@@ -80,63 +80,22 @@ namespace pmo.Services.SharePoint
             }
         }
 
-        public byte[] Download(string filename)
-        {
-            if (String.IsNullOrEmpty(filename)) return null;
+        public byte[] Download(string filename) {
 
-            //string projectNameStripped = projectName
-            //    .Replace(" ", "-")
-            //    .ToLower();
+            using (var client = new WebClient()) {
+                client.Headers.Add(HttpRequestHeader.Accept, "application/octet-stream");
+                client.Headers.Add("binaryStringRequestBody", "true");
+                client.UseDefaultCredentials = false;
+                NetworkCredential credentials = new System.Net.NetworkCredential("svc-gbl-PMOPortalT", "t3YzY61htj63FQK", "Global");
+                client.Credentials = credentials;
+                string siteUrl = $"{Config.AppSettings["Sharepoint:SPFarm"]}/{Config.AppSettings["Sharepoint:SPSite"]}";
+                string formDigest = GetFormDigestValue(siteUrl, credentials);
+                client.Headers.Add("X-RequestDigest", formDigest);
 
-            //string timeStamp = DateTime.Now.ToString("ddMMyyy-hhmmss");
-            //string fileName = $"{projectNameStripped}_{timeStamp}_{file.FileName}";
-
-            string result = string.Empty;
-            string pathToUpload = $"{siteUrl}/_api/Web/GetFileByServerRelativeUrl('/{subsite}/{documentLibrary}/{filename}')/$value";
-            HttpWebRequest wreq = HttpWebRequest.Create(pathToUpload) as HttpWebRequest;
-            wreq.UseDefaultCredentials = false;
-            //credential who has edit access on document library
-            NetworkCredential credentials = new System.Net.NetworkCredential(username, password, domain);
-            wreq.Credentials = credentials;
-
-            //Get formdigest value from site
-            string formDigest = GetFormDigestValue(siteUrl, credentials);
-
-            wreq.Headers.Add("X-RequestDigest", formDigest);
-            wreq.Method = "GET";
-            wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
-            //wreq.Accept = "application/json; odata=verbose";
-            wreq.Accept = "application/octet-stream";
-            wreq.ContentType = "application/octet-stream";
-            //wreq.ContentLength = file.Length;
-            //using (System.IO.Stream requestStream = wreq.GetRequestStream())
-            //{
-            //    Byte[] bytes = await file.GetBytes();
-            //    requestStream.Write(bytes, 0, (int)file.Length);
-            //}
-
-            try
-            {
-                WebResponse wresp = wreq.GetResponse();
-                //if (wresp.ContentLength > 0)
-                //{
-                    var stream = wresp.GetResponseStream();
-
-                    using (FileStream fs = stream as FileStream)
-                    {
-                        byte[] data = new byte[fs.Length];
-                        int br = fs.Read(data, 0, data.Length);
-                        if (br != fs.Length)
-                            throw new System.IO.IOException(filename);
-                        return data;
-                    }
-                //}
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                var endpointUri = new Uri("https://testshareit.itt.com/sites/pmo-staging/_api/web/getfilebyserverrelativeurl('/sites/pmo-staging/PMO_UAT/"+ filename+"')/OpenBinaryStream");
+                var result = client.DownloadData(endpointUri);
+                MemoryStream stream = new MemoryStream(result);
+                return stream.ToArray();
             }
         }
 
