@@ -31,7 +31,7 @@ namespace pmo.Controllers {
         [Route("edit")]
         public IActionResult Edit() {
             var schedules = _context.Schedules
-                .Where(w => w.StageId == _stageId).ToList();
+                .Where(w => w.StageId == _stageId).Include(i=>i.ScheduleType).ToList();
             
             var configs = !_isLite ?
                 _context.StageConfig_RequiredSchedules.Where(
@@ -82,22 +82,22 @@ namespace pmo.Controllers {
                 return View(viewModel);
             }
 
-            var model = _context.Schedules.Include(x => x.Stage).Where(x => x.Stage.StageNumber == _stageNumber && x.Stage.ProjectId == _projectId).ToList();
+            var model = _context.Schedules.AsNoTracking().Include(x => x.Stage).Where(x => x.Stage.StageNumber == _stageNumber && x.Stage.ProjectId == _projectId).ToList();
 
             if (model.Count > 0) {
                 foreach (var item in viewModel) {
                     if (item.Id != 0) {
-                        model.Where(x => x.Id == item.Id).First().Date = item.Date;
+                        var d = model.Where(x => x.Id == item.Id).First();
+                        d.Date = item.Date;
+                        d.Stage = null;
+                        _context.Entry(d).State = EntityState.Modified;
+                        _context.Schedules.Update(d);
                     }
                     else {
-                        _context.Schedules.Add(item);
+                    _context.Schedules.Add(_mapper.Map<Schedule>(item));
                     }
                 }
-
-                _context.Entry(model).State = EntityState.Modified;
-                _context.Schedules.UpdateRange(model);
                 _context.SaveChanges();
-
             }
             else {
                 var modelToInsert = _mapper.Map<List<Schedule>>(viewModel);
