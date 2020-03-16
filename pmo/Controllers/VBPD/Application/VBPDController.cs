@@ -45,8 +45,8 @@ namespace pmo.Controllers {
                         w.ProjectDetails.OrderByDescending(o => o.CreateDate).First().ProjectCategoryTagId != 219 // vbpd
                     ).ToList();
 
-            var vbpdActiveStages = vbpdProjects.Select(s => s.StageHistory.OrderByDescending(o => o.CreateDate).First()).ToList();
-            var vbpdLiteActiveStages = vbpdLiteProjects.Select(s => s.StageHistory.OrderByDescending(o => o.CreateDate).First()).ToList();
+            var vbpdActiveStages = vbpdProjects.Select(s => s.StageHistory.OrderByDescending(o => o.StageNumber).First()).ToList();
+            var vbpdLiteActiveStages = vbpdLiteProjects.Select(s => s.StageHistory.OrderByDescending(o => o.StageNumber).First()).ToList();
 
             ViewBag.VbpdActiveStages = vbpdActiveStages;
             ViewBag.LiteActiveStages = vbpdLiteActiveStages;
