@@ -89,5 +89,14 @@ namespace pmo.Controllers {
             _context.SaveChanges();
             return RedirectToAction("Edit", new { projectId = _projectId, stageNumber = _stageNumber });
         }
+
+        [Route("download")]
+        public IActionResult Download(int id)
+        {
+            string filename = _SharePointService.GetFileNameFromUrl(_context.OptionalFiles.Find(id).Url);
+            var content = _SharePointService.Download(filename);
+            var contentType = "APPLICATION/octet-stream";
+            return File(content, contentType, filename);
+        }
     }
 }

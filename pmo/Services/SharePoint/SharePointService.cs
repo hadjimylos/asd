@@ -20,12 +20,16 @@ namespace pmo.Services.SharePoint
         static string username = $"{Config.AppSettings["NetworkCredentials:username"]}";
         static string password = $"{Config.AppSettings["NetworkCredentials:password"]}";
         static string documentLibrary = $"{Config.AppSettings["Sharepoint:DocumentLibrary"]}";
+        static string subsite = $"{Config.AppSettings["Sharepoint:SPSite"]}";
 
         public SharePointService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
         {
 
         }
-
+        public string GetFileNameFromUrl(string url)
+        {
+            return url.Replace(siteUrl, "").Replace("/" + documentLibrary + "/", ""); 
+        }
         public async Task<string> Upload(IFormFile file, string projectName)
         {
             if (file == null || file.Length == 0) return "file not selected";
@@ -68,6 +72,66 @@ namespace pmo.Services.SharePoint
                     JObject resultObj = JObject.Parse(result);
                     return result;
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+        }
+
+        public byte[] Download(string filename)
+        {
+            if (String.IsNullOrEmpty(filename)) return null;
+
+            //string projectNameStripped = projectName
+            //    .Replace(" ", "-")
+            //    .ToLower();
+
+            //string timeStamp = DateTime.Now.ToString("ddMMyyy-hhmmss");
+            //string fileName = $"{projectNameStripped}_{timeStamp}_{file.FileName}";
+
+            string result = string.Empty;
+            string pathToUpload = $"{siteUrl}/_api/Web/GetFileByServerRelativeUrl('/{subsite}/{documentLibrary}/{filename}')/$value";
+            HttpWebRequest wreq = HttpWebRequest.Create(pathToUpload) as HttpWebRequest;
+            wreq.UseDefaultCredentials = false;
+            //credential who has edit access on document library
+            NetworkCredential credentials = new System.Net.NetworkCredential(username, password, domain);
+            wreq.Credentials = credentials;
+
+            //Get formdigest value from site
+            string formDigest = GetFormDigestValue(siteUrl, credentials);
+
+            wreq.Headers.Add("X-RequestDigest", formDigest);
+            wreq.Method = "GET";
+            wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
+            //wreq.Accept = "application/json; odata=verbose";
+            wreq.Accept = "application/octet-stream";
+            wreq.ContentType = "application/octet-stream";
+            //wreq.ContentLength = file.Length;
+            //using (System.IO.Stream requestStream = wreq.GetRequestStream())
+            //{
+            //    Byte[] bytes = await file.GetBytes();
+            //    requestStream.Write(bytes, 0, (int)file.Length);
+            //}
+
+            try
+            {
+                WebResponse wresp = wreq.GetResponse();
+                //if (wresp.ContentLength > 0)
+                //{
+                    var stream = wresp.GetResponseStream();
+
+                    using (FileStream fs = stream as FileStream)
+                    {
+                        byte[] data = new byte[fs.Length];
+                        int br = fs.Read(data, 0, data.Length);
+                        if (br != fs.Length)
+                            throw new System.IO.IOException(filename);
+                        return data;
+                    }
+                //}
+                return null;
             }
             catch (Exception ex)
             {

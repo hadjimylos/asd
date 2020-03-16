@@ -6,5 +6,8 @@ namespace pmo.Services.SharePoint {
    public interface ISharePointService {
         Task<string> Upload(IFormFile file, string projectName);
         void Delete(string file);
+        byte[] Download(string filename);
+        public string GetFileNameFromUrl(string url);
+
     }
 }
