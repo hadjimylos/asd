@@ -1,0 +1,93 @@
+﻿@model LiteStageConfigForm
+
+@{ 
+    var postWhere = Model.isCreate ? "create" : $"{Model.Id}";
+}
+
+    <div class="form-component">
+        <form class="form-component" method="post" action="/vbpd-admin/lite-stage-config/@postWhere">
+            @if (!Model.isCreate)
+            {
+                <input asp-for="Id" type="hidden" />
+            }
+
+            @Html.AntiForgeryToken()
+            <div class="wrapper">
+                <div class="fields">
+                    <div class="field">
+                        <div class="label">CURRENT VBPD-LITE STAGE NUMBER</div>
+                        <div class="data">@Model.StageNumber</div>
+                        <ul class="errors">
+                            @Html.Partial("_FieldErrors", "StageNumber")
+                        </ul>
+                    </div>
+
+                    @if (!Model.isCreate)
+                    {
+                        <div class="field">
+                            <div class="label">REQUIRED SCHEDULES</div>
+                            <select asp-for="ScheduleIds" asp-items="Model.SelectSchedules" class="data select2"></select>
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", "ScheduleIds")
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="field">
+                        <input asp-for="AllowInsertRiskAssesments" />
+                        <label asp-for="AllowInsertRiskAssesments"></label>
+                    </div>
+
+                    <div class="field">
+                        <input asp-for="MinProjectJustificationsCheck" />
+                        <label asp-for="MinProjectJustificationsCheck"></label>
+
+                    </div>
+
+                    <div class="field">
+                        <input asp-for="MinBusinessCasesCheck" />
+                        <label asp-for="MinBusinessCasesCheck"></label>
+
+                    </div>
+
+                    <div class="field">
+                        <input asp-for="MinProductInfringementPatentabilitiesCheck" />
+                        <label asp-for="MinProductInfringementPatentabilitiesCheck"></label>
+
+                    </div>
+
+                    <div class="field">
+                        <input asp-for="MinKeyCharacteristicsCheck" />
+                        <label asp-for="MinKeyCharacteristicsCheck"></label>
+                    </div>
+
+                    <div class="field">
+                        <input asp-for="MinCustomerDesignApprovalsCheck" />
+                        <label asp-for="MinCustomerDesignApprovalsCheck"></label>
+
+                    </div>
+
+                    <div class="field">
+                        <input asp-for="MinInvestmentPlansCheck" />
+                        <label asp-for="MinInvestmentPlansCheck"></label>
+                    </div>
+
+                    <div class="field">
+                        <input asp-for="MinProductIntroChecklistCheck" />
+                        <label asp-for="MinProductIntroChecklistCheck"></label>
+                    </div>
+
+               
+                    <div class="field">
+                        <input asp-for="MinPostLaunchReviewsCheck" />
+                        <label asp-for="MinPostLaunchReviewsCheck"></label>
+
+                    </div>
+
+                    <div class="field">
+                        <input type="submit" class="data btn" value="SUBMIT" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
