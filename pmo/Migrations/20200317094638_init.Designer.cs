@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200317084558_add-migration UserDisplayName")]
-    partial class addmigrationUserDisplayName
+    [Migration("20200317094638_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -7875,126 +7875,126 @@ namespace pmo.Migrations
                         {
                             Id = 745,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Design Concepts",
+                            Name = "Deliverable Register - Design Concepts",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 746,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - DMFEA",
+                            Name = "Deliverable Register - DMFEA",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 747,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - DVT Test Plan",
+                            Name = "Deliverable Register - DVT Test Plan",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 748,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Qual Test Plan",
+                            Name = "Deliverable Register - Qual Test Plan",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 749,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Design Review",
+                            Name = "Deliverable Register - Design Review",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 750,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - PFMEA",
+                            Name = "Deliverable Register - PFMEA",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 751,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - ESH Checklist",
+                            Name = "Deliverable Register - ESH Checklist",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 752,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Product Safety Analysis",
+                            Name = "Deliverable Register - Product Safety Analysis",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 753,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Packaging Definition",
+                            Name = "Deliverable Register - Packaging Definition",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 754,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Product Drawings ",
+                            Name = "Deliverable Register - Product Drawings ",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 755,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Specifications",
+                            Name = "Deliverable Register - Specifications",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 756,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Customer Drawings",
+                            Name = "Deliverable Register - Customer Drawings",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 757,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Tool Drawings",
+                            Name = "Deliverable Register - Tool Drawings",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 758,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Process Flow Diagram",
+                            Name = "Deliverable Register - Process Flow Diagram",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 759,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Routers",
+                            Name = "Deliverable Register - Routers",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 760,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - Process Documentation",
+                            Name = "Deliverable Register - Process Documentation",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 761,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - MSA",
+                            Name = "Deliverable Register - MSA",
                             TagCategoryId = 15
                         },
                         new
                         {
                             Id = 762,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Deliverable Regiser - FAI",
+                            Name = "Deliverable Register - FAI",
                             TagCategoryId = 15
                         },
                         new
