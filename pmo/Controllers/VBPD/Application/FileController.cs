@@ -27,7 +27,7 @@ namespace pmo.Controllers {
         }
 
         public IActionResult Detail() {
-            var model = _context.StageFiles.Where(w => w.StageId == _stageId).ToList();
+            var model = _context.StageFiles.IncludeAll().Where(w => w.StageId == _stageId).ToList();
             return View($"{path}/Detail.cshtml", model);
         }
 
@@ -98,49 +98,7 @@ namespace pmo.Controllers {
             _context.SaveChanges();
             return this._editAction;
         }
-
-        [Route("download")]
-        public IActionResult Download() {
-            using (var client = new WebClient()) {
-                client.Headers.Add(HttpRequestHeader.Accept, "application/octet-stream");
-                client.Headers.Add("binaryStringRequestBody", "true");
-                client.UseDefaultCredentials = false;
-                NetworkCredential credentials = new System.Net.NetworkCredential("svc-gbl-PMOPortalT", "t3YzY61htj63FQK", "Global");
-                client.Credentials = credentials;
-                string siteUrl = $"{Config.AppSettings["Sharepoint:SPFarm"]}/{Config.AppSettings["Sharepoint:SPSite"]}";
-                string formDigest = GetFormDigestValue(siteUrl, credentials);
-                client.Headers.Add("X-RequestDigest", formDigest);
-
-                var endpointUri = new Uri("https://testshareit.itt.com/sites/pmo-staging/_api/web/getfilebyserverrelativeurl('/sites/pmo-staging/PMO_UAT/light-bulb_16032020-105039_ContentEditorHTML.txt')/OpenBinaryStream");
-                var result = client.DownloadData(endpointUri);
-                MemoryStream stream = new MemoryStream(result);
-                System.IO.File.WriteAllBytes(@"C:\Users\efthimios.dellis\source\repos\PMO",result);
-                return Ok();
-            }
-        }
-            
-     
-
-            //    string result = string.Empty;
-            //    string pathToUpload = "https://testshareit.itt.com/sites/pmo-staging/_api/Web/GetFileByServerRelativeUrl(/sites/pmo-staging/PMOTestLibrary/"+filename+")/$value";
-            //    HttpWebRequest wreq = HttpWebRequest.Create(pathToUpload) as HttpWebRequest;
-            //    wreq.UseDefaultCredentials = false;
-            //    //credential who has edit access on document library
-            //    NetworkCredential credentials = new System.Net.NetworkCredential("svc-gbl-PMOPortalT", "t3YzY61htj63FQK", "Global");
-            //    wreq.Credentials = credentials;
-            //    //Get formdigest value from site
-            //    string formDigest = GetFormDigestValue(siteUrl, credentials);
-
-            //    wreq.Headers.Add("X-RequestDigest", formDigest);
-            //    wreq.Method = "GET";
-            //    wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
-            //                            //wreq.Accept = "application/json; odata=verbose";
-            //    wreq.Accept = "application/octet-stream";
-            //    wreq.ContentType = "application/octet-stream";
-            //    //wreq.ContentLength = file.Length;
-            //    //using (System.IO.Stream requestStream = wreq.GetRequestStream())
-            //    //{
-           
+                       
 
         private static string GetFormDigestValue(string siteurl, NetworkCredential credentials) {
             string newFormDigest = "";
@@ -177,6 +135,15 @@ namespace pmo.Controllers {
             _context.Remove(_context.StageFiles.Find(fileid));
             _context.SaveChanges();
             return RedirectToAction("Edit", new { projectId = _projectId, stageNumber = _stageNumber });
+        }
+
+        [Route("download")]
+        public IActionResult Download(int id)
+        {
+            string filename = _SharePointService.GetFileNameFromUrl(_context.StageFiles.Find(id).Url);
+            var content = _SharePointService.Download(filename);
+            var contentType = "APPLICATION/octet-stream";
+            return File(content, contentType, filename);
         }
     }
 }

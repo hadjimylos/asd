@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Edit Product Intro Checklist";
     Layout = "_VbpdProjectDetailLayout";
+      int projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
+    int stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
 }
 
 <div class="actions-component">
@@ -83,7 +85,7 @@
                                 <div class="data">
                                     @if (!String.IsNullOrEmpty(Model.Filename))
                                     {
-                                        <a href="@Model.Filename" target="_blank">
+                                        <a href="/projects/@projectId/stages/@stageNumber/product-intro-checklist/download?id=@Model.Id" target="_blank">
                                             <i class="fas fa-download fa-lg"></i>
                                         </a>
                                     }

@@ -191,5 +191,14 @@ namespace pmo.Controllers.VBPD.Application.History
         {
             return _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
+
+        [Route("download")]
+        public IActionResult Download(int id)
+        {
+            string filename = _SharePointService.GetFileNameFromUrl(_context.ProductIntroChecklists.Find(id).Filename);
+            var content = _SharePointService.Download(filename);
+            var contentType = "APPLICATION/octet-stream";
+            return File(content, contentType, filename);
+        }
     }
 }

@@ -86,16 +86,18 @@ namespace pmo.Services.SharePoint
                 client.Headers.Add(HttpRequestHeader.Accept, "application/octet-stream");
                 client.Headers.Add("binaryStringRequestBody", "true");
                 client.UseDefaultCredentials = false;
-                NetworkCredential credentials = new System.Net.NetworkCredential("svc-gbl-PMOPortalT", "t3YzY61htj63FQK", "Global");
+                NetworkCredential credentials = new System.Net.NetworkCredential(username, password, domain);
                 client.Credentials = credentials;
                 string siteUrl = $"{Config.AppSettings["Sharepoint:SPFarm"]}/{Config.AppSettings["Sharepoint:SPSite"]}";
                 string formDigest = GetFormDigestValue(siteUrl, credentials);
                 client.Headers.Add("X-RequestDigest", formDigest);
 
-                var endpointUri = new Uri("https://testshareit.itt.com/sites/pmo-staging/_api/web/getfilebyserverrelativeurl('/sites/pmo-staging/PMO_UAT/"+ filename+"')/OpenBinaryStream");
+                var endpointUri = new Uri($"{siteUrl}/_api/web/getfilebyserverrelativeurl('/{subsite}/{documentLibrary}/{filename}')/OpenBinaryStream");
                 var result = client.DownloadData(endpointUri);
-                MemoryStream stream = new MemoryStream(result);
-                return stream.ToArray();
+                using (MemoryStream stream = new MemoryStream(result))
+                {
+                    return stream.ToArray();
+                }
             }
         }
 

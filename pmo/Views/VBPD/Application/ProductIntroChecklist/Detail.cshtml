@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Product Intro Checklist";
     Layout = "_VbpdProjectDetailLayout";
+      int projectId = int.Parse(Helpers.GetRouteValue(Context.Request, "projectId"));
+    int stageNumber = int.Parse(Helpers.GetRouteValue(Context.Request, "stageNumber"));
 }
 
 <div class="actions-component">
@@ -27,17 +29,18 @@
                             </div>
                             <div class="detail">
                                 <div class="label">Filename</div>
-                                <div class="value">@if (!String.IsNullOrEmpty(Model.Filename))
-                                {
-                                    <a href="@Model.Filename" target="_blank">
-                                        <i class="fas fa-download fa-lg"></i>
-                                    </a>
-                                }
-                                else
-                                {
-                                    <span>No file uploaded</span>
-                                }
-                                </div>
+                                <div class="value">
+                                    @if (!String.IsNullOrEmpty(Model.Filename))
+                                    {
+                                        <a href="/projects/@projectId/stages/@stageNumber/product-intro-checklist/download?id=@Model.Id" target="_blank">
+                                            <i class="fas fa-download fa-lg"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span>No file uploaded</span>
+                                    }
+                                                            </div>
                             </div>
                             <div class="detail">
                                 <div class="label">Approved By</div>
