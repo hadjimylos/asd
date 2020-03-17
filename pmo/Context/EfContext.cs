@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System;
 using dbModels.Report;
-using ViewModels.Helpers;
 using AutoMapper;
 
 namespace pmo
@@ -1006,24 +1005,24 @@ namespace pmo
 
                     // Stage Files
                     new Tag { Id = 744, Name = "Business Case - Work Required", TagCategoryId = 15 },
-                    new Tag { Id = 745, Name = "Deliverable Regiser - Design Concepts", TagCategoryId = 15 },
-                    new Tag { Id= 746, Name =  "Deliverable Regiser - DMFEA" , TagCategoryId = 15},
-                    new Tag { Id= 747, Name =  "Deliverable Regiser - DVT Test Plan" , TagCategoryId = 15},
-                    new Tag { Id= 748, Name =  "Deliverable Regiser - Qual Test Plan" , TagCategoryId = 15},
-                    new Tag { Id= 749, Name =  "Deliverable Regiser - Design Review" , TagCategoryId = 15},
-                    new Tag { Id= 750, Name =  "Deliverable Regiser - PFMEA" , TagCategoryId = 15},
-                    new Tag { Id= 751, Name =  "Deliverable Regiser - ESH Checklist" , TagCategoryId = 15},
-                    new Tag { Id= 752, Name =  "Deliverable Regiser - Product Safety Analysis" , TagCategoryId = 15},
-                    new Tag { Id= 753, Name =  "Deliverable Regiser - Packaging Definition" , TagCategoryId = 15},
-                    new Tag { Id= 754, Name =  "Deliverable Regiser - Product Drawings ", TagCategoryId = 15 },
-                    new Tag { Id= 755, Name =  "Deliverable Regiser - Specifications" , TagCategoryId = 15},
-                    new Tag { Id= 756, Name =  "Deliverable Regiser - Customer Drawings" , TagCategoryId = 15},
-                    new Tag { Id= 757, Name =  "Deliverable Regiser - Tool Drawings" , TagCategoryId = 15},
-                    new Tag { Id= 758, Name =  "Deliverable Regiser - Process Flow Diagram" , TagCategoryId = 15},
-                    new Tag { Id= 759, Name =  "Deliverable Regiser - Routers" , TagCategoryId = 15 },
-                    new Tag { Id= 760, Name =  "Deliverable Regiser - Process Documentation" , TagCategoryId = 15},
-                    new Tag { Id = 761, Name = "Deliverable Regiser - MSA", TagCategoryId = 15 },
-                    new Tag { Id = 762, Name = "Deliverable Regiser - FAI", TagCategoryId = 15 },
+                    new Tag { Id = 745, Name = "Deliverable Register - Design Concepts", TagCategoryId = 15 },
+                    new Tag { Id= 746, Name =  "Deliverable Register - DMFEA" , TagCategoryId = 15},
+                    new Tag { Id= 747, Name =  "Deliverable Register - DVT Test Plan" , TagCategoryId = 15},
+                    new Tag { Id= 748, Name =  "Deliverable Register - Qual Test Plan" , TagCategoryId = 15},
+                    new Tag { Id= 749, Name =  "Deliverable Register - Design Review" , TagCategoryId = 15},
+                    new Tag { Id= 750, Name =  "Deliverable Register - PFMEA" , TagCategoryId = 15},
+                    new Tag { Id= 751, Name =  "Deliverable Register - ESH Checklist" , TagCategoryId = 15},
+                    new Tag { Id= 752, Name =  "Deliverable Register - Product Safety Analysis" , TagCategoryId = 15},
+                    new Tag { Id= 753, Name =  "Deliverable Register - Packaging Definition" , TagCategoryId = 15},
+                    new Tag { Id= 754, Name =  "Deliverable Register - Product Drawings ", TagCategoryId = 15 },
+                    new Tag { Id= 755, Name =  "Deliverable Register - Specifications" , TagCategoryId = 15},
+                    new Tag { Id= 756, Name =  "Deliverable Register - Customer Drawings" , TagCategoryId = 15},
+                    new Tag { Id= 757, Name =  "Deliverable Register - Tool Drawings" , TagCategoryId = 15},
+                    new Tag { Id= 758, Name =  "Deliverable Register - Process Flow Diagram" , TagCategoryId = 15},
+                    new Tag { Id= 759, Name =  "Deliverable Register - Routers" , TagCategoryId = 15 },
+                    new Tag { Id= 760, Name =  "Deliverable Register - Process Documentation" , TagCategoryId = 15},
+                    new Tag { Id = 761, Name = "Deliverable Register - MSA", TagCategoryId = 15 },
+                    new Tag { Id = 762, Name = "Deliverable Register - FAI", TagCategoryId = 15 },
                     new Tag { Id = 763, Name = "Product Infrigment Patentability - Upload any pertinent documentation", TagCategoryId = 15 },
                     new Tag { Id = 764, Name = "Customer Design Approval - Upload any pertinent documentation", TagCategoryId = 15 },
                     new Tag { Id = 765, Name = "Ramp and Resource Plan", TagCategoryId = 15 },
