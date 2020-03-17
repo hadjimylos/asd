@@ -1174,41 +1174,40 @@ namespace pmo
             builder.Entity<StageFileConfig>().HasData(new List<StageFileConfig>()
             {
                 //Stage 2
-                new StageFileConfig { Id = 1, StageConfigId = 2, RequiredFileTagId = 744 },
-                new StageFileConfig { Id = 2, StageConfigId = 2, RequiredFileTagId = 745 },
+                new StageFileConfig { Id = 1, StageConfigId = 2, RequiredFileTagId = 744, IsLocation = false, },
+                new StageFileConfig { Id = 2, StageConfigId = 2, RequiredFileTagId = 745, IsLocation = true, },
 
                 //Stage 3
-                new StageFileConfig { Id = 3, StageConfigId = 3, RequiredFileTagId = 761 },
-                new StageFileConfig { Id = 4, StageConfigId = 3, RequiredFileTagId = 762 },
-                new StageFileConfig { Id = 5, StageConfigId = 3, RequiredFileTagId = 763 },
-                new StageFileConfig { Id = 6, StageConfigId = 3, RequiredFileTagId = 744 },
-                new StageFileConfig { Id = 7, StageConfigId = 3, RequiredFileTagId = 746 },
-                new StageFileConfig { Id = 8, StageConfigId = 3, RequiredFileTagId = 747 },
-                new StageFileConfig { Id = 9, StageConfigId = 3, RequiredFileTagId = 748 },
-                new StageFileConfig { Id = 10, StageConfigId = 3, RequiredFileTagId = 749 },
-                new StageFileConfig { Id = 11, StageConfigId = 3, RequiredFileTagId = 750 },
-                new StageFileConfig { Id = 12, StageConfigId = 3, RequiredFileTagId = 751 },
-                new StageFileConfig { Id = 13, StageConfigId = 3, RequiredFileTagId = 752 },
-                new StageFileConfig { Id = 14, StageConfigId = 3, RequiredFileTagId = 753 },
-                new StageFileConfig { Id = 15, StageConfigId = 3, RequiredFileTagId = 754 },
-                new StageFileConfig { Id = 16, StageConfigId = 3, RequiredFileTagId = 755 },
-                new StageFileConfig { Id = 17, StageConfigId = 3, RequiredFileTagId = 756 },
-                new StageFileConfig { Id = 18, StageConfigId = 3, RequiredFileTagId = 757 },
-                new StageFileConfig { Id = 19, StageConfigId = 3, RequiredFileTagId = 758 },
-                new StageFileConfig { Id = 20, StageConfigId = 3, RequiredFileTagId = 759 },
-                new StageFileConfig { Id = 21, StageConfigId = 3, RequiredFileTagId = 760 },
+                new StageFileConfig { Id = 3, StageConfigId = 3, RequiredFileTagId = 761, IsLocation = true, },
+                new StageFileConfig { Id = 4, StageConfigId = 3, RequiredFileTagId = 762, IsLocation = true, },
+                new StageFileConfig { Id = 5, StageConfigId = 3, RequiredFileTagId = 763, IsLocation = false, },
+                new StageFileConfig { Id = 6, StageConfigId = 3, RequiredFileTagId = 744, IsLocation = false, },
+                new StageFileConfig { Id = 7, StageConfigId = 3, RequiredFileTagId = 746, IsLocation = true, },
+                new StageFileConfig { Id = 8, StageConfigId = 3, RequiredFileTagId = 747, IsLocation = true, },
+                new StageFileConfig { Id = 9, StageConfigId = 3, RequiredFileTagId = 748, IsLocation = true, },
+                new StageFileConfig { Id = 10, StageConfigId = 3, RequiredFileTagId = 749, IsLocation = false, },
+                new StageFileConfig { Id = 11, StageConfigId = 3, RequiredFileTagId = 750, IsLocation = true, },
+                new StageFileConfig { Id = 12, StageConfigId = 3, RequiredFileTagId = 751, IsLocation = true, },
+                new StageFileConfig { Id = 13, StageConfigId = 3, RequiredFileTagId = 752, IsLocation = true, },
+                new StageFileConfig { Id = 14, StageConfigId = 3, RequiredFileTagId = 753, IsLocation = false, },
+                new StageFileConfig { Id = 15, StageConfigId = 3, RequiredFileTagId = 754, IsLocation = true, },
+                new StageFileConfig { Id = 16, StageConfigId = 3, RequiredFileTagId = 755, IsLocation = true, },
+                new StageFileConfig { Id = 17, StageConfigId = 3, RequiredFileTagId = 756, IsLocation = true, },
+                new StageFileConfig { Id = 18, StageConfigId = 3, RequiredFileTagId = 757, IsLocation = true, },
+                new StageFileConfig { Id = 19, StageConfigId = 3, RequiredFileTagId = 758, IsLocation = true, },
+                new StageFileConfig { Id = 20, StageConfigId = 3, RequiredFileTagId = 759, IsLocation = true, },
+                new StageFileConfig { Id = 21, StageConfigId = 3, RequiredFileTagId = 760, IsLocation = true, },
 
                 //Stage 4
-                new StageFileConfig { Id = 22, StageConfigId = 4, RequiredFileTagId = 766 },
-                new StageFileConfig { Id = 23, StageConfigId = 4, RequiredFileTagId = 764 },
-                new StageFileConfig { Id = 24, StageConfigId = 4, RequiredFileTagId = 744 },
-                new StageFileConfig { Id = 25, StageConfigId = 4, RequiredFileTagId = 759 },
-                new StageFileConfig { Id = 26, StageConfigId = 4, RequiredFileTagId = 760 },
+                new StageFileConfig { Id = 22, StageConfigId = 4, RequiredFileTagId = 766, IsLocation = false, },
+                new StageFileConfig { Id = 23, StageConfigId = 4, RequiredFileTagId = 764, IsLocation = false, },
+                new StageFileConfig { Id = 24, StageConfigId = 4, RequiredFileTagId = 744, IsLocation = false, },
+                new StageFileConfig { Id = 25, StageConfigId = 4, RequiredFileTagId = 759, IsLocation = true, },
+                new StageFileConfig { Id = 26, StageConfigId = 4, RequiredFileTagId = 760, IsLocation = true, },
 
                 // Stage 1
-                new StageFileConfig { Id = 27, StageConfigId = 1, RequiredFileTagId = 777 },
+                new StageFileConfig { Id = 27, StageConfigId = 1, RequiredFileTagId = 777, IsLocation = false, },
             });
-
 
             builder.Entity<LiteStageConfig>().HasData(new List<LiteStageConfig>() {
                 new LiteStageConfig { Id = 1, StageNumber = 1, ModifiedByUser = "system", MinProjectJustifications = 1, MinBusinessCases = 1, },
@@ -1216,11 +1215,11 @@ namespace pmo
             });
 
             builder.Entity<LiteStageFileConfig>().HasData(new List<LiteStageFileConfig>() {
-                new LiteStageFileConfig { Id = 1, RequiredFileTagId = 761, StageConfigId = 2 },
-                new LiteStageFileConfig { Id = 2, RequiredFileTagId = 762, StageConfigId = 2 },
-                new LiteStageFileConfig { Id = 3, RequiredFileTagId = 765, StageConfigId = 2 },
+                new LiteStageFileConfig { Id = 1, RequiredFileTagId = 761, StageConfigId = 2, IsLocation = true, },
+                new LiteStageFileConfig { Id = 2, RequiredFileTagId = 762, StageConfigId = 2, IsLocation = true, },
+                new LiteStageFileConfig { Id = 3, RequiredFileTagId = 765, StageConfigId = 2, IsLocation = false, },
                 
-                new LiteStageFileConfig { Id = 4, RequiredFileTagId = 744, StageConfigId = 1 },
+                new LiteStageFileConfig { Id = 4, RequiredFileTagId = 744, StageConfigId = 1, IsLocation = false, },
             });
         }
 

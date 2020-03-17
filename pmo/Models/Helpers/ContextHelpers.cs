@@ -15,8 +15,10 @@ using System.Linq.Expressions;
 namespace ViewModels.Helpers
 {
     public static class Helpers {
-        public static List<Tag> GetRequiredFiles<T>(this IQueryable<T> queryable) where T : BaseStageFileConfig {
-            return queryable.Select(s => s.RequiredFile).ToList();
+        public static List<(Tag Tag, bool IsLocation)> GetRequiredFiles<T>(this IQueryable<T> queryable) where T : BaseStageFileConfig {
+            List<(Tag, bool)> res = new List<(Tag, bool)>();
+            queryable.ToList().ForEach(f => res.Add((f.RequiredFile, f.IsLocation)));
+            return res;
         }
 
         // extend IQueryable to Include all virtual objects

@@ -58,8 +58,9 @@ namespace pmo.Controllers {
             requiredFiles.ForEach(requiredFile => {
                 model.Add(
                     new FileForm {
-                        TagDescription = requiredFile.Name,
-                        TagId = requiredFile.Id,
+                        TagDescription = requiredFile.Tag.Name,
+                        TagId = requiredFile.Tag.Id,
+                        IsLocation = requiredFile.IsLocation,
                     });
             });
 
@@ -78,9 +79,11 @@ namespace pmo.Controllers {
         [AutoValidateAntiforgeryToken]
         [HttpPost]
         public IActionResult Edit(List<FileForm> files) {
-            var saveFiles = files.Where(w => w.File != null).ToList();
+            var saveFiles = files.Where(w => w.File != null && !w.IsLocation).ToList();
+            var saveLocations = files.Where(w => w.Location != null && w.IsLocation).ToList();
             var projectName = _context.Projects.Find(_projectId).Name;
 
+            // append files only
             saveFiles.ForEach(f => {
                 var upload = _SharePointService.Upload(f.File, projectName);
                 var result = JObject.Parse(upload.Result);
@@ -92,13 +95,24 @@ namespace pmo.Controllers {
                     Description = f.Description,
                     StageId = _stageId,
                     FileTagId = f.TagId,
+                    IsLocation = false,
                 });
             });
+
+            // append locations
+            saveLocations.ForEach(f =>
+                _context.StageFiles.Add(new StageFile {
+                    Url = f.Location,
+                    Description = f.Description,
+                    StageId = _stageId,
+                    FileTagId = f.TagId,
+                    IsLocation = true,
+                })
+            );
 
             _context.SaveChanges();
             return this._editAction;
         }
-                       
 
         private static string GetFormDigestValue(string siteurl, NetworkCredential credentials) {
             string newFormDigest = "";
@@ -131,7 +145,10 @@ namespace pmo.Controllers {
         [AutoValidateAntiforgeryToken]
         [HttpPost]
         public IActionResult Delete(string url, int fileid) {
-            _SharePointService.Delete(url);
+            // only delete file if not location
+            if (!_context.StageFiles.Find(fileid).IsLocation)
+                _SharePointService.Delete(url);
+
             _context.Remove(_context.StageFiles.Find(fileid));
             _context.SaveChanges();
             return RedirectToAction("Edit", new { projectId = _projectId, stageNumber = _stageNumber });

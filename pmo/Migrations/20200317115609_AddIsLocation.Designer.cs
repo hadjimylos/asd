@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200317115609_AddIsLocation")]
+    partial class AddIsLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1033,7 +1035,7 @@ namespace pmo.Migrations
                         {
                             Id = 1,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 761,
                             StageConfigId = 2
                         },
@@ -1041,7 +1043,7 @@ namespace pmo.Migrations
                         {
                             Id = 2,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 762,
                             StageConfigId = 2
                         },
@@ -2469,7 +2471,7 @@ namespace pmo.Migrations
                         {
                             Id = 2,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 745,
                             StageConfigId = 2
                         },
@@ -2477,7 +2479,7 @@ namespace pmo.Migrations
                         {
                             Id = 3,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 761,
                             StageConfigId = 3
                         },
@@ -2485,7 +2487,7 @@ namespace pmo.Migrations
                         {
                             Id = 4,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 762,
                             StageConfigId = 3
                         },
@@ -2509,7 +2511,7 @@ namespace pmo.Migrations
                         {
                             Id = 7,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 746,
                             StageConfigId = 3
                         },
@@ -2517,7 +2519,7 @@ namespace pmo.Migrations
                         {
                             Id = 8,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 747,
                             StageConfigId = 3
                         },
@@ -2525,7 +2527,7 @@ namespace pmo.Migrations
                         {
                             Id = 9,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 748,
                             StageConfigId = 3
                         },
@@ -2541,7 +2543,7 @@ namespace pmo.Migrations
                         {
                             Id = 11,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 750,
                             StageConfigId = 3
                         },
@@ -2549,7 +2551,7 @@ namespace pmo.Migrations
                         {
                             Id = 12,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 751,
                             StageConfigId = 3
                         },
@@ -2557,7 +2559,7 @@ namespace pmo.Migrations
                         {
                             Id = 13,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 752,
                             StageConfigId = 3
                         },
@@ -2573,7 +2575,7 @@ namespace pmo.Migrations
                         {
                             Id = 15,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 754,
                             StageConfigId = 3
                         },
@@ -2581,7 +2583,7 @@ namespace pmo.Migrations
                         {
                             Id = 16,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 755,
                             StageConfigId = 3
                         },
@@ -2589,7 +2591,7 @@ namespace pmo.Migrations
                         {
                             Id = 17,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 756,
                             StageConfigId = 3
                         },
@@ -2597,7 +2599,7 @@ namespace pmo.Migrations
                         {
                             Id = 18,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 757,
                             StageConfigId = 3
                         },
@@ -2605,7 +2607,7 @@ namespace pmo.Migrations
                         {
                             Id = 19,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 758,
                             StageConfigId = 3
                         },
@@ -2613,7 +2615,7 @@ namespace pmo.Migrations
                         {
                             Id = 20,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 759,
                             StageConfigId = 3
                         },
@@ -2621,7 +2623,7 @@ namespace pmo.Migrations
                         {
                             Id = 21,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 760,
                             StageConfigId = 3
                         },
@@ -2653,7 +2655,7 @@ namespace pmo.Migrations
                         {
                             Id = 25,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 759,
                             StageConfigId = 4
                         },
@@ -2661,7 +2663,7 @@ namespace pmo.Migrations
                         {
                             Id = 26,
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsLocation = true,
+                            IsLocation = false,
                             RequiredFileTagId = 760,
                             StageConfigId = 4
                         },

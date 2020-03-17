@@ -11,29 +11,26 @@
 <div class="actions-component">
     <div class="wrapper">
         <div class="header">
-            @if (Model.Count == 0)
-            {
+            @if (Model.Count == 0) {
                 <h1 class="text-black"><i class='fas fa-check-circle'></i> All Stage Files Uploaded</h1>
             }
-            else
-            {
+            else {
                 <h1 class="text-red"><i class='fas fa-exclamation-circle'></i> @Model.Count Stage Files Remaining</h1>
             }
         </div>
     </div>
 </div>
 
-@if (Model.Count > 0)
-{
+@if (Model.Count > 0) {
     <form class="form-component" enctype="multipart/form-data" method="post" action="/projects/@projectId/stages/@stageNumber/files/edit">
         @Html.AntiForgeryToken()
         <div class="wrapper">
             <input type="submit" class="data btn" value="Submit" />
             <div class="fields">
-                @for (int i = 0; i < Model.Count; i++)
-                {
+                @for (int i = 0; i < Model.Count; i++) {
                     <input type="hidden" asp-for="@Model[i].TagId">
                     <input type="hidden" asp-for="@Model[i].TagDescription">
+                    <input type="hidden" asp-for="@Model[i].IsLocation">
 
                     <div class="field">
                         <div class="layout-horrizontal-component">
@@ -47,15 +44,26 @@
                                         </ul>
                                     </div>
                                     <div class="section">
-                                        <div class="label">@Model[i].TagDescription</div>
-                                        <input class="file-upload" asp-for="@Model[i].File" />
-                                        <label asp-for="@Model[i].File" class="data">
-                                            <span></span>
-                                            <strong><i class="fas fa-upload"></i> Choose a file...</strong>
-                                        </label>
-                                        <ul class="errors">
-                                            @Html.Partial("_FieldErrors", Model[i].File)
-                                        </ul>
+                                        @if (Model[i].IsLocation) {
+                                            <div class="label">Location: @Model[i].TagDescription</div>
+                                            <input class="data" asp-for="@Model[i].Location" />
+                                            <ul class="errors">
+                                                @Html.Partial("_FieldErrors", $"[{i}].Location")
+                                            </ul>
+                                        }
+                                        else {
+                                            <div class="label">@Model[i].TagDescription</div>
+                                            <input class="file-upload" asp-for="@Model[i].File" />
+                                            <label asp-for="@Model[i].File" class="data">
+                                                <span></span>
+                                                <strong><i class="fas fa-upload"></i> Choose a file...</strong>
+                                            </label>
+                                            <ul class="errors">
+                                                @Html.Partial("_FieldErrors", $"[{i}].File")
+                                            </ul>
+                                        }
+
+
                                     </div>
                                 </div>
                             </div>
@@ -67,10 +75,8 @@
     </form>
 }
 
-@if (uploads.Count > 0)
-{
-    @if (Model.Count != 0)
-    {
+@if (uploads.Count > 0) {
+    @if (Model.Count != 0) {
         <div class="actions-component">
             <div class="wrapper">
                 <div class="header">
@@ -91,14 +97,18 @@
                 <div><!-- placeholder for delete actions --></div>
             </div>
             <div class="items">
-                @foreach (var upload in uploads)
-                {
+                @foreach (var upload in uploads) {
                     <div class="item">
                         <div class="item-wrapper">
-                            <div>@upload.FileTag.Name</div>
-                            <a href="/projects/@projectId/stages/@stageNumber/files/download?id=@upload.Id" target="_blank">
-                                <i class="fas fa-download fa-lg"></i>
-                            </a>
+                            <div>@(upload.IsLocation ? $"Location: {upload.FileTag.Name}" : upload.FileTag.Name)</div>
+                            @if (upload.IsLocation) {
+                                <div>--</div>
+                            }
+                            else {
+                                <a href="/projects/@projectId/stages/@stageNumber/files/download?id=@upload.Id" target="_blank">
+                                    <i class="fas fa-download fa-lg"></i>
+                                </a>
+                            }
                             <div>@upload.Description</div>
                             <div>@upload.CreateDate</div>
                             <div>@upload.ModifiedByUser</div>

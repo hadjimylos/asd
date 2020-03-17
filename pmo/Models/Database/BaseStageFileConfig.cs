@@ -6,5 +6,7 @@ namespace dbModels {
 
         [ForeignKey("RequiredFileTagId")]
         public virtual Tag RequiredFile { get; set; }
+
+        public bool IsLocation { get; set; }
     }
 }
