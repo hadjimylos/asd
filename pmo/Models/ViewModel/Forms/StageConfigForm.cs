@@ -13,34 +13,29 @@ namespace forms {
 
         public bool isCreate { get; set; }
 
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinProjectJustifications { get; set; }
-        
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinBusinessCases { get; set; }
-        
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinProductInfringementPatentabilities { get; set; }
-        
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinKeyCharacteristics { get; set; }
-        
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinCustomerDesignApprovals { get; set; }
-        
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinInvestmentPlans { get; set; }
-        
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinProductIntroChecklist { get; set; }
-
-        [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = ErrorMessages.MinimumValue)]
-        public new int MinPostLaunchReviews { get; set; }
-
         public List<SelectListItem> SelectSchedules { get; set; }
 
         public List<int> ScheduleIds { get; set; }
 
         public List<string> GateKeepers { get; set; }
+
+        //Temporary Checkboxes
+        [Display(Name = "PROJECT JUSTIFICATION")]
+        public bool MinProjectJustificationsCheck { get; set; }
+        [Display(Name = "BUSINESS CASES")]
+        public bool MinBusinessCasesCheck { get; set; }
+        [Display(Name = "PRODUCT INFRINGEMENT PATENTABILITIES")]
+        public bool MinProductInfringementPatentabilitiesCheck { get; set; }
+        [Display(Name = "KEY CHARACTERISTICS")]
+        public bool MinKeyCharacteristicsCheck { get; set; }
+        [Display(Name = "CUSTOMER DESIGN APPROVALS")]
+        public bool MinCustomerDesignApprovalsCheck { get; set; }
+        [Display(Name = "INVESTMENT PLANS")]
+        public bool MinInvestmentPlansCheck { get; set; }
+        [Display(Name = "PRODUCT INTRO CHECKLIST")]
+        public bool MinProductIntroChecklistCheck { get; set; }
+        [Display(Name = "POST LAUNCH REVIEWS")]
+        public bool MinPostLaunchReviewsCheck { get; set; }
+
     }
 }

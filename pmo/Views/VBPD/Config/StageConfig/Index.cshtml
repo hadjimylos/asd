@@ -41,15 +41,15 @@
                         <div class="item-wrapper by-13">
                             <div>@config.StageNumber</div>
                             <div>@(config.AllowInsertRiskAssesments ? "allow" : "disallow")</div>
-                            <div>@config.MinProjectJustifications</div>
-                            <div>@config.MinBusinessCases</div>
-                            <div>@config.MinProductInfringementPatentabilities</div>
-                            <div>@config.MinKeyCharacteristics</div>
-                            <div>@config.MinCustomerDesignApprovals</div>
-                            <div>@config.MinInvestmentPlans</div>
-                            <div>@config.MinProductIntroChecklist</div>
-                            <div>@config.RequiredSchedules.Count</div>
-                            <div>@config.MinPostLaunchReviews</div>
+                            <div>@(config.MinProjectJustifications ==1 ? "allow" : "disallow")</div>
+                            <div>@(config.MinBusinessCases == 1 ? "allow" : "disallow")</div>
+                            <div>@(config.MinProductInfringementPatentabilities == 1 ? "allow" : "disallow")</div>
+                            <div>@(config.MinKeyCharacteristics == 1 ? "allow" : "disallow")</div>
+                            <div>@(config.MinCustomerDesignApprovals == 1 ? "allow" : "disallow")</div>
+                            <div>@(config.MinInvestmentPlans == 1 ? "allow" : "disallow")</div>
+                            <div>@(config.MinProductIntroChecklist == 1 ? "allow" : "disallow")</div>
+                            <div>@(config.RequiredSchedules.Count == 1 ? "allow" : "disallow")</div>
+                            <div>@(config.MinPostLaunchReviews == 1 ? "allow" : "disallow")</div>
                         </div>
                     </a>
                 }

@@ -28,6 +28,7 @@ namespace pmo.Controllers {
                 StageNumber = currentStage,
                 isCreate = true,
             };
+            
             return View($"{path}/Create.cshtml", stageconfigViewModel);
         }
 
@@ -45,11 +46,22 @@ namespace pmo.Controllers {
             }
 
             var domainModel = _mapper.Map<StageConfig>(model);
+            domainModel.MinProjectJustifications = model.MinProjectJustificationsCheck ? 1:0;
+            domainModel.MinBusinessCases = model.MinBusinessCasesCheck ?1:0;
+            domainModel.MinProductInfringementPatentabilities = model.MinProductInfringementPatentabilitiesCheck ?1:0;
+            domainModel.MinKeyCharacteristics = model.MinKeyCharacteristicsCheck ?1:0;
+            domainModel.MinCustomerDesignApprovals = model.MinCustomerDesignApprovalsCheck ?1:0;
+            domainModel.MinInvestmentPlans = model.MinInvestmentPlansCheck ?1:0;
+            domainModel.MinProductIntroChecklist = model.MinProductIntroChecklistCheck ?1:0;
+            domainModel.MinPostLaunchReviews = model.MinPostLaunchReviewsCheck ?1:0;
+
             _context.StageConfigs.Add(domainModel);
             _context.SaveChanges();
 
             return RedirectToAction("Edit", new { id = domainModel.Id });
         }
+
+      
 
         [Route("{id}")]
         public IActionResult Edit(int id) {
@@ -61,6 +73,15 @@ namespace pmo.Controllers {
 
             var vm = _mapper.Map<StageConfigForm>(config);
             vm.isCreate = false;
+            vm.MinProjectJustificationsCheck = config.MinProjectJustifications == 0 ? false : true;
+            vm.MinBusinessCasesCheck = config.MinBusinessCases == 0 ? false : true;
+            vm.MinProductInfringementPatentabilitiesCheck = config.MinProductInfringementPatentabilities == 0 ? false : true;
+            vm.MinKeyCharacteristicsCheck = config.MinKeyCharacteristics == 0 ? false : true;
+            vm.MinCustomerDesignApprovalsCheck = config.MinCustomerDesignApprovals == 0 ? false : true;
+            vm.MinInvestmentPlansCheck = config.MinInvestmentPlans == 0 ? false : true;
+            vm.MinProductIntroChecklistCheck = config.MinProductIntroChecklist == 0 ? false : true;
+            vm.MinPostLaunchReviewsCheck = config.MinPostLaunchReviews == 0 ? false : true;
+
             vm.GateKeepers = config.GateKeeperConfigs
                 .Select(s => s.Keeper)
                 .ToList();
@@ -90,6 +111,14 @@ namespace pmo.Controllers {
             }
 
             var domainModel = _mapper.Map<StageConfig>(model);
+            domainModel.MinProjectJustifications = model.MinProjectJustificationsCheck ? 1 : 0;
+            domainModel.MinBusinessCases = model.MinBusinessCasesCheck ? 1 : 0;
+            domainModel.MinProductInfringementPatentabilities = model.MinProductInfringementPatentabilitiesCheck ? 1 : 0;
+            domainModel.MinKeyCharacteristics = model.MinKeyCharacteristicsCheck ? 1 : 0;
+            domainModel.MinCustomerDesignApprovals = model.MinCustomerDesignApprovalsCheck ? 1 : 0;
+            domainModel.MinInvestmentPlans = model.MinInvestmentPlansCheck ? 1 : 0;
+            domainModel.MinProductIntroChecklist = model.MinProductIntroChecklistCheck ? 1 : 0;
+            domainModel.MinPostLaunchReviews = model.MinPostLaunchReviewsCheck ? 1 : 0;
 
             _context.Entry(domainModel).State = EntityState.Modified;
             _context.Update(domainModel);

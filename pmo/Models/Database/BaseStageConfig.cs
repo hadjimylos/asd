@@ -1,7 +1,10 @@
-﻿namespace dbModels {
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace dbModels {
     public class BaseStageConfig : DatabaseModel {
         public int StageNumber { get; set; }
 
+        [Display(Name = "ALLOW CREATION OF RISK ASSESMENTS")]
         public bool AllowInsertRiskAssesments { get; set; }
 
         public int MinProjectJustifications { get; set; }
