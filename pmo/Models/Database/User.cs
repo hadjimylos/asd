@@ -7,6 +7,8 @@ namespace dbModels
     {
         public string NetworkUsername { get; set; }
 
+        public string DisplayName { set; get; }
+
         public int RoleId { get; set; }
 
         [ForeignKey("RoleId")]
