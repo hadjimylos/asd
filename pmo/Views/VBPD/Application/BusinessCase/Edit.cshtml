@@ -147,7 +147,7 @@
                     </div>
                     <div class="field">
                         <div class="label">GPA Requirements</div>
-                        <input asp-for="GpaRequirements" class="data" />
+                        <textarea asp-for="GpaRequirements" class="data"></textarea>
                         <ul class="errors">
                             @Html.Partial("_FieldErrors", "GpaRequirements")
                         </ul>
