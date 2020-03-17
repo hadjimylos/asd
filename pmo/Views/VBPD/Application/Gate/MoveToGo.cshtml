@@ -25,15 +25,18 @@
                 </ul>
             </div>
 
-            @for (int i = 0; i < Model.GateKeepersNew.Count; i++) {
+            @for (int i = 0; i < Model.GateKeepersNew.Count; i++)
+            {
                 <input asp-for="@Model.GateKeepersNew[i].Label" type="hidden" />
                 <input asp-for="@Model.GateKeepersNew[i].GateKeeperConfigId" type="hidden" />
 
                 <div class="field">
                     <div class="label">@Model.GateKeepersNew[i].Label</div>
-                    <input asp-for="@Model.GateKeepersNew[i].GateKeeperName" class="data" />
+                    <select asp-for="GateKeepersNew[i].UserId" asp-items="Model.GateKeepersNew[i].UserDropDown" class="data select2">
+                        <option hidden disabled selected>-- Select User--</option>
+                    </select>
                     <ul class="errors">
-                        @Html.Partial("_FieldErrors", $"GateKeepersNew[{i}].GateKeeperName")
+                        @Html.Partial("_FieldErrors", $"GateKeepersNew[{i}].UserId")
                     </ul>
                 </div>
             }

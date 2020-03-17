@@ -4,6 +4,7 @@
     using forms;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Linq;
@@ -64,7 +65,7 @@
                 .Select(s => new {
                     GateKeeperLabel = s.GateKeeperConfig.Keeper,
                     s.GateKeeperConfigId,
-                    s.GateKeeperName,
+                    s.UserId,
                 })
                 .ToList() :
                 _context.GateKeeperLites
@@ -72,7 +73,7 @@
                 .Select(s => new {
                     GateKeeperLabel = s.GateKeeperConfig.Keeper,
                     s.GateKeeperConfigId,
-                    s.GateKeeperName,
+                    s.UserId,
                 })
                 .ToList();
 
@@ -82,12 +83,13 @@
             if (gateKeepers.Count > 0) {
                 gateKeepers.ForEach(
                     f =>
-                        model.GateKeepersNew.Add(new GateKeeperForm {
+                        model.GateKeepersNew.Add(new GateKeeperForm
+                        {
                             Label = f.GateKeeperLabel,
                             GateKeeperConfigId = f.GateKeeperConfigId,
-                            GateKeeperName = f.GateKeeperName,
-                        })
-                );
+                            UserDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName"),
+                            UserId =f.UserId
+                        }));
 
                 // append any missing new configs
                 var newlyAddedConfigs = gateKeeperConfigs.Where ( 
@@ -107,7 +109,8 @@
                     f =>
                         model.GateKeepersNew.Add(new GateKeeperForm {
                             Label = f.Keeper,
-                            GateKeeperConfigId = f.Id
+                            GateKeeperConfigId = f.Id,
+                            UserDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName")
                         })
                 );
             }
@@ -121,6 +124,9 @@
         public  IActionResult GoDecision(GateForm model) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
+                model.GateKeepersNew.ForEach(f=> 
+                    f.UserDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName")
+                );
                 return View($"{path}/MoveToGo.cshtml", model);
             }
 
@@ -132,7 +138,7 @@
                 model.GateKeepersNew.ForEach(
                     f =>
                         _context.GateKeepers.Add(new GateKeeper {
-                            GateKeeperName = f.GateKeeperName,
+                            UserId = f.UserId,
                             GateId = _currentGate.Id,
                             GateKeeperConfigId = f.GateKeeperConfigId,
                         })
@@ -145,7 +151,7 @@
                 model.GateKeepersNew.ForEach(
                     f =>
                         _context.GateKeeperLites.Add(new GateKeeperLite {
-                            GateKeeperName = f.GateKeeperName,
+                            UserId = f.UserId,
                             GateId = _currentGate.Id,
                             GateKeeperConfigId = f.GateKeeperConfigId,
                         })
