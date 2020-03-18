@@ -9,7 +9,6 @@ body {
   font-size: 1em;
   color: #2A363B;
   margin: 0;
-  overflow: hidden;
 }
 body .bold-text {
   font-weight: bold;
@@ -602,10 +601,6 @@ body .text-red {
 .list-component .wrapper .sub-list .wrapper .sub-items .sub-item:nth-of-type(even) {
   background: rgba(0, 133, 155, 0.08);
 }
-.form-component .wrapper {
-  padding: 12px 20px;
-  box-sizing: border-box;
-}
 .error-component .wrapper .error {
   display: flex;
   justify-content: center;
@@ -799,7 +794,10 @@ body .text-red {
 .nav-left-component {
   background: #333f48;
   width: 300px;
-  flex: 0 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 }
@@ -953,12 +951,12 @@ body .text-red {
 }
 .layout-inline-component > .wrapper {
   display: flex;
-  align-items: stretch;
-  height: 100vh;
 }
 .layout-inline-component > .wrapper .page-section {
-  flex: 1 1 auto;
-  overflow: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(100% - 300px);
   padding: 15px;
   box-sizing: border-box;
 }
@@ -968,7 +966,10 @@ body .text-red {
 .sidenav-checklist-component {
   background: #333f48;
   width: 300px;
-  flex: 0 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 }
