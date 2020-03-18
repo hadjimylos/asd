@@ -66,8 +66,8 @@
                 // set URLs for each nav component list
                 stage.ProjectJustificationNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/project-justification/{item.Version}");
                 stage.BusinessCaseNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/business-case/{item.Version}");
-                stage.ProductInfrigmentPatentabilityNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/product-infrigment-patentability/{item.Version}");
-                stage.KeyCharacteristicNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/key-characteristic/{item.Version}");
+                stage.ProductInfrigmentPatentabilityNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/product-infrigment-patentability/{item.Id}");
+                stage.KeyCharacteristicNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/key-characteristic/{item.Id}");
                 stage.CustomerDesignApprovalNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/customer-design-approval/{item.Version}");
                 stage.InvestmentPlanNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/investment-plan/{item.Version}");
                 stage.ProductIntroChecklistNavs.ForEach(item => item.Url = $"/projects/{projectId}/stages/{stage.StageNumber}/product-intro-checklist/{item.Version}");
