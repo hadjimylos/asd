@@ -3,7 +3,13 @@
 @foreach (var item in Model) {
     <div class="nav">
         <div class="item-wrapper">
-            <div class="descrip">Stage @item.StageNumber</div>
+            @if (item._isLite) {
+            <div class="descrip">Stage @item.LiteStageNumber</div>
+            }
+            else {
+                <div class="descrip">Stage @item.StageNumber</div>
+            }
+
         </div>
         <div class="nav-section-items">
             @if (item.DisplaySchedules) {

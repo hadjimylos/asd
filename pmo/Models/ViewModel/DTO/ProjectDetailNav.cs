@@ -17,6 +17,8 @@
             _mapper = mapper;
             this.ProjectId = projectId;
             populateNav(projectId);
+            
+            
         }
 
         public int ProjectId { get; set; }
@@ -79,6 +81,10 @@
                 stage.DisplayStageFiles = stage.Files.Count > 0;
                 stage.OptionalFilesUrl = $"/projects/{projectId}/stages/{stage.StageNumber}/optional-files";
                 stage.DisplayOptionalFiles = stage.OptionalFiles.Count > 0;
+                stage._isLite = _context.ProjectDetails.Where(x => x.Id == projectId).Select(x => x.ProjectProcessType).FirstOrDefault().Contains("Lite") ? true : false;
+                if (stage._isLite) {
+                    stage.LiteStageNumber= ((char)(stage.StageNumber + 64)).ToString();
+                }
             });
 
             var gates = _context.Gates
@@ -108,6 +114,8 @@
         public bool DisplayStageFiles { get; set; }
         public string OptionalFilesUrl { get; set; }
         public bool DisplayOptionalFiles { get; set; }
+        public bool _isLite { get; set; }
+        public string LiteStageNumber { get; set; }
     }
 
     public class NavigationGate : Gate {
