@@ -59,7 +59,7 @@ namespace pmo.Controllers {
                     Url = savePath,
                     Description = f.Description,
                     GateNumber = _stageNumber,
-                    Gate = gate
+                    GateId = gate.Id,
                 });
             });
 

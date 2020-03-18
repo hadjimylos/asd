@@ -10,17 +10,21 @@ using dbModels;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using pmo.Services.Users;
 
 namespace pmo.Controllers {
     [Route("")]
     public class VBPDController : BaseController {
         private readonly IProjectService _projectService;
         private readonly IListService _listService;
+        private readonly IUserService _userService;
         private readonly string path = "~/Views/VBPD/Application/VBPD";
 
-        public VBPDController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProjectService projectService, IListService listService) : base(context, mapper, httpContextAccessor) {
+
+        public VBPDController(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IProjectService projectService, IListService listService, IUserService userService) : base(context, mapper, httpContextAccessor) {
             _projectService = projectService;
             _listService = listService;
+            _userService = userService;
         }
 
         public IActionResult Index() {
@@ -89,9 +93,58 @@ namespace pmo.Controllers {
                 return View($"{path}/Create.cshtml", model);
             }
 
-            _projectService.AddNewVBPDProject(model);
-            var projectId = _context.ProjectDetails.OrderByDescending(x => x.CreateDate).Select(x => x.Id).FirstOrDefault();
-            return Redirect($"/projects/{projectId}");
+            var projectDetail = _mapper.Map<ProjectDetail>(model);
+            var project = _mapper.Map<Project>(model);
+
+            // save project
+            _context.Projects.Add(project);
+            _context.SaveChanges();
+
+            // save project state
+            _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                ProjectState = ProjectState.Go,
+                ProjectId = project.Id,
+            });
+            _context.SaveChanges();
+
+            projectDetail.ProjectId = project.Id;
+            projectDetail.Version = 1;
+            _context.ProjectDetails.Add(projectDetail);
+            _context.SaveChanges();
+
+            model.CustomerIds.ForEach(customerId => {
+                _context.ProjectDetail_Customers.Add(new ProjectDetail_Customer {
+                    CustomersTagId = customerId,
+                    ProjectDetailId = projectDetail.Id,
+                });
+            });
+            model.SalesRegionIds.ForEach(endUserCountryTagId => {
+                _context.ProjectDetail_SalesRegions.Add(new ProjectDetail_SalesRegion {
+                    SalesRegionTagId = endUserCountryTagId,
+                    ProjectDetailId = projectDetail.Id,
+                });
+            });
+            var teamMember = new Project_User() {
+                ProjectId = project.Id,
+                JobDescriptionKey = ViewModels.Helpers.JobDescripKeys.ProgramManager,
+                UserId = _userService.GetCurrentUserId()
+            };
+            _context.Project_User.Add(teamMember);
+            var stage = new Stage() //create new stage for new project
+            {
+                ProjectId = project.Id,
+                StageNumber = 1
+            };
+
+            _context.ProjectStateHistories.Add(new ProjectStateHistory {
+                ProjectId = project.Id,
+                ProjectState = ProjectState.Go,
+            });
+
+            _context.Stages.Add(stage);
+            _context.SaveChanges();    
+
+            return Redirect($"/projects/{project.Id}");
         }
 
         [Route("open")]

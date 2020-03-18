@@ -5,6 +5,7 @@ namespace dbModels
     public class GateFile:DatabaseModel
     {
         public int GateNumber { get; set; }
+        public int GateId { get; set; }
 
         [ForeignKey("GateId")]
         public virtual Gate Gate { get; set; }
