@@ -28,6 +28,7 @@ namespace ViewModels.Helpers
                 '}', '\\', ':',
                 '<', '>', '?',
                 '/', '|', '"',
+                '\'', ' '
             };
 
             restrictedCharacters.ForEach(character => {
