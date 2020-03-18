@@ -10,8 +10,8 @@ using pmo;
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20200318093555_RemoveCitizenships")]
-    partial class RemoveCitizenships
+    [Migration("20200318101632_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -334,14 +334,14 @@ namespace pmo.Migrations
                     b.Property<int>("GateKeeperConfigId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GateKeeperName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("LiteGateKeeperConfigId")
                         .HasColumnType("int");
 
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -350,6 +350,8 @@ namespace pmo.Migrations
                     b.HasIndex("GateKeeperConfigId");
 
                     b.HasIndex("LiteGateKeeperConfigId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("GateKeepers");
                 });
@@ -535,17 +537,19 @@ namespace pmo.Migrations
                     b.Property<int>("GateKeeperConfigId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GateKeeperName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GateId");
 
                     b.HasIndex("GateKeeperConfigId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("GateKeeperLites");
                 });
@@ -1082,9 +1086,8 @@ namespace pmo.Migrations
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Responsibility")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ResponsibilityUserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RiskId")
                         .HasColumnType("int");
@@ -1093,6 +1096,8 @@ namespace pmo.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ResponsibilityUserId");
 
                     b.HasIndex("RiskId");
 
@@ -1234,11 +1239,11 @@ namespace pmo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApprovedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ApprovedByDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ApprovedByUserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -1262,6 +1267,8 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovedByUserId");
 
                     b.HasIndex("StageId");
 
@@ -1311,10 +1318,6 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ExportControlCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ExportRestrictedUsers")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -7122,34 +7125,6 @@ namespace pmo.Migrations
                         });
                 });
 
-            modelBuilder.Entity("dbModels.User_CitizenShip", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedByUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TagId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserCitizenShip");
-                });
-
             modelBuilder.Entity("dbModels.BusinessCase", b =>
                 {
                     b.HasOne("dbModels.Stage", "Stage")
@@ -7242,6 +7217,12 @@ namespace pmo.Migrations
                         .WithMany("GateKeepers")
                         .HasForeignKey("LiteGateKeeperConfigId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("dbModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("dbModels.GateKeeperConfig", b =>
@@ -7264,6 +7245,12 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.LiteGateKeeperConfig", "GateKeeperConfig")
                         .WithMany()
                         .HasForeignKey("GateKeeperConfigId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("dbModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -7333,6 +7320,12 @@ namespace pmo.Migrations
 
             modelBuilder.Entity("dbModels.Mitigation", b =>
                 {
+                    b.HasOne("dbModels.User", "ResponsibilityUser")
+                        .WithMany()
+                        .HasForeignKey("ResponsibilityUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("dbModels.Risk", "Risk")
                         .WithMany("Mitigations")
                         .HasForeignKey("RiskId")
@@ -7375,6 +7368,12 @@ namespace pmo.Migrations
 
             modelBuilder.Entity("dbModels.ProductIntroChecklist", b =>
                 {
+                    b.HasOne("dbModels.User", "ApprovedByUser")
+                        .WithMany()
+                        .HasForeignKey("ApprovedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("dbModels.Stage", "Stage")
                         .WithMany("ProductIntroChecklistHistory")
                         .HasForeignKey("StageId")
@@ -7726,21 +7725,6 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("dbModels.User_CitizenShip", b =>
-                {
-                    b.HasOne("dbModels.Tag", "Citizenships")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("dbModels.User", "User")
-                        .WithMany("Citizenships")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

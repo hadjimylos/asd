@@ -1084,9 +1084,8 @@ namespace pmo.Migrations
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Responsibility")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ResponsibilityUserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RiskId")
                         .HasColumnType("int");
@@ -1095,6 +1094,8 @@ namespace pmo.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ResponsibilityUserId");
 
                     b.HasIndex("RiskId");
 
@@ -7317,6 +7318,12 @@ namespace pmo.Migrations
 
             modelBuilder.Entity("dbModels.Mitigation", b =>
                 {
+                    b.HasOne("dbModels.User", "ResponsibilityUser")
+                        .WithMany()
+                        .HasForeignKey("ResponsibilityUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("dbModels.Risk", "Risk")
                         .WithMany("Mitigations")
                         .HasForeignKey("RiskId")
