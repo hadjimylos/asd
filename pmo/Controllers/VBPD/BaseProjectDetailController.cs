@@ -33,7 +33,7 @@
                 .OrderByDescending(c => c.CreateDate)
                 .First()
                 .ProjectCategory.Id == 219; // minor modification
-            this._nav = new ProjectDetailNav(_context, _mapper, _projectId);
+            this._nav = new ProjectDetailNav(_context, _mapper, _projectId, _isLite);
 
             // don't run code if project is complete to determine active navs
             if (_projectState == (int)ProjectState.Complete)

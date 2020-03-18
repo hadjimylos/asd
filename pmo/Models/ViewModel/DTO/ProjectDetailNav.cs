@@ -10,15 +10,15 @@
     {
         private readonly EfContext _context;
         private readonly IMapper _mapper;
+        private readonly bool _isLite;
 
-        public ProjectDetailNav(EfContext context, IMapper mapper, int projectId)
+        public ProjectDetailNav(EfContext context, IMapper mapper, int projectId, bool isLite)
         {
+            _isLite = isLite;
             _context = context;
             _mapper = mapper;
             this.ProjectId = projectId;
             populateNav(projectId);
-            
-            
         }
 
         public int ProjectId { get; set; }
@@ -81,9 +81,10 @@
                 stage.DisplayStageFiles = stage.Files.Count > 0;
                 stage.OptionalFilesUrl = $"/projects/{projectId}/stages/{stage.StageNumber}/optional-files";
                 stage.DisplayOptionalFiles = stage.OptionalFiles.Count > 0;
-                stage._isLite = _context.ProjectDetails.Where(x => x.Id == projectId).Select(x => x.ProjectProcessType).FirstOrDefault().Contains("Lite") ? true : false;
+                stage._isLite = _isLite;
+
                 if (stage._isLite) {
-                    stage.LiteStageNumber= ((char)(stage.StageNumber + 64)).ToString();
+                    stage.LiteStageNumber = ((char)(stage.StageNumber + 64)).ToString();
                 }
             });
 
