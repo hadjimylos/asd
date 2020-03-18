@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pmo;
 
 namespace pmo.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20200318094916_RemoveCitizenships_v1")]
+    partial class RemoveCitizenships_v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,14 +334,14 @@ namespace pmo.Migrations
                     b.Property<int>("GateKeeperConfigId")
                         .HasColumnType("int");
 
+                    b.Property<string>("GateKeeperName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("LiteGateKeeperConfigId")
                         .HasColumnType("int");
 
                     b.Property<string>("ModifiedByUser")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -348,8 +350,6 @@ namespace pmo.Migrations
                     b.HasIndex("GateKeeperConfigId");
 
                     b.HasIndex("LiteGateKeeperConfigId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("GateKeepers");
                 });
@@ -535,19 +535,17 @@ namespace pmo.Migrations
                     b.Property<int>("GateKeeperConfigId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ModifiedByUser")
+                    b.Property<string>("GateKeeperName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("ModifiedByUser")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GateId");
 
                     b.HasIndex("GateKeeperConfigId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("GateKeeperLites");
                 });
@@ -1236,11 +1234,11 @@ namespace pmo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ApprovedByDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ApprovedByUserId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -1264,8 +1262,6 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApprovedByUserId");
 
                     b.HasIndex("StageId");
 
@@ -1315,6 +1311,10 @@ namespace pmo.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ExportControlCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExportRestrictedUsers")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -7214,12 +7214,6 @@ namespace pmo.Migrations
                         .WithMany("GateKeepers")
                         .HasForeignKey("LiteGateKeeperConfigId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("dbModels.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("dbModels.GateKeeperConfig", b =>
@@ -7242,12 +7236,6 @@ namespace pmo.Migrations
                     b.HasOne("dbModels.LiteGateKeeperConfig", "GateKeeperConfig")
                         .WithMany()
                         .HasForeignKey("GateKeeperConfigId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("dbModels.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -7359,12 +7347,6 @@ namespace pmo.Migrations
 
             modelBuilder.Entity("dbModels.ProductIntroChecklist", b =>
                 {
-                    b.HasOne("dbModels.User", "ApprovedByUser")
-                        .WithMany()
-                        .HasForeignKey("ApprovedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("dbModels.Stage", "Stage")
                         .WithMany("ProductIntroChecklistHistory")
                         .HasForeignKey("StageId")
