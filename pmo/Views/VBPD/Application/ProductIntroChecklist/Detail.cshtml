@@ -29,18 +29,21 @@
                             </div>
                             <div class="detail">
                                 <div class="label">Filename</div>
-                                <div class="value">
+                                <div class="actions">
                                     @if (!String.IsNullOrEmpty(Model.Filename))
                                     {
-                                        <a href="/projects/@projectId/stages/@stageNumber/product-intro-checklist/download?id=@Model.Id" target="_blank">
-                                            <i class="fas fa-download fa-lg"></i>
-                                        </a>
+                                        <form method="post" action="/projects/@projectId/stages/@stageNumber/product-intro-checklist/download?id=@Model.Id">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@Model.Id" />
+                                            <button type="submit" class="btn blue"><i class="fas fa-download"></i> Download</button>
+                                        </form>
+
                                     }
                                     else
                                     {
                                         <span>No file uploaded</span>
                                     }
-                                                            </div>
+                                </div>
                             </div>
                             <div class="detail">
                                 <div class="label">Approved By</div>

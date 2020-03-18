@@ -86,9 +86,13 @@
                 {
                     <div class="item">
                         <div class="item-wrapper">
-                            <a href="/projects/@projectId/stages/@stageNumber/optional-files/download?id=@upload.Id" target="_blank">
-                                <i class="fas fa-download fa-lg"></i>
-                            </a>
+                            <div class="actions">
+                                <form method="post" action="/projects/@projectId/stages/@stageNumber/optional-files/download?id=@upload.Id">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@upload.Id" />
+                                    <button type="submit" class="btn blue"><i class="fas fa-download"></i> Download</button>
+                                </form>
+                            </div>
                             <div>@upload.FileTag.Name</div>
                             <div>@upload.Description</div>
 
