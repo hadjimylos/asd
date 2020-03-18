@@ -101,7 +101,7 @@ namespace pmo.Controllers
 
         private void SetDropdowns(forms.TeamMembersForm model) {
             var selectList = _context.Users.AsNoTracking().Select(s => new SelectListItem {
-                Text = s.NetworkUsername,
+                Text = s.DisplayName,
                 Value = s.Id.ToString(),
             }).ToList();
 
