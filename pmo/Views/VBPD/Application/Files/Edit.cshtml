@@ -102,7 +102,7 @@
                         <div class="item-wrapper">
                             <div>@(upload.IsLocation ? $"Location: {upload.FileTag.Name}" : upload.FileTag.Name)</div>
                             @if (upload.IsLocation) {
-                                <div>--</div>
+                                <div>@upload.Url</div>
                             }
                             else {
                                 <a href="/projects/@projectId/stages/@stageNumber/files/download?id=@upload.Id" target="_blank">
