@@ -18,97 +18,105 @@
 <form class="historyform-component" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
     <div class="wrapper">
-        <div class="form-section">
-            <div class="fields">
-                <div class="field">
-                    <input asp-for="IsRequired" class="data checkbox-toggle" targetCssSelector=".show-hide-section" />
-                    <label asp-for="IsRequired"></label>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "IsMarketingRequired")
-                    </ul>
-                </div>
-                <div class="show-hide-section">
+        <div class="form-sections">
+            <div class="form-section">
+                <div class="divider">Edit</div>
+                <div class="fields">
                     <div class="field">
-                        <div class="label">Upload file</div>
-                        <input class="file-upload" asp-for="File" />
-                        <label asp-for="File" class="data">
-                            <span></span>
-                            <strong><i class="fas fa-upload"></i> Choose a file...</strong>
-                        </label>
+                        <input asp-for="IsRequired" class="data checkbox-toggle" targetCssSelector=".show-hide-section" />
+                        <label asp-for="IsRequired"></label>
                         <ul class="errors">
-                            @Html.Partial("_FieldErrors", "File")
+                            @Html.Partial("_FieldErrors", "IsMarketingRequired")
                         </ul>
                     </div>
-                    <div class="field">
-                        <div class="label">Approved By</div>
-                        <select asp-for="ApprovedByUserId" asp-items="Model.UsersDropDown" class="data select2">
-                            <option hidden disabled selected>-- Select User--</option>
-                        </select>
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "GApprovedByUserId")
-                        </ul>
+                    <div class="show-hide-section">
+                        <div class="field">
+                            <div class="label">Upload file</div>
+                            <input class="file-upload" asp-for="File" />
+                            <label asp-for="File" class="data">
+                                <span></span>
+                                <strong><i class="fas fa-upload"></i> Choose a file...</strong>
+                            </label>
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", "File")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <div class="label">Approved By</div>
+                            <select asp-for="ApprovedByUserId" asp-items="Model.UsersDropDown" class="data select2">
+                                <option hidden disabled selected>-- Select User--</option>
+                            </select>
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", "GApprovedByUserId")
+                            </ul>
+                        </div>
+                        <div class="field">
+                            <div class="label">Approved By Date</div>
+                            <input asp-for="ApprovedByDate" type="date" class="data" />
+                            <ul class="errors">
+                                @Html.Partial("_FieldErrors", "ApprovedByDate")
+                            </ul>
+                        </div>
                     </div>
                     <div class="field">
-                        <div class="label">Approved By Date</div>
-                        <input asp-for="ApprovedByDate" type="date" class="data" />
-                        <ul class="errors">
-                            @Html.Partial("_FieldErrors", "ApprovedByDate")
-                        </ul>
+                        <input type="submit" class="data btn" value="Save" />
                     </div>
-                </div>
-                <div class="field">
-                    <input type="submit" class="data btn" value="Save" />
                 </div>
             </div>
         </div>
-
         <div class="versioning-section">
             <div class="choose-history">
+                <div class="divider">History</div>
                 <div class="select-history-wrapper">
+                    <div class="label">Please Select</div>
                     <select class="select-history select2">
                         <option value="clear">CLEAR</option>
                         <option value="all">VIEW ALL</option>
-                        @foreach (var version in Model.Versions) {
+                        @foreach (var version in Model.Versions)
+                        {
                             <option value="@version.Id">Stage: @version.Stage.StageNumber => Version: @version.Version => CreatedBy: @version.ModifiedByUser</option>
                         }
                     </select>
                 </div>
             </div>
             <div class="versions">
-                @foreach (var version in Model.Versions) {
+                @foreach (var version in Model.Versions)
+                {
                     <div showversion="@version.Id" class="version">
-                        <div class="values">
-                            <div class="select-single-field">
-                                <div class="label">Is Marketing Required</div>
-                                <div class="data">@(version.IsRequired?"Yes":"No")</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">FILENAME</div>
-                                <div class="data">
-                                    @if (!String.IsNullOrEmpty(Model.Filename))
-                                    {
-                                        <a href="/projects/@projectId/stages/@stageNumber/product-intro-checklist/download?id=@Model.Id" target="_blank">
-                                            <i class="fas fa-download fa-lg"></i>
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <span>No file uploaded</span>
-                                    }
+                        <div class="version-section">
+                            <div class="values">
+                                <div class="select-single-field">
+                                    <div class="label">Is Marketing Required</div>
+                                    <div class="data">@(version.IsRequired ? "Yes" : "No")</div>
                                 </div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">APPROVED BY</div>
-                                <div class="data">@version.ApprovedByUser.DisplayName</div>
-                            </div>
-                            <div class="select-single-field">
-                                <div class="label">APPROVED BY DATE</div>
-                                <div class="data">@version.ApprovedByDate</div>
+                                <div class="select-single-field">
+                                    <div class="label">Filename</div>
+                                    <div class="data">
+                                        @if (!String.IsNullOrEmpty(Model.Filename))
+                                        {
+                                            <a href="/projects/@projectId/stages/@stageNumber/product-intro-checklist/download?id=@Model.Id" target="_blank">
+                                                <i class="fas fa-download fa-lg"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span>No file uploaded</span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Approved By</div>
+                                    <div class="data">@version.ApprovedByUser.DisplayName</div>
+                                </div>
+                                <div class="select-single-field">
+                                    <div class="label">Approved By Date</div>
+                                    <div class="data">@version.ApprovedByDate</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 }
-            </div>
+                </div>
         </div>
     </div>
 </form>
