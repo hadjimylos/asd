@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="select-single-field">
                                     <div class="label">Approved By</div>
-                                    <div class="data">@version.ApprovedByUser.DisplayName</div>
+                                    <div class="data">@(version.ApprovedByUser?.DisplayName ?? "--")</div>
                                 </div>
                                 <div class="select-single-field">
                                     <div class="label">Approved By Date</div>
