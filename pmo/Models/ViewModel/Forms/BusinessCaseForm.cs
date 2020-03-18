@@ -59,7 +59,6 @@ namespace forms {
         [MaxValue(100)]
         public new decimal TimeFromProjectCompletionToRevenueGeneration { get; set; }
         public new bool Changes { get; set; }
-
         public MultiSelectList ManufacturingLocationsDropDown { set; get; }
         [Required, MinLength(1, ErrorMessage = ErrorMessages.AtLeastOne)]
         public List<int> ManufacturingLocationsIds { get; set; }

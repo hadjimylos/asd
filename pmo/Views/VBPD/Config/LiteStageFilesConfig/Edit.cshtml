@@ -1,0 +1,89 @@
+﻿@model dbModels.LiteStageFileConfig
+
+@{
+    ViewData["Title"] = "Edit Stage Files";
+    Layout = "_AdminLayout";
+    var configured = (List<dbModels.LiteStageFileConfig>)ViewBag.Uploaded;
+}
+
+    <div class="actions-component">
+        <div class="wrapper">
+            <div class="header">
+                <h1 class="text-black"><i class='icon fas fa-edit'></i> VBPD LITE STAGE @ViewBag.CurrentStageNumber REQUIRED FILES</h1>
+            </div>
+        </div>
+    </div>
+
+@if (Model!=null)
+{
+    <form class="form-component" method="post" action="/vbpd-admin/lite-stage-files-config/edit/@ViewBag.CurrentStageNumber">
+        @Html.AntiForgeryToken()
+        <div class="wrapper">
+            <input asp-for="StageConfigId" type="hidden" />
+            <div class="fields">
+                <div class="field">
+                    <div class="label">Choose Category</div>
+                    <select asp-for="RequiredFileTagId" asp-items="@ViewBag.CategoryDropDown" class="data select2"></select>
+                    <ul class="errors">
+                        @Html.Partial("_FieldErrors", "RequiredFileTagId")
+                    </ul>
+                </div>
+                <div class="field">
+                    <input asp-for="IsLocation" />
+                    <label asp-for="IsLocation"></label>
+                </div>
+            </div>
+            <br />
+            <br />
+            <input type="submit" class="data btn" value="Submit" />
+        </div>
+    </form>
+}
+
+@if (configured.Count > 0)
+{
+
+        <div class="actions-component">
+            <div class="wrapper">
+                <div class="header">
+                    <h1><i class="fas fa-clipboard-list"></i> Required Files for Stage @ViewBag.CurrentStageNumber (@configured.Count)</h1>
+                </div>
+            </div>
+        </div>
+ 
+
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Stage Number</div>
+                <div>File Category</div>
+                <div>Is Location</div>
+                <div>Created</div>
+                <div>Updated By</div>
+                <div>Delete</div>
+
+            </div>
+            <div class="items">
+                @foreach (var config in configured)
+                {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <div>@config.StageConfig.StageNumber</div>
+                            <div>@config.RequiredFile.Name</div>
+                            <div>@(config.IsLocation ? "Yes" : "No")</div>
+                            <div>@config.CreateDate</div>
+                            <div>@config.ModifiedByUser</div>
+                            <div class="actions">
+                                <form method="post" action="/vbpd-admin/lite-stage-files-config/delete?id=@config.Id">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@config.Id" />
+                                    <button type="submit" class="btn red"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

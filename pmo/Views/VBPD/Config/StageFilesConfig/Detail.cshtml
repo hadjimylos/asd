@@ -1,0 +1,55 @@
+﻿@model List<dbModels.StageFileConfig>
+
+@{
+    ViewData["Title"] = "VBPD Stage File Configuration";
+    Layout = "_AdminLayout";
+}
+
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1><i class="icon fas fa-info-circle"></i> @ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
+
+@for (int i = 1; i <= ViewBag.Stages; i++)
+{
+    <div class="actions-component">
+        <div class="wrapper">
+            <div class="header">
+                <h1><i class="icon fas fa-info-circle"></i> STAGE @i REQUIRED FILES </h1>
+            </div>
+            <div class="actions">
+                <div class="action"><a type="button" class="btn green" href="/vbpd-admin/stage-files-config/edit/@i">EDIT</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="list-component">
+        <div class="wrapper">
+            <div class="title">
+                <div>Stage Number</div>
+                <div>File Category</div>
+                <div>Is Location</div>
+                <div>Created</div>
+                <div>Updated By</div>
+            </div>
+            <div class="items">
+                @foreach (var config in Model.Where(x => x.StageConfig.StageNumber == i))
+                {
+                    <div class="item">
+                        <div class="item-wrapper">
+                            <div>@config.StageConfig.StageNumber</div>
+                            <div>@config.RequiredFile.Name</div>
+                            <div>@(config.IsLocation ? "Yes" : "No")</div>
+                            <div>@config.CreateDate</div>
+                            <div>@config.ModifiedByUser</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
