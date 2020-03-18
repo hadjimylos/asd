@@ -1274,6 +1274,13 @@ body .text-red {
   display: flex;
   justify-content: space-between;
 }
+.layout-fullscreen-component > .wrapper .page-section {
+  padding: 15px;
+  box-sizing: border-box;
+}
+.layout-fullscreen-component > .wrapper .page-section > *:not(:first-child) {
+  margin-top: 25px;
+}
 .daterangepicker {
   position: absolute;
   color: inherit;
