@@ -47,10 +47,7 @@
                                 <div class="label">Project Classification</div>
                                 <div class="value">@Model.ProjectDetail.ProjectClassification.Name</div>
                             </div>
-                            <div class="detail">
-                                <div class="label">Design Authority</div>
-                                <div class="value">@Model.ProjectDetail.DesignAuthority.Name</div>
-                            </div>
+                       
                         </div>
                     </div>
                 </div>
@@ -78,6 +75,10 @@
                             <div class="detail">
                                 <div class="label">Customers</div>
                                 <div class="value">@Helpers.GetDelimited(Model.ProjectDetail.Customers.Select(s => s.Customers.Name).ToList())</div>
+                            </div>
+                            <div class="detail">
+                                <div class="label">Design Authority</div>
+                                <div class="value">@Model.ProjectDetail.DesignAuthority.Name</div>
                             </div>
                         </div>
                     </div>

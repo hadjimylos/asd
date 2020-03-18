@@ -90,7 +90,8 @@ namespace pmo.Controllers {
             }
 
             _projectService.AddNewVBPDProject(model);
-            return RedirectToAction("Index");
+            var projectId = _context.ProjectDetails.OrderByDescending(x => x.CreateDate).Select(x => x.Id).FirstOrDefault();
+            return Redirect($"/projects/{projectId}");
         }
 
         [Route("open")]
