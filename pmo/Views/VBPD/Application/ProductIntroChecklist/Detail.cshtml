@@ -44,7 +44,7 @@
                             </div>
                             <div class="detail">
                                 <div class="label">Approved By</div>
-                                <div class="value">@Model.ApprovedByUser.DisplayName</div>
+                                <div class="value">@(Model.ApprovedByUser?.DisplayName ?? "--")</div>
                             </div>
                             <div class="detail">
                                 <div class="label">Approved By Date</div>
