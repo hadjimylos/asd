@@ -552,7 +552,7 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    GateKeeperName = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
                     GateId = table.Column<int>(nullable: false),
                     GateKeeperConfigId = table.Column<int>(nullable: false)
                 },
@@ -571,6 +571,12 @@ namespace pmo.Migrations
                         principalTable: "LiteGateKeeperConfigs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_GateKeeperLites_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -581,7 +587,7 @@ namespace pmo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
-                    GateKeeperName = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
                     GateId = table.Column<int>(nullable: false),
                     GateKeeperConfigId = table.Column<int>(nullable: false),
                     LiteGateKeeperConfigId = table.Column<int>(nullable: true)
@@ -605,6 +611,12 @@ namespace pmo.Migrations
                         name: "FK_GateKeepers_LiteGateKeeperConfigs_LiteGateKeeperConfigId",
                         column: x => x.LiteGateKeeperConfigId,
                         principalTable: "LiteGateKeeperConfigs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_GateKeepers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -680,6 +692,7 @@ namespace pmo.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
                     RequiredFileTagId = table.Column<int>(nullable: false),
+                    IsLocation = table.Column<bool>(nullable: false),
                     StageConfigId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -746,7 +759,6 @@ namespace pmo.Migrations
                     ProjectClassificationTagId = table.Column<int>(nullable: false),
                     ExportApplicationTypeTagId = table.Column<int>(nullable: false),
                     DesignAuthorityTagId = table.Column<int>(nullable: false),
-                    ExportRestrictedUsers = table.Column<string>(nullable: false),
                     ExportControlCode = table.Column<string>(nullable: false),
                     EndUseDestinationCountry = table.Column<string>(nullable: false),
                     ProjectProcessType = table.Column<string>(nullable: false)
@@ -997,6 +1009,7 @@ namespace pmo.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedByUser = table.Column<string>(nullable: true),
                     RequiredFileTagId = table.Column<int>(nullable: false),
+                    IsLocation = table.Column<bool>(nullable: false),
                     StageConfigId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -1027,7 +1040,8 @@ namespace pmo.Migrations
                     FileTagId = table.Column<int>(nullable: false),
                     StageId = table.Column<int>(nullable: false),
                     Url = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    IsLocation = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -2364,13 +2378,13 @@ namespace pmo.Migrations
 
             migrationBuilder.InsertData(
                 table: "LiteStageFileConfigs",
-                columns: new[] { "Id", "CreateDate", "ModifiedByUser", "RequiredFileTagId", "StageConfigId" },
+                columns: new[] { "Id", "CreateDate", "IsLocation", "ModifiedByUser", "RequiredFileTagId", "StageConfigId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 761, 2 },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 762, 2 },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 765, 2 },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 744, 1 }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 761, 2 },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 762, 2 },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 765, 2 },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 744, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -2397,36 +2411,36 @@ namespace pmo.Migrations
 
             migrationBuilder.InsertData(
                 table: "StageFileConfigs",
-                columns: new[] { "Id", "CreateDate", "ModifiedByUser", "RequiredFileTagId", "StageConfigId" },
+                columns: new[] { "Id", "CreateDate", "IsLocation", "ModifiedByUser", "RequiredFileTagId", "StageConfigId" },
                 values: new object[,]
                 {
-                    { 19, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 758, 3 },
-                    { 20, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 759, 3 },
-                    { 25, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 759, 4 },
-                    { 21, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 760, 3 },
-                    { 23, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 764, 4 },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 761, 3 },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 762, 3 },
-                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 763, 3 },
-                    { 18, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 757, 3 },
-                    { 26, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 760, 4 },
-                    { 17, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 756, 3 },
-                    { 11, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 750, 3 },
-                    { 15, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 754, 3 },
-                    { 14, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 753, 3 },
-                    { 13, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 752, 3 },
-                    { 12, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 751, 3 },
-                    { 10, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 749, 3 },
-                    { 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 748, 3 },
-                    { 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 747, 3 },
-                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 746, 3 },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 745, 2 },
-                    { 24, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 744, 4 },
-                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 744, 3 },
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 744, 2 },
-                    { 22, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 766, 4 },
-                    { 16, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 755, 3 },
-                    { 27, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 777, 1 }
+                    { 19, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 758, 3 },
+                    { 20, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 759, 3 },
+                    { 25, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 759, 4 },
+                    { 21, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 760, 3 },
+                    { 23, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 764, 4 },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 761, 3 },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 762, 3 },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 763, 3 },
+                    { 18, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 757, 3 },
+                    { 26, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 760, 4 },
+                    { 17, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 756, 3 },
+                    { 11, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 750, 3 },
+                    { 15, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 754, 3 },
+                    { 14, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 753, 3 },
+                    { 13, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 752, 3 },
+                    { 12, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 751, 3 },
+                    { 10, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 749, 3 },
+                    { 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 748, 3 },
+                    { 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 747, 3 },
+                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 746, 3 },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 745, 2 },
+                    { 24, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 744, 4 },
+                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 744, 3 },
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 744, 2 },
+                    { 22, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 766, 4 },
+                    { 16, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, 755, 3 },
+                    { 27, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, 777, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -2480,6 +2494,11 @@ namespace pmo.Migrations
                 column: "GateKeeperConfigId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GateKeeperLites_UserId",
+                table: "GateKeeperLites",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GateKeepers_GateId",
                 table: "GateKeepers",
                 column: "GateId");
@@ -2493,6 +2512,11 @@ namespace pmo.Migrations
                 name: "IX_GateKeepers_LiteGateKeeperConfigId",
                 table: "GateKeepers",
                 column: "LiteGateKeeperConfigId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GateKeepers_UserId",
+                table: "GateKeepers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Gates_ProjectId",
