@@ -2,6 +2,7 @@
 using dbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using pmo.Services.SharePoint;
@@ -47,7 +48,8 @@ namespace pmo.Controllers.VBPD.Application.History
                 {
                     StageId = currentStage.Id,
                     Versions = GetVersionHistory(),
-                    Stage = currentStage
+                    Stage = currentStage,
+                    UsersDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName"),
                 };
 
                 return View($"{viewPath}/Edit.cshtml", vm);
@@ -71,6 +73,7 @@ namespace pmo.Controllers.VBPD.Application.History
                 vm.Stage = _context.Stages.Where(s => s.Id == currentStage.Id).FirstOrDefault();
                 vm.Versions = GetVersionHistory();
                 vm.Version = latestProductIntoChecklist == null ? 0 : latestProductIntoChecklist.Version;
+                vm.UsersDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName", vm.ApprovedByUserId);
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
             
@@ -123,7 +126,7 @@ namespace pmo.Controllers.VBPD.Application.History
                     {
                         try
                         {
-                            latestProductIntoChecklist.ApprovedBy = productIntroChecklist.ApprovedBy;
+                            latestProductIntoChecklist.ApprovedByUserId = productIntroChecklist.ApprovedByUserId;
                             latestProductIntoChecklist.ApprovedByDate = productIntroChecklist.ApprovedByDate;                            
                             latestProductIntoChecklist.IsRequired = productIntroChecklist.IsRequired;
                             latestProductIntoChecklist.Filename = savePath;
@@ -168,6 +171,7 @@ namespace pmo.Controllers.VBPD.Application.History
         {
             var model = _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
             var vm = _mapper.Map<forms.ProductIntroChecklistForm>(model);
+            vm.UsersDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName", vm.ApprovedByUserId);
             return vm;
         }
 
@@ -175,6 +179,7 @@ namespace pmo.Controllers.VBPD.Application.History
         {
             var grouped = _context.ProductIntroChecklists
                 .Include(s => s.Stage)
+                .Include(i=>i.ApprovedByUser)
                 .Where(i => i.Stage.ProjectId == _projectId)
                 .ToList()
                 .GroupBy(g => g.Version)
@@ -189,7 +194,7 @@ namespace pmo.Controllers.VBPD.Application.History
 
         private ProductIntroChecklist GetDBModel(int version)
         {
-            return _context.ProductIntroChecklists.Where(s => s.Version == version).GetLatestVersion(_projectId);
+            return _context.ProductIntroChecklists.Include(i=>i.ApprovedByUser).Where(s => s.Version == version).GetLatestVersion(_projectId);
         }
 
         [Route("download")]

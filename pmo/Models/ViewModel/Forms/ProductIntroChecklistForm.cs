@@ -1,6 +1,7 @@
 ﻿using CustomValidators;
 using dbModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,14 +17,13 @@ namespace forms
         public new bool IsRequired { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
-        [UserExistsActiveDirectory(ErrorMessages.MissingUserActiveDirectory)]
-        public new string ApprovedBy { get; set; }
-
-        [Required(ErrorMessage = ErrorMessages.Required)]
         public new DateTime ApprovedByDate { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.Required)]
         public IFormFile File { get; set; }
+
+
+        public SelectList UsersDropDown { get; set; }
 
     }
 }

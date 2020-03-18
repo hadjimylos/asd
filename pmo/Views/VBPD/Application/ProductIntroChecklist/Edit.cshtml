@@ -41,9 +41,11 @@
                     </div>
                     <div class="field">
                         <div class="label">Approved By</div>
-                        <input asp-for="ApprovedBy" class="data" />
+                        <select asp-for="ApprovedByUserId" asp-items="Model.UsersDropDown" class="data select2">
+                            <option hidden disabled selected>-- Select User--</option>
+                        </select>
                         <ul class="errors">
-                            @Html.Partial("_FieldErrors", "ApprovedBy")
+                            @Html.Partial("_FieldErrors", "GApprovedByUserId")
                         </ul>
                     </div>
                     <div class="field">
@@ -97,7 +99,7 @@
                             </div>
                             <div class="select-single-field">
                                 <div class="label">APPROVED BY</div>
-                                <div class="data">@version.ApprovedBy</div>
+                                <div class="data">@version.ApprovedByUser.DisplayName</div>
                             </div>
                             <div class="select-single-field">
                                 <div class="label">APPROVED BY DATE</div>
