@@ -80,7 +80,7 @@ namespace pmo.Controllers.VBPD.Application.History
 
             //Save Files (only if record is marked as required)
             if (vm.IsRequired) { 
-                var upload = _SharePointService.Upload(vm.File, currentStage.Project.Name);
+                var upload = _SharePointService.Upload(vm.File, _projectId);
                 var result = JObject.Parse(upload.Result);
                 string relative = result["d"]["ServerRelativeUrl"].ToString();
                 string name = result["d"]["Name"].ToString();

@@ -85,7 +85,7 @@ namespace pmo.Controllers {
 
             // append files only
             saveFiles.ForEach(f => {
-                var upload = _SharePointService.Upload(f.File, projectName);
+                var upload = _SharePointService.Upload(f.File, _projectId);
                 var result = JObject.Parse(upload.Result);
                 string relative = result["d"]["ServerRelativeUrl"].ToString();
                 string name = result["d"]["Name"].ToString();

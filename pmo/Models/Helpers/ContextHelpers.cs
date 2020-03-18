@@ -21,6 +21,22 @@ namespace ViewModels.Helpers
             return res;
         }
 
+        public static string SharepointStripRestrictedCharacters(this string fileName) {
+            List<char> restrictedCharacters = new List<char>() {
+                '~', '#', '%',
+                '&', '*', '{',
+                '}', '\\', ':',
+                '<', '>', '?',
+                '/', '|', '"',
+            };
+
+            restrictedCharacters.ForEach(character => {
+                fileName = fileName.Replace(character, '_');
+            });
+
+            return fileName;
+        }
+
         // extend IQueryable to Include all virtual objects
         public static IQueryable<T> IncludeAll<T>(this IQueryable<T> queryable) where T : class {
             var type = typeof(T);

@@ -5,16 +5,16 @@ using Newtonsoft.Json.Linq;
 using pmo.Controllers;
 using pmo.Models.Helpers;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ViewModels.Helpers;
 
-namespace pmo.Services.SharePoint
-{
-    public class SharePointService : BaseController, ISharePointService
-    {
+namespace pmo.Services.SharePoint {
+    public class SharePointService : BaseController, ISharePointService {
         static string siteUrl = $"{Config.AppSettings["Sharepoint:SPFarm"]}/{Config.AppSettings["Sharepoint:SPSite"]}";
         static string domain = $"{Config.AppSettings["NetworkCredentials:domain"]}";
         static string username = $"{Config.AppSettings["NetworkCredentials:username"]}";
@@ -22,26 +22,20 @@ namespace pmo.Services.SharePoint
         static string documentLibrary = $"{Config.AppSettings["Sharepoint:DocumentLibrary"]}";
         static string subsite = $"{Config.AppSettings["Sharepoint:SPSite"]}";
 
-        public SharePointService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor)
-        {
+        public SharePointService(EfContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper, httpContextAccessor) {
 
         }
-        public string GetFileNameFromUrl(string url)
-        {
-            return url.Replace(siteUrl, "").Replace("/" + documentLibrary + "/", ""); 
+        public string GetFileNameFromUrl(string url) {
+            return url.Replace(siteUrl, "").Replace("/" + documentLibrary + "/", "");
         }
-        public async Task<string> Upload(IFormFile file, string projectName)
-        {
+        public async Task<string> Upload(IFormFile file, int projectId) {
             if (file == null || file.Length == 0) return "file not selected";
 
-            string projectNameStripped = projectName
-                .Replace(" ", "-")
-                .ToLower();
-
+            string projectNameStripped = $"ICS{projectId}";
             string timeStamp = DateTime.Now.ToString("ddMMyyy-hhmmss");
-            string fileName = $"{projectNameStripped}_{timeStamp}_{file.FileName}";
+            string fileName = $"{projectNameStripped}_{timeStamp}_{file.FileName}"
+                .SharepointStripRestrictedCharacters();
 
-            string result = string.Empty;
             string pathToUpload = $"{siteUrl}/_api/Web/GetFolderByServerRelativeUrl('{documentLibrary}')/Files/add(url='{fileName}',overwrite=true)";
             HttpWebRequest wreq = HttpWebRequest.Create(pathToUpload) as HttpWebRequest;
             wreq.UseDefaultCredentials = false;
@@ -57,24 +51,21 @@ namespace pmo.Services.SharePoint
             wreq.Timeout = 1000000; //timeout should be large in order to upload file which are of large size
             wreq.Accept = "application/json; odata=verbose";
             wreq.ContentLength = file.Length;
-            using (System.IO.Stream requestStream = wreq.GetRequestStream())
-            {
+            using (System.IO.Stream requestStream = wreq.GetRequestStream()) {
                 Byte[] bytes = await file.GetBytes();
                 requestStream.Write(bytes, 0, (int)file.Length);
             }
 
-            try
-            {
+            try {
                 WebResponse wresp = wreq.GetResponse();
-                using (StreamReader sr = new StreamReader(wresp.GetResponseStream()))
-                {
+                using (StreamReader sr = new StreamReader(wresp.GetResponseStream())) {
+                    string result = string.Empty;
                     result = sr.ReadToEnd();
                     JObject resultObj = JObject.Parse(result);
                     return result;
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine(ex.Message);
                 throw ex;
             }
@@ -94,8 +85,7 @@ namespace pmo.Services.SharePoint
 
                 var endpointUri = new Uri($"{siteUrl}/_api/web/getfilebyserverrelativeurl('/{subsite}/{documentLibrary}/{filename}')/OpenBinaryStream");
                 var result = client.DownloadData(endpointUri);
-                using (MemoryStream stream = new MemoryStream(result))
-                {
+                using (MemoryStream stream = new MemoryStream(result)) {
                     return stream.ToArray();
                 }
             }
