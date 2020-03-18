@@ -87,15 +87,6 @@
                         @Html.Partial("_FieldErrors", "ExportControlCode")
                     </ul>
                 </div>
-
-                <div class="field">
-                    <div class="label">Export: Restricted Users</div>
-                    <input asp-for="ExportRestrictedUsers" class="data" />
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "ExportRestrictedUsers")
-                    </ul>
-                </div>
-
                 <div class="field">
                     <div class="label">Sales Region</div>
                     <select asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="data select2"></select>
@@ -188,11 +179,6 @@
                                 <div class="label">Export Control Code(s)</div>
                                 <div class="data">@Model.ExportControlCode</div>
                             </div>
-                            <div class="select-single-field">
-                                <div class="label">Export Restricted Users</div>
-                                <div class="data">@Model.ExportRestrictedUsers</div>
-                            </div>
-
                             <div class="select-single-field">
                                 <div class="label">Sales Region</div>
                                 <div class="list-values">

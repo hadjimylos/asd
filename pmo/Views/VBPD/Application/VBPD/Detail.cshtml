@@ -72,12 +72,6 @@
                                 <div class="value">@Model.ProjectDetail.ExportControlCode</div>
                             </div>
                             <div class="detail">
-                                <div class="label">Export Restricted Users</div>
-                                <div class="value">
-                                    @Model.ProjectDetail.ExportRestrictedUsers
-                                </div>
-                            </div>
-                            <div class="detail">
                                 <div class="label">Sales Regions</div>
                                 <div class="value">@Helpers.GetDelimited(Model.ProjectDetail.SalesRegions.Select(s => s.SalesRegion.Name).ToList())</div>
                             </div>

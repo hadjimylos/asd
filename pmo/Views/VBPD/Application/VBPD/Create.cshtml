@@ -100,13 +100,6 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Export Restricted Users</div>
-                <input asp-for="ExportRestrictedUsers" class="data" />
-                <ul class="errors">
-                    @Html.Partial("_FieldErrors", "ExportRestrictedUsers")
-                </ul>
-            </div>
-            <div class="field">
                 <div class="label">Sales Regions</div>
                 <select asp-for="SalesRegionIds" asp-items="Model.SalesRegionsDropDown" class="data select2">
                 </select>
