@@ -10,9 +10,7 @@ namespace dbModels {
 
         public string Filename { get; set; }
 
-        [Required(ErrorMessage = ErrorMessages.Required)]
-        [MinValue(1)]
-        public int ApprovedByUserId { get; set; }
+        public int? ApprovedByUserId { get; set; }
         [ForeignKey("ApprovedByUserId")]
         public virtual User ApprovedByUser { get; set; }
         

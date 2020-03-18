@@ -82,7 +82,8 @@ namespace pmo.Controllers.VBPD.Application.History
             string savePath = null;
 
             //Save Files (only if record is marked as required)
-            if (vm.IsRequired) { 
+            if (vm.IsRequired)
+            {
                 var upload = _SharePointService.Upload(vm.File, _projectId);
                 var result = JObject.Parse(upload.Result);
                 string relative = result["d"]["ServerRelativeUrl"].ToString();
@@ -90,9 +91,14 @@ namespace pmo.Controllers.VBPD.Application.History
                 savePath = $"{Config.AppSettings["Sharepoint:SPFarm"]}{relative}";
                 productIntroChecklist.Filename = savePath;
             }
+            else
+            {
+                productIntroChecklist.ApprovedByUserId = null;
+            }
 
             // Save to the database
             productIntroChecklist.StageId = currentStage.Id;
+
             productIntroChecklist.RemoveUnnecessaryValues(f => f.IsRequired);
 
             if (latestProductIntoChecklist == null)//first version

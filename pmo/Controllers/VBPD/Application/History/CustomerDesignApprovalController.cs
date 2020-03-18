@@ -69,7 +69,8 @@ namespace pmo.Controllers.Application.History
                 vm.Version = latestCustomerDesignApproval == null ? 0 : latestCustomerDesignApproval.Version;
                 return View($"{viewPath}/Edit.cshtml", vm);
             }
-          
+            
+
             var customerDesignApproval = _mapper.Map<CustomerDesignApproval>(vm);
             customerDesignApproval.StageId = currentStage.Id;
 
