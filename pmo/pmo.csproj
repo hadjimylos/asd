@@ -89,6 +89,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\PowerPointExports\" />
+    <Folder Include="_scripts\" />
   </ItemGroup>
 
   <PropertyGroup>
