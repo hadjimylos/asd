@@ -55,7 +55,7 @@
                                             <div class="sub-item">
                                                 <div class="sub-item-wrapper">
                                                     <div>@mitigation.TargetDate.ToString("MM/dd/yyyy")</div>
-                                                    <div>@mitigation.Responsibility</div>
+                                                    <div>@mitigation.ResponsibilityUser.DisplayName</div>
                                                     <div>@previewPlan <a href="risk/@risk.Id/mitigations/@mitigation.Id">...</a></div>
                                                     <a href="risk/@risk.Id/mitigations/@mitigation.Id"><i class='icon fas fa-edit'></i> Edit Mitigation</a>
                                                     <form method="post" action="risk/@risk.Id/mitigations/@mitigation.Id/delete">

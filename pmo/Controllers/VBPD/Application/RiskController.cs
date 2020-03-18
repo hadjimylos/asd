@@ -27,7 +27,7 @@ namespace pmo.Controllers.Application {
                 .Include(x => x.Stage)
                 .Include(x => x.RiskImpact)
                 .Include(x => x.RiskType)
-                .Include(i => i.Mitigations)
+                .Include(i => i.Mitigations).ThenInclude(i=>i.ResponsibilityUser)
                 .Where(x => x.StageId == _stageId).ToList();
 
             return View($"{path}/Index.cshtml", vm);

@@ -15,13 +15,15 @@
                 </ul>
             </div>
             <div class="field">
-                <div class="label">Responsibility</div>
-                <input asp-for="Responsibility" class="data" />
+                <div class="label"> Responsibility</div>
+                <select asp-for="ResponsibilityUserId" asp-items="Model.UsersDropDown" class="data select2">
+                    <option hidden disabled selected>-- Select User--</option>
+                </select>
                 <ul class="errors">
-                    @Html.Partial("_FieldErrors", "Responsibility")
+                    @Html.Partial("_FieldErrors", "ResponsibilityUserId")
                 </ul>
             </div>
-            <div class="field">
+             <div class="field">
                 <div class="label">Mitigation Plan</div>
                 <textarea asp-for="MitigationPlan"></textarea>
                 <ul class="errors">

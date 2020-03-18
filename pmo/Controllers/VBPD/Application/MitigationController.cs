@@ -6,6 +6,8 @@
     using forms;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore;
     using pmo.Services.Lists;
     using ViewModels.Helpers;
 
@@ -22,6 +24,7 @@
         [Route("create")]
         public IActionResult Create() {
             var model = new MitigationForm() { RiskId = this._riskId };
+            model.UsersDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName");
             return View($"{path}/Create.cshtml", model);
         }
 
@@ -31,6 +34,7 @@
         public IActionResult Create(MitigationForm form) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
+                form.UsersDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName",form.ResponsibilityUserId);
                 return View($"{path}/Create.cshtml", form);
             }
 
@@ -42,8 +46,9 @@
 
         [Route("{id}")]
         public IActionResult Edit(int id) {
-            var dbMitigation = _context.Mitigations.First(f => f.Id == id);
+            var dbMitigation = _context.Mitigations.Include(i=>i.ResponsibilityUser).First(f => f.Id == id);
             var model = _mapper.Map<MitigationForm>(dbMitigation);
+            model.UsersDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName", dbMitigation.ResponsibilityUserId);
             return View($"{path}/Edit.cshtml", model);
         }
 
@@ -53,14 +58,15 @@
         public IActionResult Edit(MitigationForm form, int id) {
             if (!ModelState.IsValid) {
                 ViewBag.Errors = ModelState;
+                form.UsersDropDown = new SelectList(_context.Users.ToList(), "Id", "DisplayName", form.ResponsibilityUserId);
                 return View($"{path}/Edit.cshtml", form);
             }
 
             var notTracked = _mapper.Map<Mitigation>(form);
             var tracked = _context.Mitigations.Find(id);
             tracked.PrepForUpdate(notTracked);
-
-            _context.Mitigations.Update(tracked);
+            
+            _context.Mitigations.Update(notTracked);
             _context.SaveChanges();
             return RedirectToAction("Index", "Risk", new { projectId = _projectId, stageNumber = _stageNumber });
         }
