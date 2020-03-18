@@ -14,6 +14,5 @@ namespace dbModels
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
 
-        public virtual List<User_CitizenShip> Citizenships { get; set; }
     }
 }

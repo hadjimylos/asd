@@ -49,14 +49,6 @@
                     </ul>
                 </div>
                 <div class="field">
-                    <div class="label">Citizenships</div>
-                    <select asp-for="UserCitizenships" asp-items="Model.CitizenshipsList" class="data select2">
-                    </select>
-                    <ul class="errors">
-                        @Html.Partial("_FieldErrors", "UserCitizenships")
-                    </ul>
-                </div>
-                <div class="field">
                     <button type="submit" class="data btn green"><i class="fas fa-save"></i> @createUpdate</button>
                     <a class="btn grey" href="/admin/users"><i class="fas fa-chevron-circle-left"></i> Return</a>
                 </div>

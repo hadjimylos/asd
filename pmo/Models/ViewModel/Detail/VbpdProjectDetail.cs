@@ -33,8 +33,6 @@ namespace ViewModels {
             this.TeamMembers = _context.Project_User
                 .IncludeAll()
                 .Include(i => i.User)
-                    .ThenInclude(i => i.Citizenships)
-                        .ThenInclude(i => i.Citizenships)
                 .Where(
                     w => w.ProjectId == projectId
                 ).ToList();

@@ -21,7 +21,7 @@ namespace pmo.Services.Users
         }
         public User GetUserById(int userId)
         {
-            return _context.Users.Include(x => x.Citizenships).ThenInclude(z => z.Citizenships).Include(y => y.Role).Where(x => x.Id == userId).FirstOrDefault();
+            return _context.Users.Include(y => y.Role).Where(x => x.Id == userId).FirstOrDefault();
         }
 
         public int GetCurrentUserId() {
@@ -34,43 +34,18 @@ namespace pmo.Services.Users
             var domainModel = _mapper.Map<User>(userViewModel);
             _context.Users.Add(domainModel);
             _context.SaveChanges();
-
-            var citizenships = new List<User_CitizenShip>();
-            foreach (var item in userViewModel.UserCitizenships)
-            {
-                citizenships.Add(new User_CitizenShip() { UserId = domainModel.Id, TagId = item });
-            }
-            _context.UserCitizenShip.AddRange(citizenships);
-            _context.SaveChanges();
             return true;
         }
         public bool UpdateUser(forms.UserForm userViewModel)
         {
             userViewModel.isCreate = false;
-            var user = _context.Users.Include(x => x.Citizenships).Include(x => x.Role).AsNoTracking().Where(x => x.Id == userViewModel.Id).FirstOrDefault();
+            var user = _context.Users.Include(x => x.Role).AsNoTracking().Where(x => x.Id == userViewModel.Id).FirstOrDefault();
             userViewModel.NetworkUsername = user.NetworkUsername;
             var domainModel = _mapper.Map<User>(userViewModel);
 
             _context.Users.Update(domainModel);
             _context.SaveChanges();
             _context.Entry(domainModel).State = EntityState.Detached;
-
-            List<int> Existing = user.Citizenships.Select(x => x.TagId).ToList();
-            List<User_CitizenShip> ExistingModel = user.Citizenships;
-            var SameElements = Existing.All(userViewModel.UserCitizenships.Contains);
-            var SameCount = Existing.Count == userViewModel.UserCitizenships.Count;
-            if (!(SameElements && SameCount))
-            {
-                _context.UserCitizenShip.RemoveRange(ExistingModel);
-
-                var citizenships = new List<User_CitizenShip>();
-                foreach (var item in userViewModel.UserCitizenships)
-                {
-                    citizenships.Add(new User_CitizenShip() { UserId = domainModel.Id, TagId = item });
-                }
-                _context.UserCitizenShip.AddRange(citizenships);
-            }
-            _context.SaveChanges();
             return true;
         }
 

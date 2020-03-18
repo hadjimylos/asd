@@ -261,7 +261,6 @@ namespace ViewModels.Helpers
 
     public static class TagCategoryHelper
     {
-        public const string Citizenships = "citizenships";
         public const string RequiredSchedules = "required-schedules";
         public const string SalesRegion = "sales-region";
         public const string ProjectCategory = "project-category";

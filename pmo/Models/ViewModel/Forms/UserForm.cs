@@ -18,27 +18,7 @@ namespace forms {
         public new string RoleId { get; set; }
 
         public SelectList RoleList { get; set; }
-        public MultiSelectList CitizenshipsList { get; set; }
 
-        private List<int> _userCitizenships = new List<int>();
-
-        [Required, MinLength(1, ErrorMessage = ErrorMessages.AtLeastOne)]
-        public List<int> UserCitizenships
-        {
-            get
-            {
-                if (this.Citizenships != null)
-                {
-                    _userCitizenships = this.Citizenships.Select(x => x.Citizenships.Id).ToList();
-                    return _userCitizenships;
-                }
-                return _userCitizenships;
-            }
-            set 
-            {
-                _userCitizenships = value;
-            } 
-        }
 
 
     }
