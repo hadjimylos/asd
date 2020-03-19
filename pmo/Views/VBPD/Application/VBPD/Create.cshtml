@@ -19,7 +19,7 @@
         <div class="fields">
             <div class="field">
                 <div class="label">Project Name</div>
-                <input asp-for="Name" class="data" />
+                <input asp-for="Name" class="data" autocomplete="off" />
                 <ul class="errors">
                     @Html.Partial("_FieldErrors", "Name")
                 </ul>

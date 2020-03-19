@@ -21,7 +21,7 @@
         var currentStageNumber = stageNumber.Key;
         var numberOfProjects = stageNumber.Count();
 
-        dataPointsLite.Add(new CanvasJSDataPoint("Stage " + currentStageNumber.ToString(), "", numberOfProjects, ""));
+        dataPointsLite.Add(new CanvasJSDataPoint("Stage " + ((char)(currentStageNumber+64)).ToString(), "", numberOfProjects, ""));
     });
 
     <script>
