@@ -1281,6 +1281,17 @@ body .text-red {
 .layout-fullscreen-component > .wrapper .page-section > *:not(:first-child) {
   margin-top: 25px;
 }
+.success-message-component {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 3px;
+}
+.success-message-component .wrapper {
+  padding: 0.75rem 1.25rem;
+}
+.success-message-component .wrapper .message {
+  color: #008264;
+}
 .daterangepicker {
   position: absolute;
   color: inherit;
