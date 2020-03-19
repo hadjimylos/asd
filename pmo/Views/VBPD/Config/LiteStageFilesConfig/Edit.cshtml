@@ -6,15 +6,15 @@
     var configured = (List<dbModels.LiteStageFileConfig>)ViewBag.Uploaded;
 }
 
-    <div class="actions-component">
-        <div class="wrapper">
-            <div class="header">
-                <h1 class="text-black"><i class='icon fas fa-edit'></i> VBPD LITE STAGE @ViewBag.CurrentStageNumber REQUIRED FILES</h1>
-            </div>
+<div class="actions-component">
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="text-black"><i class='icon fas fa-edit'></i> VBPD LITE STAGE @ViewBag.CurrentStageNumber REQUIRED FILES</h1>
         </div>
     </div>
+</div>
 
-@if (Model!=null)
+@if (Model != null)
 {
     <form class="form-component" method="post" action="/vbpd-admin/lite-stage-files-config/edit/@ViewBag.CurrentStageNumber">
         @Html.AntiForgeryToken()
@@ -43,14 +43,14 @@
 @if (configured.Count > 0)
 {
 
-        <div class="actions-component">
-            <div class="wrapper">
-                <div class="header">
-                    <h1><i class="fas fa-clipboard-list"></i> Required Files for Stage @ViewBag.CurrentStageNumber (@configured.Count)</h1>
-                </div>
+    <div class="actions-component">
+        <div class="wrapper">
+            <div class="header">
+                <h1><i class="fas fa-clipboard-list"></i> Required Files for Stage @ViewBag.CurrentStageNumber (@configured.Count)</h1>
             </div>
         </div>
- 
+    </div>
+
 
     <div class="list-component">
         <div class="wrapper">
@@ -86,4 +86,8 @@
             </div>
         </div>
     </div>
+}
+else
+{
+    @Html.Partial("_NoData")
 }

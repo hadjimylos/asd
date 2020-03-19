@@ -25,31 +25,37 @@
             </div>
         </div>
     </div>
-    <div class="list-component">
-        <div class="wrapper">
-            <div class="title">
-                <div>Stage Number</div>
-                <div>File Category</div>
-                <div>Is Location</div>
-                <div>Created</div>
-                <div>Updated By</div>
-            </div>
-            <div class="items">
-                @foreach (var config in Model.Where(x => x.StageConfig.StageNumber == i))
-                {
-                    <div class="item">
-                        <div class="item-wrapper">
-                            <div>@config.StageConfig.StageNumber</div>
-                            <div>@config.RequiredFile.Name</div>
-                            <div>@(config.IsLocation ? "Yes" : "No")</div>
-                            <div>@config.CreateDate</div>
-                            <div>@config.ModifiedByUser</div>
+    @if (Model.Where(x => x.StageConfig.StageNumber == i).ToList().Count > 0)
+    {
+        <div class="list-component">
+            <div class="wrapper">
+                <div class="title">
+                    <div>Stage Number</div>
+                    <div>File Category</div>
+                    <div>Is Location</div>
+                    <div>Created</div>
+                    <div>Updated By</div>
+                </div>
+                <div class="items">
+                    @foreach (var config in Model.Where(x => x.StageConfig.StageNumber == i))
+                    {
+                        <div class="item">
+                            <div class="item-wrapper">
+                                <div>@config.StageConfig.StageNumber</div>
+                                <div>@config.RequiredFile.Name</div>
+                                <div>@(config.IsLocation ? "Yes" : "No")</div>
+                                <div>@config.CreateDate</div>
+                                <div>@config.ModifiedByUser</div>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
-    </div>
+        </div> }
+    else
+    {
+        @Html.Partial("_NoData")
+    }
 }
 
 
