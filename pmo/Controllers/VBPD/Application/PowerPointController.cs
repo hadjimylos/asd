@@ -70,6 +70,9 @@ namespace pmo.Controllers.VBPD.Application {
                .Where(x => x.StageId == _stageId && x.Stage.ProjectId == _projectId).ToList();
             InvestmentPlan ip = _context.InvestmentPlans.AsNoTracking().GetLatestVersion(_projectId);
             BusinessCase bc = _context.BusinessCases.IncludeAll().GetLatestVersion(_projectId);
+            if (bc.GpaRequirements.Length >= 178) {
+                bc.GpaRequirements = bc.GpaRequirements.Substring(1, 178) + " ...";
+            }
             decimal ROI = bc?.GetROI() ?? 0M;
             decimal NPV = bc?.GetNPV() ?? 0M;
             decimal PaybackPeriod = bc?.GetPaybackPeriod() ?? 0M;
